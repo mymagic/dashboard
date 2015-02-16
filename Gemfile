@@ -32,6 +32,9 @@ gem 'rspec-rails'
 # Use Devise for authentication
 gem 'devise'
 
+# Use CanCanCan for authorization
+gem 'cancancan', '~> 1.10'
+
 # Use Unicorn as the app server
 gem 'unicorn'
 
