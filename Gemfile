@@ -29,6 +29,9 @@ gem 'pg'
 # Use RSPEC for testing framework
 gem 'rspec-rails'
 
+# Use Devise for authentication
+gem 'devise'
+
 # Use Unicorn as the app server
 gem 'unicorn'
 
