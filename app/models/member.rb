@@ -1,4 +1,6 @@
 class Member < ActiveRecord::Base
+  ROLES = %i(administrator)
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -17,6 +19,12 @@ class Member < ActiveRecord::Base
            foreign_key: :participant_id)
 
   accepts_nested_attributes_for :office_hours_as_mentor
+
+  ROLES.map(&:to_s).each do |is_role|
+    define_method "#{ is_role }?" do
+      role == is_role
+    end
+  end
 
   def company_and_positions
     companies_positions.
