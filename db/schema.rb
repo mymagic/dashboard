@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150216100027) do
+ActiveRecord::Schema.define(version: 20150217023448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,26 @@ ActiveRecord::Schema.define(version: 20150216100027) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "companies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "website"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "companies_members_positions", force: :cascade do |t|
+    t.integer  "member_id"
+    t.integer  "company_id"
+    t.integer  "position_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "companies_members_positions", ["company_id"], name: "index_companies_members_positions_on_company_id", using: :btree
+  add_index "companies_members_positions", ["member_id"], name: "index_companies_members_positions_on_member_id", using: :btree
+  add_index "companies_members_positions", ["position_id"], name: "index_companies_members_positions_on_position_id", using: :btree
+
   create_table "members", force: :cascade do |t|
     t.string   "first_name",             default: "", null: false
     t.string   "last_name",              default: "", null: false
@@ -74,4 +94,13 @@ ActiveRecord::Schema.define(version: 20150216100027) do
   add_index "members", ["email"], name: "index_members_on_email", unique: true, using: :btree
   add_index "members", ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true, using: :btree
 
+  create_table "positions", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "companies_members_positions", "companies"
+  add_foreign_key "companies_members_positions", "members"
+  add_foreign_key "companies_members_positions", "positions"
 end
