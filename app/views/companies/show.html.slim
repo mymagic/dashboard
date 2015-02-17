@@ -1,0 +1,9 @@
+- title @company.name
+- page_header @company.name
+
+.row
+  .col-lg-12
+    = @company.description
+  - @company.position_and_members.each do |position, members|
+    = panel position.name, columns: 12 do
+      = render members

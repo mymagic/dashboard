@@ -5,7 +5,7 @@ html lang="en"
     meta content="IE=edge" http-equiv="X-UA-Compatible"
     meta content="width=device-width, initial-scale=1" name="viewport"
 
-    = content_tag(:title, "Magic")
+    = content_tag(:title, "Magic#{ yield :title }")
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
@@ -15,4 +15,5 @@ html lang="en"
 
     .container
       = render partial: 'shared/flash'
+      = yield :page_header
       = yield
