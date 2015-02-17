@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :companies, only: [:index, :show]
 
   namespace :admin do
+    get :dashboard
     resources :companies, only: [:index]
     resources :members, only: [:index]
   end

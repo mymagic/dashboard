@@ -7,8 +7,10 @@ nav.navbar.navbar-default.navbar-static-top.navbar-admin
         span.icon-bar
         span.icon-bar
 
-      = link_to root_path, class: 'navbar-brand' do
+
+      = nav_link admin_dashboard_path, class: 'navbar-brand' do
         strong Administration
+
     #navbar-admin.navbar-collapse.collapse
       ul.nav.navbar-nav
         li= nav_link "Members", admin_members_path
