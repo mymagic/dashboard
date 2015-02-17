@@ -1,13 +1,16 @@
-h2
-  | Sign up
-= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = f.error_notification
-  .form-inputs
-    = f.input :first_name, required: true, autofocus: true
-    = f.input :last_name, required: true
-    = f.input :email, required: true
-    = f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @validatable)
-    = f.input :password_confirmation, required: true
-  .form-actions
-    = f.button :submit, "Sign up"
-= render "devise/shared/links"
+.row
+  .col-sm-3
+  .col-sm-6
+    .row
+      = panel "Sign up", columns: 12 do
+        = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f|
+          = f.error_notification
+          .form-inputs
+            = f.input :first_name, required: true, autofocus: true
+            = f.input :last_name, required: true
+            = f.input :email, required: true
+            = f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @validatable)
+            = f.input :password_confirmation, required: true
+          .form-actions.text-right
+            = f.button :submit, "Sign up"
+        = render "devise/shared/links"
