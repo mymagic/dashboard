@@ -1,0 +1,15 @@
+.navbar-admin {
+  font-size: 0.7em;
+  padding: 0;
+  margin: 0;
+  min-height: 30px;
+  background-color: #FFF;
+  .navbar-brand {
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    height: 30px;
+  }
+  .navbar-nav > li > a {
+    padding: 5px 15px;
+  }
+}
