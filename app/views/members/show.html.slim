@@ -1,0 +1,8 @@
+- title @member.full_name
+- page_header @member.full_name
+
+.row
+  - @member.company_and_positions.each do |company, positions|
+    = panel company.name, columns: 12 do
+      - positions.each do |position|
+        = position.name

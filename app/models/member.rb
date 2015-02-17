@@ -17,4 +17,16 @@ class Member < ActiveRecord::Base
            foreign_key: :participant_id)
 
   accepts_nested_attributes_for :office_hours_as_mentor
+
+  def company_and_positions
+    companies_positions.
+      each_with_object({}) do |comp_pos, company_and_positions|
+      company_and_positions[comp_pos.company] ||= []
+      company_and_positions[comp_pos.company] << comp_pos.position
+    end
+  end
+
+  def full_name
+    "#{ first_name } #{ last_name }"
+  end
 end

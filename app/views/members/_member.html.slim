@@ -1,5 +1,1 @@
-= member.first_name
-= member.last_name
-- member.companies_positions.each do |company_position|
-  = company_position.position_name
-  = company_position.company_name
+= link_to member.full_name, member
