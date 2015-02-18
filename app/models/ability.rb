@@ -12,6 +12,11 @@ class Ability
     can :destroy, OfficeHour, mentor_id: member.id
   end
 
+  def create_companies_positions(member)
+    cannot :create, CompaniesMembersPosition
+    can :create, CompaniesMembersPosition, member_id: member.id
+  end
+
   def initialize(member)
     member ||= Member.new # guest user (not logged in)
 
@@ -22,14 +27,14 @@ class Ability
       can :create, Member
     else
       can :read, :all
-
+      create_companies_positions(member)
       book_and_cancel_office_hours(member)
     end
 
     if member.administrator?
       can :manage, :all
       can :administrate, :application
-
+      create_companies_positions(member)
       book_and_cancel_office_hours(member)
     end
   end

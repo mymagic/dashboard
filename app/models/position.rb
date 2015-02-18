@@ -3,7 +3,8 @@ class Position < ActiveRecord::Base
 
   has_many(:companies_members,
            class: CompaniesMembersPosition,
-           dependent: :destroy)
+           dependent: :destroy,
+           inverse_of: :position)
   has_many :companies, through: :companies_members
   has_many :members,   through: :companies_members
 

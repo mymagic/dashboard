@@ -10,6 +10,6 @@
       .thumbnail
         .member-thumb-wrapper= image_tag(@member.avatar.url(:thumb))
 
-    - @member.company_and_positions.each do |company, positions|
+    - @member.approved_companies_and_positions.each do |company, positions|
       = panel company.name, columns: 12 do
         = positions.map(&:name).to_sentence

@@ -1,4 +1,4 @@
 tr
   td= image_tag(member.avatar.url(:icon), class: 'img-rounded')
   td= link_to member.full_name, member
-  td= member.companies.map(&:name).to_sentence
+  td= member.approved_companies.map(&:name).to_sentence

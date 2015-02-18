@@ -11,9 +11,17 @@ class Member < ActiveRecord::Base
 
   has_many(:companies_positions,
            class: CompaniesMembersPosition,
-           dependent: :destroy)
+           dependent: :destroy,
+           inverse_of: :member)
   has_many :companies, -> { uniq }, through: :companies_positions
-  has_many :positions,  through: :companies_positions
+  has_many :positions, through: :companies_positions
+
+  has_many(:approved_companies_positions,
+           -> { approved },
+           class: CompaniesMembersPosition,
+           dependent: :destroy)
+  has_many :approved_companies, -> { uniq }, source: :company, through: :approved_companies_positions
+  has_many :approved_positions, source: :position, through: :approved_companies_positions
 
   accepts_nested_attributes_for(:companies_positions,
                                 allow_destroy: true,
@@ -39,8 +47,8 @@ class Member < ActiveRecord::Base
     end
   end
 
-  def company_and_positions
-    companies_positions.
+  def approved_companies_and_positions
+    approved_companies_positions.
       each_with_object({}) do |comp_pos, company_and_positions|
       company_and_positions[comp_pos.company] ||= []
       company_and_positions[comp_pos.company] << comp_pos.position
