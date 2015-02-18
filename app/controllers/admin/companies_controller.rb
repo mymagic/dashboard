@@ -51,7 +51,12 @@ module Admin
     private
 
     def company_params
-      params.require(:company).permit(:name, :website, :description, :logo)
+      params.require(:company).permit(
+        :name,
+        :website,
+        :description,
+        :logo,
+        :logo_cache)
     end
   end
 end
