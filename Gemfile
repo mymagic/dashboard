@@ -47,6 +47,12 @@ gem 'cancancan', '~> 1.10'
 # Use Unicorn as the app server
 gem 'unicorn'
 
+# Use MiniMagick for photo processing
+gem 'mini_magick'
+
+# Use Carrierwave for uploaders
+gem 'carrierwave'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -2,7 +2,7 @@ module Admin
   class CompaniesController < AdminController
     load_and_authorize_resource
     skip_authorize_resource
-    
+
     def index
       @companies = @companies.ordered
     end
@@ -51,7 +51,7 @@ module Admin
     private
 
     def company_params
-      params.require(:company).permit(:name, :website, :description)
+      params.require(:company).permit(:name, :website, :description, :logo)
     end
   end
 end

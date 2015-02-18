@@ -1,5 +1,5 @@
 class Company < ActiveRecord::Base
-  validates :name, presence: true
+  validates :name, :logo, presence: true
   validates :description, length: { minimum: 5 }, allow_blank: true
   validates(
     :website,
@@ -11,6 +11,8 @@ class Company < ActiveRecord::Base
            dependent: :destroy)
   has_many :members, through: :members_positions
   has_many :positions, -> { uniq }, through: :members_positions
+
+  mount_uploader :logo, LogoUploader
 
   scope :ordered, -> { order(name: :desc) }
 
