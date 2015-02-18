@@ -17,9 +17,9 @@ nav.navbar.navbar-default.navbar-static-top
 
       #navbar.navbar-collapse.collapse
         ul.nav.navbar-nav
-          li= nav_link "Welcome", root_path
-          li= nav_link "Members", Member
-          li= nav_link "Companies", Company
+          = nav_link "Welcome", root_path
+          = nav_link "Members", Member
+          = nav_link "Companies", Company
 
         ul.nav.navbar-nav.navbar-right
           li.dropdown
@@ -27,15 +27,13 @@ nav.navbar.navbar-default.navbar-static-top
               = current_member.email
               span.caret
             ul.dropdown-menu role="menu"
-              li= nav_link "Edit my Account", edit_member_registration_path
+              = nav_link "Edit my Account", edit_member_registration_path
               li.divider
-              li= nav_link "Sign Out", destroy_member_session_path, method: :delete
+              = nav_link "Sign Out", destroy_member_session_path, method: :delete
 
     - else
 
       #navbar.navbar-collapse.collapse
         ul.nav.navbar-nav.navbar-right
-          li
-            = nav_link "Log in", new_member_session_path
-          li
-            = nav_link "Sign up", new_member_registration_path
+          = nav_link "Log in", new_member_session_path
+          = nav_link "Sign up", new_member_registration_path
