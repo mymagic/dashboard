@@ -20,7 +20,7 @@ module Admin
           format.html { redirect_to admin_members_path, notice: 'Member was successfully created.' }
           format.json { render json: @member, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error creating member.' }
+          format.html { render 'new', alert: 'Error creating member.' }
           format.json { render json: @member.errors, status: :unprocessable_entity }
         end
       end
@@ -37,7 +37,7 @@ module Admin
           format.html { redirect_to admin_members_path, notice: 'Member was successfully updated.' }
           format.json { render json: @member, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error updating member.' }
+          format.html { render 'edit', alert: 'Error updating member.' }
           format.json { render json: @member.errors, status: :unprocessable_entity }
         end
       end

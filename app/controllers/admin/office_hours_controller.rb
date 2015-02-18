@@ -17,7 +17,7 @@ module Admin
           format.html { redirect_to admin_office_hours_path, notice: 'Office Hour was successfully created.' }
           format.json { render json: @office_hour, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error creating office hour.' }
+          format.html { render 'new', alert: 'Error creating office hour.' }
           format.json { render json: @office_hour.errors, status: :unprocessable_entity }
         end
       end
@@ -33,7 +33,7 @@ module Admin
           format.html { redirect_to admin_office_hours_path, notice: 'Office Hour was successfully updated.' }
           format.json { render json: @office_hour, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error updating office hour.' }
+          format.html { render 'edit', alert: 'Error updating office hour.' }
           format.json { render json: @office_hour.errors, status: :unprocessable_entity }
         end
       end

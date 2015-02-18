@@ -2,7 +2,7 @@ module Admin
   class PositionsController < AdminController
     load_and_authorize_resource
     skip_authorize_resource
-    
+
     def index
     end
 
@@ -17,7 +17,7 @@ module Admin
           format.html { redirect_to admin_positions_path, notice: 'Position was successfully created.' }
           format.json { render json: @position, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error creating position.' }
+          format.html { render 'new', alert: 'Error creating position.' }
           format.json { render json: @position.errors, status: :unprocessable_entity }
         end
       end
@@ -33,7 +33,7 @@ module Admin
           format.html { redirect_to admin_positions_path, notice: 'Position was successfully updated.' }
           format.json { render json: @position, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error updating position.' }
+          format.html { render 'edit', alert: 'Error updating position.' }
           format.json { render json: @position.errors, status: :unprocessable_entity }
         end
       end

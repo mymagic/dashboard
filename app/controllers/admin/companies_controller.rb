@@ -18,7 +18,7 @@ module Admin
           format.html { redirect_to admin_companies_path, notice: 'Company was successfully created.' }
           format.json { render json: @company, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error creating company.' }
+          format.html { render 'new', alert: 'Error creating company.' }
           format.json { render json: @company.errors, status: :unprocessable_entity }
         end
       end
@@ -34,7 +34,7 @@ module Admin
           format.html { redirect_to admin_companies_path, notice: 'Company was successfully updated.' }
           format.json { render json: @company, status: :created }
         else
-          format.html { redirect_to :back, alert: 'Error updating company.' }
+          format.html { render 'edit', alert: 'Error updating company.' }
           format.json { render json: @company.errors, status: :unprocessable_entity }
         end
       end
