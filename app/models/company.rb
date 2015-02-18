@@ -6,7 +6,9 @@ class Company < ActiveRecord::Base
     format: { with: URI::regexp(%w(http https)) },
     allow_blank: true)
 
-  has_many :members_positions, class: CompaniesMembersPosition
+  has_many(:members_positions,
+           class: CompaniesMembersPosition,
+           dependent: :destroy)
   has_many :members, through: :members_positions
   has_many :positions, -> { uniq }, through: :members_positions
 
