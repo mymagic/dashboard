@@ -13,7 +13,9 @@ Rails.application.routes.draw do
     get :dashboard
     resources :companies
     resources :office_hours
-    resources :members
+    resources :members do
+      patch 'confirm', on: :member
+    end
     resources :positions
   end
 

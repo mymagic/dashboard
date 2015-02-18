@@ -43,6 +43,14 @@ module Admin
       end
     end
 
+    def confirm
+      @member.confirm!
+      respond_to do |format|
+        format.html { redirect_to admin_members_path, notice: 'Member confirmed. The member can now log in.' }
+        format.json { render json: @member, status: :created }
+      end
+    end
+
     def destroy
       @member.destroy
       respond_to do |format|
