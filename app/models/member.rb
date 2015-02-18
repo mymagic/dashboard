@@ -12,7 +12,7 @@ class Member < ActiveRecord::Base
   has_many(:companies_positions,
            class: CompaniesMembersPosition,
            dependent: :destroy)
-  has_many :companies,  through: :companies_positions
+  has_many :companies, -> { uniq }, through: :companies_positions
   has_many :positions,  through: :companies_positions
 
   accepts_nested_attributes_for(:companies_positions,
@@ -28,6 +28,8 @@ class Member < ActiveRecord::Base
            foreign_key: :participant_id)
 
   accepts_nested_attributes_for :office_hours_as_mentor
+
+  mount_uploader :avatar, AvatarUploader
 
   scope :ordered, -> { order(last_name: :desc) }
 

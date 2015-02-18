@@ -1,4 +1,12 @@
 - title 'Members'
 - page_header 'Members'
 
-= render @members
+.row
+  .col-sm-12
+    table.table.table-striped
+      thead
+        th
+        th Name
+        th Companies
+      tbody
+        = render @members

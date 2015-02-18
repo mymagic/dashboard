@@ -8,6 +8,8 @@
           .form-inputs
             = f.input :first_name, required: true, autofocus: true
             = f.input :last_name, required: true
+            = f.input :avatar, hint: f.object.avatar.present? ? image_tag(f.object.avatar.url(:thumb)) : false
+            = f.input :avatar_cache, as: :hidden
             = f.input :email, required: true
             = f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @validatable)
             = f.input :password_confirmation, required: true

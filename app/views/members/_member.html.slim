@@ -1,1 +1,4 @@
-= link_to member.full_name, member
+tr
+  td= image_tag(member.avatar.url(:icon))
+  td= link_to member.full_name, member
+  td= member.companies.map(&:name).to_sentence

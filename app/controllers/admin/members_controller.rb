@@ -68,6 +68,8 @@ module Admin
         :password,
         :password_confirmation,
         :role,
+        :avatar,
+        :avatar_cache,
         companies_positions_attributes:
           [:approved, :company_id, :position_id, :_destroy, :id])
     end
