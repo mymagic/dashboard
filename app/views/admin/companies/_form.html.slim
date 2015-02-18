@@ -1,8 +1,6 @@
 = simple_form_for([:admin, company], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f|
-  = f.error_notification
-
-  .form-inputs
-    = f.input :name, required: true, autofocus: true
-
-  .form-actions.text-right
+  = f.input :name, required: true, autofocus: true, placeholder: 'ACME Corporation'
+  = f.input :website, placeholder: 'https://www.example.com'
+  = f.input :description, placeholder: 'Describe your company…', input_html: { rows: 12 }
+  .text-right
     = f.button :submit, "Save"

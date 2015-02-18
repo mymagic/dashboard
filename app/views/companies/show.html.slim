@@ -2,8 +2,16 @@
 - page_header @company.name
 
 .row
-  .col-lg-12
-    = @company.description
-  - @company.position_and_members.each do |position, members|
-    = panel position.name, columns: 12 do
-      = render members
+
+  .col-lg-6
+    - if @company.description.present?
+      = panel columns: 12 do
+        = @company.description
+    - if @company.website.present?
+      = definition_list(Website: link_to(@company.website, @company.website))
+
+  - if @company.position_and_members.any?
+    = panel 'Members', columns: 6 do
+      - @company.position_and_members.each do |position, members|
+        = panel position.name, columns: 12 do
+          = render members

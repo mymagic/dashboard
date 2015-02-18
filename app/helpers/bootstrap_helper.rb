@@ -31,4 +31,15 @@ module BootstrapHelper
       end
     end
   end
+
+  def definition_list(list)
+    content_tag 'dl', class: 'dl-horizontal' do
+      safe_join(
+        list.map do |term, definition|
+          [content_tag('dt', term), content_tag('dd', definition)]
+        end.flatten
+      )
+    end
+  end
+
 end
