@@ -1,7 +1,8 @@
 module Admin
   class CompaniesController < AdminController
     load_and_authorize_resource
-
+    skip_authorize_resource
+    
     def index
       @companies = @companies.ordered
     end
@@ -14,7 +15,7 @@ module Admin
       @company = Company.new(company_params)
       respond_to do |format|
         if @company.save
-          format.html { redirect_to :back, notice: 'Company was successfully created.' }
+          format.html { redirect_to admin_companies_path, notice: 'Company was successfully created.' }
           format.json { render json: @company, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error creating company.' }
@@ -30,7 +31,7 @@ module Admin
       @company.update(company_params)
       respond_to do |format|
         if @company.save
-          format.html { redirect_to :back, notice: 'Company was successfully updated.' }
+          format.html { redirect_to admin_companies_path, notice: 'Company was successfully updated.' }
           format.json { render json: @company, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error updating company.' }

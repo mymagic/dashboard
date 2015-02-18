@@ -1,7 +1,8 @@
 module Admin
   class PositionsController < AdminController
     load_and_authorize_resource
-
+    skip_authorize_resource
+    
     def index
     end
 
@@ -13,7 +14,7 @@ module Admin
       @position = Position.new(position_params)
       respond_to do |format|
         if @position.save
-          format.html { redirect_to :back, notice: 'Position was successfully created.' }
+          format.html { redirect_to admin_positions_path, notice: 'Position was successfully created.' }
           format.json { render json: @position, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error creating position.' }
@@ -29,7 +30,7 @@ module Admin
       @position.update(position_params)
       respond_to do |format|
         if @position.save
-          format.html { redirect_to :back, notice: 'Position was successfully updated.' }
+          format.html { redirect_to admin_positions_path, notice: 'Position was successfully updated.' }
           format.json { render json: @position, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error updating position.' }

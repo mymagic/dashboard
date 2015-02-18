@@ -1,6 +1,7 @@
 module Admin
   class MembersController < AdminController
     load_and_authorize_resource
+    skip_authorize_resource
 
     before_action :allow_without_password, only: :update
 
@@ -16,7 +17,7 @@ module Admin
       @member = Member.new(member_params)
       respond_to do |format|
         if @member.save
-          format.html { redirect_to :back, notice: 'Member was successfully created.' }
+          format.html { redirect_to admin_members_path, notice: 'Member was successfully created.' }
           format.json { render json: @member, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error creating member.' }
@@ -33,7 +34,7 @@ module Admin
       @member.update(member_params)
       respond_to do |format|
         if @member.save
-          format.html { redirect_to :back, notice: 'Member was successfully updated.' }
+          format.html { redirect_to admin_members_path, notice: 'Member was successfully updated.' }
           format.json { render json: @member, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error updating member.' }
