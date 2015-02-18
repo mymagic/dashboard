@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get :dashboard
     resources :companies
     resources :members
+    resources :positions
   end
 
   root 'welcome#index'

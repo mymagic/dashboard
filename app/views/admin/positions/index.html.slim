@@ -1,0 +1,16 @@
+- title 'Positions'
+- page_header 'Positions'
+
+.row
+  .col-sm-9
+    table.table.table-striped
+      thead
+        th #
+        th Name
+        th
+      tbody
+        = render @positions
+
+  .col-sm-3
+    ul.nav.nav-stacked
+      li= link_to 'New Position', new_admin_position_path
