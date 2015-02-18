@@ -25,7 +25,9 @@ nav.navbar.navbar-default.navbar-static-top
         ul.nav.navbar-nav.navbar-right
           li.dropdown
             a.dropdown-toggle aria-expanded="false" data-toggle="dropdown" href="#" role="button"
-              = current_member.email
+              = image_tag(current_member.avatar.url(:icon), class: 'img-rounded')
+              '
+              = current_member.full_name
               span.caret
             ul.dropdown-menu role="menu"
               = nav_link "Edit my Account", edit_member_registration_path
