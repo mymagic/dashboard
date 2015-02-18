@@ -1,1 +1,7 @@
-= company.name
+tr
+  td= company.id
+  td= company.name
+  td
+    .btn-group role='group'
+      = link_to('Delete', admin_company_path(company), method: :delete, data: { confirm: "Are you sure you want to remove this Company?"}, class: 'btn btn-default btn-xs')
+      = link_to('Edit', edit_admin_company_path(company), class: 'btn btn-default btn-xs')

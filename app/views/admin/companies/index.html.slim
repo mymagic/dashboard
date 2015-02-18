@@ -1,1 +1,16 @@
-= render @companies
+- title 'Companies'
+- page_header 'Companies'
+
+.row
+  .col-sm-9
+    table.table.table-striped
+      thead
+        th #
+        th Name
+        th
+      tbody
+        = render @companies
+
+  .col-sm-3
+    ul.nav.nav-stacked
+      li= link_to 'New Company', new_admin_company_path
