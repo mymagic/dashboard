@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217085909) do
+ActiveRecord::Schema.define(version: 20150218075325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,10 +61,12 @@ ActiveRecord::Schema.define(version: 20150217085909) do
     t.integer  "member_id"
     t.integer  "company_id"
     t.integer  "position_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "approved",    default: false, null: false
   end
 
+  add_index "companies_members_positions", ["approved"], name: "index_companies_members_positions_on_approved", using: :btree
   add_index "companies_members_positions", ["company_id"], name: "index_companies_members_positions_on_company_id", using: :btree
   add_index "companies_members_positions", ["member_id"], name: "index_companies_members_positions_on_member_id", using: :btree
   add_index "companies_members_positions", ["position_id"], name: "index_companies_members_positions_on_position_id", using: :btree

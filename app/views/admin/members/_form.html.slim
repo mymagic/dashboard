@@ -8,8 +8,8 @@
             = f.input :first_name, required: true, autofocus: true
             = f.input :last_name, required: true
             = f.input :email, required: true
-            = f.input :password, required: member.new_record?
-            = f.input :password_confirmation, required: member.new_record?
+            = f.input :password, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8
+            = f.input :password_confirmation, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8
 
         = panel 'Member Status', columns: 12 do
           = f.input :role, as: :select, collection: Member::ROLES, include_blank: 'Regular Member'
@@ -19,8 +19,13 @@
         = f.simple_fields_for :companies_positions do |company_position|
           = company_position.input :company_id, as: :select, collection: Company.ordered
           = company_position.input :position_id, as: :select, collection: Position.ordered
-          - if company_position.object.persisted?
-            = company_position.input :_destroy, as: :boolean
+          .row
+            .col-lg-3
+            .col-lg-4
+              = company_position.input :approved, as: :boolean
+            .col-lg-4
+              - if company_position.object.persisted?
+                = company_position.input :_destroy, as: :boolean
 
   .row
     .col-lg-12

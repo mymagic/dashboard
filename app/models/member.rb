@@ -17,7 +17,10 @@ class Member < ActiveRecord::Base
 
   accepts_nested_attributes_for(:companies_positions,
                                 allow_destroy: true,
-                                reject_if: :all_blank)
+                                reject_if: proc do |attributes|
+                                  attributes[:company_id].blank? &&
+                                    attributes[:position_id].blank?
+                                end)
 
   has_many :office_hours_as_mentor, class: OfficeHour, foreign_key: :mentor_id
   has_many(:office_hours_as_participant,
