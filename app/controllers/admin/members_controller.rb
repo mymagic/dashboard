@@ -9,6 +9,7 @@ module Admin
 
     def new
       @member = Member.new
+      @member.companies_positions.build
     end
 
     def create
@@ -25,6 +26,7 @@ module Admin
     end
 
     def edit
+      @member.companies_positions.build
     end
 
     def update
@@ -64,7 +66,9 @@ module Admin
         :email,
         :password,
         :password_confirmation,
-        :role)
+        :role,
+        companies_positions_attributes:
+          [:company_id, :position_id, :_destroy, :id])
     end
   end
 end

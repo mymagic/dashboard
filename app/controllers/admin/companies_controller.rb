@@ -3,6 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
+      @companies = @companies.ordered
     end
 
     def new

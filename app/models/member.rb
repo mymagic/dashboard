@@ -13,6 +13,10 @@ class Member < ActiveRecord::Base
   has_many :companies,  through: :companies_positions
   has_many :positions,  through: :companies_positions
 
+  accepts_nested_attributes_for(:companies_positions,
+                                allow_destroy: true,
+                                reject_if: :all_blank)
+
   has_many :office_hours_as_mentor, class: OfficeHour, foreign_key: :mentor_id
   has_many(:office_hours_as_participant,
            class: OfficeHour,
