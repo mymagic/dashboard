@@ -10,21 +10,21 @@
     - if @company.website.present?
       = definition_list(Website: link_to(@company.website, @company.website))
 
-    .row
-      = render partial: 'companies_members_positions/form', locals: { companies_members_position: current_member.companies_positions.new(company: @company) }
-
   .col-lg-4
     .col-lg-12
       .thumbnail
         .company-thumb-wrapper= image_tag(@company.logo.url(:thumb))
 
     - if @company.approved_positions_and_members.any?
-      = panel 'Members', columns: 12 do
-        - @company.approved_positions_and_members.each do |position, members|
-          = panel position.name, columns: 12 do
-            ul.list-group
-              - members.each do |member|
-                li.list-group-item
-                  = image_tag(member.avatar.url(:icon))
-                  '
-                  = link_to member.full_name, member
+      - @company.approved_positions_and_members.each do |position, members|
+        .col-lg-12
+          ul.list-group
+            li.list-group-item.disabled
+              = position.name.pluralize(members.count)
+            - members.each do |member|
+              li.list-group-item
+                = image_tag(member.avatar.url(:icon))
+                '
+                = link_to member.full_name, member
+    .col-lg-12.text-center
+      = render partial: 'companies_members_positions/form', locals: { companies_members_position: current_member.companies_positions.new(company: @company) }
