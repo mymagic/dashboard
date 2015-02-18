@@ -1,6 +1,7 @@
 module Admin
   class OfficeHoursController < AdminController
     load_and_authorize_resource
+    skip_authorize_resource
 
     def index
     end
@@ -13,7 +14,7 @@ module Admin
       @office_hour = OfficeHour.new(office_hour_params)
       respond_to do |format|
         if @office_hour.save
-          format.html { redirect_to :back, notice: 'Office Hour was successfully created.' }
+          format.html { redirect_to admin_office_hours_path, notice: 'Office Hour was successfully created.' }
           format.json { render json: @office_hour, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error creating office hour.' }
@@ -29,7 +30,7 @@ module Admin
       @office_hour.update(office_hour_params)
       respond_to do |format|
         if @office_hour.save
-          format.html { redirect_to :back, notice: 'Office Hour was successfully updated.' }
+          format.html { redirect_to admin_office_hours_path, notice: 'Office Hour was successfully updated.' }
           format.json { render json: @office_hour, status: :created }
         else
           format.html { redirect_to :back, alert: 'Error updating office hour.' }

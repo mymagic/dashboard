@@ -3,6 +3,10 @@ Rails.application.routes.draw do
 
   resources :members, only: [:index, :show]
   resources :companies, only: [:index, :show]
+  resources :office_hours, only: [:index, :create, :destroy] do
+    patch 'book', on: :member
+    delete 'cancel', on: :member
+  end
 
   namespace :admin do
     get :dashboard
