@@ -1,1 +1,20 @@
-= render @members
+- title 'Members'
+- page_header 'Members'
+
+.row
+  .col-sm-9
+    table.table.table-striped
+      thead
+        th #
+        th Role
+        th First name
+        th Last name
+        th Email
+        th Confirmed?
+        th
+      tbody
+        = render @members
+
+  .col-sm-3
+    ul.nav.nav-stacked
+      li= link_to 'New Member', new_admin_member_path

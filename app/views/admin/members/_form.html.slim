@@ -1,0 +1,13 @@
+= simple_form_for([:admin, member], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :first_name, required: true, autofocus: true
+    = f.input :last_name, required: true
+    = f.input :email, required: true
+    = f.input :password, required: member.new_record?
+    = f.input :password_confirmation, required: member.new_record?
+    = f.input :role, as: :select, collection: Member::ROLES, include_blank: 'Regular Member'
+
+  .form-actions.text-right
+    = f.button :submit, "Save"

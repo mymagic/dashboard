@@ -1,1 +1,17 @@
-= member.full_name
+tr
+  td= member.id
+  td
+    - if member.administrator?
+      span.glyphicon.glyphicon-flash title='Administrator'
+  td= member.first_name
+  td= member.last_name
+  td= member.email
+  td
+    - if member.confirmed?
+      span.label.label-default YES
+    - else
+      span.label.label-danger NO
+  td
+    .btn-group role='group'
+      = link_to('Delete', admin_member_path(member), method: :delete, data: { confirm: "Are you sure you want to remove this Member?"}, class: 'btn btn-default btn-xs')
+      = link_to('Edit', edit_admin_member_path(member), class: 'btn btn-default btn-xs')
