@@ -1,5 +1,6 @@
 tr
   td= company.id
+  td= image_tag(company.logo.url(:icon))
   td= company.name
   td= link_to truncate(company.website, length: 30), company.website
   td= truncate(company.description, length: 30)
