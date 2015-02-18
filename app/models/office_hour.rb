@@ -27,7 +27,7 @@ class OfficeHour < ActiveRecord::Base
   private
 
   def cannot_book_own_office_hour
-    return unless participant == mentor
+    return unless participant.present? && participant == mentor
     errors.add(:participant, :cannot_book_own_office_hour)
   end
 end
