@@ -26,6 +26,8 @@ class Member < ActiveRecord::Base
 
   accepts_nested_attributes_for :office_hours_as_mentor
 
+  scope :ordered, -> { order(last_name: :desc) }
+
   ROLES.map(&:to_s).each do |is_role|
     define_method "#{ is_role }?" do
       role == is_role

@@ -1,0 +1,19 @@
+- title 'Office Hours'
+- page_header 'Office Hours'
+
+.row
+  .col-sm-9
+    table.table.table-striped
+      thead
+        th #
+        th Status
+        th Time
+        th Mentor
+        th Participant
+        th
+      tbody
+        = render @office_hours
+
+  .col-sm-3
+    ul.nav.nav-stacked
+      li= link_to 'New Office Hour', new_admin_office_hour_path

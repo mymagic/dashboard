@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   namespace :admin do
     get :dashboard
     resources :companies
+    resources :office_hours
     resources :members
     resources :positions
   end

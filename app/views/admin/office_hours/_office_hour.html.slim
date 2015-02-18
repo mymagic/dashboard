@@ -1,0 +1,15 @@
+tr
+  td= office_hour.id
+  td
+    - if office_hour.available?
+      .label.label-success Available
+
+    - else
+      .label.label-info Booked
+  td= office_hour.time_in_zone
+  td= office_hour.mentor_full_name
+  td= office_hour.participant_full_name
+  td
+    .btn-group role='group'
+      = link_to('Delete', admin_office_hour_path(office_hour), method: :delete, data: { confirm: "Are you sure you want to remove this Office Hour?"}, class: 'btn btn-default btn-xs')
+      = link_to('Edit', edit_admin_office_hour_path(office_hour), class: 'btn btn-default btn-xs')

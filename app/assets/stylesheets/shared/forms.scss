@@ -1,0 +1,15 @@
+form.form-horizontal {
+  .datetime-inline {
+    select {
+      display: inline-block;
+      width: 14%;
+      &:first-child {
+        width: 20%;
+      }
+      &:nth-child(2) {
+        width: 27%;
+      }
+
+    }
+  }
+}
