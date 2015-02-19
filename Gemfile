@@ -44,9 +44,6 @@ gem 'devise'
 # Use CanCanCan for authorization
 gem 'cancancan', '~> 1.10'
 
-# Use Unicorn as the app server
-gem 'unicorn'
-
 # Use MiniMagick for photo processing
 gem 'mini_magick'
 
@@ -71,4 +68,12 @@ group :development, :test do
   # pry as a better ruby command line
   gem 'pry-rails'
   gem 'awesome_print'
+end
+
+group :production, :staging do
+  gem 'newrelic_rpm'
+  gem 'rails_12factor'
+  gem 'rack-timeout'
+  gem 'unicorn'
+  gem 'sentry-raven'
 end
