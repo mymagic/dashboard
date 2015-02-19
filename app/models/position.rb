@@ -1,5 +1,9 @@
 class Position < ActiveRecord::Base
-  validates :name, presence: true, uniqueness: :true
+  include RankedModel
+  ranks :priority_order
+
+  validates :name, :priority_order, presence: true
+  validates :name, uniqueness: :true
 
   has_many(:companies_members,
            class: CompaniesMembersPosition,
@@ -8,5 +12,5 @@ class Position < ActiveRecord::Base
   has_many :companies, through: :companies_members
   has_many :members,   through: :companies_members
 
-  scope :ordered, -> { order(name: :desc) }
+  scope :ordered, -> { rank(:priority_order) }
 end

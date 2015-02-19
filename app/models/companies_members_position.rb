@@ -11,6 +11,7 @@ class CompaniesMembersPosition < ActiveRecord::Base
 
   delegate :name, to: :company, prefix: true
   delegate :name, to: :position, prefix: true
+  delegate :priority_order, to: :position, prefix: true
 
   def positions_possible
     Position.ordered.where.not(

@@ -1,0 +1,30 @@
+enableSortable = ->
+  $('table.table-sortable').sortable
+    containerSelector: 'table'
+    itemPath: '> tbody'
+    itemSelector: 'tr'
+    placeholder: '<tr class="placeholder"/>'
+    onDrop: (item, container, _super) ->
+      table      = $(item).closest('table')
+      objectId   = $(item).data('object-id')
+      objectUrl  = table.data('object-url').replace('objectId', objectId)
+      objectName = table.data('object-name')
+      sortableName = table.data('sortable-name')
+      objectOrderPosition = $(item).parent().children().index(item)
+
+      data = {}
+      data[objectName] = {}
+      data[objectName]["#{ sortableName }_position"] = objectOrderPosition
+
+      console.log data
+      $.ajax
+        type: 'PATCH'
+        url: objectUrl
+        dataType: 'json'
+        data: data
+      _super(item, container)
+ready = ->
+  enableSortable()
+
+$(document).ready(ready)
+$(document).on('page:load', ready)

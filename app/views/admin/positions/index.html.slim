@@ -3,13 +3,15 @@
 
 .row
   .col-sm-9
-    table.table.table-striped
+    table.table.table-striped.table-sortable data= { 'object-url': admin_position_path(id: 'objectId'), 'object-name': 'position', 'sortable-name': 'priority_order' }
       thead
         th #
         th Name
         th
       tbody
         = render @positions
+
+    p.small.text-right.text-muted Drag-and-Drop rows to set priority order.
 
   .col-sm-3
     ul.nav.nav-stacked

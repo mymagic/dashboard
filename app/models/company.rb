@@ -26,7 +26,7 @@ class Company < ActiveRecord::Base
 
   def approved_positions_and_members
     approved_members_positions.
-      approved.
+      sort_by(&:position_priority_order).
       each_with_object({}) do |member_position, position_and_members|
       position_and_members[member_position.position] ||= []
       position_and_members[member_position.position] << member_position.member

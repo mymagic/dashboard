@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219041121) do
+ActiveRecord::Schema.define(version: 20150219052911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,9 +113,10 @@ ActiveRecord::Schema.define(version: 20150219041121) do
   add_index "office_hours", ["participant_id"], name: "index_office_hours_on_participant_id", using: :btree
 
   create_table "positions", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",           null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "priority_order"
   end
 
   add_foreign_key "companies_members_positions", "companies"

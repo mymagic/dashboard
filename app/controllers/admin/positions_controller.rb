@@ -4,6 +4,7 @@ module Admin
     skip_authorize_resource
 
     def index
+      @positions = @positions.ordered
     end
 
     def new
@@ -50,7 +51,7 @@ module Admin
     private
 
     def position_params
-      params.require(:position).permit(:name)
+      params.require(:position).permit(:name, :priority_order_position)
     end
   end
 end

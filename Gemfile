@@ -53,6 +53,9 @@ gem 'mini_magick'
 # Use Carrierwave for uploaders
 gem 'carrierwave'
 
+# Use ranked-model for sortable lists
+gem 'ranked-model'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

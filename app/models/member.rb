@@ -49,6 +49,7 @@ class Member < ActiveRecord::Base
 
   def approved_companies_and_positions
     approved_companies_positions.
+      sort_by(&:position_priority_order).
       each_with_object({}) do |comp_pos, company_and_positions|
       company_and_positions[comp_pos.company] ||= []
       company_and_positions[comp_pos.company] << comp_pos.position
