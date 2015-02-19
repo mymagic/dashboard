@@ -75,6 +75,7 @@ module Admin
         :email,
         :password,
         :password_confirmation,
+        :time_zone,
         :role,
         :avatar,
         :avatar_cache,

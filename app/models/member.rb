@@ -7,7 +7,7 @@ class Member < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable
 
-  validates :first_name, :last_name, presence: true
+  validates :first_name, :last_name, :time_zone, presence: true
 
   has_many(:companies_positions,
            class: CompaniesMembersPosition,

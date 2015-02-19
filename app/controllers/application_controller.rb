@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
       :avatar,
       :avatar_cache,
       :password,
+      :time_zone,
       :password_confirmation
     ]
 

@@ -7,7 +7,7 @@ module Admin
     end
 
     def new
-      @office_hour = OfficeHour.new
+      @office_hour = OfficeHour.new(time_zone: current_member.time_zone)
     end
 
     def create

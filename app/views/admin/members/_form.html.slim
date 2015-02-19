@@ -6,6 +6,7 @@
         = panel 'General Info', columns: 12 do
           = f.input :first_name, autofocus: true
           = f.input :last_name
+          = f.input :time_zone, include_blank: 'Please select a time zone…'
           = f.input :email, required: true
           = f.input :password, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8
           = f.input :password_confirmation, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8
