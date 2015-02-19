@@ -39,7 +39,7 @@ class Member < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  scope :ordered, -> { order(last_name: :desc) }
+  scope :ordered, -> { order(last_name: :asc) }
 
   ROLES.map(&:to_s).each do |is_role|
     define_method "#{ is_role }?" do

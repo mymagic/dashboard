@@ -6,15 +6,21 @@ tr
   td= image_tag(member.avatar.url(:icon), class: 'img-rounded')
   td= member.first_name
   td= member.last_name
-  td= member.email
+  td
+    - if member.unconfirmed_email.present?
+      strike data={ toggle: 'popover', placement: 'bottom', trigger: 'hover', title: 'Unconfirmed Email', content: member.unconfirmed_email }
+        = member.email
+    - else
+      = member.email
+
   td= member.time_zone.truncate(15)
   td
-    - if member.confirmed?
-      span.label.label-default YES
-    - else
+    - if member.unconfirmed_email.present? || !member.confirmed?
       span.label.label-danger NO
+    - else
+      span.label.label-default YES
   td
-    - unless member.confirmed?
+    - if member.unconfirmed_email.present? || !member.confirmed?
       = link_to('Confirm', confirm_admin_member_path(member), method: :patch, data: { confirm: "Are you sure you want to confirm this Member?"}, class: 'btn btn-default btn-xs')
   td
     .btn-group role='group'
