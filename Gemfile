@@ -35,9 +35,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Postgres as database
 gem 'pg'
 
-# Use RSPEC for testing framework
-gem 'rspec-rails'
-
 # Use Devise for authentication
 gem 'devise'
 
@@ -68,6 +65,23 @@ group :development, :test do
   # pry as a better ruby command line
   gem 'pry-rails'
   gem 'awesome_print'
+
+  # guard to auto-run specs
+  gem 'guard-rspec'
+end
+
+group :test do
+  # Use DatabaseCleaner
+  gem 'database_cleaner'
+
+  # Use RSPEC for testing framework
+  gem 'rspec-rails'
+
+  # FactoryGirl as a fixtures replacement
+  gem 'factory_girl_rails'
+
+  # Shoulda matchers to check validations in rspec
+  gem 'shoulda-matchers', require: false
 end
 
 group :production, :staging do
