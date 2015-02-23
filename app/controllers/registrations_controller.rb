@@ -1,4 +1,11 @@
 class RegistrationsController < Devise::RegistrationsController
+  def new
+    head :forbidden
+  end
+
+  def create
+    head :forbidden
+  end
 
   protected
 
