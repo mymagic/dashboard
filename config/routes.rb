@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :members
+  devise_for :members, controllers: { registrations: 'registrations' }
 
   resources :members, only: [:index, :show]
   resources :companies, only: [:index, :show]
