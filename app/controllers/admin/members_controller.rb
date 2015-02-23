@@ -11,7 +11,7 @@ module Admin
     end
 
     def new
-      @member = Member.new
+      @member = Member.new(time_zone: current_member.time_zone)
       @member.companies_positions.build(approved: true)
     end
 
@@ -24,6 +24,7 @@ module Admin
           format.html { redirect_to admin_members_path, notice: 'Member was successfully invited.' }
           format.json { render json: @member, status: :created }
         else
+          @member.companies_positions.build(approved: true)
           format.html { render 'new', alert: 'Error inviting member.' }
           format.json { render json: @member.errors, status: :unprocessable_entity }
         end

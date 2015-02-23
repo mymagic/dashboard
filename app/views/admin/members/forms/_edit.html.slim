@@ -6,31 +6,20 @@
         = panel 'General Info', columns: 12 do
           = f.input :first_name, autofocus: true
           = f.input :last_name
-          = f.input :time_zone, include_blank: 'Please select a time zone…'
           = f.input :email, required: true
           = f.input :password, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8
           = f.input :password_confirmation, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8
+          = render partial: 'shared/forms/time_zone', locals: { form: f }
 
-        = panel 'Member Status', columns: 12 do
-          = f.input :role, as: :select, collection: Member::ROLES, include_blank: 'Regular Member'
+        = panel 'Member Role', columns: 12 do
+          = render partial: 'admin/members/forms/member_role', locals: { form: f }
 
     .col-lg-6
       = panel 'Avatar', columns: 12 do
-        = f.input :avatar, hint: f.object.avatar.present? ? image_tag(f.object.avatar.url(:thumb)) : false
-        = f.input :avatar_cache, as: :hidden
+        = render partial: 'shared/forms/avatar', locals: { form: f }
 
       = panel 'Positions', columns: 12 do
-        = f.simple_fields_for :companies_positions do |company_position|
-          = company_position.association :company, collection: Company.ordered
-          = company_position.association :position, collection: Position.ordered
-          .row
-            .col-lg-3
-            .col-lg-4
-              = company_position.input :approved, as: :boolean
-            .col-lg-4
-              - if company_position.object.persisted?
-                = company_position.input :_destroy, as: :boolean
-
+        = render partial: 'admin/members/forms/companies_positions', locals: { form: f }
   .row
     .col-lg-6
       .text-left

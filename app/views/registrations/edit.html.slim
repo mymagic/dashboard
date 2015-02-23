@@ -8,16 +8,16 @@
           .form-inputs
             = f.input :first_name, autofocus: true
             = f.input :last_name
-            = f.input :time_zone, include_blank: 'Please select a time zone…'
             = f.input :email, required: true
             - if devise_mapping.confirmable? && resource.pending_reconfirmation?
               p
                 | Currently waiting confirmation for:
                 = resource.unconfirmed_email
-            = f.input :avatar, hint: f.object.avatar.present? ? image_tag(f.object.avatar.url(:thumb)) : false
-            = f.input :avatar_cache, as: :hidden
+            = render partial: 'shared/forms/avatar', locals: { form: f }
+            = render partial: 'shared/forms/time_zone', locals: { form: f }
             = f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false
             = f.input :password_confirmation, required: false
+
           .form-actions.text-right
             = f.button :submit, "Update"
 

@@ -1,14 +1,6 @@
 = simple_form_for(office_hour, html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f|
   = f.error_notification
   = f.input :time, autofocus: true, wrapper_html: { class: 'datetime-inline' }
-  - if f.object.time_zone
-    - collapse_link = link_to('Click here to change it', '#collapseTimeZone', data: { toggle: "collapse" }, aria: { expanded: "false", controls: "collapseTimeZone" })
-    = f.hint "The time zone is currently set to #{ f.object.time_zone }. #{ collapse_link }.".html_safe, class: 'small text-right'
-
-    = f.input :time_zone, include_blank: 'Please select a time zone…', wrapper_html: { class: 'collapse', id: 'collapseTimeZone' }
-  - else
-    = f.input :time_zone, include_blank: 'Please select a time zone…'
-
-
+  = render partial: 'shared/forms/time_zone', locals: { form: f }
   .text-right
     = f.button :submit, "Submit"

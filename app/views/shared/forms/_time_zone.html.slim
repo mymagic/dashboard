@@ -1,0 +1,3 @@
+- collapse_link = link_to('Click here to change it', '#collapseTimeZone', data: { toggle: "collapse" }, aria: { expanded: "false", controls: "collapseTimeZone" })
+= form.hint "The time zone is currently set to #{ form.object.time_zone }. #{ collapse_link }.".html_safe, class: 'small text-right'
+= form.input :time_zone, include_blank: 'Please select a time zone…', wrapper_html: { class: 'collapse', id: 'collapseTimeZone' }

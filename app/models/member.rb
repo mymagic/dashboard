@@ -5,7 +5,7 @@ class Member < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable
+         :confirmable, validate_on_invite: true
 
   validates :first_name, :last_name, :time_zone, presence: true
 
