@@ -2,22 +2,49 @@
 - page_header 'Members'
 
 .row
-  .col-sm-9
-    table.table.table-striped
-      thead
-        th #
-        th Role
-        th
-        th First name
-        th Last name
-        th Email
-        th Time Zone
-        th Confirmed?
-        th
-        th
-      tbody
-        = render @members
+  .col-sm-12 role="tabpanel"
+    ul.nav.nav-tabs role="tablist"
+      li.active role="presentation"
+        a aria-controls="active-members" data-toggle="tab" href="#active-members" role="tab"
+          | Active Members
+          '
+          span.label.label-info= @active_members.count
 
-  .col-sm-3
-    ul.nav.nav-stacked
-      li= link_to 'New Member', new_admin_member_path
+      - if @invited_members.any?
+        li role="presentation"
+          a aria-controls="invited-members" data-toggle="tab" href="#invited-members" role="tab"
+            | Invited Members
+            '
+            span.label.label-info= @invited_members.count
+
+      li.pull-right
+        = link_to 'Invite new Member', new_admin_member_path
+    /! Tab panes
+    .tab-content
+      #active-members.tab-pane.active.fade.in role="tabpanel"
+        table.table.table-striped
+          thead
+            th #
+            th Role
+            th
+            th First name
+            th Last name
+            th Email
+            th Time Zone
+            th
+          tbody
+            = render collection: @active_members, partial: 'member_active', as: :member
+
+      #invited-members.tab-pane.fade role="tabpanel"
+        table.table.table-striped
+          thead
+            th #
+            th Role
+            th
+            th First name
+            th Last name
+            th Email
+            th Invitiation Sent At
+            th
+          tbody
+            = render collection: @invited_members, partial: 'member_invited', as: :member

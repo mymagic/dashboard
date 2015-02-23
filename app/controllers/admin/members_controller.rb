@@ -6,7 +6,8 @@ module Admin
     before_action :allow_without_password, only: :update
 
     def index
-      @members = @members.ordered
+      @invited_members    = @members.invited.ordered
+      @active_members     = @members.active.ordered
     end
 
     def new
@@ -15,13 +16,15 @@ module Admin
     end
 
     def create
-      @member = Member.new(member_params)
+      @member = invite_member
+      member_invited = @member.errors.empty?
+
       respond_to do |format|
-        if @member.save
-          format.html { redirect_to admin_members_path, notice: 'Member was successfully created.' }
+        if member_invited
+          format.html { redirect_to admin_members_path, notice: 'Member was successfully invited.' }
           format.json { render json: @member, status: :created }
         else
-          format.html { render 'new', alert: 'Error creating member.' }
+          format.html { render 'new', alert: 'Error inviting member.' }
           format.json { render json: @member.errors, status: :unprocessable_entity }
         end
       end
@@ -44,10 +47,10 @@ module Admin
       end
     end
 
-    def confirm
-      @member.confirm!
+    def resend_invitation
+      Member.invite!({ email: @member.email }, current_member)
       respond_to do |format|
-        format.html { redirect_to admin_members_path, notice: 'Member confirmed. The member can now log in.' }
+        format.html { redirect_to admin_members_path, notice: 'Member invitation was resend.' }
         format.json { render json: @member, status: :created }
       end
     end
@@ -55,7 +58,7 @@ module Admin
     def destroy
       @member.destroy
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'Member was successfully deleted.' }
+        format.html { redirect_to admin_members_path, notice: 'Member was successfully deleted.' }
         format.json { head :no_content }
       end
     end
@@ -82,6 +85,10 @@ module Admin
         :avatar_cache,
         companies_positions_attributes:
           [:approved, :company_id, :position_id, :_destroy, :id])
+    end
+
+    def invite_member(&block)
+      Member.invite!(member_params, current_member, &block)
     end
   end
 end

@@ -23,13 +23,15 @@ class ApplicationController < ActionController::Base
       :password_confirmation
     ]
 
-    if params[:action] == 'update'
+    if params[:controller] = 'registrations' && params[:action] == 'update'
       devise_parameter_sanitizer.for(:account_update) do |u|
         u.permit(registration_params << :current_password)
       end
-    elsif params[:action] == 'create'
-      devise_parameter_sanitizer.for(:sign_up) do |u|
-        u.permit(registration_params)
+    end
+
+    if params[:controller] = 'invitations' && params[:action] == 'update'
+      devise_parameter_sanitizer.for(:accept_invitation) do |u|
+        u.permit((registration_params << :invitation_token).except(:email))
       end
     end
   end

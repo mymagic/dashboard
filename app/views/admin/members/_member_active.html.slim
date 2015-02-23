@@ -1,0 +1,12 @@
+tr
+  td= member.id
+  td
+    - if member.administrator?
+      span.glyphicon.glyphicon-flash title='Administrator'
+  td= image_tag(member.avatar.url(:icon), class: 'img-rounded')
+  td= member.first_name
+  td= member.last_name
+  td= member.email
+  td= member.time_zone.truncate(15)
+  td
+    = link_to('Edit', edit_admin_member_path(member), class: 'btn btn-default btn-xs')

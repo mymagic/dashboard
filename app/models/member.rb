@@ -40,6 +40,10 @@ class Member < ActiveRecord::Base
   mount_uploader :avatar, AvatarUploader
 
   scope :ordered, -> { order(last_name: :asc) }
+  scope :invited, -> { where.not(invitation_token: nil) }
+  scope :active, -> {
+    where(invitation_token: nil).where.not(confirmed_at: nil)
+  }
 
   ROLES.map(&:to_s).each do |is_role|
     define_method "#{ is_role }?" do

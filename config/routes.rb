@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :members, controllers: { registrations: 'registrations' }
+  devise_for :members, controllers: {
+    registrations: 'registrations',
+    invitations: 'invitations'
+  }
 
   resources :members, only: [:index, :show]
   resources :companies, only: [:index, :show]
@@ -14,7 +17,7 @@ Rails.application.routes.draw do
     resources :companies
     resources :office_hours
     resources :members do
-      patch 'confirm', on: :member
+      patch 'resend_invitation', on: :member
     end
     resources :positions
   end
