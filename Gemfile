@@ -37,6 +37,7 @@ gem 'pg'
 
 # Use Devise for authentication
 gem 'devise'
+gem 'devise_invitable'
 
 # Use CanCanCan for authorization
 gem 'cancancan', '~> 1.10'
