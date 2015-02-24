@@ -1,0 +1,12 @@
+<%= simple_form_for([:admin, office_hour], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs">
+    <%= f.input :time, autofocus: true, wrapper_html: { class: 'datetime-inline' } %>
+    <%= f.input :time_zone, include_blank: 'Please select a time zone…' %>
+    <%= f.association :mentor, collection: Member.ordered, label_method: :full_name %>
+    <%= f.association :participant, collection: Member.ordered, label_method: :full_name %>
+  </div>
+  <div class="form-actions text-right">
+    <%= f.button :submit, "Save" %>
+  </div>
+<% end %>

@@ -1,6 +1,0 @@
-tr 
-  td
-    = image_tag(member.avatar.url(:icon), class: 'img-rounded')
-    '
-    = link_to member.full_name, member
-  td= member.approved_companies.map(&:name).to_sentence

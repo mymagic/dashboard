@@ -1,0 +1,16 @@
+<%= form.simple_fields_for :companies_positions do |company_position| %>
+  <%= company_position.association :company, collection: Company.ordered %>
+  <%= company_position.association :position, collection: Position.ordered %>
+  <div class='row'>
+    <div class='col-lg-3'>
+    </div>
+    <div class='col-lg-4'>
+      <%= company_position.input :approved, as: :boolean %>
+    </div>
+    <div class='col-lg-4'>
+      <% if company_position.object.persisted? %>
+        <%= company_position.input :_destroy, as: :boolean %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

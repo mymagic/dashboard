@@ -1,0 +1,64 @@
+<%
+  title 'Members'
+  page_header 'Members'
+%>
+
+<div class="row">
+  <div class="col-sm-12" role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active" role="presentation">
+        <a aria-controls="active-members" data-toggle="tab" href="#active-members" role="tab">
+          Active Members
+          <span class="label label-info"><%= @active_members.count %></span>
+        </a>
+      </li>
+      <% if @invited_members.any? %>
+        <li role="presentation">
+          <a aria-controls="invited-members" data-toggle="tab" href="#invited-members" role="tab">
+            Invited Members
+            <span class="label label-info"><%= @invited_members.count %></span>
+          </a>
+        </li>
+      <% end %>
+      <li class="pull-right">
+        <%= link_to 'Invite new Member', new_admin_member_path %>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active fade in" id="active-members" role="tabpanel">
+        <table class="table table-striped">
+          <thead>
+            <th>#</th>
+            <th>Role</th>
+            <th></th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Time Zone</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <%= render collection: @active_members, partial: 'member_active', as: :member %>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="invited-members" role="tabpanel">
+        <table class="table table-striped">
+          <thead>
+            <th>#</th>
+            <th>Role</th>
+            <th></th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Invitiation Sent At</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <%= render collection: @invited_members, partial: 'member_invited', as: :member %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

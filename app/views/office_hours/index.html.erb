@@ -1,0 +1,23 @@
+<%
+  title 'Office Hours'
+  page_header 'Office Hours'
+%>
+<div class="row">
+  <div class="col-sm-9">
+    <table class="table table-striped">
+      <thead>
+        <th>Status</th>
+        <th>Time</th>
+        <th>Mentor</th>
+        <th>Participant</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <%= render @office_hours %>
+      </tbody>
+    </table>
+  </div>
+  <%= panel 'Offer an Office Hour as a mentor', columns: 6 do %>
+    <%= render partial: 'form', locals: { office_hour: current_member.office_hours_as_mentor.build(time_zone: current_member.time_zone) } %>
+  <% end %>
+</div>

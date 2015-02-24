@@ -1,0 +1,27 @@
+<%
+  title 'Positions'
+  page_header 'Positions'
+%>
+
+<div class="row">
+  <div class="col-sm-9">
+    <table class='table table-striped table-sortable' data-object-url='<%= admin_position_path(id: 'objectId') %>' data-object-name='position' data-sortable-name='priority_order'>
+      <thead>
+        <th>#</th>
+        <th>Name</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <%= render @positions %>
+      </tbody>
+    </table>
+    <p class='small text-right text-muted'>
+      Drag-and-Drop rows to set priority order.
+    </p>
+  </div>
+  <div class="col-sm-3">
+    <ul class='nav nav-stacked'>
+      <li><%= link_to 'New Position', new_admin_position_path %></li>
+    </ul>
+  </div>
+</div>
