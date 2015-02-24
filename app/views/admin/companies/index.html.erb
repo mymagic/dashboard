@@ -1,0 +1,26 @@
+<%
+  title 'Companies'
+  page_header 'Companies'
+%>
+<div class="row">
+  <div class="col-sm-9">
+    <table class="table table-striped">
+      <thead>
+        <th>#</th>
+        <th></th>
+        <th>Name</th>
+        <th>Website</th>
+        <th>Description</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <%= render @companies %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-3">
+    <ul class="nav nav-stacked">
+      <li><%= link_to 'New Company', new_admin_company_path %></li>
+    </ul>
+  </div>
+</div>

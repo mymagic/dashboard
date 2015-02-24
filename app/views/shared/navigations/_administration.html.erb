@@ -1,0 +1,24 @@
+<nav class="navbar navbar-default navbar-static-top navbar-admin">
+  <div class="container">
+    <div class="navbar-header">
+      <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar-admin" data-toggle="collapse" type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to 'Administration', admin_dashboard_path, class: 'navbar-brand' %>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-admin">
+      <ul class="nav navbar-nav">
+        <%= nav_link "Members", admin_members_path %>
+        <%= nav_link "Companies", admin_companies_path %>
+        <%= nav_link "Positions", admin_positions_path %>
+        <%= nav_link "Office Hours", admin_office_hours_path %>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <%= nav_link "Invite new Member", new_admin_member_path %>
+      </ul>
+    </div>
+  </div>
+</nav>

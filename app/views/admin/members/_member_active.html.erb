@@ -1,0 +1,14 @@
+<tr>
+  <td><%= member.id %></td>
+  <td>
+    <% if member.administrator? %>
+      <span class="glyphicon glyphicon-flash" title="Administrator"></span>
+    <% end %>
+  </td>
+  <td><%= image_tag(member.avatar.url(:icon), class: 'img-rounded') %></td>
+  <td><%= member.first_name %></td>
+  <td><%= member.last_name %></td>
+  <td><%= member.email %></td>
+  <td><%= member.time_zone.truncate(15) %></td>
+  <td><%= link_to('Edit', edit_admin_member_path(member), class: 'btn btn-default btn-xs') %></td>
+</tr>

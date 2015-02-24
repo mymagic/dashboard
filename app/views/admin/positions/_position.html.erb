@@ -1,0 +1,12 @@
+<tr data-object-id="<%= position.id %>">
+  <td>
+    <%= position.id %>
+  </td>
+  <td>
+    <%= position.name %>
+  </td>
+  <td class="btn-group" role="group">
+    <%= link_to('Delete', admin_position_path(position), method: :delete, data: { confirm: "Are you sure you want to remove this Position?"}, class: 'btn btn-default btn-xs') %>
+    <%= link_to('Edit', edit_admin_position_path(position), class: 'btn btn-default btn-xs') %>
+  </td>
+</tr>
