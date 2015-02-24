@@ -12,26 +12,20 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_devise_permitted_parameters
-    registration_params = [
-      :first_name,
-      :last_name,
-      :email,
-      :avatar,
-      :avatar_cache,
-      :password,
-      :time_zone,
-      :password_confirmation
-    ]
+    member_params = %i(first_name last_name avatar avatar_cache time_zone
+                       password password_confirmation)
+    account_update_params    = member_params.push(:current_password, :email)
+    accept_invitation_params = member_params.push(:invitation_token)
 
     if params[:controller] = 'registrations' && params[:action] == 'update'
       devise_parameter_sanitizer.for(:account_update) do |u|
-        u.permit(registration_params << :current_password)
+        u.permit(account_update_params)
       end
     end
 
     if params[:controller] = 'invitations' && params[:action] == 'update'
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
-        u.permit((registration_params << :invitation_token).except(:email))
+        u.permit(accept_invitation_params)
       end
     end
   end
