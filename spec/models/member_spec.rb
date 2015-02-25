@@ -25,7 +25,7 @@ RSpec.describe Member, type: :model do
     it { is_expected.to accept_nested_attributes_for(:office_hours_as_mentor) }
   end
 
-  let(:member) { create(:member) }
+  let(:member) { create(:member, first_name: 'Harry', last_name: 'Houdini') }
   let(:administrator) { create(:administrator) }
 
   describe '::ROLES' do

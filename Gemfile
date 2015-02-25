@@ -80,6 +80,12 @@ group :test do
 
   # Shoulda matchers to check validations in rspec
   gem 'shoulda-matchers', require: false
+
+  # Capybara
+  gem 'capybara'
+
+  # Email spec
+  gem 'capybara-email'
 end
 
 group :production, :staging do
