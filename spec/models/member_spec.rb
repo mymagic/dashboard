@@ -28,6 +28,13 @@ RSpec.describe Member, type: :model do
   let(:member) { create(:member) }
   let(:administrator) { create(:administrator) }
 
+  describe '::ROLES' do
+    subject { Member::ROLES }
+    it { is_expected.to include(:administrator) }
+    it { is_expected.to include(:staff) }
+    it { is_expected.to include(:mentor) }
+  end
+
   describe '#administrator?' do
     context 'as a regular member' do
       subject { member.administrator? }

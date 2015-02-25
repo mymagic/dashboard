@@ -1,5 +1,5 @@
 class Member < ActiveRecord::Base
-  ROLES = %i(administrator)
+  ROLES = %i(administrator staff mentor)
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
