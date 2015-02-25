@@ -96,6 +96,8 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
+    faker (1.4.3)
+      i18n (~> 0.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.6)
@@ -290,6 +292,7 @@ DEPENDENCIES
   devise
   devise_invitable
   factory_girl_rails
+  faker
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
