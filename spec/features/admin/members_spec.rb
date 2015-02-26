@@ -44,35 +44,64 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         visit admin_dashboard_path
         expect(page).to have_unauthorized_message
       end
-
     end
   end
 
-  feature 'Invitation' do
-    given!(:administrator) { create(:administrator, :confirmed) }
+  context 'as a Administrator' do
+    let!(:administrator) { create(:administrator, :confirmed) }
 
-    background do
-      as_user administrator
-      invite_new_member(
-        'new_member@example.com',
-        first_name: 'Johann',
-        last_name: 'Faust',
-        role: 'Regular Member')
-      sign_out
+    feature 'inviting a Regular Member' do
+      background do
+        as_user administrator
+        invite_new_member(
+          'new_member@example.com',
+          first_name: 'Johann',
+          last_name: 'Faust',
+          role: 'Regular Member')
+        sign_out
+      end
+
+      scenario 'Sign up as invited member' do
+        open_email('new_member@example.com')
+        current_email.click_link 'Accept invitation'
+
+        expect(page.find_field('First name').value).to eq 'Johann'
+        expect(page.find_field('Last name').value).to eq 'Faust'
+        expect(page).to_not have_field('Email')
+
+        fill_in 'member[password]', with: 'password0'
+        fill_in 'member[password_confirmation]', with: 'password0'
+        click_button 'Set my password'
+        expect(page).to have_content("Your password was set successfully. You are now signed in.")
+        expect(page).to_not have_css('nav.navbar-admin')
+      end
     end
 
-    scenario 'Sign up as invited member' do
-      open_email('new_member@example.com')
-      current_email.click_link 'Accept invitation'
+    feature 'inviting an Administrator' do
+      background do
+        as_user administrator
+        invite_new_member(
+          'new_member@example.com',
+          first_name: 'Johann',
+          last_name: 'Faust',
+          role: 'Administrator')
+        sign_out
+      end
 
-      expect(page.find_field('First name').value).to eq 'Johann'
-      expect(page.find_field('Last name').value).to eq 'Faust'
-      expect(page).to_not have_field('Email')
+      scenario 'Sign up as invited member' do
+        open_email('new_member@example.com')
+        current_email.click_link 'Accept invitation'
 
-      fill_in 'member[password]', with: 'password0'
-      fill_in 'member[password_confirmation]', with: 'password0'
-      click_button 'Set my password'
-      expect(page).to have_content("Your password was set successfully. You are now signed in.")
+        expect(page.find_field('First name').value).to eq 'Johann'
+        expect(page.find_field('Last name').value).to eq 'Faust'
+        expect(page).to_not have_field('Email')
+
+        fill_in 'member[password]', with: 'password0'
+        fill_in 'member[password_confirmation]', with: 'password0'
+        click_button 'Set my password'
+        expect(page).to have_content("Your password was set successfully. You are now signed in.")
+        expect(page).to have_css('nav.navbar-admin')
+      end
     end
   end
 end

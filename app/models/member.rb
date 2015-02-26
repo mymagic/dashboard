@@ -8,6 +8,7 @@ class Member < ActiveRecord::Base
          :confirmable, validate_on_invite: true
 
   validates :first_name, :last_name, :time_zone, presence: true
+  validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
 
   has_many(:companies_positions,
            class: CompaniesMembersPosition,
@@ -49,6 +50,10 @@ class Member < ActiveRecord::Base
     define_method "#{ is_role }?" do
       role == is_role
     end
+  end
+
+  def regular_member?
+    role.blank?
   end
 
   def approved_companies_and_positions

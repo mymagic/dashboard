@@ -55,10 +55,10 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
-  config.include ControllerHelper, type: :controller
-  config.include FeatureHelper, type: :feature
-
   config.include Devise::TestHelpers, type: :controller
+  config.include ControllerHelper, type: :controller
+  config.include ControllerMacros, type: :controller
+  config.include FeatureHelper, type: :feature
 
   config.before(:each, direct_upload: true) do
     presigned_post = double(fields: {}, url: double(to_s: '', host: ''))

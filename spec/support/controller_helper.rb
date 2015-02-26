@@ -10,6 +10,7 @@ module ControllerHelper
     request.env["devise.mapping"] = Devise.mappings[:member]
   end
 
+
   # Set params in controller to ActionController::Parameters object with
   # values of the provided parameters hash.
   #
