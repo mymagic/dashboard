@@ -49,7 +49,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
   context 'as a Administrator' do
     let!(:administrator) { create(:administrator, :confirmed) }
-
+    let!(:company) { create(:company) }
+    let!(:position) { create(:position) }
     feature 'inviting a Regular Member' do
       background do
         as_user administrator
@@ -57,7 +58,9 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
           'new_member@example.com',
           first_name: 'Johann',
           last_name: 'Faust',
-          role: 'Regular Member')
+          role: 'Regular Member',
+          company: company.name,
+          position: position.name)
         sign_out
       end
 

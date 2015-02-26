@@ -132,7 +132,7 @@ RSpec.describe Member, type: :model do
   describe '#approved_companies_and_positions' do
     context 'as a new member' do
       subject { member.approved_companies_and_positions }
-      it { is_expected.to be_empty }
+      it { is_expected.to_not be_empty }
     end
   end
 end

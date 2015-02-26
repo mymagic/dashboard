@@ -25,6 +25,10 @@ module FeatureHelper
     fill_in 'First name',  with: attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name]
     select attributes[:role], from: 'Role'
+
+    select attributes[:company], from: 'Company' if attributes[:company]
+    select attributes[:position], from: 'Position'  if attributes[:position]
+    
     click_button 'Invite'
 
     expect(page).to have_content("Member was successfully invited.")

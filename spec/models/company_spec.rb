@@ -18,7 +18,7 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_many(:approved_members).through(:approved_members_positions).source(:member) }
   end
 
-  let(:company) { create(:company) }
+  let(:company) { create(:company, name: 'ACME Corporation') }
 
   describe '#to_param' do
     subject { company.to_param }

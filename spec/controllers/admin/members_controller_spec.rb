@@ -39,7 +39,15 @@ RSpec.describe Admin::MembersController, type: :controller do
       end
 
       describe 'inviting a Regular Member' do
-        before { invite_new_member(role: '') }
+        let(:company) { create(:company) }
+        let(:position) { create(:position) }
+        before do
+          invite_new_member(
+            role: '',
+            companies_positions_attributes: [
+              company_id: company.id, position_id: position.id, approved: true]
+          )
+        end
         subject { Member.find_by(email: member_required_attributes[:email]) }
         it { is_expected.to be_regular_member }
       end

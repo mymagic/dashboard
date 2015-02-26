@@ -2,6 +2,10 @@ en:
   activerecord:
     errors:
       models:
+        member:
+          attributes:
+            companies_positions:
+              must_have_at_least_one_approved_companies_positions: must have at least one approved companies position
         office_hour:
           attributes:
             participant:

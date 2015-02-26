@@ -10,6 +10,8 @@ class Member < ActiveRecord::Base
   validates :first_name, :last_name, :time_zone, presence: true, on: :update
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
 
+  validate :must_have_at_least_one_approved_companies_positions
+
   has_many(:companies_positions,
            class: CompaniesMembersPosition,
            dependent: :destroy,
@@ -67,5 +69,13 @@ class Member < ActiveRecord::Base
 
   def full_name
     "#{ first_name } #{ last_name }"
+  end
+
+  private
+
+  def must_have_at_least_one_approved_companies_positions
+    return unless regular_member?
+    return if companies_positions.find(&:approved).present?
+    errors.add(:companies_positions, :must_have_at_least_one_approved_companies_positions)
   end
 end
