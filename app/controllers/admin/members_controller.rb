@@ -85,7 +85,15 @@ module Admin
         :avatar,
         :avatar_cache,
         companies_positions_attributes:
-          [:approved, :company_id, :position_id, :_destroy, :id])
+          [
+            :approved,
+            :company_id,
+            :position_id,
+            :can_manage_company,
+            :_destroy,
+            :id
+          ]
+      )
     end
 
     def invite_member(&block)
