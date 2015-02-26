@@ -4,7 +4,6 @@ class CompaniesMembersPosition < ActiveRecord::Base
   belongs_to :position, inverse_of: :companies_members
 
   validates :member, :company, :position, presence: true
-  validates :position, uniqueness: { scope: [:company, :member], message: 'You can only have that position once per company.' }
 
   scope :approved, -> { where(approved: true) }
   scope :unapproved, -> { where.not(approved: true) }
