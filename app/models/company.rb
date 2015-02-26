@@ -1,5 +1,6 @@
 class Company < ActiveRecord::Base
-  validates :name, :logo, presence: true
+  validates :name, presence: true
+  validates :logo, presence: true, on: :update
   validates :description, length: { minimum: 5 }, allow_blank: true
   validates(
     :website,
