@@ -7,7 +7,7 @@ class Member < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, validate_on_invite: true
 
-  validates :first_name, :last_name, :time_zone, presence: true
+  validates :first_name, :last_name, :time_zone, presence: true, on: :update
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
 
   has_many(:companies_positions,

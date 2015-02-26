@@ -4,9 +4,9 @@ RSpec.describe Member, type: :model do
   context 'validations' do
     subject { build(:member) }
 
-    it { is_expected.to validate_presence_of(:first_name) }
-    it { is_expected.to validate_presence_of(:last_name) }
-    it { is_expected.to validate_presence_of(:time_zone) }
+    it { is_expected.to validate_presence_of(:first_name).on(:update) }
+    it { is_expected.to validate_presence_of(:last_name).on(:update) }
+    it { is_expected.to validate_presence_of(:time_zone).on(:update) }
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_uniqueness_of(:email) }
     it { is_expected.to validate_confirmation_of(:password) }

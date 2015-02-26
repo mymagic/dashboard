@@ -14,14 +14,7 @@ RSpec.describe Admin::MembersController, type: :controller do
   end
 
   describe "PUT #create" do
-    let(:member_required_attributes) {
-      {
-        email: 'email@example.com',
-        time_zone: 'Bangkok',
-        first_name: 'FirstName',
-        last_name: 'LastName'
-      }
-    }
+    let(:member_required_attributes) { { email: 'email@example.com' } }
 
     def invite_new_member(attributes = {})
       put :create, member: (member_required_attributes).merge(attributes)
