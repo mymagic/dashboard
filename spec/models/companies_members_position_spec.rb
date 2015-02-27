@@ -16,4 +16,14 @@ RSpec.describe CompaniesMembersPosition, type: :model do
       end
     end
   end
+
+  context 'scopes' do
+    context 'approved' do
+      let!(:unapproved) { create(:companies_members_position) }
+      let!(:approved) { create(:companies_members_position, :approved) }
+      subject { CompaniesMembersPosition.approved }
+      it { is_expected.to include(approved) }
+      it { is_expected.to_not include(unapproved) }
+    end
+  end
 end

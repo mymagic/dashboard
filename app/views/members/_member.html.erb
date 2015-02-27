@@ -4,6 +4,8 @@
     <%= link_to member.full_name, member %>
   </td>
   <td>
-    <%= member.approved_companies.map(&:name).to_sentence %>
+    <%= member.positions_in_companies.map do |company, positions|
+      "#{ company.name } (#{ positions.map(&:name).to_sentence })"
+    end.to_sentence %>
   </td>
 </tr>

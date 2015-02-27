@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <% @member.approved_companies_and_positions.each do |company, positions| %>
+    <% @member.positions_in_companies.each do |company, positions| %>
       <%= panel company.name, columns: 12 do %>
         <%= positions.map(&:name).to_sentence %>
       <% end %>

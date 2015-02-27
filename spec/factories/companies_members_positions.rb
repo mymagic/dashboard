@@ -6,5 +6,8 @@ FactoryGirl.define do
     trait :approved do
       approved true
     end
+    trait :managable do
+      can_manage_company true
+    end
   end
 end

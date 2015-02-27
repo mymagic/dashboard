@@ -9,13 +9,7 @@ RSpec.describe Company, type: :model do
     it { is_expected.to allow_value('https://example.com', 'http://example.com').for(:website) }
     it { is_expected.to_not allow_value('ht://example.com', 'ftp://example.com').for(:website) }
 
-    it { is_expected.to have_many(:members_positions).class_name('CompaniesMembersPosition').dependent(:destroy).inverse_of(:company) }
-    it { is_expected.to have_many(:positions).through(:members_positions).conditions(:uniq) }
-    it { is_expected.to have_many(:members).through(:members_positions) }
-
-    it { is_expected.to have_many(:approved_members_positions).class_name('CompaniesMembersPosition').conditions(approved: true).dependent(:destroy) }
-    it { is_expected.to have_many(:approved_positions).through(:approved_members_positions).conditions(:uniq).source(:position) }
-    it { is_expected.to have_many(:approved_members).through(:approved_members_positions).source(:member) }
+    it { is_expected.to have_many(:companies_members_positions).dependent(:destroy) }
   end
 
   let(:company) { create(:company, name: 'ACME Corporation') }
@@ -25,9 +19,9 @@ RSpec.describe Company, type: :model do
     it { is_expected.to match(/-acme-corporation/) }
   end
 
-  describe '#approved_positions_and_members' do
+  describe '#positions_with_members' do
     context 'as a new company' do
-      subject { company.approved_positions_and_members }
+      subject { company.positions_with_members }
       it { is_expected.to be_empty }
     end
   end

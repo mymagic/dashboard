@@ -13,13 +13,6 @@ RSpec.describe Member, type: :model do
     it { is_expected.to validate_inclusion_of(:role).in_array(Member::ROLES.map(&:to_s)).allow_blank(true) }
 
     it { is_expected.to have_many(:companies_positions).class_name('CompaniesMembersPosition').dependent(:destroy).inverse_of(:member) }
-    it { is_expected.to have_many(:companies).through(:companies_positions).conditions(:uniq) }
-    it { is_expected.to have_many(:positions).through(:companies_positions) }
-
-    it { is_expected.to have_many(:approved_companies_positions).class_name('CompaniesMembersPosition').conditions(approved: true).dependent(:destroy) }
-    it { is_expected.to have_many(:approved_positions).through(:approved_companies_positions) }
-    it { is_expected.to have_many(:approved_companies).through(:approved_companies_positions).conditions(:uniq) }
-    it { is_expected.to accept_nested_attributes_for(:companies_positions).allow_destroy(true) }
 
     it { is_expected.to have_many(:office_hours_as_participant).class_name('OfficeHour').with_foreign_key(:participant_id) }
     it { is_expected.to have_many(:office_hours_as_mentor).class_name('OfficeHour').with_foreign_key(:mentor_id) }
@@ -129,9 +122,9 @@ RSpec.describe Member, type: :model do
     it { is_expected.to eq 'Harry Houdini' }
   end
 
-  describe '#approved_companies_and_positions' do
+  describe '#positions_in_companies' do
     context 'as a new member' do
-      subject { member.approved_companies_and_positions }
+      subject { member.positions_in_companies }
       it { is_expected.to_not be_empty }
     end
   end
