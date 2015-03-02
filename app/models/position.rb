@@ -14,7 +14,7 @@ class Position < ActiveRecord::Base
       includes(:member, :position).
       where(company_id: company, members: { invitation_token: nil }).
       where.not(members: { confirmed_at: nil }).
-      order('positions.priority_order DESC').
+      order('positions.priority_order ASC').
       each_with_object({}) do |member_position, position_and_members|
         position_and_members[member_position.position] ||= []
         position_and_members[member_position.position] << member_position.member
@@ -26,7 +26,7 @@ class Position < ActiveRecord::Base
       approved.
       where(member: member).
       includes(:position).
-      order('positions.priority_order DESC').
+      order('positions.priority_order ASC').
       each_with_object({}) do |comp_pos, company_and_positions|
         company_and_positions[comp_pos.company] ||= []
         company_and_positions[comp_pos.company] << comp_pos.position
