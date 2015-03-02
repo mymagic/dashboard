@@ -25,10 +25,10 @@ class Ability
     cannot :manage, :all
     can :read, :all
 
-
     case member.role
     when 'administrator'
       can :administrate, :application
+      can :manage, Position
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
     when 'staff'
