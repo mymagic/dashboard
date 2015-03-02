@@ -22,20 +22,24 @@ class Ability
 
     # everyone
     cannot :administrate, :application
+    cannot :manage, :all
+    can :read, :all
 
-    if member.new_record?
-      can :create, Member
-    else
-      can :read, :all
-      create_companies_positions(member)
-      book_and_cancel_office_hours(member)
-    end
 
-    if member.administrator?
-      can :manage, :all
+    case member.role
+    when 'administrator'
       can :administrate, :application
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
+    when 'staff'
+      create_companies_positions(member)
+      book_and_cancel_office_hours(member)
+    when 'mentor'
+      can :create, OfficeHour, mentor_id: member.id
+    else # a regular Member
+      create_companies_positions(member)
+      book_and_cancel_office_hours(member)
     end
+
   end
 end
