@@ -42,7 +42,7 @@ module Admin
     def destroy
       @position.destroy
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'Position was successfully deleted.' }
+        format.html { redirect_to admin_positions_path, notice: 'Position was successfully deleted.' }
         format.json { head :no_content }
       end
     end
