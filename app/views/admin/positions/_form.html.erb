@@ -1,9 +1,18 @@
 <%= simple_form_for([:admin, position], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
-  <div class="form-inputs">
-    <%= f.error_notification %>
-    <%= f.input :name, autofocus: true %>
-  </div>
-  <div class="form-actions text-right">
-    <%= f.button :submit, "Save" %>
+  <%= f.error_notification %>
+  <%= f.input :name, autofocus: true %>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class='text-left'>
+        <%= f.button :submit, "Save" %>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <% if position.persisted? %>
+        <div class="text-right small">
+          <%= link_to('Delete this Position', admin_position_path(position), method: :delete, data: { confirm: "Are you sure you want to remove this Position?"}) %>
+        </div>
+      <% end %>
+    </div>
   </div>
 <% end %>
