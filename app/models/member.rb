@@ -29,7 +29,7 @@ class Member < ActiveRecord::Base
   def ability
     @ability ||= Ability.new(self)
   end
-  delegate :can?, :cannot?, :to => :ability
+  delegate :can?, :cannot?, to: :ability
 
   concerning :Roles do
     included do
