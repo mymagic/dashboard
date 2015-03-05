@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Admin::MembersController, type: :controller do
   describe "GET #index" do
-    it_behaves_like "only accessible by administrator" do
+    it_behaves_like "accessible by", :administrator do
       let(:response) { get(:index) }
     end
   end
 
   describe "GET #new" do
-    it_behaves_like "only accessible by administrator" do
+    it_behaves_like "accessible by", :administrator do
       let(:response) { get(:new) }
     end
   end
@@ -20,7 +20,7 @@ RSpec.describe Admin::MembersController, type: :controller do
       put :create, member: (member_required_attributes).merge(attributes)
     end
 
-    it_behaves_like "only accessible by administrator" do
+    it_behaves_like "accessible by", :administrator do
       let(:response) { invite_new_member }
     end
 
