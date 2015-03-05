@@ -29,15 +29,18 @@ class Ability
     when 'administrator'
       can :administrate, :application
       can :manage, Position
-
+      can :read, Member
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
     when 'staff'
+      can :read, Member
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
     when 'mentor'
+      can :read, Member
       can :create, OfficeHour, mentor_id: member.id
     else # a regular Member
+      can :read, Member
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
     end

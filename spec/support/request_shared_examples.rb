@@ -34,3 +34,39 @@ shared_examples "only accessible by administrator" do
     end
   end
 end
+
+shared_examples "accessible by everyone except unauthenticated" do
+  context "unauthenticated" do
+    it "redirects to login page" do
+      expect(response).to redirect_to(new_member_session_path)
+    end
+  end
+
+  context "for regular member" do
+    before { login_member }
+    it "displays page without errors" do
+      expect(response).to be_successful
+    end
+  end
+
+  context "for mentor" do
+    before { login_mentor }
+    it "displays page without errors" do
+      expect(response).to be_successful
+    end
+  end
+
+  context "for staff" do
+    before { login_staff }
+    it "displays page without errors" do
+      expect(response).to be_successful
+    end
+  end
+
+  context "for authorized user" do
+    before { login_administrator }
+    it "displays page without errors" do
+      expect(response).to be_successful
+    end
+  end
+end
