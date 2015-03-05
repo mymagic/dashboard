@@ -12,6 +12,9 @@ class Member < ActiveRecord::Base
   validates :first_name, :last_name, :time_zone, presence: true, on: :update
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
 
+  # Associations
+  belongs_to :community
+
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
   scope :active, -> {

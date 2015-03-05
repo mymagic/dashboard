@@ -9,6 +9,9 @@ class Company < ActiveRecord::Base
     format: { with: URI::regexp(%w(http https)) },
     allow_blank: true)
 
+  # Associations
+  belongs_to :community
+
   scope :ordered, -> { order(name: :desc) }
 
   concerning :Positions do

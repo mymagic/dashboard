@@ -11,6 +11,6 @@ class Community < ActiveRecord::Base
   has_many :members,   dependent: :destroy
 
   # Validations
-  validates :name, :slug, :logo, presence: true
+  validates :name, :slug, presence: true
   validates :name, :slug, uniqueness: true
 end
