@@ -2,13 +2,40 @@ require 'rails_helper'
 
 RSpec.describe Admin::MembersController, type: :controller do
   describe "GET #index" do
-    it_behaves_like "only accessible by administrator" do
+    it_behaves_like "accessible by", :administrator, :staff do
       let(:response) { get(:index) }
     end
   end
 
+  describe "GET #edit" do
+    context 'an administrator' do
+      let(:member) { create(:administrator) }
+      it_behaves_like "accessible by", :administrator do
+        let(:response) { get(:edit, id: member) }
+      end
+    end
+    context 'a staff member' do
+      let(:member) { create(:staff) }
+      it_behaves_like "accessible by", :administrator do
+        let(:response) { get(:edit, id: member) }
+      end
+    end
+    context 'a mentor' do
+      let(:member) { create(:mentor) }
+      it_behaves_like "accessible by", :administrator, :staff do
+        let(:response) { get(:edit, id: member) }
+      end
+    end
+    context 'a regular member' do
+      let(:member) { create(:mentor) }
+      it_behaves_like "accessible by", :administrator, :staff do
+        let(:response) { get(:edit, id: member) }
+      end
+    end
+  end
+
   describe "GET #new" do
-    it_behaves_like "only accessible by administrator" do
+    it_behaves_like "accessible by", :administrator, :staff do
       let(:response) { get(:new) }
     end
   end
@@ -20,7 +47,7 @@ RSpec.describe Admin::MembersController, type: :controller do
       put :create, member: (member_required_attributes).merge(attributes)
     end
 
-    it_behaves_like "only accessible by administrator" do
+    it_behaves_like "accessible by", :administrator, :staff do
       let(:response) { invite_new_member }
     end
 

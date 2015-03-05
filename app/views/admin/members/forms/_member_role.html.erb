@@ -1,1 +1,1 @@
-<%= form.input :role, as: :select, collection: Member::ROLES, include_blank: 'Regular Member', label_method: ->(obj){ obj.to_s.humanize } %>
+<%= form.input :role, as: :select, collection: Member.assignable_roles_for(current_member), include_blank: 'Regular Member', label_method: ->(obj){ obj.to_s.humanize } %>

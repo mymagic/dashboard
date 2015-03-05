@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Admin/Members', type: :feature, js: false do
   feature "Administration" do
     given!(:administrator) { create(:administrator, :confirmed) }
+    given!(:staff) { create(:staff, :confirmed) }
     given!(:member) { create(:member, :confirmed) }
 
     context 'as administrator' do
@@ -11,6 +12,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       scenario 'viewing members' do
         visit admin_members_path
         expect(page).to have_content(administrator.first_name)
+        expect(page).to have_content(staff.first_name)
         expect(page).to have_content(member.first_name)
       end
 
@@ -23,6 +25,40 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         visit root_path
         expect(page).to have_css('nav.navbar-member')
         expect(page).to have_css('nav.navbar-admin')
+        within(:css, 'nav.navbar-admin') do
+          expect(page).to have_content('Members')
+          expect(page).to have_content('Companies')
+          expect(page).to have_content('Positions')
+          expect(page).to have_content('Office Hours')
+        end
+      end
+    end
+
+    context 'as staff' do
+      background { as_user staff }
+
+      scenario 'viewing members' do
+        visit admin_members_path
+        expect(page).to have_content(administrator.first_name)
+        expect(page).to have_content(staff.first_name)
+        expect(page).to have_content(member.first_name)
+      end
+
+      scenario 'viewing dashboard' do
+        visit admin_dashboard_path
+        expect(page).to have_css('nav.navbar-admin')
+      end
+
+      scenario 'viewing the user menus' do
+        visit root_path
+        expect(page).to have_css('nav.navbar-member')
+        expect(page).to have_css('nav.navbar-admin')
+        within(:css, 'nav.navbar-admin') do
+          expect(page).to have_content('Members')
+          expect(page).to_not have_content('Companies')
+          expect(page).to_not have_content('Positions')
+          expect(page).to_not have_content('Office Hours')
+        end
       end
     end
 

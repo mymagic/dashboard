@@ -5,5 +5,9 @@
   <td><%= member.last_name %></td>
   <td><%= member.email %></td>
   <td><%= member.time_zone.truncate(15) %></td>
-  <td><%= link_to('Edit', edit_admin_member_path(member), class: 'btn btn-default btn-xs') %></td>
+  <td>
+    <% if can? :update, member %>
+      <%= link_to('Edit', edit_admin_member_path(member), class: 'btn btn-default btn-xs') %>
+    <% end %>
+  </td>
 </tr>

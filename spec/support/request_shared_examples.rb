@@ -1,36 +1,37 @@
-shared_examples "only accessible by administrator" do
-  context "unauthenticated" do
-    it "redirects to login page" do
-      expect(response).to redirect_to(new_member_session_path)
-    end
-  end
+shared_examples "accessible by" do |*authorized_members|
+  all_members = {
+    administrator: -> (_context) { login_administrator },
+    regular_member: -> (_context) { login_member },
+    staff: -> (_context) { login_staff },
+    mentor: -> (_context) { login_mentor },
+    unauthorized: -> (_context) {}
+  }
 
-  context "for regular member" do
-    before { login_member }
-    it "redirects to root page" do
-      expect(response).to redirect_to(root_path)
-    end
-  end
-
-  context "for mentor" do
-    before { login_mentor }
-    it "redirects to root page" do
-      expect(response).to redirect_to(root_path)
-    end
-  end
-
-  context "for staff" do
-    before { login_staff }
-    it "redirects to root page" do
-      expect(response).to redirect_to(root_path)
-    end
-  end
-
-  context "for authorized user" do
-    before { login_administrator }
-    it "displays page without errors" do
-      expect(response).to_not redirect_to(root_path)
-      expect(response).to_not redirect_to(new_member_session_path)
+  all_members.map do |role, login|
+    if [*authorized_members].include?(role)
+      context "#{ role }" do
+        before &login
+        it "displays the page without errors" do
+          expect(response).to_not redirect_to(root_path)
+          expect(response).to_not redirect_to(new_member_session_path)
+        end
+      end
+    else
+      if role == :unauthorized
+        context "#{ role }" do
+          before &login
+          it "redirects to login" do
+            expect(response).to redirect_to(new_member_session_path)
+          end
+        end
+      else
+        context "#{ role }" do
+          before &login
+          it "redirects to root" do
+            expect(response).to redirect_to(root_path)
+          end
+        end
+      end
     end
   end
 end
