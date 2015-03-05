@@ -6,16 +6,7 @@
     font-weight: bold;
     margin: 3px 0;
   }
-}
-.member-thumbnail {
-  h4 {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  p {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  h4, p {
+    @include text-overflow;
   }
 }
