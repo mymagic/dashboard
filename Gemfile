@@ -48,6 +48,9 @@ gem 'carrierwave'
 # Use ranked-model for sortable lists
 gem 'ranked-model'
 
+# Create pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models
+gem 'friendly_id'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
