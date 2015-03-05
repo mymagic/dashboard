@@ -20,14 +20,14 @@ shared_examples "accessible by" do |*authorized_members|
       if role == :unauthorized
         context "#{ role }" do
           before &login
-          it "redirects to login page" do
+          it "redirects to login" do
             expect(response).to redirect_to(new_member_session_path)
           end
         end
       else
         context "#{ role }" do
           before &login
-          it "redirects to login page" do
+          it "redirects to root" do
             expect(response).to redirect_to(root_path)
           end
         end
