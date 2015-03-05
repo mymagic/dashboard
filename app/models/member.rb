@@ -4,9 +4,9 @@ class Member < ActiveRecord::Base
   mount_uploader :avatar, AvatarUploader
 
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :registerable and :omniauthable
+  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :validatable,
-         :recoverable, :rememberable, :trackable,
+         :recoverable, :rememberable, :trackable, :registerable,
          :confirmable, validate_on_invite: true
 
   validates :first_name, :last_name, :time_zone, presence: true, on: :update
