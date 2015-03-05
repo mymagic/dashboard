@@ -22,11 +22,35 @@ class Member < ActiveRecord::Base
     "#{ first_name } #{ last_name }"
   end
 
+  def to_param
+    "#{ id }-#{ full_name.parameterize }"
+  end
+
+  def ability
+    @ability ||= Ability.new(self)
+  end
+  delegate :can?, :cannot?, to: :ability
+
   concerning :Roles do
+    included do
+      def self.assignable_roles_for(member)
+        roles = []
+        roles << :administrator if member.can? :invite_administrator, :members
+        roles << :staff         if member.can? :invite_staff, :members
+        roles << :mentor        if member.can? :invite_mentor, :members
+        roles
+      end
+    end
+
     ROLES.map(&:to_s).each do |is_role|
       define_method "#{ is_role }?" do
         role == is_role
       end
+    end
+
+    def can_assign_role?(role)
+      return can?(:invite_regular_member, :members) if role.blank?
+      Member.assignable_roles_for(self).include?(role.to_sym)
     end
 
     def regular_member?
