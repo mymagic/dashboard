@@ -22,6 +22,10 @@ class Member < ActiveRecord::Base
     "#{ first_name } #{ last_name }"
   end
 
+  def to_param
+    "#{ id }-#{ full_name.parameterize }"
+  end
+
   concerning :Roles do
     ROLES.map(&:to_s).each do |is_role|
       define_method "#{ is_role }?" do
