@@ -32,10 +32,12 @@
         <%= f.button :submit, "Save" %>
       </div>
     </div>
-    <div class="col-lg-6">
-      <div class="text-right small">
-        <%= link_to('Delete this Member', admin_member_path(member), method: :delete, data: { confirm: "Are you sure you want to remove this Member?"}) %>
+    <% if can? :destroy, member %>
+      <div class="col-lg-6">
+        <div class="text-right small">
+          <%= link_to('Delete this Member', admin_member_path(member), method: :delete, data: { confirm: "Are you sure you want to remove this Member?"}) %>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 <% end %>
