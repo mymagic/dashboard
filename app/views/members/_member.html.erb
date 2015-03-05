@@ -1,11 +1,14 @@
-<tr>
-  <td>
-    <%= image_tag(member.avatar.url(:icon), class: 'img-rounded') %>
-    <%= link_to member.full_name, member %>
-  </td>
-  <td>
-    <%= member.positions_in_companies.map do |company, positions|
-      "#{ company.name } (#{ positions.map(&:name).to_sentence })"
-    end.to_sentence %>
-  </td>
-</tr>
+<div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+  <div class="member-wrapper">
+    <%= image_tag(member.avatar.url(:thumb), class: 'img-responsive thumbnail') %>
+    <div class="caption">
+      <h4><%= link_to member.full_name, member %></h4>
+      <%= member_role(member) %>
+      <p>
+      <%= member.positions_in_companies.map do |company, positions|
+        "#{ company.name } (#{ positions.map(&:name).to_sentence })"
+      end.to_sentence %>
+      </p>
+    </div>
+  </div>
+</div>
