@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :position do
-    name "Magician"
+    name { generate(:name) }
   end
 end

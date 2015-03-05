@@ -1,5 +1,5 @@
 <%= render partial: 'shared/navigations/administration' if can? :administrate, :application %>
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default navbar-static-top navbar-member">
   <div class="container">
     <div class="navbar-header">
       <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
@@ -31,7 +31,7 @@
             <ul class="dropdown-menu" role="menu">
               <%= nav_link "Edit my Account", edit_member_registration_path %>
               <li class="divider"></li>
-              <%= nav_link "Sign Out", destroy_member_session_path, method: :delete %>
+              <%= nav_link "Sign out", destroy_member_session_path, method: :delete %>
             </ul>
           </li>
         </ul>

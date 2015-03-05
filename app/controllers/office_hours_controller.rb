@@ -3,6 +3,7 @@ class OfficeHoursController < ApplicationController
   load_and_authorize_resource
 
   def index
+    @office_hours = @office_hours.ordered
   end
 
   def create
