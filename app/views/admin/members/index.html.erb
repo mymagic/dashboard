@@ -21,7 +21,7 @@
         </li>
       <% end %>
       <li class="pull-right">
-        <%= link_to 'Invite new Member', new_admin_member_path  if can? :create, Member %>
+        <%= link_to 'Invite new Member', new_community_admin_member_path(@current_community)  if can? :create, Member %>
       </li>
     </ul>
     <div class="tab-content">
