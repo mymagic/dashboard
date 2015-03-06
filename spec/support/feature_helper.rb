@@ -15,7 +15,24 @@ module FeatureHelper
   end
 
   def expect_to_be_signed_out
-    expect(page).to have_content("Log in")
+    within(:css, 'nav.navbar-member') do
+      expect(page).to have_content("Log in")
+    end
+  end
+
+  def expect_to_be_signed_in
+    within(:css, 'nav.navbar-member') do
+      expect(page).to have_content("Sign out")
+    end
+  end
+
+  def log_in(email, password = 'password0')
+    visit new_member_session_path
+
+    fill_in 'Email',  with: email
+    fill_in 'Password', with: password
+
+    click_button 'Log in'
   end
 
   def invite_new_member(email, attributes = {})
