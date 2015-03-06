@@ -14,6 +14,10 @@ module FeatureHelper
     expect(page).to have_content 'Signed out successfully.'
   end
 
+  def expect_to_be_signed_out
+    expect(page).to have_content("Log in")
+  end
+
   def invite_new_member(email, attributes = {})
     attributes = {
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
@@ -48,6 +52,16 @@ module FeatureHelper
     click_button 'Update'
 
     expect(page).to have_content("Your account has been updated successfully.")
+  end
+
+  def cancel_my_account
+    visit edit_member_registration_path
+
+    click_link 'Cancel my account'
+
+    expect(page).to have_content(
+      "Bye! Your account has been successfully cancelled. "\
+      "We hope to see you again soon.")
   end
 
   def have_unauthorized_message
