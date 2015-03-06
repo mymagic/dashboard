@@ -14,7 +14,28 @@ module FeatureHelper
     expect(page).to have_content 'Signed out successfully.'
   end
 
-  def invite_new_member(email, attributes={})
+  def expect_to_be_signed_out
+    within(:css, 'nav.navbar-member') do
+      expect(page).to have_content("Log in")
+    end
+  end
+
+  def expect_to_be_signed_in
+    within(:css, 'nav.navbar-member') do
+      expect(page).to have_content("Sign out")
+    end
+  end
+
+  def log_in(email, password = 'password0')
+    visit new_member_session_path
+
+    fill_in 'Email',  with: email
+    fill_in 'Password', with: password
+
+    click_button 'Log in'
+  end
+
+  def invite_new_member(email, attributes = {})
     attributes = {
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
     }.merge!(attributes)
@@ -32,6 +53,32 @@ module FeatureHelper
     click_button 'Invite'
 
     expect(page).to have_content("Member was successfully invited.")
+  end
+
+  def update_my_account(attributes = {})
+    visit edit_member_registration_path
+
+    fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
+    fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
+    fill_in 'Password',  with: attributes[:password] if attributes[:password]
+
+    if attributes[:password_confirmation]
+      fill_in 'Password confirmation',  with: attributes[:password_confirmation]
+    end
+
+    click_button 'Update'
+
+    expect(page).to have_content("Your account has been updated successfully.")
+  end
+
+  def cancel_my_account
+    visit edit_member_registration_path
+
+    click_link 'Cancel my account'
+
+    expect(page).to have_content(
+      "Bye! Your account has been successfully cancelled. "\
+      "We hope to see you again soon.")
   end
 
   def have_unauthorized_message
