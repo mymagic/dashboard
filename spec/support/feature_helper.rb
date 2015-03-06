@@ -35,7 +35,35 @@ module FeatureHelper
     click_button 'Log in'
   end
 
-  def invite_new_member(email, attributes = {})
+  def expect_successful_password_reset(member)
+    reset_password(member)
+    expect(page).to have_content 'Your password has been changed '\
+                            'successfully. You are now signed in.'
+  end
+
+  def reset_password(member, new_password = 'newpassword0')
+    visit new_member_session_path
+    click_link "Forgot your password?"
+
+    expect(page).to have_content 'Forgot your password?'
+
+    fill_in 'Email', with: member.email
+
+    click_button 'Send me reset password instructions'
+
+    open_email(member.email)
+
+    current_email.click_link 'Change my password'
+
+    expect(page).to have_content 'Change your password'
+
+    fill_in 'New password', with: new_password
+    fill_in 'Confirm your new password', with: new_password
+
+    click_button 'Change my password'
+  end
+
+  def invite_new_member(email, attributes={})
     attributes = {
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
     }.merge!(attributes)
