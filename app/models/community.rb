@@ -24,6 +24,7 @@ class Community < ActiveRecord::Base
       email: 'admin@example.com',
       password: 'passw0rd',
       role: 'administrator',
+      time_zone: ActiveSupport::TimeZone[Time.zone.name],
       confirmed_at: DateTime.now
     )
   end

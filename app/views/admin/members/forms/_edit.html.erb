@@ -1,4 +1,4 @@
-<%= simple_form_for([:admin, member], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+<%= simple_form_for([@current_community, :admin, member], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
   <%= f.error_notification %>
   <div class="row">
     <div class="col-lg-6">
@@ -36,7 +36,7 @@
     <% if can? :destroy, member %>
       <div class="col-lg-6">
         <div class="text-right small">
-          <%= link_to('Delete this Member', admin_member_path(member), method: :delete, data: { confirm: "Are you sure you want to remove this Member?"}) %>
+          <%= link_to('Delete this Member', community_admin_member_path(@current_community, member), method: :delete, data: { confirm: "Are you sure you want to remove this Member?"}) %>
         </div>
       </div>
     <% end %>

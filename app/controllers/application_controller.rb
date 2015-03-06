@@ -4,8 +4,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
+  before_action :current_community
 
   protected
+
+  def current_community
+    @current_community = current_member.community
+  end
 
   def current_ability
     @current_ability ||= Ability.new(current_member)
