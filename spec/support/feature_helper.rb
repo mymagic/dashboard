@@ -14,7 +14,7 @@ module FeatureHelper
     expect(page).to have_content 'Signed out successfully.'
   end
 
-  def invite_new_member(email, attributes={})
+  def invite_new_member(email, attributes = {})
     attributes = {
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
     }.merge!(attributes)
@@ -32,6 +32,22 @@ module FeatureHelper
     click_button 'Invite'
 
     expect(page).to have_content("Member was successfully invited.")
+  end
+
+  def update_my_account(attributes = {})
+    visit edit_member_registration_path
+
+    fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
+    fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
+    fill_in 'Password',  with: attributes[:password] if attributes[:password]
+
+    if attributes[:password_confirmation]
+      fill_in 'Password confirmation',  with: attributes[:password_confirmation]
+    end
+
+    click_button 'Update'
+
+    expect(page).to have_content("Your account has been updated successfully.")
   end
 
   def have_unauthorized_message
