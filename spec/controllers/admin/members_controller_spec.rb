@@ -34,7 +34,7 @@ RSpec.describe Admin::MembersController, type: :controller do
     end
   end
 
-  describe 'PATCH #edit' do
+  describe 'PATCH #update' do
     context 'an administrator' do
       let(:member) { create(:administrator) }
       it_behaves_like "accessible by", :administrator do
@@ -60,7 +60,34 @@ RSpec.describe Admin::MembersController, type: :controller do
       end
     end
   end
-  
+
+  describe 'DELETE #destroy' do
+    context 'an administrator' do
+      let(:member) { create(:administrator) }
+      it_behaves_like "accessible by", :administrator do
+        let(:response) { delete(:destroy, id: member) }
+      end
+    end
+    context 'a staff member' do
+      let(:member) { create(:staff) }
+      it_behaves_like "accessible by", :administrator do
+        let(:response) { delete(:destroy, id: member) }
+      end
+    end
+    context 'a mentor' do
+      let(:member) { create(:mentor) }
+      it_behaves_like "accessible by", :administrator, :staff do
+        let(:response) { delete(:destroy, id: member) }
+      end
+    end
+    context 'a regular member' do
+      let(:member) { create(:mentor) }
+      it_behaves_like "accessible by", :administrator, :staff do
+        let(:response) { delete(:destroy, id: member) }
+      end
+    end
+  end
+
   describe "PUT #create" do
     let(:member_required_attributes) { { email: 'email@example.com' } }
 
