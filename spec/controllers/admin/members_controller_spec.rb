@@ -34,12 +34,33 @@ RSpec.describe Admin::MembersController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it_behaves_like "accessible by", :administrator, :staff do
-      let(:response) { get(:new) }
+  describe 'PATCH #edit' do
+    context 'an administrator' do
+      let(:member) { create(:administrator) }
+      it_behaves_like "accessible by", :administrator do
+        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+      end
+    end
+    context 'a staff member' do
+      let(:member) { create(:staff) }
+      it_behaves_like "accessible by", :administrator do
+        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+      end
+    end
+    context 'a mentor' do
+      let(:member) { create(:mentor) }
+      it_behaves_like "accessible by", :administrator, :staff do
+        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+      end
+    end
+    context 'a regular member' do
+      let(:member) { create(:mentor) }
+      it_behaves_like "accessible by", :administrator, :staff do
+        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+      end
     end
   end
-
+  
   describe "PUT #create" do
     let(:member_required_attributes) { { email: 'email@example.com' } }
 
