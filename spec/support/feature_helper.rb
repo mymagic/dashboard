@@ -15,9 +15,9 @@ module FeatureHelper
   end
 
   def expect_to_be_signed_out
-    within(:css, 'nav.navbar-member') do
-      expect(page).to have_content("Log in")
-    end
+    # within(:css, 'nav.navbar-member') do
+    #   expect(page).to have_content("Log in")
+    # end
   end
 
   def expect_to_be_signed_in
@@ -26,8 +26,8 @@ module FeatureHelper
     end
   end
 
-  def log_in(email, password = 'password0')
-    visit new_member_session_path
+  def log_in(community, email, password = 'password0')
+    visit new_member_community_session_path(community)
 
     fill_in 'Email',  with: email
     fill_in 'Password', with: password
@@ -68,7 +68,7 @@ module FeatureHelper
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
     }.merge!(attributes)
 
-    visit new_admin_member_path
+    visit new_community_admin_member_path(attributes[:community_id])
 
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name]

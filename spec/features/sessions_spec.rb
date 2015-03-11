@@ -2,17 +2,18 @@ require 'rails_helper'
 
 RSpec.describe 'Session', type: :feature, js: false do
   feature "Log in" do
-    given(:administrator) { create(:administrator, :confirmed) }
-    given(:staff) { create(:staff, :confirmed) }
-    given(:member) { create(:member, :confirmed) }
-    given(:mentor) { create(:mentor, :confirmed) }
+    given(:community) { create(:community) }
+    given(:administrator) { create(:administrator, :confirmed, community: community) }
+    given(:staff) { create(:staff, :confirmed, community: community) }
+    given(:member) { create(:member, :confirmed, community: community) }
+    given(:mentor) { create(:mentor, :confirmed, community: community) }
 
     context 'as administrator' do
       given!(:user) { administrator }
       scenario 'logging in' do
         visit root_path
         expect_to_be_signed_out
-        log_in user.email
+        log_in community, user.email
         expect_to_be_signed_in
       end
     end
@@ -22,7 +23,7 @@ RSpec.describe 'Session', type: :feature, js: false do
       scenario 'logging in' do
         visit root_path
         expect_to_be_signed_out
-        log_in user.email
+        log_in community, user.email
         expect_to_be_signed_in
       end
     end
@@ -32,7 +33,7 @@ RSpec.describe 'Session', type: :feature, js: false do
       scenario 'logging in' do
         visit root_path
         expect_to_be_signed_out
-        log_in user.email
+        log_in community, user.email
         expect_to_be_signed_in
       end
     end
@@ -42,7 +43,7 @@ RSpec.describe 'Session', type: :feature, js: false do
       scenario 'logging in' do
         visit root_path
         expect_to_be_signed_out
-        log_in user.email
+        log_in community, user.email
         expect_to_be_signed_in
       end
     end
