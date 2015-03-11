@@ -1,4 +1,4 @@
-<%= render partial: 'shared/navigations/administration' if can? :administrate, :application %>
+<%= render partial: 'shared/navigations/administration' if can?(:administrate, :application) && @current_community %>
 <nav class="navbar navbar-default navbar-static-top navbar-member">
   <div class="container">
     <div class="navbar-header">
@@ -16,10 +16,14 @@
     <% if member_signed_in? %>
       <div class="navbar-collapse collapse" id="navbar">
         <ul class="nav navbar-nav">
-          <%= nav_link "Welcome", root_path %>
-          <%= nav_link "Members", [@current_community, Member] if can? :read, Member %>
-          <%= nav_link "Companies", [@current_community, Company] if can? :read, Company %>
-          <%= nav_link "Office Hours", [@current_community, OfficeHour] if can? :read, OfficeHour %>
+          <% if @current_community %>
+            <%= nav_link "Welcome", community_path(@current_community) %>
+            <%= nav_link "Members", [@current_community, Member] if can? :read, Member %>
+            <%= nav_link "Companies", [@current_community, Company] if can? :read, Company %>
+            <%= nav_link "Office Hours", [@current_community, OfficeHour] if can? :read, OfficeHour %>
+          <% else %>
+            <%= nav_link "Welcome", root_path %>
+          <% end %>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
@@ -31,7 +35,7 @@
             <ul class="dropdown-menu" role="menu">
               <%= nav_link "Edit my Account", edit_member_registration_path %>
               <li class="divider"></li>
-              <%= nav_link "Sign out", destroy_member_session_path, method: :delete %>
+              <%= nav_link "Sign out", destroy_member_community_session_path(current_member.community), method: :delete %>
             </ul>
           </li>
         </ul>
@@ -39,7 +43,9 @@
     <% else %>
       <div class="navbar-collapse collapse" id="navbar">
         <ul class="nav navbar-nav navbar-right">
-          <%= nav_link "Log in", new_member_session_path %>
+          <% if @current_community %>
+            <%= nav_link "Log in", new_member_community_session_path(@current_community) %>
+          <% end %>
         </ul>
       </div>
     <% end %>

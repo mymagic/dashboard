@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :members, controllers: {
+  devise_for :members, skip: [:sessions], controllers: {
     registrations: 'registrations',
     invitations: 'invitations'
   }
 
   resources :communities do
+    devise_for :members, only: [:sessions], controllers: {
+      sessions: 'sessions'
+    }
+
     resources :members, only: [:index, :show]
     resources :companies, only: [:index, :show] do
       resources :members, only: [:new, :create, :edit, :update]

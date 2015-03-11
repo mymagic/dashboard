@@ -23,4 +23,8 @@ module ControllerMacros
     @request.env["devise.mapping"] = Devise.mappings[:member]
     sign_in member
   end
+
+  def current_community
+    controller.current_member.try(:community)
+  end
 end
