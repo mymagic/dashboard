@@ -17,7 +17,7 @@ class Member < ActiveRecord::Base
   validates :email, format: { with: Devise.email_regexp }, allow_blank: true, if: :email_changed?
   validates :email, uniqueness: { scope: :community_id }, allow_blank: true, if: :email_changed?
 
-  validates :password, presence: true, confirmation: true
+  validates :password, presence: true, confirmation: true, if: :password_required?
   validates :password, length: { within: Devise.password_length }, allow_blank: true
 
   # Associations
@@ -108,5 +108,11 @@ class Member < ActiveRecord::Base
 
       accepts_nested_attributes_for :office_hours_as_mentor
     end
+  end
+
+  protected
+
+  def password_required?
+    !skip_password && (!persisted? || !password.nil? || !password_confirmation.nil?)
   end
 end
