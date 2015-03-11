@@ -18,4 +18,8 @@ module ControllerMacros
     @request.env["devise.mapping"] = Devise.mappings[:member]
     sign_in create(:staff, :confirmed)
   end
+
+  def current_community
+    controller.current_member.try(:community)
+  end
 end

@@ -6,6 +6,7 @@ FactoryGirl.define do
     time_zone 'Bangkok'
     password "password0"
     password_confirmation "password0"
+    community
     trait :confirmed do
       after :create, &:confirm!
     end

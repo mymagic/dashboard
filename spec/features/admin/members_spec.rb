@@ -10,7 +10,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       background { as_user administrator }
 
       scenario 'viewing members' do
-        visit admin_members_path
+        visit community_admin_members_path(@current_community)
         expect(page).to have_content(administrator.first_name)
         expect(page).to have_content(staff.first_name)
         expect(page).to have_content(member.first_name)
@@ -38,7 +38,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       background { as_user staff }
 
       scenario 'viewing members' do
-        visit admin_members_path
+        visit community_admin_members_path(@current_community)
         expect(page).to have_content(administrator.first_name)
         expect(page).to have_content(staff.first_name)
         expect(page).to have_content(member.first_name)
@@ -72,7 +72,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       end
 
       scenario 'viewing members' do
-        visit admin_members_path
+        visit community_admin_members_path(@current_community)
         expect(page).to have_unauthorized_message
       end
 

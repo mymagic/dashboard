@@ -9,7 +9,9 @@ class ApplicationController < ActionController::Base
   protected
 
   def current_community
-    @current_community = current_member.community
+    if params[:community_id]
+      @current_community = Community.friendly.find(params[:community_id])
+    end
   end
 
   def current_ability
@@ -21,6 +23,7 @@ class ApplicationController < ActionController::Base
                        password password_confirmation)
     account_update_params    = member_params.push(:current_password, :email)
     accept_invitation_params = member_params.push(:invitation_token)
+    sign_in_params           = member_params.push(:community_id)
 
     if params[:controller] = 'registrations' && params[:action] == 'update'
       devise_parameter_sanitizer.for(:account_update) do |u|
@@ -31,6 +34,12 @@ class ApplicationController < ActionController::Base
     if params[:controller] = 'invitations' && params[:action] == 'update'
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
         u.permit(accept_invitation_params)
+      end
+    end
+
+    if params[:controller] = 'sessions'
+      devise_parameter_sanitizer.for(:sign_in) do |u|
+        u.permit(sign_in_params)
       end
     end
   end

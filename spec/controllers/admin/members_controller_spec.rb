@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Admin::MembersController, type: :controller do
   describe "GET #index" do
+    let(:member) { create(:administrator) }
     it_behaves_like "accessible by", :administrator, :staff do
-      let(:response) { get(:index) }
+      let(:response) { get(:index, community_id: current_community.try(:id)) }
     end
   end
 
@@ -11,25 +12,25 @@ RSpec.describe Admin::MembersController, type: :controller do
     context 'an administrator' do
       let(:member) { create(:administrator) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { get(:edit, id: member) }
+        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
       end
     end
     context 'a staff member' do
       let(:member) { create(:staff) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { get(:edit, id: member) }
+        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
       end
     end
     context 'a mentor' do
       let(:member) { create(:mentor) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { get(:edit, id: member) }
+        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
       end
     end
     context 'a regular member' do
       let(:member) { create(:mentor) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { get(:edit, id: member) }
+        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
       end
     end
   end
@@ -38,25 +39,25 @@ RSpec.describe Admin::MembersController, type: :controller do
     context 'an administrator' do
       let(:member) { create(:administrator) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
       end
     end
     context 'a staff member' do
       let(:member) { create(:staff) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
       end
     end
     context 'a mentor' do
       let(:member) { create(:mentor) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
       end
     end
     context 'a regular member' do
       let(:member) { create(:mentor) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { patch(:update, id: member, member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
       end
     end
   end
@@ -65,25 +66,25 @@ RSpec.describe Admin::MembersController, type: :controller do
     context 'an administrator' do
       let(:member) { create(:administrator) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { delete(:destroy, id: member) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
       end
     end
     context 'a staff member' do
       let(:member) { create(:staff) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { delete(:destroy, id: member) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
       end
     end
     context 'a mentor' do
       let(:member) { create(:mentor) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { delete(:destroy, id: member) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
       end
     end
     context 'a regular member' do
       let(:member) { create(:mentor) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { delete(:destroy, id: member) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
       end
     end
   end
@@ -92,7 +93,7 @@ RSpec.describe Admin::MembersController, type: :controller do
     let(:member_required_attributes) { { email: 'email@example.com' } }
 
     def invite_new_member(attributes = {})
-      put :create, member: (member_required_attributes).merge(attributes)
+      put :create, community_id: current_community.try(:id), member: (member_required_attributes).merge(attributes)
     end
 
     it_behaves_like "accessible by", :administrator, :staff do
@@ -103,13 +104,13 @@ RSpec.describe Admin::MembersController, type: :controller do
       before { login_administrator }
       describe 'inviting an Administrator' do
         before { invite_new_member(role: 'administrator') }
-        subject { Member.find_by(email: member_required_attributes[:email]) }
+        subject { current_community.members.find_by(email: member_required_attributes[:email]) }
         it { is_expected.to be_administrator }
       end
 
       describe 'inviting a Staff Member' do
         before { invite_new_member(role: 'staff') }
-        subject { Member.find_by(email: member_required_attributes[:email]) }
+        subject { current_community.members.find_by(email: member_required_attributes[:email]) }
         it { is_expected.to be_staff }
       end
 

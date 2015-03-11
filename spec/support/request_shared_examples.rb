@@ -3,8 +3,7 @@ shared_examples "accessible by" do |*authorized_members|
     administrator: -> (_context) { login_administrator },
     regular_member: -> (_context) { login_member },
     staff: -> (_context) { login_staff },
-    mentor: -> (_context) { login_mentor },
-    unauthorized: -> (_context) {}
+    mentor: -> (_context) { login_mentor }
   }
 
   all_members.map do |role, login|

@@ -5,12 +5,20 @@ class Member < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :invitable, :database_authenticatable, :validatable,
+  devise :invitable, :database_authenticatable,
          :recoverable, :rememberable, :trackable, :registerable,
-         :confirmable, validate_on_invite: true
+         :confirmable, validate_on_invite: true, authentication_keys: [:email, :community_id]
 
   validates :first_name, :last_name, :time_zone, presence: true, on: :update
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
+
+  # Override Validatable module
+  validates :email, presence: true
+  validates :email, format: { with: Devise.email_regexp }, allow_blank: true, if: :email_changed?
+  validates :email, uniqueness: { scope: :community_id }, allow_blank: true, if: :email_changed?
+
+  validates :password, presence: true, confirmation: true
+  validates :password, length: { within: Devise.password_length }, allow_blank: true
 
   # Associations
   belongs_to :community
