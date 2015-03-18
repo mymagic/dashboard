@@ -4,6 +4,7 @@ class OfficeHour < ActiveRecord::Base
 
   belongs_to :participant, class: Member
   belongs_to :mentor, class: Member
+  belongs_to :community
 
   scope :available, -> { where(participant: nil) }
   scope :booked,    -> { where.not(participant: nil) }
