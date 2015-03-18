@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     invitations: 'invitations'
   }
 
+  namespace :admin do
+    get :dashboard
+  end
+
   resources :communities do
     devise_for :members, only: [:sessions], controllers: {
       sessions: 'sessions'
@@ -18,7 +22,6 @@ Rails.application.routes.draw do
     end
 
     namespace :admin do
-      get :dashboard
       resources :companies
       resources :office_hours
       resources :members do
@@ -29,4 +32,5 @@ Rails.application.routes.draw do
   end
 
   root 'welcome#index'
+  get '*missing' => redirect('/')
 end

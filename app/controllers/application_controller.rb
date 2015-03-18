@@ -5,17 +5,25 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :current_community
+  before_action :authorize_community!
+
+  helper_method :current_community
 
   protected
 
   def current_community
     if params[:community_id]
-      @current_community = Community.friendly.find(params[:community_id])
+      @current_community ||= Community.friendly.find(params[:community_id])
     end
   end
 
   def current_ability
     @current_ability ||= Ability.new(current_member)
+  end
+
+  def authorize_community!
+    return if current_community.nil?
+    authorize! :read, current_community
   end
 
   def configure_devise_permitted_parameters

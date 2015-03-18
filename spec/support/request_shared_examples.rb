@@ -21,7 +21,7 @@ shared_examples "accessible by" do |*authorized_members|
         context "#{ role }" do
           before &login
           it "redirects to login" do
-            expect(response).to redirect_to(new_member_community_session_path(current_community))
+            expect(response).to redirect_to(root_path)
           end
         end
       else

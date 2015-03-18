@@ -14,7 +14,7 @@ module Admin
       @position = Position.new(position_params)
       respond_to do |format|
         if @position.save
-          format.html { redirect_to community_admin_positions_path(@current_community), notice: 'Position was successfully created.' }
+          format.html { redirect_to community_admin_positions_path(current_community), notice: 'Position was successfully created.' }
           format.json { render json: @position, status: :created }
         else
           format.html { render 'new', alert: 'Error creating position.' }
@@ -30,7 +30,7 @@ module Admin
       @position.update(position_params)
       respond_to do |format|
         if @position.save
-          format.html { redirect_to community_admin_positions_path(@current_community), notice: 'Position was successfully updated.' }
+          format.html { redirect_to community_admin_positions_path(current_community), notice: 'Position was successfully updated.' }
           format.json { render json: @position, status: :created }
         else
           format.html { render 'edit', alert: 'Error updating position.' }
@@ -42,7 +42,7 @@ module Admin
     def destroy
       @position.destroy
       respond_to do |format|
-        format.html { redirect_to community_admin_positions_path(@current_community), notice: 'Position was successfully deleted.' }
+        format.html { redirect_to community_admin_positions_path(current_community), notice: 'Position was successfully deleted.' }
         format.json { head :no_content }
       end
     end

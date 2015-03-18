@@ -15,7 +15,7 @@ module Admin
       @office_hour = OfficeHour.new(office_hour_params)
       respond_to do |format|
         if @office_hour.save
-          format.html { redirect_to community_admin_office_hours_path(@current_community), notice: 'Office Hour was successfully created.' }
+          format.html { redirect_to community_admin_office_hours_path(current_community), notice: 'Office Hour was successfully created.' }
           format.json { render json: @office_hour, status: :created }
         else
           format.html { render 'new', alert: 'Error creating office hour.' }
@@ -31,7 +31,7 @@ module Admin
       @office_hour.update(office_hour_params)
       respond_to do |format|
         if @office_hour.save
-          format.html { redirect_to community_admin_office_hours_path(@current_community), notice: 'Office Hour was successfully updated.' }
+          format.html { redirect_to community_admin_office_hours_path(current_community), notice: 'Office Hour was successfully updated.' }
           format.json { render json: @office_hour, status: :created }
         else
           format.html { render 'edit', alert: 'Error updating office hour.' }

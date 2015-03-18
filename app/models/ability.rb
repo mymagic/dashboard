@@ -31,11 +31,15 @@ class Ability
     cannot :read, :all
     cannot :administrate, :application
 
+    can :read, Community
+
     case member.role
     when 'administrator'
       can :administrate, :application
 
       can :administrate, Member
+
+      can :administrate, Community
 
       can :manage, Position
 

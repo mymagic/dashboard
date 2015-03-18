@@ -1,0 +1,7 @@
+.image_preview {
+  img[src]:not([src='']) {
+    width: 100%;
+    display: block;
+    margin-bottom: $grid-gutter-width / 2;
+  }
+}
