@@ -1,5 +1,6 @@
 class CommunitiesController < ApplicationController
-  # before_action :authenticate_member!
+  skip_before_action :authorize_community!, except: [:show, :index]
+  before_action :authorize_community, except: [:show, :index]
 
   def show
   end
@@ -19,6 +20,10 @@ class CommunitiesController < ApplicationController
 
   def current_community
     @current_community = Community.friendly.find(params[:id])
+  end
+
+  def authorize_community
+    authorize! :manage, current_community
   end
 
   def community_params
