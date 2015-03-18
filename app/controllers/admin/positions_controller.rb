@@ -1,7 +1,6 @@
 module Admin
   class PositionsController < AdminController
     load_and_authorize_resource
-    skip_authorize_resource
 
     def index
       @positions = @positions.ordered
@@ -43,7 +42,7 @@ module Admin
     def destroy
       @position.destroy
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'Position was successfully deleted.' }
+        format.html { redirect_to admin_positions_path, notice: 'Position was successfully deleted.' }
         format.json { head :no_content }
       end
     end

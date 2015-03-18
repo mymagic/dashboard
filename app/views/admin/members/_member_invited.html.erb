@@ -1,10 +1,5 @@
 <tr>
-  <td><%= member.id %></td>
-  <td>
-    <% if member.administrator? %>
-      <span class="glyphicon glyphicon-flash" title="Administrator"></span>
-    <% end %>
-  </td>
+  <td><%= member_icon member %></td>
   <td><%= image_tag(member.avatar.url(:icon), class: 'img-rounded') %></td>
   <td><%= member.first_name %></td>
   <td><%= member.last_name %></td>
@@ -12,8 +7,12 @@
   <td><%= member.invitation_sent_at %></td>
   <td>
     <div class="btn-group">
-      <%= link_to('Resend invitation', resend_invitation_admin_member_path(member), data: { method: 'patch' }, class: 'btn btn-default btn-xs') %>
-      <%= link_to('Edit', edit_admin_member_path(member), class: 'btn btn-default btn-xs') %>
+      <% if can? :resend_invitation, member %>
+        <%= link_to('Resend invitation', resend_invitation_admin_member_path(member), data: { method: 'patch' }, class: 'btn btn-default btn-xs') %>
+      <% end %>
+      <% if can? :update, member %>
+        <%= link_to('Edit', edit_admin_member_path(member), class: 'btn btn-default btn-xs') %>
+      <% end %>
     </div>
   </td>
 </tr>

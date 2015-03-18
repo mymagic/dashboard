@@ -21,14 +21,13 @@
         </li>
       <% end %>
       <li class="pull-right">
-        <%= link_to 'Invite new Member', new_admin_member_path %>
+        <%= link_to 'Invite new Member', new_admin_member_path  if can? :create, Member %>
       </li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active fade in" id="active-members" role="tabpanel">
         <table class="table table-striped">
           <thead>
-            <th>#</th>
             <th>Role</th>
             <th></th>
             <th>First name</th>
@@ -45,7 +44,6 @@
       <div class="tab-pane fade" id="invited-members" role="tabpanel">
         <table class="table table-striped">
           <thead>
-            <th>#</th>
             <th>Role</th>
             <th></th>
             <th>First name</th>

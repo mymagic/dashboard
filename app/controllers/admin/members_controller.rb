@@ -1,8 +1,6 @@
 module Admin
   class MembersController < AdminController
     load_and_authorize_resource
-    skip_authorize_resource
-
     before_action :allow_without_password, only: :update
 
     def index
@@ -74,7 +72,7 @@ module Admin
     end
 
     def member_params
-      params.require(:member).permit(
+      permitted = params.require(:member).permit(
         :first_name,
         :last_name,
         :email,
@@ -85,7 +83,17 @@ module Admin
         :avatar,
         :avatar_cache,
         companies_positions_attributes:
-          [:approved, :company_id, :position_id, :_destroy, :id])
+          [
+            :approved,
+            :company_id,
+            :position_id,
+            :can_manage_company,
+            :_destroy,
+            :id
+          ]
+      )
+      raise CanCan::AccessDenied unless current_member.can_assign_role? permitted[:role]
+      permitted
     end
 
     def invite_member(&block)

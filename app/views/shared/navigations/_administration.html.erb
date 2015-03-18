@@ -7,17 +7,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to 'Administration', admin_dashboard_path, class: 'navbar-brand' %>
+      <strong><%= link_to 'Administration', admin_dashboard_path, class: 'navbar-brand' %></strong>
     </div>
     <div class="navbar-collapse collapse" id="navbar-admin">
       <ul class="nav navbar-nav">
-        <%= nav_link "Members", admin_members_path %>
-        <%= nav_link "Companies", admin_companies_path %>
-        <%= nav_link "Positions", admin_positions_path %>
-        <%= nav_link "Office Hours", admin_office_hours_path %>
+        <%= nav_link "Members", admin_members_path if can? :administrate, Member %>
+        <%= nav_link "Companies", admin_companies_path if can? :administrate, Company  %>
+        <%= nav_link "Positions", admin_positions_path if can? :administrate, Position %>
+        <%= nav_link "Office Hours", admin_office_hours_path if can? :administrate, OfficeHour %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <%= nav_link "Invite new Member", new_admin_member_path %>
+        <%= nav_link "Invite new Member", new_admin_member_path if can? :create, Member %>
       </ul>
     </div>
   </div>
