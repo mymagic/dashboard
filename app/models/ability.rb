@@ -30,6 +30,9 @@ class Ability
     cannot :manage, :all
     cannot :read, :all
     cannot :administrate, :application
+    cannot :invite_employee, Company
+    cannot :manage_company, Company
+    cannot :invite_company_member, Company
 
     case member.role
     when 'administrator'
@@ -51,6 +54,9 @@ class Ability
 
       can_invite :administrator, :staff, :mentor, :regular_member
 
+      can :manage_company, Company
+      can :invite_company_member, Company
+
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
     when 'staff'
@@ -69,6 +75,9 @@ class Ability
 
       can_invite :mentor, :regular_member
 
+      can :manage_company, Company
+      can :invite_company_member, Company
+
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
     when 'mentor'
@@ -85,6 +94,20 @@ class Ability
       can :read, Company
 
       can :read, OfficeHour
+
+      can :manage_company, Company do |company|
+        member.manageable_companies.include?(company)
+      end
+
+      can :create, Member do |new_member|
+        new_member.companies_positions.map(&:company).uniq.any? &&
+          (new_member.companies_positions.map(&:company).uniq -
+            member.manageable_companies).empty?
+      end
+
+      can :invite_company_member, Company do |company|
+        member.manageable_companies.include?(company)
+      end
 
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
