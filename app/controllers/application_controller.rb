@@ -33,19 +33,19 @@ class ApplicationController < ActionController::Base
     accept_invitation_params = member_params.push(:invitation_token)
     sign_in_params           = member_params.push(:community_id)
 
-    if params[:controller] = 'registrations' && params[:action] == 'update'
+    if params[:controller] == 'registrations' && params[:action] == 'update'
       devise_parameter_sanitizer.for(:account_update) do |u|
         u.permit(account_update_params)
       end
     end
 
-    if params[:controller] = 'invitations' && params[:action] == 'update'
+    if params[:controller] == 'invitations' && params[:action] == 'update'
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
         u.permit(accept_invitation_params)
       end
     end
 
-    if params[:controller] = 'sessions'
+    if params[:controller] == 'sessions'
       devise_parameter_sanitizer.for(:sign_in) do |u|
         u.permit(sign_in_params)
       end
