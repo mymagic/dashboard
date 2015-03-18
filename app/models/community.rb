@@ -7,8 +7,10 @@ class Community < ActiveRecord::Base
   mount_uploader :logo, LogoUploader
 
   # Associations
-  has_many :companies, dependent: :destroy
-  has_many :members,   dependent: :destroy
+  has_many :companies,    dependent: :destroy
+  has_many :members,      dependent: :destroy
+  has_many :positions,    dependent: :destroy
+  has_many :office_hours, dependent: :destroy
 
   # Validations
   validates :name, :slug, presence: true

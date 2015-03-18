@@ -4,7 +4,7 @@
       <%= image_tag(company.logo.url(:thumb)) %>
     </div>
     <div class="caption">
-      <h3><%= link_to company.name, company %></h3>
+      <h3><%= link_to company.name, [current_community, company] %></h3>
     </div>
   </div>
 </div>
