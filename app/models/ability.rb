@@ -31,7 +31,7 @@ class Ability
     cannot :read, :all
     cannot :administrate, :application
 
-    can :read, Community
+    can :read, Community, id: member.community_id
 
     case member.role
     when 'administrator'
@@ -39,7 +39,7 @@ class Ability
 
       can :administrate, Member
 
-      can :administrate, Community
+      can :manage, Community, id: member.community_id
 
       can :manage, Position
 
