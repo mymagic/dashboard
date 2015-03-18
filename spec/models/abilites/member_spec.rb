@@ -27,6 +27,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:destroy, Member, role: ['administrator', 'staff', 'mentor', '']) }
       it { is_expected.to be_able_to(:resend_invitation, Member) }
 
+      # Community
+      it { is_expected.to be_able_to(:manage, Community) }
+
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
@@ -62,6 +65,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:update, Member, role: ['mentor', '']) }
       it { is_expected.to be_able_to(:destroy, Member, role: ['mentor', '']) }
       it { is_expected.to be_able_to(:resend_invitation, Member) }
+
+      # Community
+      it { is_expected.to be_able_to(:read, Community) }
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
@@ -99,6 +105,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to_not be_able_to(:destroy, Member) }
       it { is_expected.to_not be_able_to(:resend_invitation, Member) }
 
+      # Community
+      it { is_expected.to be_able_to(:read, Community) }
+
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
@@ -135,6 +144,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to_not be_able_to(:update, Member) }
       it { is_expected.to_not be_able_to(:destroy, Member) }
       it { is_expected.to_not be_able_to(:resend_invitation, Member) }
+
+      # Community
+      it { is_expected.to be_able_to(:read, Community) }
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
