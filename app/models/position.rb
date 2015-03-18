@@ -5,6 +5,7 @@ class Position < ActiveRecord::Base
   validates :name, presence: true, uniqueness: :true
 
   has_many :companies_members_positions, dependent: :destroy
+  belongs_to :community
 
   scope :ordered, -> { rank(:priority_order) }
 
