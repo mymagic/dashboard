@@ -2,89 +2,89 @@ require 'rails_helper'
 
 RSpec.describe Admin::MembersController, type: :controller do
   describe "GET #index" do
-    let(:member) { create(:administrator) }
+    let(:member) { create(:administrator, community: current_community) }
     it_behaves_like "accessible by", :administrator, :staff do
-      let(:response) { get(:index, community_id: current_community.try(:id)) }
+      let(:response) { get(:index, community_id: current_community.id) }
     end
   end
 
   describe "GET #edit" do
     context 'an administrator' do
-      let(:member) { create(:administrator) }
+      let(:member) { create(:administrator, community: current_community) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
+        let(:response) { get(:edit, id: member, community_id: current_community.id) }
       end
     end
     context 'a staff member' do
-      let(:member) { create(:staff) }
+      let(:member) { create(:staff, community: current_community) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
+        let(:response) { get(:edit, id: member, community_id: current_community.id) }
       end
     end
     context 'a mentor' do
-      let(:member) { create(:mentor) }
+      let(:member) { create(:mentor, community: current_community) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
+        let(:response) { get(:edit, id: member, community_id: current_community.id) }
       end
     end
     context 'a regular member' do
-      let(:member) { create(:mentor) }
+      let(:member) { create(:mentor, community: current_community) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { get(:edit, id: member, community_id: current_community.try(:id)) }
+        let(:response) { get(:edit, id: member, community_id: current_community.id) }
       end
     end
   end
 
   describe 'PATCH #update' do
     context 'an administrator' do
-      let(:member) { create(:administrator) }
+      let(:member) { create(:administrator, community: current_community) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.id, member: { first_name: 'New First Name' }) }
       end
     end
     context 'a staff member' do
-      let(:member) { create(:staff) }
+      let(:member) { create(:staff, community: current_community) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.id, member: { first_name: 'New First Name' }) }
       end
     end
     context 'a mentor' do
-      let(:member) { create(:mentor) }
+      let(:member) { create(:mentor, community: current_community) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.id, member: { first_name: 'New First Name' }) }
       end
     end
     context 'a regular member' do
-      let(:member) { create(:mentor) }
+      let(:member) { create(:mentor, community: current_community) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { patch(:update, id: member, community_id: current_community.try(:id), member: { first_name: 'New First Name' }) }
+        let(:response) { patch(:update, id: member, community_id: current_community.id, member: { first_name: 'New First Name' }) }
       end
     end
   end
 
   describe 'DELETE #destroy' do
     context 'an administrator' do
-      let(:member) { create(:administrator) }
+      let(:member) { create(:administrator, community: current_community) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.id) }
       end
     end
     context 'a staff member' do
-      let(:member) { create(:staff) }
+      let(:member) { create(:staff, community: current_community) }
       it_behaves_like "accessible by", :administrator do
-        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.id) }
       end
     end
     context 'a mentor' do
-      let(:member) { create(:mentor) }
+      let(:member) { create(:mentor, community: current_community) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.id) }
       end
     end
     context 'a regular member' do
-      let(:member) { create(:mentor) }
+      let(:member) { create(:mentor, community: current_community) }
       it_behaves_like "accessible by", :administrator, :staff do
-        let(:response) { delete(:destroy, id: member, community_id: current_community.try(:id)) }
+        let(:response) { delete(:destroy, id: member, community_id: current_community.id) }
       end
     end
   end
@@ -93,7 +93,7 @@ RSpec.describe Admin::MembersController, type: :controller do
     let(:member_required_attributes) { { email: 'email@example.com' } }
 
     def invite_new_member(attributes = {})
-      put :create, community_id: current_community.try(:id), member: (member_required_attributes).merge(attributes)
+      put :create, community_id: current_community.id, member: (member_required_attributes).merge(attributes)
     end
 
     it_behaves_like "accessible by", :administrator, :staff do

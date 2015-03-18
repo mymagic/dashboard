@@ -1,7 +1,7 @@
 class MembersController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource
   load_resource :company
+  load_and_authorize_resource through: :current_community
   skip_authorize_resource only: [:new, :create]
 
   def index

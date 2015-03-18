@@ -34,7 +34,7 @@ class Ability
     cannot :manage_company, Company
     cannot :invite_company_member, Company
 
-    can :read, Community, id: member.community_id
+    can :read, Community
 
     case member.role
     when 'administrator'

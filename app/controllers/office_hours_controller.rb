@@ -1,6 +1,6 @@
 class OfficeHoursController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource
+  load_and_authorize_resource through: :current_community
 
   def index
     @office_hours = @office_hours.ordered

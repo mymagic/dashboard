@@ -1,6 +1,6 @@
 module Admin
   class OfficeHoursController < AdminController
-    load_and_authorize_resource
+    load_and_authorize_resource through: :current_community
     skip_authorize_resource
 
     def index
@@ -8,13 +8,12 @@ module Admin
     end
 
     def new
-      @office_hour = OfficeHour.new(time_zone: current_member.time_zone)
+      @office_hour.assign_attributes(time_zone: current_member.time_zone)
     end
 
     def create
-      @office_hour = OfficeHour.new(office_hour_params)
       respond_to do |format|
-        if @office_hour.save
+        if @office_hour.update_attributes(office_hour_params)
           format.html { redirect_to community_admin_office_hours_path(current_community), notice: 'Office Hour was successfully created.' }
           format.json { render json: @office_hour, status: :created }
         else

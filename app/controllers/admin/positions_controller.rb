@@ -1,19 +1,17 @@
 module Admin
   class PositionsController < AdminController
-    load_and_authorize_resource
+    load_and_authorize_resource through: :current_community
 
     def index
       @positions = @positions.ordered
     end
 
     def new
-      @position = Position.new
     end
 
     def create
-      @position = Position.new(position_params)
       respond_to do |format|
-        if @position.save
+        if @position.update_attributes(position_params)
           format.html { redirect_to community_admin_positions_path(current_community), notice: 'Position was successfully created.' }
           format.json { render json: @position, status: :created }
         else

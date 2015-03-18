@@ -44,8 +44,10 @@ ActiveRecord::Schema.define(version: 20150318082900) do
     t.datetime "updated_at",                         null: false
     t.boolean  "approved",           default: false, null: false
     t.boolean  "can_manage_company", default: false, null: false
+    t.integer  "community_id"
   end
 
+  add_index "companies_members_positions", ["community_id"], name: "index_companies_members_positions_on_community_id", using: :btree
   add_index "companies_members_positions", ["company_id", "member_id", "position_id"], name: "unique_cmp_index", unique: true, using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
