@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Member, type: :model do
+  let(:company) { create(:company) }
+  let(:other_company) { create(:company) }
   context 'as an adminstrator' do
     let(:member) { build(:administrator) }
     describe 'abilities' do
@@ -27,6 +29,10 @@ RSpec.describe Member, type: :model do
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
+
+      # Company Member management
+      it { is_expected.to be_able_to(:invite_company_member, company) }
+      it { is_expected.to be_able_to(:invite_company_member, other_company) }
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
@@ -60,6 +66,10 @@ RSpec.describe Member, type: :model do
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
+      # Company Member management
+      it { is_expected.to be_able_to(:invite_company_member, company) }
+      it { is_expected.to be_able_to(:invite_company_member, other_company) }
+
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
     end
@@ -91,6 +101,10 @@ RSpec.describe Member, type: :model do
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
+
+      # Company Member management
+      it { is_expected.to_not be_able_to(:invite_company_member, company) }
+      it { is_expected.to_not be_able_to(:invite_company_member, other_company) }
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
@@ -125,6 +139,10 @@ RSpec.describe Member, type: :model do
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
+      # Company Member management
+      it { is_expected.to_not be_able_to(:invite_company_member, company) }
+      it { is_expected.to_not be_able_to(:invite_company_member, other_company) }
+
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
     end
@@ -132,8 +150,6 @@ RSpec.describe Member, type: :model do
 
   context 'as regular member who is a manager' do
     let(:member) { create(:member) }
-    let(:company) { create(:company) }
-    let(:other_company) { create(:company) }
     let(:position) { create(:position) }
     let(:new_member_for_company) { build(:member) }
     let(:new_member_for_other_company) { build(:member) }
@@ -151,7 +167,6 @@ RSpec.describe Member, type: :model do
         build(company: company, position: position, approved: true)
     end
 
-
     describe 'abilities' do
       subject { Ability.new(member) }
 
@@ -164,5 +179,4 @@ RSpec.describe Member, type: :model do
       it { is_expected.to_not be_able_to(:invite_company_member, other_company) }
     end
   end
-
 end
