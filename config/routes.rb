@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   }
 
   resources :members, only: [:index, :show]
-  resources :companies, only: [:index, :show]
+  resources :companies, only: [:index, :show] do
+    resources :members, only: [:new, :create, :edit, :update]
+  end
   resources :companies_members_positions, only: [:create]
   resources :office_hours, only: [:index, :create, :destroy] do
     patch 'book', on: :member

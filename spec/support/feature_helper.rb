@@ -63,7 +63,7 @@ module FeatureHelper
     click_button 'Change my password'
   end
 
-  def invite_new_member(email, attributes={})
+  def invite_new_member(email, attributes = {})
     attributes = {
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
     }.merge!(attributes)
@@ -76,6 +76,20 @@ module FeatureHelper
     select attributes[:role], from: 'Role'
 
     select attributes[:company], from: 'Company' if attributes[:company]
+    select attributes[:position], from: 'Position'  if attributes[:position]
+
+    click_button 'Invite'
+
+    expect(page).to have_content("Member was successfully invited.")
+  end
+
+  def invite_new_company_member(company, email, attributes = {})
+    visit new_company_member_path(company)
+
+    fill_in 'Email',  with: email
+    fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
+    fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
+
     select attributes[:position], from: 'Position'  if attributes[:position]
 
     click_button 'Invite'
