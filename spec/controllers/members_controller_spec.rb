@@ -14,7 +14,7 @@ RSpec.describe MembersController, type: :controller do
     end
   end
 
-  describe "PUT #create" do
+  describe "POST #create" do
     let(:member_required_attributes) { { email: 'email@example.com' } }
     let(:company) { create(:company) }
 

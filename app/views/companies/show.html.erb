@@ -5,11 +5,11 @@
 <div class="page-header">
   <% if can? :manage_company, @company %>
     <div class="dropdown manage-company">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+      <button class="btn btn-default dropdown-toggle" type="button" id="manage_company_menu" data-toggle="dropdown" aria-expanded="true">
         Manage Company
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="manage_company_menu">
         <% if can? :invite_company_member, @company %>
           <li role="presentation"><%= link_to "Invite members to company", new_company_member_path(@company), role: 'menuitem', tabindex: '-1' %></li>
         <% end %>
