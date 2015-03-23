@@ -90,6 +90,13 @@ module Admin
             :can_manage_company,
             :_destroy,
             :id
+          ],
+        social_media_links_attributes:
+          [
+            :id,
+            :service,
+            :handle,
+            :_destroy
           ]
       )
       raise CanCan::AccessDenied unless current_member.can_assign_role? permitted[:role]

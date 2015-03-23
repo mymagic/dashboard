@@ -1,6 +1,8 @@
 class Company < ActiveRecord::Base
   mount_uploader :logo, LogoUploader
 
+  has_many :social_media_links, as: :attachable
+
   validates :name, presence: true
   validates :logo, presence: true, on: :update
   validates :description, length: { minimum: 5 }, allow_blank: true

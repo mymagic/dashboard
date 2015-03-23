@@ -23,6 +23,10 @@ class Ability
     can :create, CompaniesMembersPosition, member_id: member.id
   end
 
+  def manage_social_media_links(member)
+    can :manage, SocialMediaLink, attachable_type: 'Member', attachable_id: member.id
+  end
+
   def initialize(member)
     member ||= Member.new # guest user (not logged in)
 
@@ -42,6 +46,8 @@ class Ability
       can :manage, Company
 
       can :manage, OfficeHour
+
+      can :manage, SocialMediaLink
 
       can :read, Member
       can :create, Member
@@ -71,6 +77,7 @@ class Ability
 
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
+      manage_social_media_links(member)
     when 'mentor'
       can :read, Member
 
@@ -79,6 +86,8 @@ class Ability
       can :read, OfficeHour
 
       can :create, OfficeHour, mentor_id: member.id
+
+      manage_social_media_links(member)
     else # a regular Member
       can :read, Member
 
@@ -88,6 +97,7 @@ class Ability
 
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
+      manage_social_media_links(member)
     end
   end
 end
