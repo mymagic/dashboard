@@ -66,6 +66,9 @@ group :development, :test do
   gem 'pry-rails'
   gem 'awesome_print'
 
+  # A library for generating fake data such as names, addresses, and phone numbers.
+  gem 'faker'
+
   # guard to auto-run specs
   gem 'guard-rspec'
 end
