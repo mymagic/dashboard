@@ -4,7 +4,7 @@
       <%= panel "#{action_name.capitalize} Community", columns: 12 do %>
         <%= simple_form_for(community, html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
           <%= f.input :name, autofocus: true, placeholder: 'Enter Community Name' %>
-          <%= f.input :logo, as: :image_preview %>
+          <%= f.input :logo, as: :image_preview, hint: 'We highly recommend an image is sized to 20 x 20 pixels', input_html: { preview_version: :icon } %>
           <div class='text-right'>
             <%= f.button :submit, class: 'btn-success' %>
           </div>

@@ -13,7 +13,7 @@ class Member < ActiveRecord::Base
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
 
   # Override Validatable module
-  validates :email, presence: true
+  validates :email, :community, presence: true
   validates :email, format: { with: Devise.email_regexp }, allow_blank: true, if: :email_changed?
   validates :email, uniqueness: { scope: :community_id }, allow_blank: true, if: :email_changed?
 

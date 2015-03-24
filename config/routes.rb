@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get :dashboard
   end
 
-  resources :communities, path: '', only: [:show, :edit] do
+  resources :communities, path: '', except: :index do
     devise_for :members, only: [:sessions], controllers: {
       sessions: 'sessions'
     }
