@@ -1,7 +1,7 @@
 class Company < ActiveRecord::Base
   mount_uploader :logo, LogoUploader
 
-  validates :name, presence: true
+  validates :name, :community, presence: true
   validates :logo, presence: true, on: :update
   validates :description, length: { minimum: 5 }, allow_blank: true
   validates(

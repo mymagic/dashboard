@@ -2,7 +2,8 @@ class Position < ActiveRecord::Base
   include RankedModel
   ranks :priority_order
 
-  validates :name, presence: true, uniqueness: :true
+  validates :name, :community, presence: true
+  validates :name, uniqueness: :true
 
   has_many :companies_members_positions, dependent: :destroy
   belongs_to :community
