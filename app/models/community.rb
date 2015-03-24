@@ -24,10 +24,9 @@ class Community < ActiveRecord::Base
   def setup_administrator
     members.create!(
       email: 'admin@example.com',
-      password: 'passw0rd',
+      password: 'password',
       role: 'administrator',
-      time_zone: ActiveSupport::TimeZone[Time.zone.name],
-      confirmed_at: DateTime.now
-    )
+      time_zone: Time.zone.name
+    ).confirm!
   end
 end
