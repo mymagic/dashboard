@@ -6,11 +6,21 @@ namespace :community do
       slug: ENV['COMMUNITY_SLUG']
     }
 
-    begin
-      Rails.logger.info 'Creating a community...'
-      Community.create!(params)
-    rescue => ex
-      Rails.logger.error "Fail to create a community: #{ex.message}"
+    ActiveRecord::Base.transaction do
+      begin
+        Rails.logger.info 'Creating a community...'
+        community = Community.create!(params)
+
+        Rails.logger.info 'Creating an administrator...'
+        Member.invite!(
+          email: ENV['ADMIN_EMAIL'],
+          community: community,
+          role: 'administrator'
+        ).valid_invitation? || admin.validate!
+      rescue => ex
+        Rails.logger.error "Fail to create a community: #{ex.message}"
+        raise ActiveRecord::Rollback
+      end
     end
   end
 end
