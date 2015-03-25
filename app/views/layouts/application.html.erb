@@ -5,29 +5,10 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
 
-    <%= tag 'link', href: image_path('favicon/favicon.ico'), rel: 'shortcut icon' %>
-    <%= tag 'link', href: image_path('favicon/favicon.ico'), rel: 'icon', sizes: '16x16 32x32 64x64' %>
-    <%= tag 'link', href: image_path('favicon/favicon-192.png'), rel: 'icon', sizes: '196x196', type: 'image/png' %>
-    <%= tag 'link', href: image_path('favicon/favicon-160.png'), rel: 'icon', sizes: '160x160', type: 'image/png' %>
-    <%= tag 'link', href: image_path('favicon/favicon-96.png'), rel: 'icon', sizes: '96x96', type: 'image/png' %>
-    <%= tag 'link', href: image_path('favicon/favicon-64.png'), rel: 'icon', sizes: '64x64', type: 'image/png' %>
-    <%= tag 'link', href: image_path('favicon/favicon-32.png'), rel: 'icon', sizes: '32x32', type: 'image/png' %>
-    <%= tag 'link', href: image_path('favicon/favicon-16.png'), rel: 'icon', sizes: '16x16', type: 'image/png' %>
-    <%= tag 'link', href: image_path('favicon/favicon-57.png'), rel: 'apple-touch-icon' %>
-    <%= tag 'link', href: image_path('favicon/favicon-114.png'), rel: 'apple-touch-icon', sizes: '114x114' %>
-    <%= tag 'link', href: image_path('favicon/favicon-72.png'), rel: 'apple-touch-icon', sizes: '72x72' %>
-    <%= tag 'link', href: image_path('favicon/favicon-144.png'), rel: 'apple-touch-icon', sizes: '144x144' %>
-    <%= tag 'link', href: image_path('favicon/favicon-60.png'), rel: 'apple-touch-icon', sizes: '60x60' %>
-    <%= tag 'link', href: image_path('favicon/favicon-120.png'), rel: 'apple-touch-icon', sizes: '120x120' %>
-    <%= tag 'link', href: image_path('favicon/favicon-76.png'), rel: 'apple-touch-icon', sizes: '76x76' %>
-    <%= tag 'link', href: image_path('favicon/favicon-152.png'), rel: 'apple-touch-icon', sizes: '152x152' %>
-    <%= tag 'link', href: image_path('favicon/favicon-180.png'), rel: 'apple-touch-icon', sizes: '180x180' %>
-    <meta content="#FFFFFF" name="msapplication-TileColor" />
-    <%= tag 'meta', content: image_path('favicon/favicon-144.png'), name: 'msapplication-TileImage' %>
-
     <%= content_tag(:title, "Magic#{ yield :title }") %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= favicon_link_tag favicon_path, type: 'image/png' %>
     <%= csrf_meta_tags %>
   </head>
   <body class='<%= controller_name %> <%= action_name %>'>
