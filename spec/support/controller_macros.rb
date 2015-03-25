@@ -1,25 +1,21 @@
 module ControllerMacros
-  def login_administrator
+  def login_administrator(*args)
     @request.env["devise.mapping"] = Devise.mappings[:member]
-    sign_in create(:administrator, :confirmed)
+    sign_in create(:administrator, :confirmed, *args)
   end
 
-  def login_member
+  def login_member(*args)
     @request.env["devise.mapping"] = Devise.mappings[:member]
-    sign_in create(:member, :confirmed)
+    sign_in create(:member, :confirmed, *args)
   end
 
-  def login_mentor
+  def login_mentor(*args)
     @request.env["devise.mapping"] = Devise.mappings[:member]
-    sign_in create(:mentor, :confirmed)
+    sign_in create(:mentor, :confirmed, *args)
   end
 
-  def login_staff
+  def login_staff(*args)
     @request.env["devise.mapping"] = Devise.mappings[:member]
-    sign_in create(:staff, :confirmed)
-  end
-
-  def current_community
-    controller.current_member.try(:community)
+    sign_in create(:staff, :confirmed, *args)
   end
 end
