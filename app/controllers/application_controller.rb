@@ -12,9 +12,8 @@ class ApplicationController < ActionController::Base
   protected
 
   def current_community
-    if params[:community_id]
-      @current_community ||= Community.friendly.find(params[:community_id])
-    end
+    return unless params[:community_id]
+    @current_community ||= Community.friendly.find(params[:community_id])
   end
 
   def current_ability
@@ -60,7 +59,11 @@ class ApplicationController < ActionController::Base
       if request.env["HTTP_REFERER"].present?
         redirect_to :back, :alert => exception.message
       else
-        redirect_to root_url, :alert => exception.message
+        if current_community
+          redirect_to community_url(current_community), :alert => exception.message
+        else
+          redirect_to root_url, :alert => exception.message
+        end
       end
     end
   end
