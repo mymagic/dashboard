@@ -23,7 +23,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       end
 
       scenario 'viewing the user menus' do
-        visit root_path
+        visit community_path(community)
         expect(page).to have_css('nav.navbar-member')
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
@@ -77,10 +77,10 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_unauthorized_message
       end
 
-      # scenario 'viewing dashboard' do
-      #   visit admin_dashboard_path
-      #   expect(page).to have_unauthorized_message
-      # end
+      scenario 'viewing dashboard' do
+        visit community_admin_dashboard_path(community)
+        expect(page).to have_unauthorized_message
+      end
     end
   end
 
@@ -98,6 +98,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
     feature 'inviting a Member who is already member of another community' do
       background do
+        skip "Enable me as soon as working on it"
         as_user administrator
         invite_new_member(
           email: member_of_other_community.email,

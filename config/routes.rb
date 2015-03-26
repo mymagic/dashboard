@@ -5,10 +5,6 @@ Rails.application.routes.draw do
       invitations: 'invitations',
       sessions: 'sessions'
     }
-
-    namespace :admin do
-      get :dashboard
-    end
   end
 
   resources :communities, path: '', except: :index do
@@ -19,6 +15,8 @@ Rails.application.routes.draw do
       patch 'book', on: :member
       delete 'cancel', on: :member
     end
+
+    get 'admin/dashboard'
 
     namespace :admin do
       resources :companies
