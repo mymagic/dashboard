@@ -23,7 +23,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       end
 
       scenario 'viewing the user menus' do
-        visit root_path
+        visit community_path(community)
         expect(page).to have_css('nav.navbar-member')
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
