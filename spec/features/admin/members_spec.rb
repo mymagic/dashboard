@@ -77,10 +77,10 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_unauthorized_message
       end
 
-      # scenario 'viewing dashboard' do
-      #   visit admin_dashboard_path
-      #   expect(page).to have_unauthorized_message
-      # end
+      scenario 'viewing dashboard' do
+        visit community_admin_dashboard_path(community)
+        expect(page).to have_unauthorized_message
+      end
     end
   end
 

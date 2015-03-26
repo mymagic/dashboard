@@ -4,10 +4,6 @@ Rails.application.routes.draw do
     invitations: 'invitations'
   }
 
-  namespace :admin do
-    get :dashboard
-  end
-
   resources :communities, path: '', except: :index do
     devise_for :members, only: [:sessions], controllers: {
       sessions: 'sessions'
@@ -20,6 +16,8 @@ Rails.application.routes.draw do
       patch 'book', on: :member
       delete 'cancel', on: :member
     end
+
+    get 'admin/dashboard'
 
     namespace :admin do
       resources :companies
