@@ -4,7 +4,7 @@ shared_examples "accessible by" do |*authorized_members|
     regular_member: -> (_context) { login_member(community: community) },
     staff: -> (_context) { login_staff(community: community) },
     mentor: -> (_context) { login_mentor(community: community) },
-    unauthorized: -> (_context) {}
+    unauthorized: -> (_context) { sign_out controller.current_member if controller.current_member }
   }
 
   all_members.map do |role, login|
@@ -21,7 +21,7 @@ shared_examples "accessible by" do |*authorized_members|
         context "#{ role }" do
           before &login
           it "redirects to login" do
-            expect(response).to_not redirect_to(new_member_session_path(community))
+            expect(response).to redirect_to(new_member_session_path(community))
           end
         end
       else
