@@ -13,7 +13,7 @@ shared_examples "accessible by" do |*authorized_members|
         before &login
         it "displays the page without errors" do
           expect(response).to_not redirect_to(community_path(community))
-          expect(response).to_not redirect_to(new_member_community_session_path(community))
+          expect(response).to_not redirect_to(new_member_session_path(community))
         end
       end
     else
@@ -21,7 +21,7 @@ shared_examples "accessible by" do |*authorized_members|
         context "#{ role }" do
           before &login
           it "redirects to login" do
-            expect(response).to_not redirect_to(new_member_community_session_path(community))
+            expect(response).to_not redirect_to(new_member_session_path(community))
           end
         end
       else
