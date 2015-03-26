@@ -54,15 +54,15 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     if current_member.nil?
       session[:next] = request.fullpath
-      redirect_to login_url, :alert => "You have to log in to continue."
+      redirect_to login_url, alert: "You have to log in to continue."
     else
       if request.env["HTTP_REFERER"].present?
-        redirect_to :back, :alert => exception.message
+        redirect_to :back, alert: exception.message
       else
         if current_community
-          redirect_to community_url(current_community), :alert => exception.message
+          redirect_to community_url(current_community), alert: exception.message
         else
-          redirect_to root_url, :alert => exception.message
+          redirect_to root_url, alert: exception.message
         end
       end
     end
