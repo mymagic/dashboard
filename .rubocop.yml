@@ -1,0 +1,178 @@
+Alias:
+  Enabled: false
+
+AsciiComments:
+  Enabled: false
+
+AsciiIdentifiers:
+  Enabled: false
+
+BlockNesting:
+  Enabled: false
+
+CaseEquality:
+  Enabled: false
+
+CharacterLiteral:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+CollectionMethods:
+  PreferredMethods:
+    find: find
+    reduce: inject
+    collect: map
+    find_all: select
+
+ColonMethodCall:
+  Enabled: false
+
+CommentAnnotation:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+DotPosition:
+  EnforcedStyle: trailing
+
+DoubleNegation:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+FileName:
+  Enabled: false
+
+FormatString:
+  Enabled: false
+
+HashSyntax:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+IfWithSemicolon:
+  Enabled: false
+
+LineEndConcatenation:
+  Enabled: false
+
+LineLength:
+  Max: 80
+
+NumericLiterals:
+  Enabled: false
+
+OneLineConditional:
+  Enabled: false
+
+OpMethod:
+  Enabled: false
+
+ParameterLists:
+  Enabled: false
+
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%': '{}'
+
+PerlBackrefs:
+  Enabled: false
+
+PredicateName:
+  NamePrefixBlacklist:
+    - is_
+
+Proc:
+  Enabled: false
+
+RaiseArgs:
+  Enabled: false
+
+RedundantSelf:
+  Enabled: false
+
+RegexpLiteral:
+  Enabled: false
+
+RescueModifier:
+  Enabled: false
+
+SingleLineBlockParams:
+  Enabled: false
+
+SingleLineMethods:
+  Enabled: false
+
+SignalException:
+  Enabled: false
+
+SpecialGlobalVars:
+  Enabled: false
+
+VariableInterpolation:
+  Enabled: false
+
+TrailingComma:
+  Enabled: false
+
+TrivialAccessors:
+  Enabled: false
+
+VariableInterpolation:
+  Enabled: false
+
+WhenThen:
+  Enabled: false
+
+WhileUntilModifier:
+  Enabled: false
+
+# Lint
+
+AmbiguousOperator:
+  Enabled: false
+
+AmbiguousRegexpLiteral:
+  Enabled: false
+
+AssignmentInCondition:
+  Enabled: false
+
+ElseLayout:
+  Enabled: false
+
+HandleExceptions:
+  Enabled: false
+
+InvalidCharacterLiteral:
+  Enabled: false
+
+LiteralInInterpolation:
+  Enabled: false
+
+Loop:
+  Enabled: false
+
+ParenthesesAsGroupedExpression:
+  Enabled: false
+
+RequireParentheses:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+UnderscorePrefixedVariableName:
+  Enabled: false
+
+Void:
+  Enabled: false
+
+HashSyntax:
+  EnforcedStyle: ruby19
