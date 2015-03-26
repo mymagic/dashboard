@@ -1,2 +1,1 @@
-<%= form.input :avatar, hint: form.object.avatar.present? ? image_tag(form.object.avatar.url(:thumb)) : false %>
-<%= form.input :avatar_cache, as: :hidden %>
+<%= form.input :avatar, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
