@@ -35,12 +35,12 @@ module FeatureHelper
     click_button 'Log in'
   end
 
-  def invite_new_member(email, attributes = {})
+  def invite_new_member(email:, community:, attributes: {})
     attributes = {
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
     }.merge!(attributes)
 
-    visit new_community_admin_member_path(attributes[:community_id])
+    visit new_community_admin_member_path(community)
 
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name]
