@@ -18,7 +18,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       end
 
       scenario 'viewing dashboard' do
-        visit community_admin_dashboard_path(community)
+        visit admin_dashboard_path(community)
         expect(page).to have_css('nav.navbar-admin')
       end
 
@@ -46,7 +46,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       end
 
       scenario 'viewing dashboard' do
-        visit community_admin_dashboard_path(community)
+        visit admin_dashboard_path(community)
         expect(page).to have_css('nav.navbar-admin')
       end
 

@@ -1,14 +1,13 @@
 Rails.application.routes.draw do
-  devise_for :members, skip: [:sessions], controllers: {
-    registrations: 'registrations',
-    invitations: 'invitations'
-  }
-
-  resources :communities, path: '', except: :index do
-    devise_for :members, only: [:sessions], controllers: {
+  scope ':community_id' do
+    devise_for :members, controllers: {
+      registrations: 'registrations',
+      invitations: 'invitations',
       sessions: 'sessions'
     }
+  end
 
+  resources :communities, path: '', except: :index do
     resources :members, only: [:index, :show]
     resources :companies, only: [:index, :show] do
       resources :members, only: [:new, :create, :edit, :update]

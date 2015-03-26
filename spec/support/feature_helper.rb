@@ -1,7 +1,7 @@
 module FeatureHelper
   # Helper for Warden login without having to go through UI. For faster sign-in
   def as_user(member, &block)
-    login_as(member, scope: :member)
+    login_as(member, scope: :member, community_id: create(:community))
     block.call if block.present?
     self
   end
@@ -27,7 +27,7 @@ module FeatureHelper
   end
 
   def log_in(community, email, password = 'password0')
-    visit new_member_community_session_path(community)
+    visit new_member_session_path(community)
 
     fill_in 'Email',  with: email
     fill_in 'Password', with: password
@@ -98,7 +98,7 @@ module FeatureHelper
   end
 
   def update_my_account(attributes = {})
-    visit edit_member_registration_path
+    visit edit_member_registration_path(attributes[:community])
 
     fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
@@ -113,8 +113,8 @@ module FeatureHelper
     expect(page).to have_content("Your account has been updated successfully.")
   end
 
-  def cancel_my_account
-    visit edit_member_registration_path
+  def cancel_my_account(community)
+    visit edit_member_registration_path(community)
 
     click_link 'Cancel my account'
 
