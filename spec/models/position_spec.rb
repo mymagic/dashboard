@@ -5,7 +5,7 @@ RSpec.describe Position, type: :model do
     subject { build(:position) }
 
     it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_uniqueness_of(:name) }
+    it { is_expected.to validate_uniqueness_of(:name).scoped_to(:community_id) }
 
     it { is_expected.to have_many(:companies_members_positions).dependent(:destroy) }
   end

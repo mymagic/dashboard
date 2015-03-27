@@ -3,7 +3,7 @@ class Position < ActiveRecord::Base
   ranks :priority_order
 
   validates :name, :community, presence: true
-  validates :name, uniqueness: :true
+  validates :name, uniqueness: { scope: :community_id }
 
   has_many :companies_members_positions, dependent: :destroy
   belongs_to :community
