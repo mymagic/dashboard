@@ -17,7 +17,11 @@ FactoryGirl.define do
     before(:create) do |member|
       member.companies_positions << build(:companies_position,
                                           :approved,
-                                          member: member)
+                                          member: member,
+                                          position: create(
+                                            :position,
+                                            community: member.community
+                                          ))
     end
   end
 
