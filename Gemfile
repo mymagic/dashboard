@@ -69,9 +69,6 @@ group :development, :test do
 
   # guard to auto-run specs
   gem 'guard-rspec'
-
-  # A library for generating fake data such as names, addresses, and phone numbers.
-  gem 'faker'
 end
 
 group :test do
