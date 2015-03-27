@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Session', type: :feature, js: false do
-  feature "Log in" do
+  feature "Log in and Log out" do
     given(:community) { create(:community) }
     given(:administrator) { create(:administrator, :confirmed, community: community) }
     given(:staff) { create(:staff, :confirmed, community: community) }
@@ -10,42 +10,26 @@ RSpec.describe 'Session', type: :feature, js: false do
 
     context 'as administrator' do
       given!(:user) { administrator }
-      scenario 'logging in' do
-        visit root_path
-        expect_to_be_signed_out
-        log_in community, user.email
-        expect_to_be_signed_in
-      end
+      it_behaves_like "logging in"
+      it_behaves_like "logging out"
     end
 
     context 'as staff' do
       given!(:user) { staff }
-      scenario 'logging in' do
-        visit root_path
-        expect_to_be_signed_out
-        log_in community, user.email
-        expect_to_be_signed_in
-      end
+      it_behaves_like "logging in"
+      it_behaves_like "logging out"
     end
 
     context 'as regular member' do
       given!(:user) { member }
-      scenario 'logging in' do
-        visit root_path
-        expect_to_be_signed_out
-        log_in community, user.email
-        expect_to_be_signed_in
-      end
+      it_behaves_like "logging in"
+      it_behaves_like "logging out"
     end
 
     context 'as mentor' do
       given!(:user) { mentor }
-      scenario 'logging in' do
-        visit root_path
-        expect_to_be_signed_out
-        log_in community, user.email
-        expect_to_be_signed_in
-      end
+      it_behaves_like "logging in"
+      it_behaves_like "logging out"
     end
   end
 end
