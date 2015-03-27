@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :community do
-    name { Faker::Company.name }
+    name { generate(:community_name) }
     slug { friendly_id }
   end
 end
