@@ -42,7 +42,7 @@ module FeatureHelper
   end
 
   def reset_password(member, new_password = 'newpassword0')
-    visit new_member_session_path
+    visit new_member_session_path(member.community)
     click_link "Forgot your password?"
 
     expect(page).to have_content 'Forgot your password?'
@@ -84,7 +84,7 @@ module FeatureHelper
   end
 
   def invite_new_company_member(company, email, attributes = {})
-    visit new_company_member_path(company)
+    visit new_community_company_member_path(company.community, company)
 
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]

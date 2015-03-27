@@ -1,7 +1,7 @@
 class MembersController < ApplicationController
   before_action :authenticate_member!
   load_resource :company
-  load_and_authorize_resource through: :current_community
+  load_resource through: :current_community
   skip_authorize_resource only: [:new, :create]
 
   def index
@@ -24,7 +24,7 @@ class MembersController < ApplicationController
 
     respond_to do |format|
       if member_invited
-        format.html { redirect_to company_path(@company), notice: 'Member was successfully invited.' }
+        format.html { redirect_to community_company_path(@company.community, @company), notice: 'Member was successfully invited.' }
         format.json { render json: @member, status: :created }
       else
         @member.companies_positions.build(approved: true, company: @company) unless @member.companies_positions.any?
@@ -55,6 +55,6 @@ class MembersController < ApplicationController
   end
 
   def invite_member(&block)
-    Member.invite!(member_params, current_member, &block)
+    Member.invite!(member_params.merge(community_id: current_community.id), current_member, &block)
   end
 end

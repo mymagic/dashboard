@@ -16,10 +16,12 @@ RSpec.describe MembersController, type: :controller do
 
   describe "POST #create" do
     let(:member_required_attributes) { { email: 'email@example.com' } }
-    let(:company) { create(:company) }
+    let(:community) { create(:community) }
+    let(:company) { create(:company, community: community) }
+
 
     def invite_new_member(attributes = {})
-      put :create, company_id: company.id, member: (member_required_attributes).merge(attributes)
+      put :create, community_id: company.community, company_id: company, member: (member_required_attributes).merge(attributes)
     end
 
     it_behaves_like "accessible by", :administrator, :staff do
@@ -27,8 +29,8 @@ RSpec.describe MembersController, type: :controller do
     end
 
     context 'as manager of company' do
-      let(:member) { create(:member, :confirmed) }
-      let(:position) { create(:position) }
+      let(:member) { create(:member, :confirmed, community: community) }
+      let(:position) { create(:position, community: community) }
       before do
         CompaniesMembersPosition.create(
           position: position,
@@ -56,7 +58,7 @@ RSpec.describe MembersController, type: :controller do
       before { login_administrator }
 
       describe 'inviting a Member to the company' do
-        let(:position) { create(:position) }
+        let(:position) { create(:position, community: community) }
         before do
           invite_new_member(
             companies_positions_attributes: [
