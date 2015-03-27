@@ -15,9 +15,9 @@ module FeatureHelper
   end
 
   def expect_to_be_signed_out
-    # within(:css, 'nav.navbar-member') do
-    #   expect(page).to have_content("Log in")
-    # end
+    within(:css, 'nav.navbar-member') do
+      expect(page).to have_content("Log in")
+    end
   end
 
   def expect_to_be_signed_in

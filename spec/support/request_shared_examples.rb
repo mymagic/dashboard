@@ -35,3 +35,21 @@ shared_examples "accessible by" do |*authorized_members|
     end
   end
 end
+
+shared_examples "logging in" do
+  it "logs the user in" do
+    visit community_path(community)
+    expect_to_be_signed_out
+    log_in community, user.email
+    expect_to_be_signed_in
+  end
+end
+
+shared_examples "logging out" do
+  it "logs the user out" do
+    log_in community, user.email
+    expect_to_be_signed_in
+    sign_out
+    expect_to_be_signed_out
+  end
+end
