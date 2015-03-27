@@ -3,8 +3,8 @@
   <div class="form-inputs">
     <%= f.input :time, autofocus: true, wrapper_html: { class: 'datetime-inline' } %>
     <%= f.input :time_zone, include_blank: 'Please select a time zone…' %>
-    <%= f.association :mentor, collection: Member.ordered, label_method: :full_name %>
-    <%= f.association :participant, collection: Member.ordered, label_method: :full_name %>
+    <%= f.association :mentor, collection: current_community.members.active.ordered, label_method: :full_name %>
+    <%= f.association :participant, collection: current_community.members.active.ordered, label_method: :full_name %>
   </div>
   <div class="form-actions text-right">
     <%= f.button :submit, "Save" %>
