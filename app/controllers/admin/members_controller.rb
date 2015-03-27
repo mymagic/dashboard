@@ -9,7 +9,7 @@ module Admin
     end
 
     def new
-      @member = Member.new(time_zone: current_member.time_zone)
+      @member.time_zone = current_member.time_zone
       @member.companies_positions.build(approved: true)
     end
 
