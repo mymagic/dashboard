@@ -93,8 +93,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       create(:member, :confirmed, community: other_community)
     end
 
-    let!(:company) { create(:company) }
-    let!(:position) { create(:position) }
+    let!(:company) { create(:company, community: community) }
+    let!(:position) { create(:position, community: community) }
 
     feature 'inviting a Member who is already member of another community' do
       background do
