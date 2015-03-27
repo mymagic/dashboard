@@ -11,13 +11,14 @@ RSpec.describe Position, type: :model do
   end
 
   context 'class Methods' do
-    let(:confirmed_member) { create(:member, :confirmed)}
-    let(:unconfirmed_member) { create(:member) }
-    let(:company) { create(:company) }
-    let(:another_company) { create(:company) }
-    let(:position) { create(:position) }
-    let(:unapproved_position) { create(:position) }
-    let(:unimportant_position) { create(:position) }
+    let(:community) { create(:community) }
+    let(:confirmed_member) { create(:member, :confirmed, community: community)}
+    let(:unconfirmed_member) { create(:member, community: community) }
+    let(:company) { create(:company, community: community) }
+    let(:another_company) { create(:company, community: community) }
+    let(:position) { create(:position, community: community) }
+    let(:unapproved_position) { create(:position, community: community) }
+    let(:unimportant_position) { create(:position, community: community) }
 
     let!(:approved_cmp_for_confirmed_member_at_other_company) {
       create(:companies_members_position,
