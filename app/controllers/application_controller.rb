@@ -32,39 +32,43 @@ class ApplicationController < ActionController::Base
     accept_invitation_params = member_params.push(:invitation_token)
     sign_in_params           = member_params.push(:community_id)
 
-    if params[:controller] == 'registrations' && params[:action] == 'update'
+    case params[:controller]
+    when 'registrations'
       devise_parameter_sanitizer.for(:account_update) do |u|
         u.permit(account_update_params)
-      end
-    end
-
-    if params[:controller] == 'invitations' && params[:action] == 'update'
+      end if params[:action] == 'update'
+    when 'invitations'
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
         u.permit(accept_invitation_params)
-      end
-    end
-
-    if params[:controller] == 'sessions'
+      end if params[:action] == 'update'
+    when 'sessions'
       devise_parameter_sanitizer.for(:sign_in) do |u|
         u.permit(sign_in_params)
       end
     end
   end
 
+  def after_sign_out_path_for(_resource_or_scope)
+    current_community ? community_path(current_community) : root_path
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
-    if current_member.nil?
-      session[:next] = request.fullpath
-      redirect_to login_url, alert: "You have to log in to continue."
+    if current_member
+      msg = exception.message
+      url = if request.env["HTTP_REFERER"].present?
+              :back
+            else
+              community_path(current_member.community)
+            end
     else
-      if request.env["HTTP_REFERER"].present?
-        redirect_to :back, alert: exception.message
-      else
-        if current_community
-          redirect_to community_url(current_community), alert: exception.message
-        else
-          redirect_to root_url, alert: exception.message
-        end
-      end
+      msg = "You have to log in to continue."
+      url = if current_community
+              new_member_session_path(current_community)
+            else
+              root_path
+            end
+      session[:next] = request.fullpath
     end
+    redirect_to url, alert: msg
   end
 end

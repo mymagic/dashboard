@@ -1,7 +1,7 @@
 module FeatureHelper
   # Helper for Warden login without having to go through UI. For faster sign-in
   def as_user(member, &block)
-    login_as(member, scope: :member, community_id: create(:community))
+    login_as(member, scope: :member, community_id: member.community)
     block.call if block.present?
     self
   end
@@ -15,9 +15,9 @@ module FeatureHelper
   end
 
   def expect_to_be_signed_out
-    # within(:css, 'nav.navbar-member') do
-    #   expect(page).to have_content("Log in")
-    # end
+    within(:css, 'nav.navbar-member') do
+      expect(page).to have_content("Log in")
+    end
   end
 
   def expect_to_be_signed_in
