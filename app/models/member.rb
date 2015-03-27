@@ -7,7 +7,9 @@ class Member < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable,
          :recoverable, :rememberable, :trackable, :registerable,
-         :confirmable, validate_on_invite: true, authentication_keys: [:email, :community_id]
+         :confirmable, validate_on_invite: true,
+         authentication_keys: [:email, :community_id],
+         invite_key: { email: Devise.email_regexp, community_id: /\d+/ }
 
   validates :first_name, :last_name, :time_zone, presence: true, on: :update
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
