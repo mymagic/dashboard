@@ -51,6 +51,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def after_sign_out_path_for(_resource_or_scope)
+    current_community ? community_path(current_community) : root_path
+  end
   rescue_from CanCan::AccessDenied do |exception|
     if current_member.nil?
       session[:next] = request.fullpath
