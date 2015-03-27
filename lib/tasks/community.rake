@@ -18,7 +18,7 @@ namespace :community do
         Rails.logger.info 'Creating an administrator...'
         Member.invite!(
           email: ENV['ADMIN_EMAIL'],
-          community: community,
+          community_id: community.id,
           role: 'administrator'
         ).valid_invitation? || raise(ActiveRecord::RecordInvalid)
       rescue => ex
