@@ -98,7 +98,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
     feature 'inviting a Member who is already member of another community' do
       background do
-        skip "Enable me as soon as working on it"
         as_user administrator
         invite_new_member(
           email: member_of_other_community.email,
