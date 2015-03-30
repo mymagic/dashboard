@@ -76,6 +76,6 @@ class ApplicationController < ActionController::Base
   end
 
   def community_not_found
-    redirect_to root_url, alert: 'There is no community at that URL right now.'
+    redirect_to root_url, alert: 'Community does not exist.'
   end
 end
