@@ -19,7 +19,8 @@ namespace :community do
         Member.invite!(
           email: ENV['ADMIN_EMAIL'],
           community_id: community.id,
-          role: 'administrator'
+          role: 'administrator',
+          time_zone: Time.zone.name
         ).valid_invitation? || raise(ActiveRecord::RecordInvalid)
       rescue => ex
         Rails.logger.error "Fail to create a community: #{ex.message}"
