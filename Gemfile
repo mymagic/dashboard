@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.0'
+ruby '2.2.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -50,6 +50,9 @@ gem 'carrierwave'
 # Use ranked-model for sortable lists
 gem 'ranked-model'
 
+# Create pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models
+gem 'friendly_id'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -65,9 +68,6 @@ group :development, :test do
   # pry as a better ruby command line
   gem 'pry-rails'
   gem 'awesome_print'
-
-  # A library for generating fake data such as names, addresses, and phone numbers.
-  gem 'faker'
 
   # guard to auto-run specs
   gem 'guard-rspec'

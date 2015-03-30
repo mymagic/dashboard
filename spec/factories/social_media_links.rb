@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :social_media_link do
     service { SocialMediaLink::SERVICES.sample }
-    handle  { Faker::Internet.user_name }
+    handle  { generate(:handle) }
 
     trait :member do
       attachable { association(:member) }

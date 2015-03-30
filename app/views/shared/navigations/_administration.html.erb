@@ -7,17 +7,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <strong><%= link_to 'Administration', admin_dashboard_path, class: 'navbar-brand' %></strong>
+      <strong><%= link_to 'Administration', community_admin_dashboard_path(current_community), class: 'navbar-brand' %></strong>
     </div>
     <div class="navbar-collapse collapse" id="navbar-admin">
       <ul class="nav navbar-nav">
-        <%= nav_link "Members", admin_members_path if can? :administrate, Member %>
-        <%= nav_link "Companies", admin_companies_path if can? :administrate, Company  %>
-        <%= nav_link "Positions", admin_positions_path if can? :administrate, Position %>
-        <%= nav_link "Office Hours", admin_office_hours_path if can? :administrate, OfficeHour %>
+        <%= nav_link "Community", edit_community_path(current_community) if can? :administrate, Community  %>
+        <%= nav_link "Companies", community_admin_companies_path(current_community) if can? :administrate, Company  %>
+        <%= nav_link "Members", community_admin_members_path(current_community) if can? :administrate, Member %>
+        <%= nav_link "Positions", community_admin_positions_path(current_community) if can? :administrate, Position %>
+        <%= nav_link "Office Hours", community_admin_office_hours_path(current_community) if can? :administrate, OfficeHour %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <%= nav_link "Invite new Member", new_admin_member_path if can? :create, Member %>
+        <%= nav_link "Invite new Member", new_community_admin_member_path(current_community) if can? :create, Member %>
       </ul>
     </div>
   </div>

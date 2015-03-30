@@ -3,13 +3,16 @@ class Company < ActiveRecord::Base
 
   has_many :social_media_links, as: :attachable
 
-  validates :name, presence: true
+  validates :name, :community, presence: true
   validates :logo, presence: true, on: :update
   validates :description, length: { minimum: 5 }, allow_blank: true
   validates(
     :website,
     format: { with: URI::regexp(%w(http https)) },
     allow_blank: true)
+
+  # Associations
+  belongs_to :community
 
   scope :ordered, -> { order(name: :desc) }
 

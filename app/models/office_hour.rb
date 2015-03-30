@@ -1,9 +1,10 @@
 class OfficeHour < ActiveRecord::Base
-  validates :mentor, :time, :time_zone, presence: true
+  validates :community, :mentor, :time, :time_zone, presence: true
   validate :cannot_book_own_office_hour
 
   belongs_to :participant, class: Member
   belongs_to :mentor, class: Member
+  belongs_to :community
 
   scope :available, -> { where(participant: nil) }
   scope :booked,    -> { where.not(participant: nil) }

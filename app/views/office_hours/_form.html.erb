@@ -1,7 +1,7 @@
-<%= simple_form_for(office_hour, html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+<%= simple_form_for([current_community, office_hour], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
   <%= f.error_notification %>
   <%= f.input :time, autofocus: true, wrapper_html: { class: 'datetime-inline' } %>
-  <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>  
+  <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
   <div class='text-right'>
     <%= f.button :submit, "Submit" %>
   </div>

@@ -6,6 +6,7 @@ FactoryGirl.define do
     time_zone 'Bangkok'
     password "password0"
     password_confirmation "password0"
+    community
     trait :confirmed do
       after :create, &:confirm!
     end
@@ -16,7 +17,11 @@ FactoryGirl.define do
     before(:create) do |member|
       member.companies_positions << build(:companies_position,
                                           :approved,
-                                          member: member)
+                                          member: member,
+                                          position: create(
+                                            :position,
+                                            community: member.community
+                                          ))
     end
   end
 
