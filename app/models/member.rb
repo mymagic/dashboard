@@ -7,13 +7,15 @@ class Member < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable,
          :recoverable, :rememberable, :trackable, :registerable,
-         :confirmable, validate_on_invite: true, authentication_keys: [:email, :community_id]
+         :confirmable, validate_on_invite: true,
+         authentication_keys: [:email, :community_id],
+         invite_key: { email: Devise.email_regexp, community_id: /\d+/ }
 
   validates :first_name, :last_name, :time_zone, presence: true, on: :update
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
 
   # Override Validatable module
-  validates :email, presence: true
+  validates :email, :community, presence: true
   validates :email, format: { with: Devise.email_regexp }, allow_blank: true, if: :email_changed?
   validates :email, uniqueness: { scope: :community_id }, allow_blank: true, if: :email_changed?
 
@@ -88,6 +90,20 @@ class Member < ActiveRecord::Base
 
     def positions_in_companies
       Position.positions_in_companies(member: self)
+    end
+
+    def can_invite_member_to_company?(company)
+      can?(:invite_company_member, company) unless company.blank?
+    end
+
+    def manageable_companies
+      companies_positions.
+        includes(:company).
+        manageable.
+        approved.
+        map(&:company).
+        flatten.
+        uniq
     end
 
     private

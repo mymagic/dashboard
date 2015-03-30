@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.0'
+ruby '2.2.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -69,9 +69,6 @@ group :development, :test do
 
   # guard to auto-run specs
   gem 'guard-rspec'
-
-  # A library for generating fake data such as names, addresses, and phone numbers.
-  gem 'faker'
 end
 
 group :test do

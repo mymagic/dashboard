@@ -7,9 +7,8 @@ class OfficeHoursController < ApplicationController
   end
 
   def create
-    @office_hour = current_member.office_hours_as_mentor.new(office_hour_params)
     respond_to do |format|
-      if @office_hour.save
+      if @office_hour.update_attributes(office_hour_params.merge(mentor: current_member))
         format.html { redirect_to :back, notice: 'Office Hour was successfully created.' }
         format.json { render json: @office_hour, status: :created }
       else

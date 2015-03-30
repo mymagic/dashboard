@@ -30,6 +30,11 @@ class Ability
     cannot :manage, :all
     cannot :read, :all
     cannot :administrate, :application
+    cannot :invite_employee, Company
+    cannot :manage_company, Company
+    cannot :invite_company_member, Company
+
+    can :read, Community
 
     can :read, Community
 
@@ -49,11 +54,14 @@ class Ability
 
       can :read, Member
       can :create, Member
-      can :update, Member, role: ['administrator', 'staff', 'mentor', '']
-      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '']
+      can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
+      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :resend_invitation, Member
 
       can_invite :administrator, :staff, :mentor, :regular_member
+
+      can :manage_company, Company
+      can :invite_company_member, Company
 
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
@@ -67,11 +75,14 @@ class Ability
 
       can :read, Member
       can :create, Member
-      can :update, Member, role: ['mentor', '']
-      can :destroy, Member, role: ['mentor', '']
+      can :update, Member, role: ['mentor', '', nil]
+      can :destroy, Member, role: ['mentor', '', nil]
       can :resend_invitation, Member
 
       can_invite :mentor, :regular_member
+
+      can :manage_company, Company
+      can :invite_company_member, Company
 
       create_companies_positions(member)
       book_and_cancel_office_hours(member)
@@ -89,6 +100,20 @@ class Ability
       can :read, Company
 
       can :read, OfficeHour
+
+      can :manage_company, Company do |company|
+        member.manageable_companies.include?(company)
+      end
+
+      can :create, Member do |new_member|
+        new_member.companies_positions.map(&:company).uniq.any? &&
+          (new_member.companies_positions.map(&:company).uniq -
+            member.manageable_companies).empty?
+      end
+
+      can :invite_company_member, Company do |company|
+        member.manageable_companies.include?(company)
+      end
 
       create_companies_positions(member)
       book_and_cancel_office_hours(member)

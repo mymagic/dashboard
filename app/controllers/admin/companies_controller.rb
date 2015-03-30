@@ -29,7 +29,7 @@ module Admin
       @company.update(company_params)
       respond_to do |format|
         if @company.save
-          format.html { redirect_to admin_companies_path, notice: 'Company was successfully updated.' }
+          format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully updated.' }
           format.json { render json: @company, status: :created }
         else
           format.html { render 'edit', alert: 'Error updating company.' }

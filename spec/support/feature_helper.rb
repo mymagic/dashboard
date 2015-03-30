@@ -1,7 +1,7 @@
 module FeatureHelper
   # Helper for Warden login without having to go through UI. For faster sign-in
   def as_user(member, &block)
-    login_as(member, scope: :member)
+    login_as(member, scope: :member, community_id: member.community)
     block.call if block.present?
     self
   end
@@ -15,9 +15,9 @@ module FeatureHelper
   end
 
   def expect_to_be_signed_out
-    # within(:css, 'nav.navbar-member') do
-    #   expect(page).to have_content("Log in")
-    # end
+    within(:css, 'nav.navbar-member') do
+      expect(page).to have_content("Log in")
+    end
   end
 
   def expect_to_be_signed_in
@@ -27,7 +27,7 @@ module FeatureHelper
   end
 
   def log_in(community, email, password = 'password0')
-    visit new_member_community_session_path(community)
+    visit new_member_session_path(community)
 
     fill_in 'Email',  with: email
     fill_in 'Password', with: password
@@ -35,12 +35,40 @@ module FeatureHelper
     click_button 'Log in'
   end
 
-  def invite_new_member(email, attributes = {})
+  def expect_successful_password_reset(member)
+    reset_password(member)
+    expect(page).to have_content 'Your password has been changed '\
+                            'successfully. You are now signed in.'
+  end
+
+  def reset_password(member, new_password = 'newpassword0')
+    visit new_member_session_path(member.community)
+    click_link "Forgot your password?"
+
+    expect(page).to have_content 'Forgot your password?'
+
+    fill_in 'Email', with: member.email
+
+    click_button 'Send me reset password instructions'
+
+    open_email(member.email)
+
+    current_email.click_link 'Change my password'
+
+    expect(page).to have_content 'Change your password'
+
+    fill_in 'New password', with: new_password
+    fill_in 'Confirm your new password', with: new_password
+
+    click_button 'Change my password'
+  end
+
+  def invite_new_member(email:, community:, attributes: {})
     attributes = {
       first_name: 'Firstname', last_name: 'Lastname', role: 'Regular Member'
     }.merge!(attributes)
 
-    visit new_community_admin_member_path(attributes[:community_id])
+    visit new_community_admin_member_path(community)
 
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name]
@@ -55,8 +83,22 @@ module FeatureHelper
     expect(page).to have_content("Member was successfully invited.")
   end
 
+  def invite_new_company_member(company, email, attributes = {})
+    visit new_community_company_member_path(company.community, company)
+
+    fill_in 'Email',  with: email
+    fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
+    fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
+
+    select attributes[:position], from: 'Position'  if attributes[:position]
+
+    click_button 'Invite'
+
+    expect(page).to have_content("Member was successfully invited.")
+  end
+
   def update_my_account(attributes = {})
-    visit edit_member_registration_path
+    visit edit_member_registration_path(attributes[:community])
 
     fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
@@ -71,8 +113,8 @@ module FeatureHelper
     expect(page).to have_content("Your account has been updated successfully.")
   end
 
-  def cancel_my_account
-    visit edit_member_registration_path
+  def cancel_my_account(community)
+    visit edit_member_registration_path(community)
 
     click_link 'Cancel my account'
 

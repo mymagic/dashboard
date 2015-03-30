@@ -2,7 +2,8 @@ class Position < ActiveRecord::Base
   include RankedModel
   ranks :priority_order
 
-  validates :name, presence: true, uniqueness: :true
+  validates :name, :community, presence: true
+  validates :name, uniqueness: { scope: :community_id }
 
   has_many :companies_members_positions, dependent: :destroy
   belongs_to :community
@@ -35,7 +36,7 @@ class Position < ActiveRecord::Base
   end
 
   def self.all_possible(member:, company:)
-    ordered.where.not(
+    member.community.positions.ordered.where.not(
       id: member.companies_positions.where(company: company).pluck(:position_id)
     )
   end

@@ -15,19 +15,4 @@ class Community < ActiveRecord::Base
   # Validations
   validates :name, :slug, presence: true
   validates :name, :slug, uniqueness: true
-
-  # Callbacks
-  after_create :setup_administrator
-
-  protected
-
-  def setup_administrator
-    members.create!(
-      email: 'admin@example.com',
-      password: 'passw0rd',
-      role: 'administrator',
-      time_zone: ActiveSupport::TimeZone[Time.zone.name],
-      confirmed_at: DateTime.now
-    )
-  end
 end

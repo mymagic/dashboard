@@ -38,9 +38,9 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
-              <%= nav_link "Edit my Account", edit_member_registration_path %>
+              <%= nav_link "Edit my Account", edit_member_registration_path(current_community) %>
               <li class="divider"></li>
-              <%= nav_link "Sign out", destroy_member_community_session_path(current_member.community), method: :delete %>
+              <%= nav_link "Sign out", destroy_member_session_path(current_community), method: :delete %>
             </ul>
           </li>
         </ul>
@@ -49,7 +49,7 @@
       <div class="navbar-collapse collapse" id="navbar">
         <ul class="nav navbar-nav navbar-right">
           <% if current_community %>
-            <%= nav_link "Log in", new_member_community_session_path(current_community) %>
+            <%= nav_link "Log in", new_member_session_path(current_community) %>
           <% end %>
         </ul>
       </div>
