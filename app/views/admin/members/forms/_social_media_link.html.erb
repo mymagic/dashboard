@@ -1,0 +1,12 @@
+<%= form.simple_fields_for :social_media_links do |social_media_link| %>
+  <%= render 'admin/members/forms/social_media_link_fields', f: social_media_link %>
+<% end %>
+
+<%= link_to_add_association 'Add Social Media Link', form, :social_media_links,
+    class: 'btn btn-default',
+    partial: 'admin/members/forms/social_media_link_fields',
+    data: {
+      'association-insertion-node' => '#social_media_links .panel-body',
+      'association-insertion-method' => 'prepend'
+    }
+%>

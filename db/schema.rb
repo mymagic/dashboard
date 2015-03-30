@@ -127,6 +127,15 @@ ActiveRecord::Schema.define(version: 20150324071334) do
 
   add_index "positions", ["community_id"], name: "index_positions_on_community_id", using: :btree
 
+  create_table "social_media_links", force: :cascade do |t|
+    t.string  "service"
+    t.string  "handle"
+    t.integer "attachable_id"
+    t.string  "attachable_type"
+  end
+
+  add_index "social_media_links", ["service", "handle"], name: "index_social_media_links_on_service_and_handle", unique: true, using: :btree
+
   add_foreign_key "companies", "communities"
   add_foreign_key "companies_members_positions", "companies"
   add_foreign_key "companies_members_positions", "members"

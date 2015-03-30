@@ -11,6 +11,8 @@ class Member < ActiveRecord::Base
          authentication_keys: [:email, :community_id],
          invite_key: { email: Devise.email_regexp, community_id: /\d+/ }
 
+  has_many :social_media_links, as: :attachable
+
   validates :first_name, :last_name, :time_zone, presence: true, on: :update
   validates :role, inclusion: { in: ROLES.map(&:to_s) }, allow_blank: true
 
@@ -30,6 +32,8 @@ class Member < ActiveRecord::Base
   scope :active, -> {
     where(invitation_token: nil).where.not(confirmed_at: nil)
   }
+
+  accepts_nested_attributes_for :social_media_links, reject_if: :all_blank, allow_destroy: true
 
   def full_name
     "#{ first_name } #{ last_name }"

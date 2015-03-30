@@ -40,6 +40,9 @@ RSpec.describe Member, type: :model do
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
 
+      # SocialMediaLink
+      it { is_expected.to be_able_to(:manage, SocialMediaLink) }
+
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
     end
@@ -81,6 +84,10 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # SocialMediaLink
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:social_media_link, attachable: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:social_media_link, :member)) }
 
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
@@ -124,6 +131,10 @@ RSpec.describe Member, type: :model do
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
 
+      # SocialMediaLink
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:social_media_link, attachable: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:social_media_link, :member)) }
+
       # CompaniesMembersPosition
       it { is_expected.to_not be_able_to(:have, CompaniesMembersPosition) }
     end
@@ -166,6 +177,10 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # SocialMediaLink
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:social_media_link, attachable: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:social_media_link, :member)) }
 
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }

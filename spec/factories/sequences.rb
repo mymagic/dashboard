@@ -7,6 +7,10 @@ FactoryGirl.define do
     "Name#{ n }"
   end
 
+  sequence :handle do |n|
+    "handle-#{ n }"
+  end
+
   sequence :community_name do |n|
     "community-#{ n }"
   end
