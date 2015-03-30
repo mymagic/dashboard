@@ -36,6 +36,7 @@ class Position < ActiveRecord::Base
   end
 
   def self.all_possible(member:, company:)
+    return [] unless member.can? :have, CompaniesMembersPosition
     member.community.positions.ordered.where.not(
       id: member.companies_positions.where(company: company).pluck(:position_id)
     )

@@ -172,8 +172,20 @@ RSpec.describe Position, type: :model do
             member: confirmed_member, company: company).map(&:position)
         }
         let(:all_positions) { Position.all }
-        it 'includes only positions that have not been requested/approved yet' do
-          expect(subject).to eq all_positions - existing_positions
+        context 'for someone who can have CompaniesMembersPositions' do
+          it 'includes only positions that have not been requested/approved yet' do
+            expect(subject).to eq all_positions - existing_positions
+          end
+        end
+        context 'for someone who can not have CompaniesMembersPositions' do
+          before do
+            allow(confirmed_member).
+              to receive(:can?).with(:have, CompaniesMembersPosition).
+              and_return(false)
+          end
+          it 'is a empty array' do
+            expect(subject).to eq []
+          end
         end
       end
     end

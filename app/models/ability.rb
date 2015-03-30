@@ -20,6 +20,7 @@ class Ability
 
   def create_companies_positions(member)
     cannot :create, CompaniesMembersPosition
+    can :have, CompaniesMembersPosition
     can :create, CompaniesMembersPosition, member_id: member.id
   end
 
@@ -33,6 +34,7 @@ class Ability
     cannot :invite_employee, Company
     cannot :manage_company, Company
     cannot :invite_company_member, Company
+    cannot :have, CompaniesMembersPosition
 
     can :read, Community
 

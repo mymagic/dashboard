@@ -39,6 +39,9 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
@@ -78,6 +81,9 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
@@ -117,6 +123,9 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to_not be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
@@ -157,6 +166,9 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
