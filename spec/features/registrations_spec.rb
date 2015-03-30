@@ -61,6 +61,23 @@ RSpec.describe 'Registrations', type: :feature, js: false do
           expect(page).to have_content('NewFirstName')
         end
       end
+      given(:user) { administrator }
+      it_behaves_like 'changing first name'
+    end
+
+    context 'as staff' do
+      given(:user) { staff }
+      it_behaves_like 'changing first name'
+    end
+
+    context 'as regular member' do
+      given(:user) { member }
+      it_behaves_like 'changing first name'
+    end
+
+    context 'as mentor' do
+      given(:user) { mentor }
+      it_behaves_like 'changing first name'
     end
   end
 
@@ -77,6 +94,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
         cancel_my_account(community)
         expect_to_be_signed_out
       end
+      it_behaves_like "canceling account"
     end
 
     context 'as staff' do
@@ -85,6 +103,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
         cancel_my_account(community)
         expect_to_be_signed_out
       end
+      it_behaves_like "canceling account"
     end
 
     context 'as regular member' do
@@ -93,6 +112,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
         cancel_my_account(community)
         expect_to_be_signed_out
       end
+      it_behaves_like "canceling account"
     end
 
     context 'as mentor' do
@@ -101,6 +121,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
         cancel_my_account(community)
         expect_to_be_signed_out
       end
+      it_behaves_like "canceling account"
     end
   end
 end

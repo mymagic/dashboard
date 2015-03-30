@@ -6,6 +6,10 @@ en:
           attributes:
             companies_positions:
               must_have_at_least_one_approved_companies_positions: must have at least one approved companies position
+        companies_members_position:
+          attributes:
+            member:
+              community_must_be_the_same_as_position_community: community must be the same as position community
         office_hour:
           attributes:
             participant:

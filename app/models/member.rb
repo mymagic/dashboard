@@ -92,6 +92,20 @@ class Member < ActiveRecord::Base
       Position.positions_in_companies(member: self)
     end
 
+    def can_invite_member_to_company?(company)
+      can?(:invite_company_member, company) unless company.blank?
+    end
+
+    def manageable_companies
+      companies_positions.
+        includes(:company).
+        manageable.
+        approved.
+        map(&:company).
+        flatten.
+        uniq
+    end
+
     private
 
     def must_have_at_least_one_approved_companies_positions

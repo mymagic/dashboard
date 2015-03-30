@@ -19,6 +19,11 @@ module ControllerMacros
     sign_in create(:staff, :confirmed, *args)
   end
 
+  def login(member)
+    @request.env["devise.mapping"] = Devise.mappings[:member]
+    sign_in member
+  end
+
   def unauthenticated
     @request.env["warden"].logout
   end
