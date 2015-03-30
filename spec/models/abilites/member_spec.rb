@@ -161,10 +161,11 @@ RSpec.describe Member, type: :model do
   end
 
   context 'as regular member who is a manager' do
-    let(:member) { create(:member) }
-    let(:position) { create(:position) }
-    let(:new_member_for_company) { build(:member) }
-    let(:new_member_for_other_company) { build(:member) }
+    let(:community) { create(:community) }
+    let(:member) { create(:member, community: community) }
+    let(:position) { create(:position, community: community) }
+    let(:new_member_for_company) { build(:member, community: community) }
+    let(:new_member_for_other_company) { build(:member, community: community) }
     before do
       CompaniesMembersPosition.create(
         position: position,
