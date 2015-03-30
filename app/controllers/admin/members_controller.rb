@@ -1,6 +1,6 @@
 module Admin
   class MembersController < AdminController
-    load_and_authorize_resource
+    load_and_authorize_resource through: :current_community
     before_action :allow_without_password, only: :update
 
     def index
@@ -9,7 +9,7 @@ module Admin
     end
 
     def new
-      @member = Member.new(time_zone: current_member.time_zone)
+      @member.time_zone = current_member.time_zone
       @member.companies_positions.build(approved: true)
     end
 
@@ -19,7 +19,7 @@ module Admin
 
       respond_to do |format|
         if member_invited
-          format.html { redirect_to admin_members_path, notice: 'Member was successfully invited.' }
+          format.html { redirect_to community_admin_members_path(current_community), notice: 'Member was successfully invited.' }
           format.json { render json: @member, status: :created }
         else
           @member.companies_positions.build(approved: true)
@@ -37,7 +37,7 @@ module Admin
       @member.update(member_params)
       respond_to do |format|
         if @member.save
-          format.html { redirect_to admin_members_path, notice: 'Member was successfully updated.' }
+          format.html { redirect_to community_admin_members_path(current_community), notice: 'Member was successfully updated.' }
           format.json { render json: @member, status: :created }
         else
           format.html { render 'edit', alert: 'Error updating member.' }
@@ -49,7 +49,7 @@ module Admin
     def resend_invitation
       Member.invite!({ email: @member.email }, current_member)
       respond_to do |format|
-        format.html { redirect_to admin_members_path, notice: 'Member invitation was resend.' }
+        format.html { redirect_to community_admin_members_path(current_community), notice: 'Member invitation was resend.' }
         format.json { render json: @member, status: :created }
       end
     end
@@ -57,7 +57,7 @@ module Admin
     def destroy
       @member.destroy
       respond_to do |format|
-        format.html { redirect_to admin_members_path, notice: 'Member was successfully deleted.' }
+        format.html { redirect_to community_admin_members_path(current_community), notice: 'Member was successfully deleted.' }
         format.json { head :no_content }
       end
     end
@@ -97,7 +97,7 @@ module Admin
     end
 
     def invite_member(&block)
-      Member.invite!(member_params, current_member, &block)
+      Member.invite!(member_params.merge(community_id: current_community.id), current_member, &block)
     end
   end
 end

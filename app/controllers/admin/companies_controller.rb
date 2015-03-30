@@ -1,6 +1,6 @@
 module Admin
   class CompaniesController < AdminController
-    load_and_authorize_resource
+    load_and_authorize_resource through: :current_community
     skip_authorize_resource
 
     def index
@@ -8,14 +8,12 @@ module Admin
     end
 
     def new
-      @company = Company.new
     end
 
     def create
-      @company = Company.new(company_params)
       respond_to do |format|
-        if @company.save
-          format.html { redirect_to admin_companies_path, notice: 'Company was successfully created.' }
+        if @company.update_attributes(company_params)
+          format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully created.' }
           format.json { render json: @company, status: :created }
         else
           format.html { render 'new', alert: 'Error creating company.' }
@@ -31,7 +29,7 @@ module Admin
       @company.update(company_params)
       respond_to do |format|
         if @company.save
-          format.html { redirect_to admin_companies_path, notice: 'Company was successfully updated.' }
+          format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully updated.' }
           format.json { render json: @company, status: :created }
         else
           format.html { render 'edit', alert: 'Error updating company.' }

@@ -8,7 +8,7 @@ RSpec.describe Member, type: :model do
     it { is_expected.to validate_presence_of(:last_name).on(:update) }
     it { is_expected.to validate_presence_of(:time_zone).on(:update) }
     it { is_expected.to validate_presence_of(:email) }
-    it { is_expected.to validate_uniqueness_of(:email) }
+    it { is_expected.to validate_uniqueness_of(:email).scoped_to(:community_id) }
     it { is_expected.to validate_confirmation_of(:password) }
     it { is_expected.to validate_inclusion_of(:role).in_array(Member::ROLES.map(&:to_s)).allow_blank(true) }
 

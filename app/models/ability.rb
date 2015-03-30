@@ -20,6 +20,7 @@ class Ability
 
   def create_companies_positions(member)
     cannot :create, CompaniesMembersPosition
+    can :have, CompaniesMembersPosition
     can :create, CompaniesMembersPosition, member_id: member.id
   end
 
@@ -33,12 +34,19 @@ class Ability
     cannot :invite_employee, Company
     cannot :manage_company, Company
     cannot :invite_company_member, Company
+    cannot :have, CompaniesMembersPosition
+
+    can :read, Community
+
+    can :read, Community
 
     case member.role
     when 'administrator'
       can :administrate, :application
 
       can :administrate, Member
+
+      can :manage, Community, id: member.community_id
 
       can :manage, Position
 
@@ -48,8 +56,8 @@ class Ability
 
       can :read, Member
       can :create, Member
-      can :update, Member, role: ['administrator', 'staff', 'mentor', '']
-      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '']
+      can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
+      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :resend_invitation, Member
 
       can_invite :administrator, :staff, :mentor, :regular_member
@@ -69,8 +77,8 @@ class Ability
 
       can :read, Member
       can :create, Member
-      can :update, Member, role: ['mentor', '']
-      can :destroy, Member, role: ['mentor', '']
+      can :update, Member, role: ['mentor', '', nil]
+      can :destroy, Member, role: ['mentor', '', nil]
       can :resend_invitation, Member
 
       can_invite :mentor, :regular_member

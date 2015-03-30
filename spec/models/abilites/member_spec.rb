@@ -27,6 +27,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:destroy, Member, role: ['administrator', 'staff', 'mentor', '']) }
       it { is_expected.to be_able_to(:resend_invitation, Member) }
 
+      # Community
+      it { is_expected.to be_able_to(:manage, Community) }
+
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
@@ -36,6 +39,9 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
@@ -63,6 +69,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:destroy, Member, role: ['mentor', '']) }
       it { is_expected.to be_able_to(:resend_invitation, Member) }
 
+      # Community
+      it { is_expected.to be_able_to(:read, Community) }
+
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
@@ -72,6 +81,9 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
@@ -99,6 +111,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to_not be_able_to(:destroy, Member) }
       it { is_expected.to_not be_able_to(:resend_invitation, Member) }
 
+      # Community
+      it { is_expected.to be_able_to(:read, Community) }
+
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
@@ -108,6 +123,9 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to_not be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
@@ -136,6 +154,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to_not be_able_to(:destroy, Member) }
       it { is_expected.to_not be_able_to(:resend_invitation, Member) }
 
+      # Community
+      it { is_expected.to be_able_to(:read, Community) }
+
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
@@ -145,14 +166,18 @@ RSpec.describe Member, type: :model do
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
+
+      # CompaniesMembersPosition
+      it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
     end
   end
 
   context 'as regular member who is a manager' do
-    let(:member) { create(:member) }
-    let(:position) { create(:position) }
-    let(:new_member_for_company) { build(:member) }
-    let(:new_member_for_other_company) { build(:member) }
+    let(:community) { create(:community) }
+    let(:member) { create(:member, community: community) }
+    let(:position) { create(:position, community: community) }
+    let(:new_member_for_company) { build(:member, community: community) }
+    let(:new_member_for_other_company) { build(:member, community: community) }
     before do
       CompaniesMembersPosition.create(
         position: position,

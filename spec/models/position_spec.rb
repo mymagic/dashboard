@@ -5,19 +5,20 @@ RSpec.describe Position, type: :model do
     subject { build(:position) }
 
     it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_uniqueness_of(:name) }
+    it { is_expected.to validate_uniqueness_of(:name).scoped_to(:community_id) }
 
     it { is_expected.to have_many(:companies_members_positions).dependent(:destroy) }
   end
 
   context 'class Methods' do
-    let(:confirmed_member) { create(:member, :confirmed)}
-    let(:unconfirmed_member) { create(:member) }
-    let(:company) { create(:company) }
-    let(:another_company) { create(:company) }
-    let(:position) { create(:position) }
-    let(:unapproved_position) { create(:position) }
-    let(:unimportant_position) { create(:position) }
+    let(:community) { create(:community) }
+    let(:confirmed_member) { create(:member, :confirmed, community: community)}
+    let(:unconfirmed_member) { create(:member, community: community) }
+    let(:company) { create(:company, community: community) }
+    let(:another_company) { create(:company, community: community) }
+    let(:position) { create(:position, community: community) }
+    let(:unapproved_position) { create(:position, community: community) }
+    let(:unimportant_position) { create(:position, community: community) }
 
     let!(:approved_cmp_for_confirmed_member_at_other_company) {
       create(:companies_members_position,
@@ -171,8 +172,20 @@ RSpec.describe Position, type: :model do
             member: confirmed_member, company: company).map(&:position)
         }
         let(:all_positions) { Position.all }
-        it 'includes only positions that have not been requested/approved yet' do
-          expect(subject).to eq all_positions - existing_positions
+        context 'for someone who can have CompaniesMembersPositions' do
+          it 'includes only positions that have not been requested/approved yet' do
+            expect(subject).to eq all_positions - existing_positions
+          end
+        end
+        context 'for someone who can not have CompaniesMembersPositions' do
+          before do
+            allow(confirmed_member).
+              to receive(:can?).with(:have, CompaniesMembersPosition).
+              and_return(false)
+          end
+          it 'is a empty array' do
+            expect(subject).to eq []
+          end
         end
       end
     end
