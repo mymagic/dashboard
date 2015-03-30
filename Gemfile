@@ -15,7 +15,7 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 
 # Bootstrap for views
-gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', tag: 'v3.3.3'
+gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', tag: 'v3.3.4'
 
 # Use simple_form for forms
 gem 'simple_form'
