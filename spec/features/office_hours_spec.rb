@@ -5,19 +5,20 @@ RSpec.describe 'OfficeHours', type: :feature, js: false do
   let!(:administrator) { create(:administrator, :confirmed, community: community) }
   let!(:member) { create(:member, :confirmed, community: community) }
   let!(:office_hour) { create(:office_hour, community: community, mentor: administrator) }
+  let!(:future_moment) { 1.month.from_now }
 
   before { as_user administrator }
 
   scenario 'creating new office hour' do
     visit community_office_hours_path(community)
-    select '2015', from: 'office_hour_time_1i'
-    select 'March', from: 'office_hour_time_2i'
-    select '27', from: 'office_hour_time_3i'
-    select '10', from: 'office_hour_time_4i'
-    select '53', from: 'office_hour_time_5i'
+    select future_moment.strftime('%Y'), from: 'office_hour_time_1i'
+    select future_moment.strftime('%B'), from: 'office_hour_time_2i'
+    select future_moment.strftime('%d'), from: 'office_hour_time_3i'
+    select future_moment.strftime('%H'), from: 'office_hour_time_4i'
+    select future_moment.strftime('%M'), from: 'office_hour_time_5i'
     click_on 'Submit'
 
-    expect(page).to have_content('2015-03-27 10:53:00')
+    expect(page).to have_content future_moment.strftime('%Y-%m-%d %H:%M:00')
   end
 
   scenario 'deleting an office hour' do
