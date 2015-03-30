@@ -15,4 +15,8 @@ class Community < ActiveRecord::Base
   # Validations
   validates :name, :slug, presence: true
   validates :name, :slug, uniqueness: true
+
+  # Exception classes
+  class CommunityNotFound < StandardError
+  end
 end

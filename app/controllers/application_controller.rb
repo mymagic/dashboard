@@ -7,6 +7,9 @@ class ApplicationController < ActionController::Base
   before_action :current_community
   before_action :authorize_community!
 
+  rescue_from CanCan::AccessDenied, with: :access_denied
+  rescue_from Community::CommunityNotFound, with: :community_not_found
+
   helper_method :current_community
 
   protected
@@ -52,7 +55,7 @@ class ApplicationController < ActionController::Base
     current_community ? community_path(current_community) : root_path
   end
 
-  rescue_from CanCan::AccessDenied do |exception|
+  def access_denied(exception)
     if current_member
       msg = exception.message
       url = if request.env["HTTP_REFERER"].present?
@@ -70,5 +73,9 @@ class ApplicationController < ActionController::Base
       session[:next] = request.fullpath
     end
     redirect_to url, alert: msg
+  end
+
+  def community_not_found
+    redirect_to root_url, alert: 'There is no community at that URL right now.'
   end
 end

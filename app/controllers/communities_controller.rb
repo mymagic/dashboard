@@ -20,6 +20,8 @@ class CommunitiesController < ApplicationController
 
   def current_community
     @current_community = Community.friendly.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    raise Community::CommunityNotFound
   end
 
   def authorize_community
