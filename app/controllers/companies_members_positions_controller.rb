@@ -27,7 +27,6 @@ class CompaniesMembersPositionsController < ApplicationController
   def companies_members_position_params
     params.require(:companies_members_position).permit(
       :company_id,
-      :member_id,
       :position_id)
   end
 end
