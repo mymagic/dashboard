@@ -7,7 +7,7 @@ machine:
 
 database:
   post:
-   # - cp config/application.yml.example config/application.yml
+   - cp config/application.yml.example config/application.yml
 
 test:
   post:

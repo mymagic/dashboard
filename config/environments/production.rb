@@ -1,6 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Use cloudstorage for carrierwave uploaders
+  config.x.uploader_storage = :fog
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

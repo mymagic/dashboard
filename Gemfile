@@ -47,6 +47,12 @@ gem 'mini_magick'
 # Use Carrierwave for uploaders
 gem 'carrierwave'
 
+# Fog for cloud storage
+gem "fog", require: 'fog/aws'
+
+# Figaro for Twelve-Factor approved configurations
+gem "figaro"
+
 # Use ranked-model for sortable lists
 gem 'ranked-model'
 
