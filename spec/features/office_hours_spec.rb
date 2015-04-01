@@ -13,7 +13,7 @@ RSpec.describe 'OfficeHours', type: :feature, js: false do
     visit community_office_hours_path(community)
     select future_moment.strftime('%Y'), from: 'office_hour_time_1i'
     select future_moment.strftime('%B'), from: 'office_hour_time_2i'
-    select future_moment.strftime('%d'), from: 'office_hour_time_3i'
+    select future_moment.strftime('%-d'), from: 'office_hour_time_3i'
     select future_moment.strftime('%H'), from: 'office_hour_time_4i'
     select future_moment.strftime('%M'), from: 'office_hour_time_5i'
     click_on 'Submit'
