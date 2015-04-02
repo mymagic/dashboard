@@ -10,6 +10,9 @@ FactoryGirl.define do
     trait :confirmed do
       after :create, &:confirm!
     end
+    trait :invited do
+      after :create, &:invite!
+    end
   end
 
   factory :member, parent: :bare_member, aliases: [:participant] do
