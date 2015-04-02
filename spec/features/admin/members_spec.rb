@@ -115,6 +115,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'Sign up as invited member' do
         open_email(member_of_other_community.email)
+
+        expect(current_email).to have_content "You have been invited to join #{ community.name }"
         current_email.click_link 'Accept invitation'
 
         expect(page.find_field('First name').value).to eq 'Johann'
@@ -148,6 +150,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'Sign up as invited member' do
         open_email('new_member@example.com')
+
+        expect(current_email).to have_content "You have been invited to join #{ community.name }"
         current_email.click_link 'Accept invitation'
 
         expect(page.find_field('First name').value).to eq 'Johann'
@@ -181,6 +185,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'Sign up as invited member' do
         open_email('new_member@example.com')
+
+        expect(current_email).to have_content "You have been invited to join #{ community.name }"
         current_email.click_link 'Accept invitation'
 
         expect(page.find_field('First name').value).to eq 'Johann'
@@ -212,6 +218,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'Sign up as invited member' do
         open_email('new_member@example.com')
+
+        expect(current_email).to have_content "You have been invited to join #{ community.name }"
         current_email.click_link 'Accept invitation'
 
         expect(page.find_field('First name').value).to eq 'Johann'

@@ -1,6 +1,6 @@
 <p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
 
-<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
+<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", community_link: link_to(@resource.community.name, community_url(@resource.community))).html_safe %></p>
 
 <p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, @resource.community, :invitation_token => @token) %></p>
 
