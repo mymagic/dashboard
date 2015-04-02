@@ -104,6 +104,11 @@ module FeatureHelper
     fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
     fill_in 'Password',  with: attributes[:password] if attributes[:password]
 
+    if attributes[:social_media_link]
+      select attributes[:social_media_link][:service], from: 'Service'
+      fill_in 'Handle', with: attributes[:social_media_link][:handle]
+    end
+
     if attributes[:password_confirmation]
       fill_in 'Password confirmation',  with: attributes[:password_confirmation]
     end
