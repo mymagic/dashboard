@@ -5,6 +5,21 @@ RSpec.describe Admin::MembersController, type: :controller do
     let(:community) { create(:community) }
     let(:response) { get(:index, community_id: community) }
     it_behaves_like "accessible by", :administrator, :staff
+    describe 'assigning members' do
+      let!(:active_member) { create(:member, :confirmed, community: community) }
+      let!(:invited_member) { create(:member, :invited, community: community) }
+      let!(:administrator) { create(:administrator, :confirmed, community: community) }
+      before do
+        login(administrator)
+        get :index, community_id: community
+      end
+      it 'assigns the correct active members' do
+        expect(assigns(:active_members)).to contain_exactly(administrator, active_member)
+      end
+      it 'assigns the correct invited members' do
+        expect(assigns(:invited_members)).to eq [invited_member]
+      end
+    end
   end
 
   describe "GET #edit" do

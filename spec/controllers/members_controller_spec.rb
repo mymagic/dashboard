@@ -4,7 +4,20 @@ RSpec.describe MembersController, type: :controller do
   describe "GET #index" do
     let(:community) { create(:community) }
     let(:response) { get(:index, community_id: community) }
+    let(:members) { Member }
     it_behaves_like "accessible by", :administrator, :mentor, :staff, :regular_member
+    describe 'assigning members' do
+      let!(:active_member) { create(:member, :confirmed, community: community) }
+      let!(:invited_member) { create(:member, :invited, community: community) }
+      let!(:member) { create(:member, :confirmed, community: community) }
+      before do
+        login(member)
+        get :index, community_id: community
+      end
+      it 'assigns the correct active members' do
+        expect(assigns(:members)).to contain_exactly(member, active_member)
+      end
+    end
   end
 
   describe "GET #show" do
