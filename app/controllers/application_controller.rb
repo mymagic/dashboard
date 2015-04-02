@@ -29,24 +29,32 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_devise_permitted_parameters
-    member_params = %i(first_name last_name avatar avatar_cache time_zone
-                       password password_confirmation)
-    account_update_params    = member_params.push(:current_password, :email)
-    accept_invitation_params = member_params.push(:invitation_token)
-    sign_in_params           = member_params.push(:community_id)
+    member_params = [
+      :first_name,
+      :last_name,
+      :avatar,
+      :avatar_cache,
+      :time_zone,
+      :password,
+      :password_confirmation,
+      social_media_links_attributes: [:id, :_destroy, :handle, :service]
+    ]
 
     case params[:controller]
     when 'registrations'
+      member_params.push(:current_password, :email)
       devise_parameter_sanitizer.for(:account_update) do |u|
-        u.permit(account_update_params)
+        u.permit(member_params)
       end if params[:action] == 'update'
     when 'invitations'
+      member_params.push(:invitation_token)
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
-        u.permit(accept_invitation_params)
+        u.permit(member_params)
       end if params[:action] == 'update'
     when 'sessions'
+      member_params.push(:community_id)
       devise_parameter_sanitizer.for(:sign_in) do |u|
-        u.permit(sign_in_params)
+        u.permit(member_params)
       end
     end
   end
