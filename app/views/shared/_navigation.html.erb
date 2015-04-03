@@ -10,11 +10,9 @@
       </button>
       <%= link_to root_path, class: 'navbar-brand' do %>
         <% if current_community.present? %>
-          <%= image_tag current_community.logo.icon.url, alt: 'Brand' %>
-          <%= current_community.name %>
+          <span class='community-brand'><%= current_community.name %></span>
         <% else %>
-          <strong>my</strong>
-          MaGIC
+          <strong>my</strong>Magic Communities
         <% end %>
       <% end %>
     </div>
