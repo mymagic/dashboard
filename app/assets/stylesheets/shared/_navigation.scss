@@ -2,4 +2,15 @@
   img {
     display: inline-block;
   }
+  .community-brand {
+    font-weight: bold;
+    border-bottom: 2px solid $brand-color;
+    padding-bottom: 2px;
+    color: $brand-color;
+    &:hover {
+      border-bottom: 2px solid $brand-color-hover;
+      color: $brand-color-hover;
+      transition: all 0.2s ease-in-out;
+    }
+  }
 }

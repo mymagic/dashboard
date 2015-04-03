@@ -1,4 +1,4 @@
-@import "overrides";
+@import "bootstrap/overrides";
 
 @import "bootstrap-sprockets";
 @import "bootstrap/variables";
@@ -8,6 +8,8 @@
 
 @import "nprogress";
 @import "nprogress-bootstrap";
+
+@import "shared/variables";
 
 @import "shared/forms";
 @import "shared/navigation";

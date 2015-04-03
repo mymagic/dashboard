@@ -62,6 +62,9 @@ gem 'friendly_id'
 # turbolinks progress bar
 gem 'nprogress-rails'
 
+# Autoprefixer for easier cross-browser CSS
+gem "autoprefixer-rails"
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
