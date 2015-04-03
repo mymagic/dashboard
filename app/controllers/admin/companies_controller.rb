@@ -40,7 +40,7 @@ module Admin
     def destroy
       @company.destroy
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'Company was successfully deleted.' }
+        format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully deleted.' }
         format.json { head :no_content }
       end
     end
