@@ -56,7 +56,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
           expect(page).to have_content('Members')
-          expect(page).to_not have_content('Companies')
+          expect(page).to have_content('Companies')
           expect(page).to_not have_content('Positions')
           expect(page).to_not have_content('Office Hours')
         end

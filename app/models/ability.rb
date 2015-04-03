@@ -75,9 +75,12 @@ class Ability
       book_and_cancel_office_hours(member)
     when 'staff'
       can :administrate, :application
-      can :administrate, [Member]
+      can :administrate, [Member, Company]
 
+      can :create, Company
       can :read, Company
+      can :update, Company
+      cannot :destroy, Company
 
       can :read, OfficeHour
 

@@ -56,7 +56,7 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:administrate, :application) }
       it { is_expected.to be_able_to(:administrate, Member) }
       it { is_expected.to_not be_able_to(:administrate, Position) }
-      it { is_expected.to_not be_able_to(:administrate, Company) }
+      it { is_expected.to be_able_to(:administrate, Company) }
       it { is_expected.to_not be_able_to(:administrate, OfficeHour) }
 
       # Invitations
@@ -77,6 +77,8 @@ RSpec.describe Member, type: :model do
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
+      it { is_expected.to be_able_to(:update, Company) }
+      it { is_expected.to_not be_able_to(:destroy, Company) }
 
       # Company Member management
       it { is_expected.to be_able_to(:invite_company_member, company) }
