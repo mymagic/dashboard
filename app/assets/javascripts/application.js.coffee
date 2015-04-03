@@ -3,14 +3,15 @@
 #= require jquery_ujs
 #= require turbolinks
 #= require cocoon
-
 #= require jquery-sortable
+#= require nprogress
+#= require nprogress-turbolinks
 
 #= require admin/positions
-
 #= require bootstrap-setup
 
-#= require_tree .
+
+
 
 $ ->
   $(document)
