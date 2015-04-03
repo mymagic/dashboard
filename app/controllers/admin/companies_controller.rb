@@ -1,7 +1,6 @@
 module Admin
   class CompaniesController < AdminController
     load_and_authorize_resource through: :current_community
-    skip_authorize_resource
 
     def index
       @companies = @companies.ordered
