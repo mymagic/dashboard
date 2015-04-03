@@ -1,5 +1,5 @@
 .image_preview {
-  img[src]:not([src='']) {
+  img {
     display: block;
     margin-bottom: $grid-gutter-width / 2;
   }
