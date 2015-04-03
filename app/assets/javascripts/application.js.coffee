@@ -11,7 +11,8 @@
 #= require bootstrap-setup
 
 
-
+# Turn off loading spinner
+NProgress.configure(showSpinner: false)
 
 $ ->
   $(document)
