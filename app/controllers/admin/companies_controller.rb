@@ -1,7 +1,6 @@
 module Admin
   class CompaniesController < AdminController
     load_and_authorize_resource through: :current_community
-    skip_authorize_resource
 
     def index
       @companies = @companies.ordered
@@ -41,7 +40,7 @@ module Admin
     def destroy
       @company.destroy
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'Company was successfully deleted.' }
+        format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully deleted.' }
         format.json { head :no_content }
       end
     end
