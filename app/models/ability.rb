@@ -47,56 +47,46 @@ class Ability
     case member.role
     when 'administrator'
       can :administrate, :application
-
       can :administrate, Member
 
       can :manage, Community, id: member.community_id
 
       can :manage, Position
 
-      can :manage, Company
-
       can :manage, OfficeHour
+      book_and_cancel_office_hours(member)
 
       can :manage, SocialMediaLink
 
-      can :read, Member
-      can :create, Member
-      can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
-      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
-      can :resend_invitation, Member
-
-      can_invite :administrator, :staff, :mentor, :regular_member
-
+      can :manage, Company
       can :manage_company, Company
       can :invite_company_member, Company
-
       create_companies_positions(member)
-      book_and_cancel_office_hours(member)
+
+      can [:create, :read], Member
+      can_invite :administrator, :staff, :mentor, :regular_member
+      can :resend_invitation, Member
+      can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
+      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
     when 'staff'
       can :administrate, :application
       can :administrate, [Member, Company]
 
-      can :create, Company
-      can :read, Company
-      can :update, Company
+      can [:create, :read, :update], Company
       cannot :destroy, Company
-
-      can :read, OfficeHour
-
-      can :read, Member
-      can :create, Member
-      can :update, Member, role: ['mentor', '', nil]
-      can :destroy, Member, role: ['mentor', '', nil]
-      can :resend_invitation, Member
-
-      can_invite :mentor, :regular_member
-
       can :manage_company, Company
       can :invite_company_member, Company
-
       create_companies_positions(member)
+
+      can :read, OfficeHour
       book_and_cancel_office_hours(member)
+
+      can [:create, :read], Member
+      can_invite :mentor, :regular_member
+      can :resend_invitation, Member
+      can :update, Member, role: ['mentor', '', nil]
+      can :destroy, Member, role: ['mentor', '', nil]
+
       manage_social_media_links(member)
     when 'mentor'
       can :read, Member
@@ -104,33 +94,26 @@ class Ability
       can :read, Company
 
       can :read, OfficeHour
-
       can :create, OfficeHour, mentor_id: member.id
 
       manage_social_media_links(member)
     else # a regular Member
-      can :read, Member
+      can :read, OfficeHour
+      book_and_cancel_office_hours(member)
 
       can :read, Company
-
-      can :read, OfficeHour
-
-      can :manage_company, Company do |company|
+      can [:manage_company, :invite_company_member, :update], Company do |company|
         member.manageable_companies.include?(company)
       end
+      create_companies_positions(member)
 
+      can :read, Member
       can :create, Member do |new_member|
         new_member.companies_positions.map(&:company).uniq.any? &&
           (new_member.companies_positions.map(&:company).uniq -
             member.manageable_companies).empty?
       end
 
-      can :invite_company_member, Company do |company|
-        member.manageable_companies.include?(company)
-      end
-
-      create_companies_positions(member)
-      book_and_cancel_office_hours(member)
       manage_social_media_links(member)
     end
   end

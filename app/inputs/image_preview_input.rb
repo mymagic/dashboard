@@ -8,12 +8,7 @@ class ImagePreviewInput < SimpleForm::Inputs::FileInput
               tap { |o| break o.send(version) if version }.
               send('url')
            )
-    out << template.button_tag(
-             'Upload image',
-             class: 'btn btn-default browse-image-preview',
-             type: 'button'
-           )
-    out << @builder.input(attribute_name, wrapper_html: { class: 'hide' })
+    out << @builder.input(attribute_name, label: false)
     out << @builder.input("#{attribute_name}_cache", as: :hidden)
   end
 end
