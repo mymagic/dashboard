@@ -36,6 +36,8 @@ RSpec.describe Member, type: :model do
       # Company Member management
       it { is_expected.to be_able_to(:invite_company_member, company) }
       it { is_expected.to be_able_to(:invite_company_member, other_company) }
+      it { is_expected.to be_able_to(:update, company) }
+      it { is_expected.to be_able_to(:update, other_company) }
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
@@ -83,6 +85,8 @@ RSpec.describe Member, type: :model do
       # Company Member management
       it { is_expected.to be_able_to(:invite_company_member, company) }
       it { is_expected.to be_able_to(:invite_company_member, other_company) }
+      it { is_expected.to be_able_to(:update, company) }
+      it { is_expected.to be_able_to(:update, other_company) }
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
@@ -176,6 +180,8 @@ RSpec.describe Member, type: :model do
       # Company Member management
       it { is_expected.to_not be_able_to(:invite_company_member, company) }
       it { is_expected.to_not be_able_to(:invite_company_member, other_company) }
+      it { is_expected.to_not be_able_to(:update, company) }
+      it { is_expected.to_not be_able_to(:update, other_company) }
 
       # OfficeHour
       it { is_expected.to be_able_to(:read, OfficeHour) }
@@ -215,6 +221,13 @@ RSpec.describe Member, type: :model do
       # Member management
       it { is_expected.to be_able_to(:create, new_member_for_company) }
       it { is_expected.to_not be_able_to(:create, new_member_for_other_company) }
+
+      # Company management
+      it { is_expected.to be_able_to(:manage_company, company) }
+      it { is_expected.to_not be_able_to(:manage_company, other_company) }
+      it { is_expected.to be_able_to(:update, company) }
+      it { is_expected.to_not be_able_to(:update, other_company) }
+
 
       # Company Member management
       it { is_expected.to be_able_to(:invite_company_member, company) }
