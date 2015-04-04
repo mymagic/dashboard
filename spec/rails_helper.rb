@@ -59,6 +59,7 @@ RSpec.configure do |config|
   config.include ControllerHelper, type: :controller
   config.include ControllerMacros, type: :controller
   config.include FeatureHelper, type: :feature
+  config.include TaskHelper, type: :task
 
   config.before(:each, direct_upload: true) do
     presigned_post = double(fields: {}, url: double(to_s: '', host: ''))

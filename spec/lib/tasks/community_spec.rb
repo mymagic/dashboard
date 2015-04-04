@@ -1,7 +1,8 @@
 require 'rails_helper'
-require 'rake'
 
-describe 'community' do
+RSpec.describe 'community', type: :task do
+  require 'rake'
+
   before do
     Rake.application.rake_require 'tasks/community'
     Rake::Task.define_task(:environment)
