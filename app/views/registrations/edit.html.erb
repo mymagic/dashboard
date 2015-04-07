@@ -13,8 +13,13 @@
                   <p><%= "Currently waiting confirmation for: #{ resource.unconfirmed_email }" %></p>
                 <% end %>
                 <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
-                <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
-                <%= f.input :password_confirmation, required: false %>
+            <% end %>
+          </div>
+          <div class="row">
+            <%= panel 'Change Password', columns: 12 do %>
+              <%= f.input :current_password, autocomplete: "off", required: false %>
+              <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
+              <%= f.input :password_confirmation, required: false %>
             <% end %>
           </div>
         </div>
