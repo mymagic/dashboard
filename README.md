@@ -1,4 +1,4 @@
-== Icons used
+### Icons used
 
 For Company: "[Building](http://thenounproject.com/term/building/18230/)" by Arthur Schmitt, Public Domain
 
