@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_community
 
+  add_flash_types :warning
+
   protected
 
   def current_community
