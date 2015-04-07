@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :social_media_link do
-    service { SocialMediaLink::SERVICES.sample }
+    service { attachable.community.social_media_services.sample }
     handle  { generate(:handle) }
 
     trait :member do

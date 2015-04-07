@@ -17,13 +17,13 @@ ActiveRecord::Schema.define(version: 20150407090818) do
   enable_extension "plpgsql"
 
   create_table "communities", force: :cascade do |t|
-    t.string   "name",                            null: false
-    t.string   "slug",                            null: false
+    t.string   "name",                               null: false
+    t.string   "slug",                               null: false
     t.string   "logo"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "email"
-    t.text     "social_media_types", default: [],              array: true
+    t.text     "social_media_services", default: [],              array: true
   end
 
   create_table "companies", force: :cascade do |t|

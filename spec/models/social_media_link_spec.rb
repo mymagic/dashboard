@@ -8,7 +8,7 @@ RSpec.describe SocialMediaLink, type: :model do
     it { is_expected.to validate_presence_of(:service) }
     it { is_expected.to validate_presence_of(:handle) }
     it { is_expected.to validate_uniqueness_of(:handle).scoped_to(:service) }
-    it { is_expected.to validate_inclusion_of(:service).in_array(SocialMediaLink::SERVICES) }
+    it { is_expected.to validate_inclusion_of(:service).in_array(subject.attachable.community.social_media_services) }
   end
 
   context 'associations' do

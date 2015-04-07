@@ -19,4 +19,9 @@ class Community < ActiveRecord::Base
   # Exception classes
   class CommunityNotFound < StandardError
   end
+
+  def social_media_services=(values)
+    values = values.split(',').map(&:strip).select(&:present?) if values.is_a? String
+    super(values)
+  end
 end

@@ -7,6 +7,10 @@ FactoryGirl.define do
     "Name#{ n }"
   end
 
+  sequence :service do |n|
+    "service-#{ n }"
+  end
+
   sequence :handle do |n|
     "handle-#{ n }"
   end
