@@ -45,12 +45,12 @@ class ApplicationController < ActionController::Base
       member_params.push(:current_password, :email)
       devise_parameter_sanitizer.for(:account_update) do |u|
         u.permit(member_params)
-      end if params[:action] == 'update'
+      end
     when 'invitations'
       member_params.push(:invitation_token)
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
         u.permit(member_params)
-      end if params[:action] == 'update'
+      end
     when 'sessions'
       member_params.push(:community_id)
       devise_parameter_sanitizer.for(:sign_in) do |u|

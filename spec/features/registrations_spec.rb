@@ -36,8 +36,9 @@ RSpec.describe 'Registrations', type: :feature, js: false do
     end
 
     context 'as regular member' do
-      background { as_user member }
+
       scenario 'changing my first name' do
+        as_user member
         visit root_path
         within(:css, 'nav.navbar-member') do
           expect(page).to have_content(member.first_name)
@@ -47,6 +48,15 @@ RSpec.describe 'Registrations', type: :feature, js: false do
           expect(page).to have_content('NewFirstName')
         end
       end
+      scenario 'changing my password' do
+        as_user member
+        visit root_path
+        update_my_account(community: community, password: 'newpassword', current_password: 'password0')
+        sign_out
+        log_in member.community, member.email, 'newpassword'
+        expect_to_be_signed_in
+      end
+
     end
 
     context 'as mentor' do
