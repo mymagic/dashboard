@@ -14,6 +14,7 @@ class MembersController < ApplicationController
   def new
     @member = Member.new(time_zone: current_member.time_zone)
     @member.companies_positions.build(approved: true, company: @company)
+    @member.social_media_links.build
     authorize! :create, @member
   end
 
