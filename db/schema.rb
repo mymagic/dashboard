@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407090818) do
+ActiveRecord::Schema.define(version: 20150408044426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,8 +133,10 @@ ActiveRecord::Schema.define(version: 20150407090818) do
     t.string  "handle"
     t.integer "attachable_id"
     t.string  "attachable_type"
+    t.integer "community_id"
   end
 
+  add_index "social_media_links", ["community_id"], name: "index_social_media_links_on_community_id", using: :btree
   add_index "social_media_links", ["service", "handle"], name: "index_social_media_links_on_service_and_handle", unique: true, using: :btree
 
   add_foreign_key "companies", "communities"
