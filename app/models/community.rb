@@ -11,10 +11,14 @@ class Community < ActiveRecord::Base
   has_many :members,      dependent: :destroy
   has_many :positions,    dependent: :destroy
   has_many :office_hours, dependent: :destroy
+  has_many :social_media_links, dependent: :destroy
 
   # Validations
   validates :name, :slug, presence: true
   validates :name, :slug, uniqueness: true
+
+  # Callbacks
+  after_save :destroy_social_media_services
 
   # Exception classes
   class CommunityNotFound < StandardError
@@ -23,5 +27,13 @@ class Community < ActiveRecord::Base
   def social_media_services=(values)
     values = values.split(',').map(&:strip).select(&:present?) if values.is_a? String
     super(values)
+  end
+
+  protected
+
+  def destroy_social_media_services
+    social_media_services_change.inject(:-).each do |service|
+      social_media_links.where(service: service).destroy_all
+    end
   end
 end
