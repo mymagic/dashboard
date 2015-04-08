@@ -7,6 +7,7 @@ module Admin
     end
 
     def new
+      @company.social_media_links.build
     end
 
     def create
@@ -22,6 +23,7 @@ module Admin
     end
 
     def edit
+      @company.social_media_links.build
     end
 
     def update
@@ -53,7 +55,15 @@ module Admin
         :website,
         :description,
         :logo,
-        :logo_cache)
+        :logo_cache,
+        social_media_links_attributes:
+          [
+            :id,
+            :service,
+            :handle,
+            :_destroy
+          ]
+      )
     end
   end
 end

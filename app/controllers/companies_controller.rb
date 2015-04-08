@@ -10,6 +10,7 @@ class CompaniesController < ApplicationController
   end
 
   def edit
+    @company.social_media_links.build
   end
 
   def update
@@ -33,6 +34,14 @@ class CompaniesController < ApplicationController
       :website,
       :description,
       :logo,
-      :logo_cache)
+      :logo_cache,
+      social_media_links_attributes:
+        [
+          :id,
+          :service,
+          :handle,
+          :_destroy
+        ]
+    )
   end
 end

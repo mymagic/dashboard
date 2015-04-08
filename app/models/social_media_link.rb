@@ -6,7 +6,7 @@ class SocialMediaLink < ActiveRecord::Base
   # Validations
   validates :attachable, :service, :handle, presence: true
   validates :service, inclusion: { in: proc { |record| record.attachable.community.social_media_services } }
-  validates :handle, uniqueness: { scope: :service }
+  validates :handle, uniqueness: { scope: [:service, :attachable_id, :attachable_type, :community_id] }
 
   # Callbacks
   before_save :set_community

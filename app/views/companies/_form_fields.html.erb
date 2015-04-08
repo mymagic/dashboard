@@ -1,0 +1,16 @@
+<%= panel 'General Info', columns: 6 do %>
+  <%= f.input :name, autofocus: true, placeholder: 'ACME Corporation' %>
+  <%= f.input :logo, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
+  <%= f.input :website, placeholder: 'https://www.example.com' %>
+  <%= f.input :description, placeholder: 'Describe your company…', input_html: { rows: 12 } %>
+<% end %>
+
+<%= panel 'Social Media Links', columns: 6 do %>
+  <%= render partial: 'shared/forms/social_media_link', locals: { form: f } %>
+<% end %>
+
+<div class="row">
+  <div class="col-sm-6">
+    <%= f.button :submit, "Save" %>
+  </div>
+</div>
