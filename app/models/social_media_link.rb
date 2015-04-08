@@ -9,7 +9,7 @@ class SocialMediaLink < ActiveRecord::Base
   validates :handle, uniqueness: { scope: [:service, :attachable_id, :attachable_type, :community_id] }
 
   # Callbacks
-  before_save :set_community
+  before_validation :set_community
 
   protected
 
