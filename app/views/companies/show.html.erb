@@ -19,6 +19,9 @@
     <% if @company.website.present? %>
       <%= definition_list(Website: link_to(@company.website, @company.website)) %>
     <% end %>
+    <% @company.social_media_links.each do |social_media_link| %>
+      <%= definition_list("#{social_media_link.service.camelize}" => social_media_link.handle) %>
+    <% end %>
   </div>
   <div class="col-lg-4">
     <div class="col-lg-12">

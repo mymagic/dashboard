@@ -6,6 +6,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     given!(:administrator) { create(:administrator, :confirmed, community: community) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
+    given!(:company) { create(:company, community: community) }
+    given(:social_media_service) { community.social_media_services.sample }
 
     context 'as administrator' do
       background { as_user administrator }
@@ -15,6 +17,36 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_content(administrator.first_name)
         expect(page).to have_content(staff.first_name)
         expect(page).to have_content(member.first_name)
+      end
+
+      scenario 'editing member' do
+        visit edit_community_admin_member_path(community, member)
+
+        # General Information
+        fill_in 'First name', with: 'New First Name'
+        fill_in 'Last name', with: 'New Last Name'
+
+        within '.member_companies_positions_company:first-child' do
+          select company.name, from: 'Company'
+        end
+
+        # Social Media Links
+        within '.social_media_link:first-child' do
+          select social_media_service.camelize, from: 'Service'
+          fill_in 'Handle', with: 'Handle'
+        end
+
+        click_button 'Save'
+
+        expect(page).to have_content("Member was successfully updated.")
+
+        visit community_member_path(community, member)
+
+        expect(page).to have_content('New First Name')
+        expect(page).to have_content('New Last Name')
+
+        expect(page).to have_content(social_media_service.camelize)
+        expect(page).to have_content('Handle')
       end
 
       scenario 'viewing dashboard' do
