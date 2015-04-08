@@ -1,6 +1,12 @@
 class Member < ActiveRecord::Base
   ROLES = %i(administrator staff mentor)
 
+  class AlreadyExistsError < StandardError
+    def message
+      "Member already exists"
+    end
+  end
+
   mount_uploader :avatar, AvatarUploader
 
   # Include default devise modules. Others available are:
