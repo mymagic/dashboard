@@ -1,3 +1,5 @@
 <% attachable.social_media_links.each do |social_media_link| %>
-  <%= definition_list("#{social_media_link.service.camelize}" => social_media_link.handle) %>
+  <%= definition_list(
+    "#{social_media_link.service.camelize}" => social_link(social_media_link)
+  )%>
 <% end %>
