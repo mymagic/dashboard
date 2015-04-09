@@ -1,5 +1,9 @@
 FactoryGirl.define do
   factory :community do
+    transient do
+      num_of_services 2
+    end
+
     name { generate(:community_name) }
     slug { friendly_id }
 
@@ -8,7 +12,7 @@ FactoryGirl.define do
     end
 
     trait :with_social_media_services do
-      social_media_services { rand(1..10).times.map { generate(:service) } }
+      social_media_services { num_of_services.times.map { generate(:service) } }
     end
   end
 end
