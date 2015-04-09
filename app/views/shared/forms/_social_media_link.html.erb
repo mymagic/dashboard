@@ -1,4 +1,4 @@
-<div id='social_media_links'>
+<div id='magic_social_media_links'>
   <%= form.simple_fields_for :social_media_links do |social_media_link| %>
     <div class='social_media_link'>
       <%= social_media_link.input :service, collection: current_community.social_media_services.map{ |service| [service.camelize, service] } %>
