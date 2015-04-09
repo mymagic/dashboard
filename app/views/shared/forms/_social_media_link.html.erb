@@ -3,6 +3,9 @@
     <div class='social_media_link'>
       <%= social_media_link.input :service, collection: current_community.social_media_services.map{ |service| [service.camelize, service] } %>
       <%= social_media_link.input :handle %>
+      <% if social_media_link.object.persisted? %>
+        <%= social_media_link.input :_destroy, as: :boolean %>
+      <% end %>
     </div>
   <% end %>
 </div>
