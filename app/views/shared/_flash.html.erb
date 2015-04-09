@@ -5,7 +5,16 @@
     </button>
     <%= notice %>
   </div>
-<% end; if alert %>
+<% end %>
+<% if warning %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+      <span aria-hidden="true">&times</span>
+    </button>
+    <%= warning %>
+  </div>
+<% end %>
+<% if alert %>
   <div class="alert alert-danger alert-dismissible" role="alert">
     <button aria-label="Close" class="close" data-dismiss="alert" type="button">
       <span aria-hidden="true">&times</span>

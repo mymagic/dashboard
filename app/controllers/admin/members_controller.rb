@@ -1,5 +1,7 @@
 module Admin
   class MembersController < AdminController
+
+
     load_and_authorize_resource through: :current_community
     before_action :allow_without_password, only: :update
 
@@ -27,6 +29,16 @@ module Admin
           format.html { render 'new', alert: 'Error inviting member.' }
           format.json { render json: @member.errors, status: :unprocessable_entity }
         end
+      end
+    rescue Member::AlreadyExistsError => exception
+      respond_to do |format|
+        format.html do
+          redirect_to(
+            edit_community_admin_member_path(current_community, existing_member),
+            warning: exception.message
+          )
+        end
+        format.json { render json: existing_member, status: :conflict }
       end
     end
 
@@ -105,7 +117,13 @@ module Admin
       permitted
     end
 
+    def existing_member
+      @existing_member ||= current_community.members.find_by(
+        email: member_params[:email])
+    end
+
     def invite_member(&block)
+      raise Member::AlreadyExistsError if existing_member
       Member.invite!(member_params.merge(community_id: current_community.id), current_member, &block)
     end
   end

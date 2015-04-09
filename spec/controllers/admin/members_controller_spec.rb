@@ -124,6 +124,16 @@ RSpec.describe Admin::MembersController, type: :controller do
         subject { Member.find_by(email: member_required_attributes[:email]) }
         it { is_expected.to be_regular_member }
       end
+
+      describe 'inviting an existing member' do
+        let(:existing_member) { create(:member, community: community) }
+        subject { invite_new_member(email: existing_member.email) }
+        it 'redirects to the member edit path' do
+          expect(subject).
+            to redirect_to(
+                 edit_community_admin_member_path(community, existing_member))
+        end
+      end
     end
   end
 end
