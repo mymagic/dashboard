@@ -18,7 +18,7 @@ class Community < ActiveRecord::Base
   validates :name, :slug, uniqueness: true
 
   # Callbacks
-  after_save :destroy_social_media_services
+  after_save :destroy_social_media_services, if: -> { social_media_services_changed? }
 
   # Exception classes
   class CommunityNotFound < StandardError
@@ -32,8 +32,6 @@ class Community < ActiveRecord::Base
   protected
 
   def destroy_social_media_services
-    return unless social_media_services_changed?
-
     social_media_services_change.inject(:-).each do |service|
       social_media_links.where(service: service).destroy_all
     end

@@ -23,7 +23,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
   end
 
   feature "Manage Company" do
-    given!(:community) { create(:community) }
+    given!(:community) { create(:community, :with_social_media_services) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:manager) { create(:member, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }

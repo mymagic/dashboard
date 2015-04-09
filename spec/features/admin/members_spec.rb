@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Admin/Members', type: :feature, js: false do
   feature "Administration" do
-    given!(:community) { create(:community) }
+    given!(:community) { create(:community, :with_social_media_services) }
     given!(:administrator) { create(:administrator, :confirmed, community: community) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
