@@ -10,7 +10,7 @@ class CommunitiesController < ApplicationController
 
   def update
     if @current_community.update_attributes(community_params)
-      redirect_to community_path(@current_community)
+      redirect_to community_path(@current_community), notice: 'Community was successfully invited.'
     else
       respond_with @current_community
     end
