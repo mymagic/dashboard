@@ -20,18 +20,17 @@ class MembersController < ApplicationController
   def create
     authorize! :create, @member
     @member = invite_member
-    member_invited = @member.errors.empty?
-
-    respond_to do |format|
-      if member_invited
-        format.html { redirect_to community_company_path(@company.community, @company), notice: 'Member was successfully invited.' }
-        format.json { render json: @member, status: :created }
-      else
-        @member.companies_positions.build(approved: true, company: @company) unless @member.companies_positions.any?
-        format.html { render 'new', alert: 'Error inviting member.' }
-        format.json { render json: @member.errors, status: :unprocessable_entity }
-      end
+    if @member.errors.empty?
+      redirect_to community_company_path(@company.community, @company), notice: 'Member was successfully invited.'
+    else
+      @member.companies_positions.build(approved: true, company: @company) unless @member.companies_positions.any?
+      render 'new', alert: 'Error inviting member.'
     end
+  rescue CompaniesMembersPosition::AlreadyExistsError => exception
+    redirect_to(
+      new_community_company_member_path(@company.community, @company),
+      warning: exception.message
+    )
   end
 
   private
@@ -54,7 +53,20 @@ class MembersController < ApplicationController
     )
   end
 
+  def existing_member
+    @existing_member ||= current_community.members.find_by(
+      email: member_params[:email])
+  end
+
+  def add_position_to_existing_member
+    existing_member.update(member_params.slice(:companies_positions_attributes))
+    existing_member
+  rescue ActiveRecord::RecordNotUnique
+    raise CompaniesMembersPosition::AlreadyExistsError
+  end
+
   def invite_member(&block)
+    return add_position_to_existing_member if existing_member
     Member.invite!(member_params.merge(community_id: current_community.id), current_member, &block)
   end
 end

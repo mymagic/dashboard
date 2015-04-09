@@ -1,4 +1,10 @@
 class CompaniesMembersPosition < ActiveRecord::Base
+  class AlreadyExistsError < StandardError
+    def message
+      "Member already has this position in the company."
+    end
+  end
+
   belongs_to :member, inverse_of: :companies_positions
   belongs_to :company
   belongs_to :position

@@ -65,13 +65,53 @@ RSpec.describe MembersController, type: :controller do
         subject { Member.find_by(email: member_required_attributes[:email]) }
         it { is_expected.to be_regular_member }
       end
+
+      describe 'inviting an existing member' do
+        let(:existing_member) { create(:member, :confirmed, community: community) }
+        subject do
+          invite_new_member(
+            email: existing_member.email,
+            companies_positions_attributes: [
+              company_id: company.id, position_id: position.id, approved: true
+            ]
+          )
+        end
+        context 'with a new member position at that company' do
+          it 'just adds the position' do
+            expect { subject }.
+              to change { existing_member.companies_positions.count }.from(1).to(2)
+          end
+          it 'redirects to the community company path' do
+            expect(subject).
+              to redirect_to(
+                community_company_path(community, company))
+          end
+        end
+        context 'with an existing position at that company' do
+          before do
+            CompaniesMembersPosition.create(
+              position: position,
+              member: existing_member,
+              company: company,
+              approved: true
+            )
+          end
+          it 'does not add a new position' do
+            expect { subject }.
+              to_not change { existing_member.companies_positions.count }
+          end
+          it 'redirects to the community company path' do
+            expect(subject).
+              to redirect_to(new_community_company_member_path(community, company))
+          end
+        end
+      end
     end
 
     context 'as Administrator' do
       before { login_administrator }
-
+      let(:position) { create(:position, community: community) }
       describe 'inviting a Member to the company' do
-        let(:position) { create(:position, community: community) }
         before do
           invite_new_member(
             companies_positions_attributes: [
