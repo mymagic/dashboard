@@ -7,6 +7,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, community: community) }
+    given!(:social_media_link) { create(:social_media_link, attachable: member) }
     given(:social_media_service) { community.social_media_services.sample }
 
     context 'as administrator' do
@@ -32,6 +33,11 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
         # Social Media Links
         within '.social_media_link:first-child' do
+          select social_media_link.service.camelize, from: 'Service'
+          fill_in 'Handle', with: 'https://facebook.com/handle'
+        end
+
+        within '.social_media_link:last-child' do
           select social_media_service.camelize, from: 'Service'
           fill_in 'Handle', with: 'Handle'
         end
@@ -47,6 +53,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
         expect(page).to have_content(social_media_service.camelize)
         expect(page).to have_content('Handle')
+        expect(page).to have_link(social_media_link.service.camelize, href: 'https://facebook.com/handle')
       end
 
       scenario 'viewing dashboard' do

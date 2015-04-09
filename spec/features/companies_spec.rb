@@ -29,6 +29,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
     given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, name: "ACME", community: community) }
     given!(:position) { create(:position, community: community) }
+    given!(:social_media_link) { create(:social_media_link, attachable: company) }
     given(:social_media_service) { community.social_media_services.sample }
 
     def edit_a_company
@@ -44,8 +45,15 @@ RSpec.describe 'Companies', type: :feature, js: false do
       attach_file('Logo', File.join(Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
 
       # Social Media Links
-      select social_media_service.camelize, from: 'Service'
-      fill_in 'Handle', with: 'Handle'
+      within '.social_media_link:first-child' do
+        select social_media_link.service.camelize, from: 'Service'
+        fill_in 'Handle', with: 'https://facebook.com/handle'
+      end
+
+      within '.social_media_link:last-child' do
+        select social_media_service.camelize, from: 'Service'
+        fill_in 'Handle', with: 'Handle'
+      end
 
       click_button 'Save'
 
@@ -58,6 +66,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
       expect(page).to have_content(social_media_service.camelize)
       expect(page).to have_content('Handle')
+      expect(page).to have_link(social_media_link.service.camelize, href: 'https://facebook.com/handle')
     end
 
     context 'as manager' do
