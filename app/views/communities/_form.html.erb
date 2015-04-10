@@ -6,6 +6,7 @@
           <%= f.input :name, autofocus: true, placeholder: 'Enter Community Name' %>
           <%= f.input :logo, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
           <%= f.input :email %>
+          <%= f.input :social_media_services, placeholder: 'Separate each type by comma.', input_html: { value: current_community.social_media_services.join(', ') } %>
           <div class='text-right'>
             <%= f.button :submit, class: 'btn-success' %>
           </div>

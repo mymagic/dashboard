@@ -23,12 +23,14 @@ RSpec.describe 'Companies', type: :feature, js: false do
   end
 
   feature "Manage Company" do
-    given!(:community) { create(:community) }
+    given!(:community) { create(:community, :with_social_media_services) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:manager) { create(:member, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, name: "ACME", community: community) }
     given!(:position) { create(:position, community: community) }
+    given!(:social_media_link) { create(:social_media_link, attachable: company) }
+    given(:social_media_service) { community.social_media_services.sample }
 
     def edit_a_company
       visit community_company_path(company.community, company)
@@ -36,10 +38,23 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
       expect(page.find_field('Name').value).to eq 'ACME'
 
+      # General Information
       fill_in 'Name', with: 'New Company Name'
       fill_in 'Description', with: 'This is a company description'
       fill_in 'Website', with: 'http://example.com'
       attach_file('Logo', File.join(Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
+
+      # Social Media Links
+      within '.social_media_link:first-child' do
+        select social_media_link.service.camelize, from: 'Service'
+        fill_in 'Handle', with: 'https://facebook.com/handle'
+      end
+
+      within '.social_media_link:last-child' do
+        select social_media_service.camelize, from: 'Service'
+        fill_in 'Handle', with: 'Handle'
+      end
+
       click_button 'Save'
 
       expect(page).to have_content("Company was successfully updated.")
@@ -48,6 +63,10 @@ RSpec.describe 'Companies', type: :feature, js: false do
       expect(page).to have_content("New Company Name")
       expect(page).to have_content("This is a company description")
       expect(page).to have_content("http://example.com")
+
+      expect(page).to have_content(social_media_service.camelize)
+      expect(page).to have_content('Handle')
+      expect(page).to have_link(social_media_link.service.camelize, href: 'https://facebook.com/handle')
     end
 
     context 'as manager' do

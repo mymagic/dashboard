@@ -1,15 +1,20 @@
 class SocialMediaLink < ActiveRecord::Base
-  # Constants
-  SERVICES = %w(
-    about_me facebook twitter angel_list flickr quora crunch_base
-    foursquare google_plus identica skype linked_in pinterest instagram
-  )
-
   # Associations
   belongs_to :attachable, polymorphic: true
+  belongs_to :community
 
   # Validations
-  validates :attachable, :service, :handle, presence: true
-  validates :service, inclusion: { in: SERVICES }
-  validates :handle, uniqueness: { scope: :service }
+  validates :attachable, :service, :handle, :community, presence: true
+  validates :service, inclusion: { in: -> (record) { record.community.social_media_services } },
+            if: -> (record) { record.community.present? }
+  validates :handle, uniqueness: { scope: [:service, :attachable_id, :attachable_type, :community_id] }
+
+  # Callbacks
+  before_validation :set_community, if: :attachable
+
+  protected
+
+  def set_community
+    self.community = attachable.community
+  end
 end

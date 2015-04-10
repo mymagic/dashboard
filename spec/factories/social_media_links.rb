@@ -1,14 +1,15 @@
 FactoryGirl.define do
   factory :social_media_link do
-    service { SocialMediaLink::SERVICES.sample }
+    community { association(:community, :with_social_media_services) }
+    service { attachable.community.social_media_services.sample }
     handle  { generate(:handle) }
 
     trait :member do
-      attachable { association(:member) }
+      attachable { association(:member, community: community) }
     end
 
     trait :company do
-      attachable { association(:company) }
+      attachable { association(:company, community: community) }
     end
   end
 end

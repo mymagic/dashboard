@@ -1,8 +1,6 @@
 class Company < ActiveRecord::Base
   mount_uploader :logo, LogoUploader
 
-  has_many :social_media_links, as: :attachable
-
   validates :name, :community, presence: true
   validates :logo, presence: true, on: :update
   validates :description, length: { minimum: 5 }, allow_blank: true
@@ -13,6 +11,9 @@ class Company < ActiveRecord::Base
 
   # Associations
   belongs_to :community
+  has_many :social_media_links, as: :attachable
+
+  accepts_nested_attributes_for :social_media_links, reject_if: :all_blank, allow_destroy: true
 
   scope :ordered, -> { order(name: :desc) }
 

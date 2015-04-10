@@ -11,6 +11,7 @@ module Admin
     def new
       @member.time_zone = current_member.time_zone
       @member.companies_positions.build(approved: true)
+      @member.social_media_links.build
     end
 
     def create
@@ -41,6 +42,7 @@ module Admin
 
     def edit
       @member.companies_positions.build(approved: true)
+      @member.social_media_links.build
     end
 
     def update

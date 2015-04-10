@@ -3,6 +3,10 @@ class RegistrationsController < Devise::RegistrationsController
     head :forbidden
   end
 
+  def edit
+    @member.social_media_links.build
+  end
+
   def create
     head :forbidden
   end

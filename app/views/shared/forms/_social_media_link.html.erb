@@ -1,13 +1,11 @@
-<div id='social_media_links'>
+<div id='magic_social_media_links'>
   <%= form.simple_fields_for :social_media_links do |social_media_link| %>
-    <%= render 'shared/forms/social_media_link_fields', f: social_media_link %>
+    <div class='social_media_link'>
+      <%= social_media_link.input :service, collection: current_community.social_media_services.map{ |service| [service.camelize, service] } %>
+      <%= social_media_link.input :handle %>
+      <% if social_media_link.object.persisted? %>
+        <%= social_media_link.input :_destroy, as: :boolean %>
+      <% end %>
+    </div>
   <% end %>
 </div>
-<%= link_to_add_association 'Add Social Media Link', form, :social_media_links,
-    class: 'btn btn-default',
-    partial: 'shared/forms/social_media_link_fields',
-    data: {
-      'association-insertion-node' => '#social_media_links',
-      'association-insertion-method' => 'prepend'
-    }
-%>
