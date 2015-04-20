@@ -8,6 +8,7 @@ class CompaniesMembersPosition < ActiveRecord::Base
   belongs_to :member, inverse_of: :companies_positions
   belongs_to :company
   belongs_to :position
+  belongs_to :approver, class_name: 'Member'
 
   validates :member, :company, :position, presence: true
 
