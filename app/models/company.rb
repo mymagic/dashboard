@@ -25,6 +25,12 @@ class Company < ActiveRecord::Base
     def positions_with_members
       Position.positions_with_members(company: self)
     end
+
+    def permitted_members
+      Member.joins(:companies_positions)
+            .where('companies_members_positions.can_manage_company' => true)
+            .distinct
+    end
   end
 
   def to_param

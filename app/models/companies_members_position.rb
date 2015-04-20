@@ -5,6 +5,7 @@ class CompaniesMembersPosition < ActiveRecord::Base
     end
   end
 
+  belongs_to :community
   belongs_to :member, inverse_of: :companies_positions
   belongs_to :company
   belongs_to :position
@@ -16,6 +17,7 @@ class CompaniesMembersPosition < ActiveRecord::Base
 
   scope :manageable, -> { where(can_manage_company: true) }
   scope :approved, -> { where(approved: true) }
+  scope :pending, -> { where(approved: false) }
 
   def possible_positions_for_member
     Position.all_possible(member: member, company: company)

@@ -62,6 +62,7 @@ class Ability
       can :manage_company, Company
       can :invite_company_member, Company
       create_companies_positions(member)
+      can [:approve, :reject], CompaniesMembersPosition
 
       can [:create, :read], Member
       can_invite :administrator, :staff, :mentor, :regular_member
@@ -77,6 +78,7 @@ class Ability
       can :manage_company, Company
       can :invite_company_member, Company
       create_companies_positions(member)
+      can [:approve, :reject], CompaniesMembersPosition
 
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
