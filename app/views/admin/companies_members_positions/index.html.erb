@@ -1,0 +1,57 @@
+<%
+  title 'Companies Members Positions'
+  page_header 'Companies Members Positions'
+%>
+
+<div class="row">
+  <div class="col-sm-12" role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active" role="presentation">
+        <a aria-controls="approved" data-toggle="tab" href="#approved" role="tab">
+          Approved
+          <span class="label label-info"><%= @approved_companies_members_positions.count %></span>
+        </a>
+      </li>
+      <% if @unapproved_companies_members_positions.any? %>
+        <li role="presentation">
+          <a aria-controls="unapproved" data-toggle="tab" href="#unapproved" role="tab">
+            Unapproved
+            <span class="label label-info"><%= @unapproved_companies_members_positions.count %></span>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active fade in" id="approved" role="tabpanel">
+        <table class="table table-striped">
+          <thead>
+            <th>Position</th>
+            <th></th>
+            <th>Company</th>
+            <th></th>
+            <th>Member</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <%= render collection: @approved_companies_members_positions, partial: 'approved_companies_members_position', as: :companies_members_position %>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="unapproved" role="tabpanel">
+        <table class="table table-striped">
+          <thead>
+            <th>Position</th>
+            <th></th>
+            <th>Company</th>
+            <th></th>
+            <th>Member</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <%= render collection: @unapproved_companies_members_positions, partial: 'unapproved_companies_members_position', as: :companies_members_position %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

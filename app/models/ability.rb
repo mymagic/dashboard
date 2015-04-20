@@ -47,7 +47,6 @@ class Ability
     case member.role
     when 'administrator'
       can :administrate, :application
-      can :administrate, Member
 
       can :manage, Community, id: member.community_id
 
@@ -61,8 +60,12 @@ class Ability
       can :manage, Company
       can :manage_company, Company
       can :invite_company_member, Company
-      create_companies_positions(member)
 
+      create_companies_positions(member)
+      can :read, CompaniesMembersPosition
+      can :administrate, CompaniesMembersPosition
+
+      can :administrate, Member
       can [:create, :read], Member
       can_invite :administrator, :staff, :mentor, :regular_member
       can :resend_invitation, Member
@@ -70,13 +73,15 @@ class Ability
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
     when 'staff'
       can :administrate, :application
-      can :administrate, [Member, Company]
+      can :administrate, [Member, Company, CompaniesMembersPosition]
 
       can [:create, :read, :update], Company
       cannot :destroy, Company
       can :manage_company, Company
       can :invite_company_member, Company
+
       create_companies_positions(member)
+      can :read, CompaniesMembersPosition
 
       can :read, OfficeHour
       book_and_cancel_office_hours(member)

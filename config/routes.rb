@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :companies
+      resources :companies_members_positions
       resources :office_hours
       resources :members do
         patch 'resend_invitation', on: :member
