@@ -174,7 +174,7 @@ RSpec.describe Position, type: :model do
         let(:all_positions) { Position.all }
         context 'for someone who can have CompaniesMembersPositions' do
           it 'includes only positions that have not been requested/approved yet' do
-            expect(subject).to eq all_positions - existing_positions
+            expect(subject).to contain_exactly(*all_positions - existing_positions)
           end
         end
         context 'for someone who can not have CompaniesMembersPositions' do
