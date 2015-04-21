@@ -32,9 +32,8 @@ RSpec.describe MembersController, type: :controller do
     let(:community) { create(:community) }
     let(:company) { create(:company, community: community) }
 
-
     def invite_new_member(attributes = {})
-      put :create, community_id: company.community, company_id: company, member: (member_required_attributes).merge(attributes)
+      post :create, community_id: company.community, company_id: company, member: (member_required_attributes).merge(attributes)
     end
 
     it_behaves_like "accessible by", :administrator, :staff do

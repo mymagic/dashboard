@@ -7,7 +7,10 @@
     <% if can? :invite_company_member, company %>
       <li role="presentation"><%= link_to "Invite members to company", new_community_company_member_path(company.community, company), role: 'menuitem', tabindex: '-1' %></li>
     <% end %>
-    <% if can? :invite_company_member, company %>
+    <% if can? :manage_members_positions, company %>
+      <li role="presentation"><%= link_to "Manage members positions", community_company_companies_members_positions_path(company.community, company), role: 'menuitem', tabindex: '-1' %></li>
+    <% end %>
+    <% if can? :update, company %>
       <li role="presentation"><%= link_to "Edit company info", edit_community_company_path(company.community, company), role: 'menuitem', tabindex: '-1' %></li>
     <% end %>
   </ul>
