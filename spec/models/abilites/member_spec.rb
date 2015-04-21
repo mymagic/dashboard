@@ -53,6 +53,8 @@ RSpec.describe Member, type: :model do
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
       it { is_expected.to be_able_to(:read, CompaniesMembersPosition) }
+      it { is_expected.to be_able_to(:manage_members_positions, company) }
+      it { is_expected.to be_able_to(:manage_members_positions, other_company) }
     end
   end
 
@@ -107,6 +109,8 @@ RSpec.describe Member, type: :model do
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
       it { is_expected.to be_able_to(:read, CompaniesMembersPosition) }
+      it { is_expected.to be_able_to(:manage_members_positions, company) }
+      it { is_expected.to be_able_to(:manage_members_positions, other_company) }
     end
   end
 
@@ -140,7 +144,6 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:read, Community) }
       it { is_expected.to_not be_able_to(:manage, community) }
 
-
       # Company
       it { is_expected.to be_able_to(:read, Company) }
 
@@ -159,6 +162,8 @@ RSpec.describe Member, type: :model do
       it { is_expected.to_not be_able_to(:have, CompaniesMembersPosition) }
       it { is_expected.to_not be_able_to(:read, CompaniesMembersPosition) }
       it { is_expected.to_not be_able_to(:administrate, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, company) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
   end
 
@@ -213,6 +218,8 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
       it { is_expected.to_not be_able_to(:read, CompaniesMembersPosition) }
       it { is_expected.to_not be_able_to(:administrate, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, company) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
   end
 
@@ -248,10 +255,13 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:update, company) }
       it { is_expected.to_not be_able_to(:update, other_company) }
 
-
       # Company Member management
       it { is_expected.to be_able_to(:invite_company_member, company) }
       it { is_expected.to_not be_able_to(:invite_company_member, other_company) }
+
+      # Company Member Position mangement
+      it { is_expected.to be_able_to(:manage_members_positions, company) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
   end
 end

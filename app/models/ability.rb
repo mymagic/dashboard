@@ -42,8 +42,6 @@ class Ability
 
     can :read, Community
 
-    can :read, Community
-
     case member.role
     when 'administrator'
       can :administrate, :application
@@ -60,6 +58,7 @@ class Ability
       can :manage, Company
       can :manage_company, Company
       can :invite_company_member, Company
+      can :manage_members_positions, Company
 
       create_companies_positions(member)
       can :read, CompaniesMembersPosition
@@ -79,6 +78,7 @@ class Ability
       cannot :destroy, Company
       can :manage_company, Company
       can :invite_company_member, Company
+      can :manage_members_positions, Company
 
       create_companies_positions(member)
       can :read, CompaniesMembersPosition
@@ -107,7 +107,7 @@ class Ability
       book_and_cancel_office_hours(member)
 
       can :read, Company
-      can [:manage_company, :invite_company_member, :update], Company do |company|
+      can [:manage_company, :invite_company_member, :manage_members_positions, :update], Company do |company|
         member.manageable_companies.include?(company)
       end
       create_companies_positions(member)
