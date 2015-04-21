@@ -16,8 +16,12 @@ class CompaniesMembersPosition < ActiveRecord::Base
   validate :member_community_must_be_the_same_as_position_community
 
   scope :manageable, -> { where(can_manage_company: true) }
-  scope :approved, -> { where(approved: true) }
-  scope :pending, -> { where(approved: false) }
+  scope :approved, -> { where.not(approver: nil) }
+  scope :pending, -> { where(approver: nil) }
+
+  def approved?
+    approver.present?
+  end
 
   def possible_positions_for_member
     Position.all_possible(member: member, company: company)

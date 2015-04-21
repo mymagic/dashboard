@@ -27,9 +27,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         fill_in 'First name', with: 'New First Name'
         fill_in 'Last name', with: 'New Last Name'
 
-        within '.member_companies_positions_company:first-child' do
-          select company.name, from: 'Company'
-        end
+        select company.name, from: 'member_companies_positions_attributes_0_company_id'
 
         # Social Media Links
         within '.social_media_link:first-child' do

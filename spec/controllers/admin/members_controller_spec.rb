@@ -98,7 +98,9 @@ RSpec.describe Admin::MembersController, type: :controller do
     end
 
     context 'as Administrator' do
-      before { login_administrator(community: community) }
+      let(:administrator) { create(:administrator, :confirmed, community: community) }
+      before { login(administrator) }
+
       describe 'inviting an Administrator' do
         before { invite_new_member(role: 'administrator') }
         subject { community.members.find_by(email: member_required_attributes[:email]) }
@@ -118,7 +120,7 @@ RSpec.describe Admin::MembersController, type: :controller do
           invite_new_member(
             role: '',
             companies_positions_attributes: [
-              company_id: company.id, position_id: position.id, approved: true]
+              company_id: company.id, position_id: position.id, approver_id: administrator.id]
           )
         end
         subject { Member.find_by(email: member_required_attributes[:email]) }

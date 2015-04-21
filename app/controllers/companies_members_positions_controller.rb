@@ -5,7 +5,7 @@ class CompaniesMembersPositionsController < ApplicationController
   def create
     respond_to do |format|
       if @companies_members_position.update_attributes(companies_members_position_params)
-        send_position_change_email
+        send_approval_request_notification_email
 
         format.html do
           redirect_to(
@@ -37,12 +37,12 @@ class CompaniesMembersPositionsController < ApplicationController
       :position_id)
   end
 
-  def send_position_change_email
+  def send_approval_request_notification_email
     company = @companies_members_position.company
     position = @companies_members_position.position
 
-    company.permitted_members.each do |recipient|
-      PositionMailer.send_position_change(
+    company.managing_members.each do |recipient|
+      CompaniesMembersPositionMailer.send_approval_request_notification(
         current_member, recipient, company, position
       ).deliver_now
     end

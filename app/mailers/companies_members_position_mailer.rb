@@ -1,5 +1,5 @@
-class PositionMailer < CustomDeviseMailer
-  def send_position_change(member, recipient, company, position)
+class CompaniesMembersPositionMailer < ApplicationMailer
+  def send_approval_request_notification(member, recipient, company, position)
     @member = member
     @recipient = recipient
     @company = company
@@ -9,16 +9,18 @@ class PositionMailer < CustomDeviseMailer
          subject: 'Requesting position change need to be approved.'
   end
 
-  def send_approve_notification(member, position)
+  def send_approve_notification(member, company, position)
     @member = member
+    @company = company
     @position = position
 
     mail to: @member.email,
          subject: 'Your position change request has been approved.'
   end
 
-  def send_reject_notification(member, position)
+  def send_reject_notification(member, company, position)
     @member = member
+    @company = company
     @position = position
 
     mail to: @member.email,

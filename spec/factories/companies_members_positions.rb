@@ -4,7 +4,6 @@ FactoryGirl.define do
     position
     member { create(:member, community: position.community) }
     trait :approved do
-      approved true
       approver { create(:administrator, community: position.community) }
     end
     trait :managable do

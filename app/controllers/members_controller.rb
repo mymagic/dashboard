@@ -13,7 +13,7 @@ class MembersController < ApplicationController
 
   def new
     @member = Member.new(time_zone: current_member.time_zone)
-    @member.companies_positions.build(approved: true, company: @company)
+    @member.companies_positions.build(approver: current_member, company: @company)
     authorize! :create, @member
   end
 
@@ -23,7 +23,7 @@ class MembersController < ApplicationController
     if @member.errors.empty?
       redirect_to community_company_path(@company.community, @company), notice: 'Member was successfully invited.'
     else
-      @member.companies_positions.build(approved: true, company: @company) unless @member.companies_positions.any?
+      @member.companies_positions.build(approver: current_member, company: @company) unless @member.companies_positions.any?
       render 'new', alert: 'Error inviting member.'
     end
   rescue CompaniesMembersPosition::AlreadyExistsError => exception
@@ -43,7 +43,7 @@ class MembersController < ApplicationController
       :time_zone,
       companies_positions_attributes:
         [
-          :approved,
+          :approver_id,
           :company_id,
           :position_id,
           :can_manage_company,

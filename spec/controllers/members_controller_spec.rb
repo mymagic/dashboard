@@ -45,13 +45,11 @@ RSpec.describe MembersController, type: :controller do
       let(:member) { create(:member, :confirmed, community: community) }
       let(:position) { create(:position, community: community) }
       before do
-        CompaniesMembersPosition.create(
+        create(:companies_members_position, :approved, :managable, {
           position: position,
           member: member,
-          company: company,
-          approved: true,
-          can_manage_company: true
-        )
+          company: company
+        })
         login(member)
       end
 
@@ -59,7 +57,7 @@ RSpec.describe MembersController, type: :controller do
         before do
           invite_new_member(
             companies_positions_attributes: [
-              company_id: company.id, position_id: position.id, approved: true]
+              company_id: company.id, position_id: position.id, approver_id: member.id]
           )
         end
         subject { Member.find_by(email: member_required_attributes[:email]) }
@@ -72,7 +70,7 @@ RSpec.describe MembersController, type: :controller do
           invite_new_member(
             email: existing_member.email,
             companies_positions_attributes: [
-              company_id: company.id, position_id: position.id, approved: true
+              company_id: company.id, position_id: position.id, approver_id: member.id
             ]
           )
         end
@@ -89,12 +87,11 @@ RSpec.describe MembersController, type: :controller do
         end
         context 'with an existing position at that company' do
           before do
-            CompaniesMembersPosition.create(
+            create(:companies_members_position, :approved, {
               position: position,
               member: existing_member,
-              company: company,
-              approved: true
-            )
+              company: company
+            })
           end
           it 'does not add a new position' do
             expect { subject }.
@@ -109,13 +106,16 @@ RSpec.describe MembersController, type: :controller do
     end
 
     context 'as Administrator' do
-      before { login_administrator }
+      let(:administrator) { create(:administrator, :confirmed, community: community) }
       let(:position) { create(:position, community: community) }
+
+      before { login(administrator) }
+
       describe 'inviting a Member to the company' do
         before do
           invite_new_member(
             companies_positions_attributes: [
-              company_id: company.id, position_id: position.id, approved: true]
+              company_id: company.id, position_id: position.id, approver_id: administrator.id]
           )
         end
         subject { Member.find_by(email: member_required_attributes[:email]) }

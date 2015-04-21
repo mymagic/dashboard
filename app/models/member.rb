@@ -119,7 +119,7 @@ class Member < ActiveRecord::Base
 
     def must_have_at_least_one_approved_companies_positions
       return unless regular_member?
-      return if companies_positions.find(&:approved).present?
+      return if companies_positions.find(&:approver_id).present?
       errors.add(:companies_positions, :must_have_at_least_one_approved_companies_positions)
     end
   end

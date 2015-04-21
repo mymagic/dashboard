@@ -10,7 +10,7 @@ module Admin
 
     def new
       @member.time_zone = current_member.time_zone
-      @member.companies_positions.build(approved: true)
+      @member.companies_positions.build(approver: current_member)
       @member.social_media_links.build
     end
 
@@ -23,7 +23,7 @@ module Admin
           format.html { redirect_to community_admin_members_path(current_community), notice: 'Member was successfully invited.' }
           format.json { render json: @member, status: :created }
         else
-          @member.companies_positions.build(approved: true)
+          @member.companies_positions.build
           format.html { render 'new', alert: 'Error inviting member.' }
           format.json { render json: @member.errors, status: :unprocessable_entity }
         end
@@ -41,7 +41,7 @@ module Admin
     end
 
     def edit
-      @member.companies_positions.build(approved: true)
+      @member.companies_positions.build
       @member.social_media_links.build
     end
 
@@ -96,7 +96,7 @@ module Admin
         :avatar_cache,
         companies_positions_attributes:
           [
-            :approved,
+            :approver_id,
             :company_id,
             :position_id,
             :can_manage_company,
@@ -122,6 +122,7 @@ module Admin
 
     def invite_member(&block)
       raise Member::AlreadyExistsError if existing_member
+
       Member.invite!(member_params.merge(community_id: current_community.id), current_member, &block)
     end
   end

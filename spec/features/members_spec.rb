@@ -70,13 +70,11 @@ RSpec.describe 'Members', type: :feature, js: false do
 
     context 'as manager' do
       background do
-        CompaniesMembersPosition.create(
+        create(:companies_members_position, :approved, :managable, {
           position: position,
           member: manager,
-          company: company,
-          approved: true,
-          can_manage_company: true
-        )
+          company: company
+        })
         as_user manager
       end
 

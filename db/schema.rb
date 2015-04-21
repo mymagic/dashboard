@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420095048) do
+ActiveRecord::Schema.define(version: 20150421050552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(version: 20150420095048) do
     t.boolean  "can_manage_company", default: false, null: false
     t.integer  "approver_id"
     t.integer  "community_id"
-    t.boolean  "approved"
   end
 
   add_index "companies_members_positions", ["company_id", "member_id", "position_id"], name: "unique_cmp_index", unique: true, using: :btree

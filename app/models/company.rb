@@ -26,7 +26,7 @@ class Company < ActiveRecord::Base
       Position.positions_with_members(company: self)
     end
 
-    def permitted_members
+    def managing_members
       Member.joins(:companies_positions)
             .where('companies_members_positions.can_manage_company' => true)
             .distinct
