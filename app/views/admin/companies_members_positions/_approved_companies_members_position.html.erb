@@ -1,0 +1,8 @@
+<tr>
+  <td><%= companies_members_position.position.name %></td>
+  <td><%= image_tag(companies_members_position.company.logo.url(:icon), class: 'img-rounded') %></td>
+  <td><%= companies_members_position.company.name %></td>
+  <td><%= image_tag(companies_members_position.member.avatar.url(:icon), class: 'img-rounded') %></td>
+  <td><%= companies_members_position.member.full_name %></td>
+  <td></td>
+</tr>

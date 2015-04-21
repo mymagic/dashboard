@@ -1,17 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Member, type: :model do
-  let(:company) { create(:company) }
-  let(:other_company) { create(:company) }
+  let(:community) { create(:community) }
+  let(:other_community) { create(:community) }
+  let(:company) { create(:company, community: community) }
+  let(:other_company) { create(:company, community: community) }
   context 'as an adminstrator' do
-    let(:member) { build(:administrator) }
+    let(:member) { build(:administrator, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
       # Administration
       it { is_expected.to be_able_to(:administrate, :application) }
+      it { is_expected.to be_able_to(:administrate, Community) }
+      it { is_expected.to be_able_to(:administrate, Company) }
       it { is_expected.to be_able_to(:administrate, Member) }
       it { is_expected.to be_able_to(:administrate, Position) }
-      it { is_expected.to be_able_to(:administrate, Company) }
+      it { is_expected.to be_able_to(:administrate, CompaniesMembersPosition) }
       it { is_expected.to be_able_to(:administrate, OfficeHour) }
 
       # Invitations
@@ -28,7 +32,8 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:resend_invitation, Member) }
 
       # Community
-      it { is_expected.to be_able_to(:manage, Community) }
+      it { is_expected.to be_able_to(:manage, community) }
+      it { is_expected.to_not be_able_to(:manage, other_community) }
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
@@ -47,18 +52,23 @@ RSpec.describe Member, type: :model do
 
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
+      it { is_expected.to be_able_to(:read, CompaniesMembersPosition) }
+      it { is_expected.to be_able_to(:manage_members_positions, company) }
+      it { is_expected.to be_able_to(:manage_members_positions, other_company) }
     end
   end
 
   context 'as a staff member' do
-    let(:member) { build(:staff) }
+    let(:member) { build(:staff, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
       # Administration
       it { is_expected.to be_able_to(:administrate, :application) }
+      it { is_expected.to_not be_able_to(:administrate, Community) }
+      it { is_expected.to be_able_to(:administrate, Company) }
       it { is_expected.to be_able_to(:administrate, Member) }
       it { is_expected.to_not be_able_to(:administrate, Position) }
-      it { is_expected.to be_able_to(:administrate, Company) }
+      it { is_expected.to be_able_to(:administrate, CompaniesMembersPosition) }
       it { is_expected.to_not be_able_to(:administrate, OfficeHour) }
 
       # Invitations
@@ -76,6 +86,7 @@ RSpec.describe Member, type: :model do
 
       # Community
       it { is_expected.to be_able_to(:read, Community) }
+      it { is_expected.to_not be_able_to(:manage, community) }
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
@@ -97,18 +108,23 @@ RSpec.describe Member, type: :model do
 
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
+      it { is_expected.to be_able_to(:read, CompaniesMembersPosition) }
+      it { is_expected.to be_able_to(:manage_members_positions, company) }
+      it { is_expected.to be_able_to(:manage_members_positions, other_company) }
     end
   end
 
   context 'as a mentor member' do
-    let(:member) { build(:mentor) }
+    let(:member) { build(:mentor, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
       # Administration
       it { is_expected.to_not be_able_to(:administrate, :application) }
+      it { is_expected.to_not be_able_to(:administrate, Community) }
+      it { is_expected.to_not be_able_to(:administrate, Company) }
       it { is_expected.to_not be_able_to(:administrate, Member) }
       it { is_expected.to_not be_able_to(:administrate, Position) }
-      it { is_expected.to_not be_able_to(:administrate, Company) }
+      it { is_expected.to_not be_able_to(:administrate, CompaniesMembersPosition) }
       it { is_expected.to_not be_able_to(:administrate, OfficeHour) }
 
       # Invitations
@@ -126,6 +142,7 @@ RSpec.describe Member, type: :model do
 
       # Community
       it { is_expected.to be_able_to(:read, Community) }
+      it { is_expected.to_not be_able_to(:manage, community) }
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
@@ -143,19 +160,25 @@ RSpec.describe Member, type: :model do
 
       # CompaniesMembersPosition
       it { is_expected.to_not be_able_to(:have, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:read, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:administrate, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, company) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
   end
 
   context 'as regular member' do
-    let(:member) { build(:member) }
-    let(:new_member) { build(:member) }
+    let(:member) { build(:member, community: community) }
+    let(:new_member) { build(:member, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
       # Administration
       it { is_expected.to_not be_able_to(:administrate, :application) }
+      it { is_expected.to_not be_able_to(:administrate, Community) }
+      it { is_expected.to_not be_able_to(:administrate, Company) }
       it { is_expected.to_not be_able_to(:administrate, Member) }
       it { is_expected.to_not be_able_to(:administrate, Position) }
-      it { is_expected.to_not be_able_to(:administrate, Company) }
+      it { is_expected.to_not be_able_to(:administrate, CompaniesMembersPosition) }
       it { is_expected.to_not be_able_to(:administrate, OfficeHour) }
 
       # Invitations
@@ -173,6 +196,7 @@ RSpec.describe Member, type: :model do
 
       # Community
       it { is_expected.to be_able_to(:read, Community) }
+      it { is_expected.to_not be_able_to(:manage, community) }
 
       # Company
       it { is_expected.to be_able_to(:read, Company) }
@@ -192,11 +216,14 @@ RSpec.describe Member, type: :model do
 
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:read, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:administrate, CompaniesMembersPosition) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, company) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
   end
 
   context 'as regular member who is a manager' do
-    let(:community) { create(:community) }
     let(:member) { create(:member, community: community) }
     let(:position) { create(:position, community: community) }
     let(:new_member_for_company) { build(:member, community: community) }
@@ -228,10 +255,13 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:update, company) }
       it { is_expected.to_not be_able_to(:update, other_company) }
 
-
       # Company Member management
       it { is_expected.to be_able_to(:invite_company_member, company) }
       it { is_expected.to_not be_able_to(:invite_company_member, other_company) }
+
+      # Company Member Position mangement
+      it { is_expected.to be_able_to(:manage_members_positions, company) }
+      it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
   end
 end

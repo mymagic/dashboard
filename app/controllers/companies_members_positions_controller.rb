@@ -1,23 +1,40 @@
 class CompaniesMembersPositionsController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource
+  load_resource :company
+  load_and_authorize_resource only: :create
+
+  def index
+    authorize! :manage_members_positions, @company
+    @approved_companies_members_positions    = @company.companies_members_positions.approved
+    @unapproved_companies_members_positions  = @company.companies_members_positions.unapproved
+  end
 
   def create
     respond_to do |format|
-      if @companies_members_position.update_attributes(companies_members_position_params)
+      if @companies_members_position.update_attributes(
+        companies_members_position_params.merge(company: @company))
         format.html do
           redirect_to(
-            community_company_url(current_member.community, @companies_members_position.company),
-            notice: 'Position was successfully created but needs to be approved.')
+            community_company_url(
+              current_member.community,
+              @companies_members_position.company),
+            notice: 'Position was successfully created '\
+                    'but needs to be approved.')
         end
-        format.json { render json: @companies_members_position, status: :created }
+        format.json do
+          render json: @companies_members_position, status: :created
+        end
       else
         format.html do
           redirect_to(
-            community_company_url(current_member.community, @companies_members_position.company),
+            community_company_url(current_member.community, @company),
             alert: 'Error creating position.')
         end
-        format.json { render json: @companies_members_position.errors, status: :unprocessable_entity }
+        format.json do
+          render(
+            json: @companies_members_position.errors,
+            status: :unprocessable_entity)
+        end
       end
     end
   end
@@ -25,8 +42,6 @@ class CompaniesMembersPositionsController < ApplicationController
   private
 
   def companies_members_position_params
-    params.require(:companies_members_position).permit(
-      :company_id,
-      :position_id)
+    params.require(:companies_members_position).permit(:position_id)
   end
 end

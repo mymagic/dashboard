@@ -15,6 +15,7 @@ class CompaniesMembersPosition < ActiveRecord::Base
 
   scope :manageable, -> { where(can_manage_company: true) }
   scope :approved, -> { where(approved: true) }
+  scope :unapproved, -> { where.not(approved: true) }
 
   def possible_positions_for_member
     Position.all_possible(member: member, company: company)
