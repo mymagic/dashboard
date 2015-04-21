@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :members, only: [:index, :show]
     resources :companies, only: [:index, :show, :edit, :update] do
       resources :members, only: [:new, :create, :edit, :update]
+      resources :companies_members_positions, only: [:index, :create]
     end
     resources :companies_members_positions, only: [:create, :destroy]
     resources :office_hours, only: [:index, :create, :destroy] do
@@ -22,12 +23,13 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :companies
+      resources :companies_members_positions
       resources :office_hours
       resources :members do
         patch 'resend_invitation', on: :member
       end
       resources :positions
-      resources :companies_members_positions, as: :memberships do
+      resources :companies_members_positions do
         member do
           patch :approve
           delete :reject

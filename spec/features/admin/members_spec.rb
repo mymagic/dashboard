@@ -64,10 +64,11 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_css('nav.navbar-member')
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
-          expect(page).to have_content('Members')
-          expect(page).to have_content('Companies')
-          expect(page).to have_content('Positions')
-          expect(page).to have_content('Office Hours')
+          expect(page).to have_link('Members')
+          expect(page).to have_link('Companies')
+          expect(page).to have_link('Positions')
+          expect(page).to have_link('Companies Members Positions')
+          expect(page).to have_link('Office Hours')
         end
       end
     end
@@ -92,10 +93,10 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_css('nav.navbar-member')
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
-          expect(page).to have_content('Members')
-          expect(page).to have_content('Companies')
-          expect(page).to_not have_content('Positions')
-          expect(page).to_not have_content('Office Hours')
+          expect(page).to have_link('Members')
+          expect(page).to_not have_link('Positions', exact: true)
+          expect(page).to have_link('Companies Members Positions')
+          expect(page).to_not have_link('Office Hours')
         end
       end
     end

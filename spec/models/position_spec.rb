@@ -17,7 +17,7 @@ RSpec.describe Position, type: :model do
     let(:company) { create(:company, community: community) }
     let(:another_company) { create(:company, community: community) }
     let(:position) { create(:position, community: community) }
-    let(:unapproved_position) { create(:position, community: community) }
+    let(:pending_position) { create(:position, community: community) }
     let(:unimportant_position) { create(:position, community: community) }
 
     let!(:approved_cmp_for_confirmed_member_at_other_company) {
@@ -41,9 +41,9 @@ RSpec.describe Position, type: :model do
              member: confirmed_member,
              company: company)
     }
-    let!(:unapproved_cmp_for_confirmed_member) {
+    let!(:pending_cmp_for_confirmed_member) {
       create(:companies_members_position,
-             position: unapproved_position,
+             position: pending_position,
              member: confirmed_member,
              company: company)
     }
@@ -54,9 +54,9 @@ RSpec.describe Position, type: :model do
              member: unconfirmed_member,
              company: company)
     }
-    let!(:unapproved_cmp_for_unconfirmed_member) {
+    let!(:pending_cmp_for_unconfirmed_member) {
       create(:companies_members_position,
-             position: unapproved_position,
+             position: pending_position,
              member: unconfirmed_member,
              company: company)
     }
@@ -84,7 +84,7 @@ RSpec.describe Position, type: :model do
             end
           end.flatten
         }
-        it 'includes no unapproved companies members positions' do
+        it 'includes no pending companies members positions' do
           expect(cmps.select{ |cmp| !cmp.approved? }).to be_empty
         end
         it 'includes approved companies members positions' do
@@ -127,7 +127,7 @@ RSpec.describe Position, type: :model do
             end
           end.flatten
         }
-        it 'includes no unapproved companies members positions' do
+        it 'includes no pending companies members positions' do
           expect(cmps.select{ |cmp| !cmp.approved? }).to be_empty
         end
         it 'includes approved companies members positions' do
@@ -174,7 +174,7 @@ RSpec.describe Position, type: :model do
         let(:all_positions) { Position.all }
         context 'for someone who can have CompaniesMembersPositions' do
           it 'includes only positions that have not been requested/approved yet' do
-            expect(subject).to eq all_positions - existing_positions
+            expect(subject).to contain_exactly(*all_positions - existing_positions)
           end
         end
         context 'for someone who can not have CompaniesMembersPositions' do

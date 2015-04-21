@@ -1,10 +1,5 @@
 <div class="row">
-  <div class="col-sm-3"></div>
-  <div class="col-sm-6">
-    <div class="row">
-      <%= panel "New Company", columns: 12 do %>
-        <%= render partial: 'form', locals: { company: @company } %>
-      <% end %>
-    </div>
-  </div>
+  <%= panel "New Company", columns: 12 do %>
+    <%= render partial: 'form', locals: { company: @company } %>
+  <% end %>
 </div>

@@ -5,6 +5,11 @@ module Admin
     before_action :find_position, only: [:approve, :reject]
     before_action :find_company, only: [:approve, :reject]
 
+    def index
+      @approved_companies_members_positions    = @companies_members_positions.approved
+      @pending_companies_members_positions  = @companies_members_positions.pending
+    end
+
     def approve
       if @companies_members_position.update(approver: current_member)
         flash[:notice] = 'Position was successfully approved.'
@@ -13,13 +18,13 @@ module Admin
         flash[:alert] = 'Error approving position.'
       end
 
-      redirect_to community_admin_memberships_path
+      redirect_to community_admin_companies_members_positions_path
     end
 
     def reject
       @position.destroy
       CompaniesMembersPositionMailer.send_reject_notification(current_member, @company, @position).deliver_now
-      redirect_to community_admin_memberships_path, notice: 'Position was successfully rejected.'
+      redirect_to community_admin_companies_members_positions_path, notice: 'Position was successfully rejected.'
     end
 
     protected

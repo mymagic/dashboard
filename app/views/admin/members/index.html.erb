@@ -9,14 +9,14 @@
       <li class="active" role="presentation">
         <a aria-controls="active-members" data-toggle="tab" href="#active-members" role="tab">
           Active Members
-          <span class="label label-info"><%= @active_members.count %></span>
+          <span class="label label-info"><%= @active_members.size %></span>
         </a>
       </li>
       <% if @invited_members.any? %>
         <li role="presentation">
           <a aria-controls="invited-members" data-toggle="tab" href="#invited-members" role="tab">
             Invited Members
-            <span class="label label-info"><%= @invited_members.count %></span>
+            <span class="label label-info"><%= @invited_members.size %></span>
           </a>
         </li>
       <% end %>
