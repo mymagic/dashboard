@@ -9,14 +9,14 @@
       <li class="active" role="presentation">
         <a aria-controls="approved" data-toggle="tab" href="#approved" role="tab">
           Approved
-          <span class="label label-info"><%= @approved_companies_members_positions.count %></span>
+          <span class="label label-info"><%= @approved_companies_members_positions.size %></span>
         </a>
       </li>
       <% if @unapproved_companies_members_positions.any? %>
         <li role="presentation">
           <a aria-controls="unapproved" data-toggle="tab" href="#unapproved" role="tab">
             Unapproved
-            <span class="label label-info"><%= @unapproved_companies_members_positions.count %></span>
+            <span class="label label-info"><%= @unapproved_companies_members_positions.size %></span>
           </a>
         </li>
       <% end %>
