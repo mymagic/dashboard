@@ -229,11 +229,14 @@ RSpec.describe Member, type: :model do
     let(:new_member_for_company) { build(:member, community: community) }
     let(:new_member_for_other_company) { build(:member, community: community) }
     before do
-      create(:companies_members_position, :approved, :managable, {
+      create(
+        :companies_members_position,
+        :approved,
+        :managable,
         position: position,
         member: member,
         company: company
-      })
+      )
       new_member_for_company.companies_positions = []
       new_member_for_company.
         companies_positions.
