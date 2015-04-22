@@ -3,8 +3,6 @@ module CompaniesMembersPositionsConcern
 
   included do
     load_resource :company
-    load_and_authorize_resource only: :create
-    load_and_authorize_resource through: :current_community, except: :create
 
     before_action :find_position, only: [:approve, :reject]
     before_action :find_company, only: [:approve, :reject]
@@ -18,13 +16,14 @@ module CompaniesMembersPositionsConcern
       flash[:alert] = 'Error approving position.'
     end
 
-    redirect_to :back
+    redirect_to [current_community, admin_layout_presence, @companies_members_position]
   end
 
   def reject
     @companies_members_position.destroy
     CompaniesMembersPositionMailer.send_reject_notification(current_member, @company, @position).deliver_now
-    redirect_to :back, notice: 'Position was successfully rejected.'
+
+    redirect_to [current_community, admin_layout_presence, @companies_members_position], notice: 'Position was successfully rejected.'
   end
 
   protected
@@ -35,5 +34,9 @@ module CompaniesMembersPositionsConcern
 
   def find_company
     @company ||= @companies_members_position.company
+  end
+
+  def admin_layout_presence
+    self.class.parent == Admin ? :admin : nil
   end
 end

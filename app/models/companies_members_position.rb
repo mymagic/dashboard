@@ -18,10 +18,6 @@ class CompaniesMembersPosition < ActiveRecord::Base
   scope :approved, -> { where.not(approver: nil) }
   scope :pending, -> { where(approver: nil) }
 
-  def approved?
-    approver.present?
-  end
-
   def possible_positions_for_member
     Position.all_possible(member: member, company: company)
   end

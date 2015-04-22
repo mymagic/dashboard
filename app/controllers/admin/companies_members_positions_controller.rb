@@ -1,5 +1,7 @@
 module Admin
   class CompaniesMembersPositionsController < AdminController
+    load_and_authorize_resource through: :current_community
+    
     include CompaniesMembersPositionsConcern
 
     def index
