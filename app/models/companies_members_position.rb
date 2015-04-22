@@ -5,7 +5,6 @@ class CompaniesMembersPosition < ActiveRecord::Base
     end
   end
 
-  belongs_to :community
   belongs_to :member, inverse_of: :companies_positions
   belongs_to :company
   belongs_to :position

@@ -10,7 +10,6 @@ class Community < ActiveRecord::Base
   has_many :companies,    dependent: :destroy
   has_many :members,      dependent: :destroy
   has_many :positions,    dependent: :destroy
-  has_many :companies_members_positions, dependent: :destroy
   has_many :office_hours, dependent: :destroy
   has_many :social_media_links, dependent: :destroy
   has_many :companies_members_positions, through: :positions
