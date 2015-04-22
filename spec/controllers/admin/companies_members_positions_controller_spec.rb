@@ -10,6 +10,7 @@ RSpec.describe Admin::CompaniesMembersPositionsController, type: :controller do
 
   describe "PATCH #approve" do
     it 'set current_member as approver' do
+      request.env["HTTP_REFERER"] = community_path(community)
       patch(:approve, id: pending_cmp.id, community_id: community)
 
       expect(pending_cmp.reload.approver).to eq(administrator)
@@ -18,6 +19,7 @@ RSpec.describe Admin::CompaniesMembersPositionsController, type: :controller do
 
   describe "DELETE #reject" do
     it 'remove companies_members_position' do
+      request.env["HTTP_REFERER"] = community_path(community)
       delete(:reject, id: pending_cmp.id, community_id: community)
       expect { pending_cmp.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end

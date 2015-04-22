@@ -61,7 +61,7 @@ class Ability
       can :manage_members_positions, Company
 
       create_companies_positions(member)
-      can [:approve, :reject, :read, :administrate], CompaniesMembersPosition
+      can [:approve, :reject, :read, :destroy, :administrate], CompaniesMembersPosition
 
       can :administrate, Member
       can [:create, :read], Member
@@ -80,7 +80,7 @@ class Ability
       can :manage_members_positions, Company
 
       create_companies_positions(member)
-      can [:approve, :reject, :read], CompaniesMembersPosition
+      can [:approve, :reject, :read, :destroy], CompaniesMembersPosition
 
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
@@ -110,6 +110,10 @@ class Ability
         member.manageable_companies.include?(company)
       end
       create_companies_positions(member)
+
+      can [:approve, :reject, :destroy], CompaniesMembersPosition do |cmp|
+        member.manageable_companies.include? cmp.company
+      end
 
       can :read, Member
       can :create, Member do |new_member|
