@@ -1,7 +1,7 @@
 class CompaniesMembersPositionsController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource only: :create
-  
+  load_and_authorize_resource only: [:create, :approve, :reject, :destroy]
+
   include CompaniesMembersPositionsConcern
 
   def index
