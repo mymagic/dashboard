@@ -3,27 +3,29 @@ module CompaniesMembersPositionsConcern
 
   included do
     load_resource :company
-
     before_action :find_position, only: [:approve, :reject]
     before_action :find_company, only: [:approve, :reject]
   end
 
   def approve
     if @companies_members_position.update(approver: current_member)
-      flash[:notice] = 'Position was successfully approved.'
-      CompaniesMembersPositionMailer.send_approve_notification(current_member, @company, @position).deliver_now
+      CompaniesMembersPositionMailer.send_approve_notification(
+        current_member,
+        @company,
+        @position).deliver_now
+      redirect_to :back, notice: 'Position was successfully approved.'
     else
-      flash[:alert] = 'Error approving position.'
+      redirect_to :back, alert: 'Error approving position.'
     end
-
-    redirect_to [current_community, admin_layout_presence, @companies_members_position]
   end
 
   def reject
     @companies_members_position.destroy
-    CompaniesMembersPositionMailer.send_reject_notification(current_member, @company, @position).deliver_now
-
-    redirect_to [current_community, admin_layout_presence, @companies_members_position], notice: 'Position was successfully rejected.'
+    CompaniesMembersPositionMailer.send_reject_notification(
+      current_member,
+      @company,
+      @position).deliver_now
+    redirect_to :back, notice: 'Position was successfully rejected.'
   end
 
   protected
