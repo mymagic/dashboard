@@ -1,11 +1,11 @@
 class CompaniesMembersPositionsController < ApplicationController
   before_action :authenticate_member!
-  load_resource :company
-  load_and_authorize_resource only: :create
+
+  include CompaniesMembersPositionsConcern
 
   def index
     authorize! :manage_members_positions, @company
-    @approved_companies_members_positions    = @company.companies_members_positions.approved
+    @approved_companies_members_positions = @company.companies_members_positions.approved
     @pending_companies_members_positions  = @company.companies_members_positions.pending
   end
 
