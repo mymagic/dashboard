@@ -1,6 +1,5 @@
 <%= form.simple_fields_for :companies_positions do |company_position| %>
   <%= company_position.association :company, as: :hidden %>
-  <%= company_position.association :approver, as: :hidden %>
   <%= company_position.association :position, collection: current_community.positions.ordered %>
   <%= company_position.input :can_manage_company, as: :boolean %>
   <% if company_position.object.persisted? %>
