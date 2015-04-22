@@ -134,6 +134,48 @@ module FeatureHelper
     have_selector('.alert', text: 'You are not authorized to access this page.')
   end
 
+  def manage_company_members_positions(approved: [], approve: [], reject: [])
+    pending = approve + reject
+
+    approved.each do |cmp|
+      within '#approved' do
+        expect(page).to have_content("#{ cmp.position.name }")
+      end
+      within '#pending' do
+        expect(page).to_not have_content("#{ cmp.position.name }")
+      end
+    end
+
+    expect(page).to have_content("Pending #{ pending.count}") if pending.any?
+
+    pending.each do |cmp|
+      within '#approved' do
+        expect(page).to_not have_content("#{ cmp.position.name }")
+      end
+      within '#pending' do
+        expect(page).to have_content("#{ cmp.position.name }")
+      end
+    end
+
+    approve.each do |cmp|
+      within(:xpath, "//*[@id='pending']/table/tbody/tr/td[text()='#{ cmp.position.name }']/..") do
+        click_link "Approve"
+      end
+      expect(page).to have_content("Position was successfully approved.")
+      within '#approved' do
+        expect(page).to have_content("#{ cmp.position.name }")
+      end
+    end
+
+    reject.each do |cmp|
+      within(:xpath, "//*[@id='pending']/table/tbody/tr/td[text()='#{ cmp.position.name }']/..") do
+        click_link "Reject"
+      end
+      expect(page).to have_content("Position was successfully rejected.")
+      expect(page).to_not have_content("#{ cmp.position.name }")
+    end
+  end
+
   # Taken from "Spreewald" gem https://github.com/makandra/spreewald/blob/master/lib/spreewald_support/tolerance_for_selenium_sync_issues.rb
   # <<<
   RETRY_ERRORS = %w[
