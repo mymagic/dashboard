@@ -28,7 +28,7 @@ class Company < ActiveRecord::Base
 
     def managing_members
       Member.joins(:companies_positions)
-            .where('companies_members_positions.can_manage_company' => true)
+            .where('companies_members_positions.company_id' => id)
             .distinct
     end
   end

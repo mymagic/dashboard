@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 20150421050552) do
     t.datetime "updated_at",                         null: false
     t.boolean  "can_manage_company", default: false, null: false
     t.integer  "approver_id"
-    t.integer  "community_id"
   end
 
   add_index "companies_members_positions", ["company_id", "member_id", "position_id"], name: "unique_cmp_index", unique: true, using: :btree

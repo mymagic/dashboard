@@ -48,4 +48,18 @@ RSpec.describe Company, type: :model do
       end
     end
   end
+
+  describe '#managing_members' do
+    let(:community) { create(:community) }
+    let(:company) { create(:company, community: community) }
+    let(:position) { create(:position, community: community) }
+    let(:managing_member) { create(:member, :confirmed, community: community) }
+    let(:unmanaging_member) { create(:member, :confirmed, community: community) }
+
+    before { create(:companies_members_position, :approved, :managable, { company: company, member: managing_member, position: position }) }
+    subject { company.managing_members }
+
+    it { is_expected.to include(managing_member) }
+    it { is_expected.to_not include(unmanaging_member) }
+  end
 end
