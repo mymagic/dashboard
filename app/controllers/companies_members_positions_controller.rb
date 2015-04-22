@@ -13,7 +13,7 @@ class CompaniesMembersPositionsController < ApplicationController
     respond_to do |format|
       if @companies_members_position.update_attributes(
         companies_members_position_params.merge(company: @company))
-        
+
         send_approval_request_notification_email
 
         format.html do
@@ -44,7 +44,8 @@ class CompaniesMembersPositionsController < ApplicationController
 
   def destroy
     @companies_members_position.destroy
-    redirect_to community_company_url(current_member.community, @companies_members_position.company)
+    redirect_to community_company_url(current_member.community, @companies_members_position.company),
+      notice: 'Members position has been removed.'
   end
 
   private

@@ -22,7 +22,7 @@ module Admin
     end
 
     def reject
-      @position.destroy
+      @companies_members_position.destroy
       CompaniesMembersPositionMailer.send_reject_notification(current_member, @company, @position).deliver_now
       redirect_to community_admin_companies_members_positions_path, notice: 'Position was successfully rejected.'
     end
