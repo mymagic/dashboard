@@ -107,9 +107,9 @@ RSpec.describe Position, type: :model do
       end
       describe 'the return value' do
         it 'is a positions with members hash' do
-          positions = company_positions_with_members.keys.first
-          expect(position).to be_a(Position)
-          expect(company_positions_with_members[position].first).to be_a(Member)
+          key = company_positions_with_members.keys.first
+          expect(key).to be_a(Position)
+          expect(company_positions_with_members[key].first).to be_a(Member)
         end
       end
     end
