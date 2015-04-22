@@ -6,7 +6,9 @@ RSpec.describe CompaniesMembersPositionsController, type: :controller do
 
   describe "GET #index" do
     describe 'accessing the page' do
-      let(:response) { get(:index, company_id: company, community_id: community) }
+      let(:response) do
+        get(:index, company_id: company, community_id: community)
+      end
       it_behaves_like "accessible by", :administrator, :staff
 
       let(:manager) { create(:member, :confirmed, community: community) }
@@ -23,7 +25,8 @@ RSpec.describe CompaniesMembersPositionsController, type: :controller do
         end
         it 'displays the page without errors' do
           expect(response).to_not redirect_to(community_path(community))
-          expect(response).to_not redirect_to(new_member_session_path(community))
+          expect(response).
+            to_not redirect_to(new_member_session_path(community))
         end
       end
       context 'as a regular member' do
@@ -36,29 +39,53 @@ RSpec.describe CompaniesMembersPositionsController, type: :controller do
 
     describe 'assigning members' do
       let!(:position) { create(:position, community: community) }
-      let!(:administrator) { create(:administrator, :confirmed, community: community) }
-      let!(:approved_cmp) { create(:companies_members_position, :approved, position: position, company: company) }
-      let!(:pending_cmp) { create(:companies_members_position, position: position, company: company) }
+      let!(:administrator) do
+        create(:administrator, :confirmed, community: community)
+      end
+      let!(:approved_cmp) do
+        create(
+          :companies_members_position,
+          :approved,
+          position: position,
+          company: company)
+      end
+      let!(:pending_cmp) do
+        create(
+          :companies_members_position,
+          position: position,
+          company: company)
+      end
       before do
         login(administrator)
         get :index, company_id: company, community_id: community
       end
       it 'assigns the correct approved company member positions' do
-        expect(assigns(:approved_companies_members_positions)).to include(approved_cmp)
-        expect(assigns(:approved_companies_members_positions)).to_not include(pending_cmp)
+        expect(assigns(:approved_companies_members_positions)).
+          to include(approved_cmp)
+        expect(assigns(:approved_companies_members_positions)).
+          to_not include(pending_cmp)
       end
       it 'assigns the correct pending company member positions' do
-        expect(assigns(:pending_companies_members_positions)).to eq [pending_cmp]
+        expect(assigns(:pending_companies_members_positions)).
+          to eq [pending_cmp]
       end
     end
   end
 
   describe 'POST #create' do
     let(:position) { create(:position, community: community) }
-    let(:companies_members_position_required_attributes) { { position_id: position.id } }
+    let(:companies_members_position_required_attributes) do
+      { position_id: position.id }
+    end
 
     def create_new_position(attributes = {})
-      post :create, company_id: company, community_id: community, companies_members_position: (companies_members_position_required_attributes).merge(attributes)
+      post(
+        :create,
+        company_id: company,
+        community_id: community,
+        companies_members_position: (
+          companies_members_position_required_attributes).merge(attributes)
+      )
     end
 
     it_behaves_like "accessible by", :staff, :administrator, :member do
