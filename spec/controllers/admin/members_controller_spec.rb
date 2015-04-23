@@ -145,13 +145,27 @@ RSpec.describe Admin::MembersController, type: :controller do
             role: '',
             companies_positions_attributes: [
               company_id: company.id,
-              position_id: position.id,
-              approver_id: administrator.id
+              position_id: position.id
             ]
           )
         end
-        subject { Member.find_by(email: member_required_attributes[:email]) }
-        it { is_expected.to be_regular_member }
+        subject(:invited_member) {
+          Member.find_by(email: member_required_attributes[:email])
+        }
+
+        it 'invites a regular member' do
+          expect(invited_member).to be_regular_member
+        end
+
+        it "sets the cmp's approver to the current member" do
+          expect(invited_member.companies_positions.first.approver).
+            to eq(administrator)
+        end
+
+        it "sets the cmp's company to the current company" do
+          expect(invited_member.companies_positions.first.company).
+            to eq(company)
+        end
       end
 
       describe 'inviting an existing member' do

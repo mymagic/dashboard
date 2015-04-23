@@ -4,8 +4,6 @@ class MembersController < ApplicationController
   load_resource through: :current_community
   skip_authorize_resource only: [:new, :create]
 
-  include MembersConcern
-
   def index
     @members = @members.active.ordered
   end
@@ -15,7 +13,7 @@ class MembersController < ApplicationController
 
   def new
     @member = Member.new(time_zone: current_member.time_zone)
-    @member.companies_positions.build(approver: current_member, company: @company)
+    @member.companies_positions.build(company: @company)
     authorize! :create, @member
   end
 
@@ -25,7 +23,7 @@ class MembersController < ApplicationController
     if @member.errors.empty?
       redirect_to community_company_path(@company.community, @company), notice: 'Member was successfully invited.'
     else
-      @member.companies_positions.build(approver: current_member, company: @company) unless @member.companies_positions.any?
+      @member.companies_positions.build unless @member.companies_positions.any?
       render 'new', alert: 'Error inviting member.'
     end
   rescue CompaniesMembersPosition::AlreadyExistsError => exception
@@ -45,13 +43,19 @@ class MembersController < ApplicationController
       :time_zone,
       companies_positions_attributes:
         [
-          :company_id,
           :position_id,
           :can_manage_company,
           :_destroy,
           :id
         ]
-    )
+    ).tap do |attrs|
+      attrs[:community_id] = current_community.id
+      attrs[:companies_positions_attributes].map do |key, value|
+        param = key.is_a?(Hash) ? key : value
+        param[:approver_id] = current_member.id
+        param[:company_id]  = @company.id
+      end if attrs[:companies_positions_attributes]
+    end
   end
 
   def existing_member
@@ -68,6 +72,6 @@ class MembersController < ApplicationController
 
   def invite_member(&block)
     return add_position_to_existing_member if existing_member
-    Member.invite!(member_create_params, current_member, &block)
+    Member.invite!(member_params, current_member, &block)
   end
 end

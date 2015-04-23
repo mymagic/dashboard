@@ -68,14 +68,29 @@ RSpec.describe MembersController, type: :controller do
         before do
           invite_new_member(
             companies_positions_attributes: [
-              company_id: company.id,
               position_id: position.id,
               approver_id: member.id
             ]
           )
         end
-        subject { Member.find_by(email: member_required_attributes[:email]) }
-        it { is_expected.to be_regular_member }
+
+        subject(:invited_member) {
+          Member.find_by(email: member_required_attributes[:email])
+        }
+
+        it 'invites a regular member' do
+          expect(invited_member).to be_regular_member
+        end
+
+        it "sets the cmp's approver to the current member" do
+          expect(invited_member.companies_positions.first.approver).
+            to eq(member)
+        end
+
+        it "sets the cmp's company to the current company" do
+          expect(invited_member.companies_positions.first.company).
+            to eq(company)
+        end
       end
 
       describe 'inviting an existing member' do
@@ -86,9 +101,7 @@ RSpec.describe MembersController, type: :controller do
           invite_new_member(
             email: existing_member.email,
             companies_positions_attributes: [
-              company_id: company.id,
-              position_id: position.id,
-              approver_id: member.id
+              position_id: position.id
             ]
           )
         end
@@ -104,7 +117,7 @@ RSpec.describe MembersController, type: :controller do
                 community_company_path(community, company))
           end
         end
-        context 'with an existing position at that company' do
+        context 'with already having that position at that company' do
           before do
             create(
               :companies_members_position,
@@ -128,25 +141,39 @@ RSpec.describe MembersController, type: :controller do
     end
 
     context 'as Administrator' do
-      let(:administrator) do
+      let(:member) do
         create(:administrator, :confirmed, community: community)
       end
       let(:position) { create(:position, community: community) }
 
-      before { login(administrator) }
+      before { login(member) }
 
       describe 'inviting a Member to the company' do
         before do
           invite_new_member(
             companies_positions_attributes: [
-              company_id: company.id,
-              position_id: position.id,
-              approver_id: administrator.id
+              position_id: position.id
             ]
           )
         end
-        subject { Member.find_by(email: member_required_attributes[:email]) }
-        it { is_expected.to be_regular_member }
+
+        subject(:invited_member) {
+          Member.find_by(email: member_required_attributes[:email])
+        }
+
+        it 'invites a regular member' do
+          expect(invited_member).to be_regular_member
+        end
+
+        it "sets the cmp's approver to the current member" do
+          expect(invited_member.companies_positions.first.approver).
+            to eq(member)
+        end
+
+        it "sets the cmp's company to the current company" do
+          expect(invited_member.companies_positions.first.company).
+            to eq(company)
+        end
       end
     end
   end
