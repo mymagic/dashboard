@@ -32,9 +32,6 @@ RSpec.describe 'Members', type: :feature, js: false do
         visit community_company_path(company.community, company)
         click_link "Invite members to company"
         expect(page).to have_content("Invite New Member to ACME")
-        within ".member_companies_positions_company" do
-          expect(page).to_not have_content("ACME")
-        end
       end
 
       feature 'inviting a new member to company' do
@@ -92,9 +89,6 @@ RSpec.describe 'Members', type: :feature, js: false do
         visit community_company_path(company.community, company)
         click_link "Invite members to company"
         expect(page).to have_content("Invite New Member to ACME")
-        within ".member_companies_positions_company" do
-          expect(page).to_not have_content("ACME")
-        end
       end
 
       feature 'inviting a new member to company' do

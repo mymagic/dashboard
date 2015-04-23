@@ -4,5 +4,12 @@
   <td><%= companies_members_position.company.name %></td>
   <td><%= image_tag(companies_members_position.member.avatar.url(:icon), class: 'img-rounded') %></td>
   <td><%= companies_members_position.member.full_name %></td>
-  <td></td>
+  <td>
+    <% if can? :update, companies_members_position %>
+      <%= link_to('Edit', edit_community_admin_companies_members_position_path(current_community, companies_members_position), class: 'btn btn-default btn-xs') %>
+    <% end %>
+    <% if can? :destroy, companies_members_position %>
+      <%= link_to('Remove', community_admin_companies_members_position_path(current_community, companies_members_position), method: :delete, class: 'btn btn-danger btn-xs', data: { confirm: 'Are you sure you want to remove this Companies Members Position?' }) %>
+    <% end %>
+  </td>
 </tr>

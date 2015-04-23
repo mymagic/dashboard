@@ -1,13 +1,15 @@
 class CompaniesMembersPositionsController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource only: :create
-  
+  load_and_authorize_resource except: [:index]
+
   include CompaniesMembersPositionsConcern
 
   def index
     authorize! :manage_members_positions, @company
-    @approved_companies_members_positions = @company.companies_members_positions.approved
-    @pending_companies_members_positions  = @company.companies_members_positions.pending
+    @approved_companies_members_positions = @company.
+                                            companies_members_positions.approved
+    @pending_companies_members_positions  = @company.
+                                            companies_members_positions.pending
   end
 
   def create
@@ -41,12 +43,6 @@ class CompaniesMembersPositionsController < ApplicationController
         end
       end
     end
-  end
-
-  def destroy
-    @companies_members_position.destroy
-    redirect_to community_company_url(current_member.community, @companies_members_position.company),
-      notice: 'Members position has been removed.'
   end
 
   private

@@ -26,15 +26,25 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
   feature "Manage Company" do
     given!(:community) { create(:community, :with_social_media_services) }
+    given!(:position) { create(:position, community: community) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:manager) { create(:member, :confirmed, community: community) }
-    given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, name: "ACME", community: community) }
-    given!(:position) { create(:position, community: community) }
     given!(:social_media_link) do
       create(:social_media_link, attachable: company)
     end
     given(:social_media_service) { community.social_media_services.sample }
+
+    given!(:manager_position) do
+      create(
+        :companies_members_position,
+        :approved,
+        :managable,
+        position: position,
+        member: manager,
+        company: company
+      )
+    end
 
     def edit_a_company
       visit community_company_path(company.community, company)
@@ -79,14 +89,6 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
     context 'as manager' do
       background do
-        create(
-          :companies_members_position,
-          :approved,
-          :managable,
-          position: position,
-          member: manager,
-          company: company
-        )
         as_user manager
       end
 
@@ -108,15 +110,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
     context 'as staff' do
       background do
-        create(
-          :companies_members_position,
-          :approved,
-          :managable,
-          position: position,
-          member: manager,
-          company: company
-        )
-        as_user manager
+        as_user staff
       end
 
       scenario 'viewing company page' do

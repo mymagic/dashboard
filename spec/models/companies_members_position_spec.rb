@@ -33,4 +33,40 @@ RSpec.describe CompaniesMembersPosition, type: :model do
       it { is_expected.to_not include(approved) }
     end
   end
+
+  describe '#members_last_manager_position_in_company?' do
+    let(:community) { create(:community) }
+    let(:position) { create(:position, community: community) }
+    let(:managable_cmp) { create(:companies_members_position, :managable, :approved, position: position) }
+    let(:unmanagable_cmp) { create(:companies_members_position, :approved, position: position) }
+    let(:member) { create(:member, :confirmed, community: community) }
+
+    context 'can_manage_company as true' do
+      subject { managable_cmp.members_last_manager_position_in_company?(member) }
+
+      context 'member as myself' do
+        before { managable_cmp.update(member_id: member.id) }
+
+        it { is_expected.to eq(true) }
+      end
+
+      context 'member as another' do
+        it { is_expected.to eq(false) }
+      end
+    end
+
+    context 'can_manage_company as false' do
+      subject { unmanagable_cmp.members_last_manager_position_in_company?(member) }
+
+      context 'member as myself' do
+        before { managable_cmp.update(member_id: member.id) }
+
+        it { is_expected.to eq(false) }
+      end
+
+      context 'member as another' do
+        it { is_expected.to eq(false) }
+      end
+    end
+  end
 end

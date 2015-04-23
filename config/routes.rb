@@ -11,9 +11,13 @@ Rails.application.routes.draw do
     resources :members, only: [:index, :show]
     resources :companies, only: [:index, :show, :edit, :update] do
       resources :members, only: [:new, :create, :edit, :update]
-      resources :companies_members_positions, only: [:index, :create]
+      resources :companies_members_positions do
+        member do
+          patch :approve
+          delete :reject
+        end
+      end
     end
-    resources :companies_members_positions, only: [:create, :destroy]
     resources :office_hours, only: [:index, :create, :destroy] do
       patch 'book', on: :member
       delete 'cancel', on: :member
