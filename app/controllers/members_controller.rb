@@ -4,6 +4,8 @@ class MembersController < ApplicationController
   load_resource through: :current_community
   skip_authorize_resource only: [:new, :create]
 
+  include MembersConcern
+
   def index
     @members = @members.active.ordered
   end
@@ -43,7 +45,6 @@ class MembersController < ApplicationController
       :time_zone,
       companies_positions_attributes:
         [
-          :approver_id,
           :company_id,
           :position_id,
           :can_manage_company,
@@ -67,6 +68,6 @@ class MembersController < ApplicationController
 
   def invite_member(&block)
     return add_position_to_existing_member if existing_member
-    Member.invite!(member_params.merge(community_id: current_community.id), current_member, &block)
+    Member.invite!(member_create_params, current_member, &block)
   end
 end

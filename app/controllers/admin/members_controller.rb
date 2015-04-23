@@ -3,6 +3,8 @@ module Admin
     load_and_authorize_resource through: :current_community
     before_action :allow_without_password, only: :update
 
+    include MembersConcern
+
     def index
       @invited_members    = @members.invited.ordered
       @active_members     = @members.active.ordered
@@ -10,7 +12,7 @@ module Admin
 
     def new
       @member.time_zone = current_member.time_zone
-      @member.companies_positions.build(approver: current_member)
+      @member.companies_positions.build
       @member.social_media_links.build
     end
 
@@ -96,7 +98,6 @@ module Admin
         :avatar_cache,
         companies_positions_attributes:
           [
-            :approver_id,
             :company_id,
             :position_id,
             :can_manage_company,
@@ -123,7 +124,7 @@ module Admin
     def invite_member(&block)
       raise Member::AlreadyExistsError if existing_member
 
-      Member.invite!(member_params.merge(community_id: current_community.id), current_member, &block)
+      Member.invite!(member_create_params, current_member, &block)
     end
   end
 end
