@@ -4,7 +4,24 @@ module CompaniesMembersPositionsConcern
   included do
     load_resource :company
     before_action :find_position, only: [:approve, :reject]
-    before_action :find_company, only: [:approve, :reject]
+    before_action :find_company, only: [:approve, :reject, :edit]
+  end
+
+  def edit
+  end
+
+  def update
+    if @companies_members_position.update(update_params)
+      flash[:notice] = 'Companies Members Position was successfully updated.'
+    else
+      flash[:alert] = 'Error approving position.'
+    end
+
+    if admin_layout?
+      redirect_to community_admin_companies_members_positions_path
+    else
+      redirect_to community_company_companies_members_positions_path
+    end
   end
 
   def approve
@@ -35,15 +52,20 @@ module CompaniesMembersPositionsConcern
 
   protected
 
+  def update_params
+    params.require(:companies_members_position)
+          .permit(:position_id, :can_manage_company)
+  end
+
+  def admin_layout?
+    self.class.parent == Admin
+  end
+
   def find_position
     @position ||= @companies_members_position.position
   end
 
   def find_company
     @company ||= @companies_members_position.company
-  end
-
-  def admin_layout_presence
-    self.class.parent == Admin ? :admin : nil
   end
 end

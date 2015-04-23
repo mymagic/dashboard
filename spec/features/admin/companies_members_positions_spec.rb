@@ -15,6 +15,15 @@ RSpec.describe 'Admin/CompaniesMembersPositions', type: :feature, js: false do
         position: create(:position, community: community)
       )
     end
+
+    given!(:remove_position) do
+      create(
+        :companies_members_position,
+        :approved,
+        position: create(:position, community: community),
+      )
+    end
+
     given!(:pending_position) do
       create(
         :companies_members_position,
@@ -27,6 +36,14 @@ RSpec.describe 'Admin/CompaniesMembersPositions', type: :feature, js: false do
         position: create(:position, community: community)
       )
     end
+    given!(:update_position) do
+      create(
+        :companies_members_position,
+        :approved,
+        position: create(:position, community: community)
+      )
+    end
+
 
     shared_examples "manage companies members position" do
       it do
@@ -34,7 +51,9 @@ RSpec.describe 'Admin/CompaniesMembersPositions', type: :feature, js: false do
         manage_company_members_positions(
           approved: [approved_position],
           approve:  [pending_position],
-          reject:   [reject_position]
+          reject:   [reject_position],
+          remove:   [remove_position],
+          update:   [update_position]
         )
       end
     end

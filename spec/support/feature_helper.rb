@@ -134,15 +134,35 @@ module FeatureHelper
     have_selector('.alert', text: 'You are not authorized to access this page.')
   end
 
-  def manage_company_members_positions(approved: [], approve: [], reject: [])
+  def manage_company_members_positions(approved: [], approve: [], reject: [], remove: [], update: [])
     pending = approve + reject
+    already_approved =  approved + remove
+    another_position = create(:position, community: approved.first.position.community)
 
-    approved.each do |cmp|
+    already_approved.each do |cmp|
       within '#approved' do
         expect(page).to have_content("#{ cmp.position.name }")
       end
       within '#pending' do
         expect(page).to_not have_content("#{ cmp.position.name }")
+      end
+    end
+
+    update.each do |cmp|
+      old_position_name = cmp.position.name
+
+      within(:xpath, "//*[@id='approved']/table/tbody/tr/td[text()='#{ old_position_name }']/..") do
+        click_link 'Edit'
+      end
+
+      select another_position.name, from: 'Position'
+      click_button 'Save'
+
+      expect(page).to have_content('Companies Members Position was successfully updated.')
+
+      within '#approved' do
+        expect(page).to have_content("#{ another_position.name }")
+        expect(page).to_not have_content("#{ old_position_name }")
       end
     end
 
@@ -175,7 +195,7 @@ module FeatureHelper
       expect(page).to_not have_content("#{ cmp.position.name }")
     end
 
-    approved.each do |cmp|
+    remove.each do |cmp|
       within(:xpath, "//*[@id='approved']/table/tbody/tr/td[text()='#{ cmp.position.name }']/..") do
         click_link "Remove"
       end
