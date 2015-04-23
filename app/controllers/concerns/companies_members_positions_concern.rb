@@ -28,6 +28,11 @@ module CompaniesMembersPositionsConcern
     redirect_to :back, notice: 'Position was successfully rejected.'
   end
 
+  def destroy
+    @companies_members_position.destroy
+    redirect_to :back, notice: 'Members position has been removed.'
+  end
+
   protected
 
   def find_position

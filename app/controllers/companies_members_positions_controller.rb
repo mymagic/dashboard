@@ -43,12 +43,6 @@ class CompaniesMembersPositionsController < ApplicationController
     end
   end
 
-  def destroy
-    @companies_members_position.destroy
-    redirect_to community_company_url(current_member.community, @companies_members_position.company),
-      notice: 'Members position has been removed.'
-  end
-
   private
 
   def companies_members_position_params

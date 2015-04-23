@@ -174,6 +174,16 @@ module FeatureHelper
       expect(page).to have_content("Position was successfully rejected.")
       expect(page).to_not have_content("#{ cmp.position.name }")
     end
+
+    approved.each do |cmp|
+      within(:xpath, "//*[@id='approved']/table/tbody/tr/td[text()='#{ cmp.position.name }']/..") do
+        click_link "Remove"
+      end
+      expect(page).to have_content("Members position has been removed.")
+      within '#approved' do
+        expect(page).to_not have_content("#{ cmp.position.name }")
+      end
+    end
   end
 
   # Taken from "Spreewald" gem https://github.com/makandra/spreewald/blob/master/lib/spreewald_support/tolerance_for_selenium_sync_issues.rb
