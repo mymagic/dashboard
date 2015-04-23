@@ -22,8 +22,8 @@ class CompaniesMembersPosition < ActiveRecord::Base
     Position.all_possible(member: member, company: company)
   end
 
-  def last_manager_position_in_company_for(the_member)
-    return unless can_manage_company && member == the_member
+  def members_last_manager_position_in_company?(the_member)
+    return false unless can_manage_company && member == the_member
     the_member.
       companies_positions.
       where(company: company).

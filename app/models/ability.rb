@@ -117,7 +117,7 @@ class Ability
 
       can [:destroy], CompaniesMembersPosition do |cmp|
         member.manageable_companies.include?(cmp.company) &&
-          !cmp.last_manager_position_in_company_for(member)
+          !cmp.members_last_manager_position_in_company?(member)
       end
 
       can :read, Member
