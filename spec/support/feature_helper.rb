@@ -137,7 +137,7 @@ module FeatureHelper
   def manage_company_members_positions(approved: [], approve: [], reject: [], remove: [], update: [])
     pending = approve + reject
     already_approved =  approved + remove
-    another_position = create(:position, community: approved.first.position.community)
+    another_position = create(:position, community: approved.first.position.community) if update.any?
 
     already_approved.each do |cmp|
       within '#approved' do
