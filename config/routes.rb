@@ -11,7 +11,12 @@ Rails.application.routes.draw do
     resources :members, only: [:index, :show]
     resources :companies, only: [:index, :show, :edit, :update] do
       resources :members, only: [:new, :create, :edit, :update]
-      resources :companies_members_positions, only: [:index, :create]
+      resources :companies_members_positions do
+        member do
+          patch :approve
+          delete :reject
+        end
+      end
     end
     resources :office_hours, only: [:index, :create, :destroy] do
       patch 'book', on: :member
@@ -28,6 +33,12 @@ Rails.application.routes.draw do
         patch 'resend_invitation', on: :member
       end
       resources :positions
+      resources :companies_members_positions do
+        member do
+          patch :approve
+          delete :reject
+        end
+      end
     end
   end
 

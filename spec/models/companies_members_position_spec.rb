@@ -18,19 +18,55 @@ RSpec.describe CompaniesMembersPosition, type: :model do
   end
 
   context 'scopes' do
-    let!(:unapproved) { create(:companies_members_position) }
+    let!(:pending) { create(:companies_members_position) }
     let!(:approved) { create(:companies_members_position, :approved) }
 
     context 'approved' do
       subject { CompaniesMembersPosition.approved }
       it { is_expected.to include(approved) }
-      it { is_expected.to_not include(unapproved) }
+      it { is_expected.to_not include(pending) }
     end
 
-    context 'unapproved' do
-      subject { CompaniesMembersPosition.unapproved }
-      it { is_expected.to include(unapproved) }
+    context 'pending' do
+      subject { CompaniesMembersPosition.pending }
+      it { is_expected.to include(pending) }
       it { is_expected.to_not include(approved) }
+    end
+  end
+
+  describe '#members_last_manager_position_in_company?' do
+    let(:community) { create(:community) }
+    let(:position) { create(:position, community: community) }
+    let(:managable_cmp) { create(:companies_members_position, :managable, :approved, position: position) }
+    let(:unmanagable_cmp) { create(:companies_members_position, :approved, position: position) }
+    let(:member) { create(:member, :confirmed, community: community) }
+
+    context 'can_manage_company as true' do
+      subject { managable_cmp.members_last_manager_position_in_company?(member) }
+
+      context 'member as myself' do
+        before { managable_cmp.update(member_id: member.id) }
+
+        it { is_expected.to eq(true) }
+      end
+
+      context 'member as another' do
+        it { is_expected.to eq(false) }
+      end
+    end
+
+    context 'can_manage_company as false' do
+      subject { unmanagable_cmp.members_last_manager_position_in_company?(member) }
+
+      context 'member as myself' do
+        before { managable_cmp.update(member_id: member.id) }
+
+        it { is_expected.to eq(false) }
+      end
+
+      context 'member as another' do
+        it { is_expected.to eq(false) }
+      end
     end
   end
 end

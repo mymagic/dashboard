@@ -6,15 +6,22 @@ RSpec.describe Admin::MembersController, type: :controller do
     let(:response) { get(:index, community_id: community) }
     it_behaves_like "accessible by", :administrator, :staff
     describe 'assigning members' do
-      let!(:active_member) { create(:member, :confirmed, community: community) }
-      let!(:invited_member) { create(:member, :invited, community: community) }
-      let!(:administrator) { create(:administrator, :confirmed, community: community) }
+      let!(:active_member) do
+        create(:member, :confirmed, community: community)
+      end
+      let!(:invited_member) do
+        create(:member, :invited, community: community)
+      end
+      let!(:administrator) do
+        create(:administrator, :confirmed, community: community)
+      end
       before do
         login(administrator)
         get :index, community_id: community
       end
       it 'assigns the correct active members' do
-        expect(assigns(:active_members)).to contain_exactly(administrator, active_member)
+        expect(assigns(:active_members)).
+          to contain_exactly(administrator, active_member)
       end
       it 'assigns the correct invited members' do
         expect(assigns(:invited_members)).to eq [invited_member]
@@ -45,7 +52,14 @@ RSpec.describe Admin::MembersController, type: :controller do
 
   describe 'PATCH #update' do
     let(:community) { create(:community) }
-    let(:response) { patch(:update, id: member, community_id: community, member: { first_name: 'New First Name' }) }
+    let(:response) do
+      patch(
+        :update,
+        id: member,
+        community_id: community,
+        member: { first_name: 'New First Name' }
+      )
+    end
     context 'an administrator' do
       let(:member) { create(:administrator, community: community) }
       it_behaves_like "accessible by", :administrator
@@ -90,7 +104,11 @@ RSpec.describe Admin::MembersController, type: :controller do
     let(:member_required_attributes) { { email: 'email@example.com' } }
 
     def invite_new_member(attributes = {})
-      put :create, community_id: community, member: (member_required_attributes).merge(attributes)
+      put(
+        :create,
+        community_id: community,
+        member: (member_required_attributes).merge(attributes)
+      )
     end
 
     it_behaves_like "accessible by", :administrator, :staff do
@@ -98,16 +116,24 @@ RSpec.describe Admin::MembersController, type: :controller do
     end
 
     context 'as Administrator' do
-      before { login_administrator(community: community) }
+      let(:administrator) do
+        create(:administrator, :confirmed, community: community)
+      end
+      before { login(administrator) }
+
       describe 'inviting an Administrator' do
         before { invite_new_member(role: 'administrator') }
-        subject { community.members.find_by(email: member_required_attributes[:email]) }
+        subject do
+          community.members.find_by(email: member_required_attributes[:email])
+        end
         it { is_expected.to be_administrator }
       end
 
       describe 'inviting a Staff Member' do
         before { invite_new_member(role: 'staff') }
-        subject { community.members.find_by(email: member_required_attributes[:email]) }
+        subject do
+          community.members.find_by(email: member_required_attributes[:email])
+        end
         it { is_expected.to be_staff }
       end
 
@@ -118,11 +144,28 @@ RSpec.describe Admin::MembersController, type: :controller do
           invite_new_member(
             role: '',
             companies_positions_attributes: [
-              company_id: company.id, position_id: position.id, approved: true]
+              company_id: company.id,
+              position_id: position.id
+            ]
           )
         end
-        subject { Member.find_by(email: member_required_attributes[:email]) }
-        it { is_expected.to be_regular_member }
+        subject(:invited_member) {
+          Member.find_by(email: member_required_attributes[:email])
+        }
+
+        it 'invites a regular member' do
+          expect(invited_member).to be_regular_member
+        end
+
+        it "sets the cmp's approver to the current member" do
+          expect(invited_member.companies_positions.first.approver).
+            to eq(administrator)
+        end
+
+        it "sets the cmp's company to the current company" do
+          expect(invited_member.companies_positions.first.company).
+            to eq(company)
+        end
       end
 
       describe 'inviting an existing member' do
@@ -131,7 +174,8 @@ RSpec.describe Admin::MembersController, type: :controller do
         it 'redirects to the member edit path' do
           expect(subject).
             to redirect_to(
-                 edit_community_admin_member_path(community, existing_member))
+              edit_community_admin_member_path(community, existing_member)
+            )
         end
       end
     end

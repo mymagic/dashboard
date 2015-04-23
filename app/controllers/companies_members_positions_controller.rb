@@ -1,18 +1,24 @@
 class CompaniesMembersPositionsController < ApplicationController
   before_action :authenticate_member!
-  load_resource :company
-  load_and_authorize_resource only: :create
+  load_and_authorize_resource except: [:index]
+
+  include CompaniesMembersPositionsConcern
 
   def index
     authorize! :manage_members_positions, @company
-    @approved_companies_members_positions    = @company.companies_members_positions.approved
-    @unapproved_companies_members_positions  = @company.companies_members_positions.unapproved
+    @approved_companies_members_positions = @company.
+                                            companies_members_positions.approved
+    @pending_companies_members_positions  = @company.
+                                            companies_members_positions.pending
   end
 
   def create
     respond_to do |format|
       if @companies_members_position.update_attributes(
         companies_members_position_params.merge(company: @company))
+
+        send_approval_request_notification_email
+
         format.html do
           redirect_to(
             community_company_url(
@@ -43,5 +49,16 @@ class CompaniesMembersPositionsController < ApplicationController
 
   def companies_members_position_params
     params.require(:companies_members_position).permit(:position_id)
+  end
+
+  def send_approval_request_notification_email
+    company = @companies_members_position.company
+    position = @companies_members_position.position
+
+    company.managing_members.each do |recipient|
+      CompaniesMembersPositionMailer.send_approval_request_notification(
+        current_member, recipient, company, position
+      ).deliver_now
+    end
   end
 end

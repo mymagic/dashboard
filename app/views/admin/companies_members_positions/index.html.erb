@@ -12,11 +12,11 @@
           <span class="label label-info"><%= @approved_companies_members_positions.size %></span>
         </a>
       </li>
-      <% if @unapproved_companies_members_positions.any? %>
+      <% if @pending_companies_members_positions.any? %>
         <li role="presentation">
-          <a aria-controls="unapproved" data-toggle="tab" href="#unapproved" role="tab">
-            Unapproved
-            <span class="label label-info"><%= @unapproved_companies_members_positions.size %></span>
+          <a aria-controls="pending" data-toggle="tab" href="#pending" role="tab">
+            Pending
+            <span class="label label-info"><%= @pending_companies_members_positions.size %></span>
           </a>
         </li>
       <% end %>
@@ -37,7 +37,7 @@
           </tbody>
         </table>
       </div>
-      <div class="tab-pane fade" id="unapproved" role="tabpanel">
+      <div class="tab-pane fade" id="pending" role="tabpanel">
         <table class="table table-striped">
           <thead>
             <th>Position</th>
@@ -48,7 +48,7 @@
             <th></th>
           </thead>
           <tbody>
-            <%= render collection: @unapproved_companies_members_positions, partial: 'unapproved_companies_members_position', as: :companies_members_position %>
+            <%= render collection: @pending_companies_members_positions, partial: 'pending_companies_members_position', as: :companies_members_position %>
           </tbody>
         </table>
       </div>

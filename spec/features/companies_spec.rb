@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe 'Companies', type: :feature, js: false do
   feature "Browsing the companies pages" do
     given!(:community) { create(:community) }
-    given!(:administrator) { create(:administrator, :confirmed, community: community) }
+    given!(:administrator) do
+      create(:administrator, :confirmed, community: community)
+    end
     given!(:company) { create(:company, community: community) }
 
     before { as_user administrator }
@@ -24,13 +26,25 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
   feature "Manage Company" do
     given!(:community) { create(:community, :with_social_media_services) }
+    given!(:position) { create(:position, community: community) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:manager) { create(:member, :confirmed, community: community) }
-    given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, name: "ACME", community: community) }
-    given!(:position) { create(:position, community: community) }
-    given!(:social_media_link) { create(:social_media_link, attachable: company) }
+    given!(:social_media_link) do
+      create(:social_media_link, attachable: company)
+    end
     given(:social_media_service) { community.social_media_services.sample }
+
+    given!(:manager_position) do
+      create(
+        :companies_members_position,
+        :approved,
+        :managable,
+        position: position,
+        member: manager,
+        company: company
+      )
+    end
 
     def edit_a_company
       visit community_company_path(company.community, company)
@@ -42,7 +56,10 @@ RSpec.describe 'Companies', type: :feature, js: false do
       fill_in 'Name', with: 'New Company Name'
       fill_in 'Description', with: 'This is a company description'
       fill_in 'Website', with: 'http://example.com'
-      attach_file('Logo', File.join(Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
+      attach_file(
+        'Logo',
+        File.join(
+          Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
 
       # Social Media Links
       within '.social_media_link:first-child' do
@@ -66,18 +83,12 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
       expect(page).to have_content(social_media_service.camelize)
       expect(page).to have_content('Handle')
-      expect(page).to have_link(social_media_link.service.camelize, href: 'https://facebook.com/handle')
+      expect(page).to have_link(
+        social_media_link.service.camelize, href: 'https://facebook.com/handle')
     end
 
     context 'as manager' do
       background do
-        CompaniesMembersPosition.create(
-          position: position,
-          member: manager,
-          company: company,
-          approved: true,
-          can_manage_company: true
-        )
         as_user manager
       end
 
@@ -99,14 +110,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
     context 'as staff' do
       background do
-        CompaniesMembersPosition.create(
-          position: position,
-          member: manager,
-          company: company,
-          approved: true,
-          can_manage_company: true
-        )
-        as_user manager
+        as_user staff
       end
 
       scenario 'viewing company page' do

@@ -32,9 +32,6 @@ RSpec.describe 'Members', type: :feature, js: false do
         visit community_company_path(company.community, company)
         click_link "Invite members to company"
         expect(page).to have_content("Invite New Member to ACME")
-        within ".member_companies_positions_company" do
-          expect(page).to_not have_content("ACME")
-        end
       end
 
       feature 'inviting a new member to company' do
@@ -59,7 +56,9 @@ RSpec.describe 'Members', type: :feature, js: false do
           fill_in 'member[password]', with: 'password0'
           fill_in 'member[password_confirmation]', with: 'password0'
           click_button 'Set my password'
-          expect(page).to have_content("Your password was set successfully. You are now signed in.")
+          expect(page).
+            to have_content("Your password was set successfully. "\
+                            "You are now signed in.")
           visit community_company_path(company.community, company)
           within ".company-members" do
             expect(page).to have_content("Johann Faust")
@@ -70,12 +69,13 @@ RSpec.describe 'Members', type: :feature, js: false do
 
     context 'as manager' do
       background do
-        CompaniesMembersPosition.create(
+        create(
+          :companies_members_position,
+          :approved,
+          :managable,
           position: position,
           member: manager,
-          company: company,
-          approved: true,
-          can_manage_company: true
+          company: company
         )
         as_user manager
       end
@@ -89,10 +89,6 @@ RSpec.describe 'Members', type: :feature, js: false do
         visit community_company_path(company.community, company)
         click_link "Invite members to company"
         expect(page).to have_content("Invite New Member to ACME")
-        within ".member_companies_positions_company" do
-          expect(page).to_not have_content("ACME")
-        end
-
       end
 
       feature 'inviting a new member to company' do
@@ -117,7 +113,9 @@ RSpec.describe 'Members', type: :feature, js: false do
           fill_in 'member[password]', with: 'password0'
           fill_in 'member[password_confirmation]', with: 'password0'
           click_button 'Set my password'
-          expect(page).to have_content("Your password was set successfully. You are now signed in.")
+          expect(page).
+            to have_content("Your password was set successfully. "\
+                            "You are now signed in.")
           visit community_company_path(company.community, company)
           within ".company-members" do
             expect(page).to have_content("Johann Faust")
