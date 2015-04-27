@@ -135,6 +135,12 @@ class Member < ActiveRecord::Base
     end
   end
 
+  concerning :Messages do
+    included do
+      has_many :messages, dependent: :destroy
+    end
+  end
+
   protected
 
   def password_required?
