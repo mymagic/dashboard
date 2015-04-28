@@ -69,6 +69,8 @@ class Ability
       can :resend_invitation, Member
       can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
+
+      can :manage, Discussion, community_id: member.community_id
     when 'staff'
       can :administrate, :application
       can :administrate, [Member, Company, CompaniesMembersPosition]
@@ -92,6 +94,8 @@ class Ability
       can :destroy, Member, role: ['mentor', '', nil]
 
       manage_social_media_links(member)
+
+      can [:create, :read], Discussion, community_id: member.community_id
     when 'mentor'
       can :read, Member
 
@@ -101,6 +105,8 @@ class Ability
       can :create, OfficeHour, mentor_id: member.id
 
       manage_social_media_links(member)
+
+      can [:create, :read], Discussion, community_id: member.community_id
     else # a regular Member
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
@@ -128,6 +134,8 @@ class Ability
       end
 
       manage_social_media_links(member)
+
+      can [:create, :read], Discussion, community_id: member.community_id
     end
   end
 end

@@ -31,6 +31,7 @@ class Member < ActiveRecord::Base
   # Associations
   belongs_to :community
   has_many :social_media_links, as: :attachable
+  has_many :discussions, foreign_key: :author_id
 
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
