@@ -1,0 +1,41 @@
+<%
+  title @discussion.title
+  page_header @discussion.title
+%>
+<div class="row discussion-wrapper">
+  <div class="col-lg-8">
+    <div class="discussion-comment-list">
+      <div class="comment-wrapper row">
+        <div class="comment-meta-wrapper row">
+          <div class="col-lg-1">
+            <%= image_tag(@discussion.author.avatar.url(:thumb), class: 'author-thumb img-rounded') %>
+          </div>
+          <div class="col-lg-11">
+              <h3>
+                <%= link_to @discussion.author.full_name, community_member_path(@discussion.community, @discussion.author) %>
+                <span class="label label-positions">
+                  <%= @discussion.author.positions_in_companies.map do |company, positions|
+                    "#{ company.name } (#{ positions.map(&:name).to_sentence })"
+                    end.to_sentence %>
+                </span>
+              </h3>
+              <span class="label-timeago">Posted <%= time_tag @discussion.created_at %></span>
+          </div>
+        </div>
+        <div class="comment-body-wrapper row">
+          <div class="col-lg-10 col-lg-offset-1">
+            <%= @discussion.body %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <%= panel "Followers", columns: 12 do %>
+      <%- @discussion.followers.each do |follower| %>
+      <%= link_to(image_tag(follower.avatar.url(:icon), class: 'img-rounded'),
+                  community_member_path(follower.community, follower)) %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

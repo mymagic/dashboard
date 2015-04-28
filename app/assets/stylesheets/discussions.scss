@@ -1,0 +1,39 @@
+.discussion-group {
+  .discussion-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    h3 {
+      margin-top: 0;
+    }
+    &:hover {
+      color: #555;
+      text-decoration: none;
+      background-color: #f5f5f5;
+    }
+  }
+}
+
+.comment-wrapper {
+  .comment-meta-wrapper {
+    .label-positions {
+      color: #CCC;
+      font-size: 0.6em;
+    }
+    .author-thumb {
+      width: 50px;
+      border-radius: 40px;
+    }
+    .label-timeago {
+      font-weight: bold;
+      color: #CCC;
+    }
+  }
+}
+.comment-body-wrapper {
+  margin-top: 15px;
+}
