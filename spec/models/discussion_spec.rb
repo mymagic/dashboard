@@ -11,4 +11,13 @@ RSpec.describe Discussion, type: :model do
     it { is_expected.to belong_to(:author).class_name('Member') }
     it { is_expected.to belong_to(:community) }
   end
+
+  context 'following' do
+    describe 'creating a discussion' do
+      let!(:discussion) { create(:discussion) }
+      it 'the author follows the discussion' do
+        expect(discussion.followers).to include(discussion.author)
+      end
+    end
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150428062112) do
+ActiveRecord::Schema.define(version: 20150428075534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,16 @@ ActiveRecord::Schema.define(version: 20150428062112) do
   end
 
   add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
+
+  create_table "follows", force: :cascade do |t|
+    t.integer  "followable_id"
+    t.string   "followable_type"
+    t.integer  "member_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "follows", ["member_id"], name: "index_follows_on_member_id", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -155,5 +165,6 @@ ActiveRecord::Schema.define(version: 20150428062112) do
   add_foreign_key "companies_members_positions", "members"
   add_foreign_key "companies_members_positions", "positions"
   add_foreign_key "discussions", "communities"
+  add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
 end
