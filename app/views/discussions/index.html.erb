@@ -1,6 +1,8 @@
 <%
   title 'Discussions'
-  page_header 'Discussions'
+  page_header 'Discussions' do
+    link_to 'Start a new Discussion', new_community_discussion_path(current_community), class: 'btn btn-success'
+  end
 %>
 
 <div class="discussion-group">
