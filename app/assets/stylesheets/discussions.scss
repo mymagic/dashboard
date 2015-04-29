@@ -18,22 +18,54 @@
   }
 }
 
-.comment-wrapper {
-  .comment-meta-wrapper {
-    .label-positions {
-      color: #CCC;
-      font-size: 0.6em;
+.discussion-wrapper {
+  .discussion-list {
+    .comment-wrapper {
+      border-bottom: 1px solid #DDD;
+      .comment-meta-wrapper {
+        .label-positions {
+          color: #CCC;
+        }
+        .author-thumb {
+          width: 50px;
+          border-radius: 40px;
+        }
+        .label-timeago {
+          font-weight: bold;
+          color: #CCC;
+        }
+      }
     }
-    .author-thumb {
-      width: 50px;
-      border-radius: 40px;
+    .discussion-starter {
+      .comment-wrapper {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        .comment-body-wrapper {
+          padding: 1.5em 0;
+        }
+      }
     }
-    .label-timeago {
-      font-weight: bold;
-      color: #CCC;
+    .discussion-nested-comment-list {
+      .comment-wrapper {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        .comment-meta-wrapper {
+          h3 {
+            font-size: 1.3em;
+            margin: 5px 0 0 0;
+          }
+          .label-timeago {
+            font-size: 0.8em;
+          }
+          .author-thumb {
+            margin-left: 10px;
+            width: 35px;
+          }
+        }
+        .comment-body-wrapper {
+          padding: 1.0em 0;
+        }
+      }
     }
   }
-}
-.comment-body-wrapper {
-  margin-top: 15px;
 }

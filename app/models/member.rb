@@ -41,6 +41,8 @@ class Member < ActiveRecord::Base
            source: :followable,
            source_type: Discussion
 
+  has_many :comments, foreign_key: :author_id
+
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
   scope :active, -> {

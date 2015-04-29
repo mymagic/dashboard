@@ -5,6 +5,9 @@ class Discussion < ActiveRecord::Base
 
   has_many :follows, as: :followable, dependent: :destroy, inverse_of: :followable
   has_many :followers, through: :follows, source: :member, class: Member
+  has_many :comments, dependent: :destroy
+
+  has_many :nested_comments, -> { ordered }, class: Comment
 
   before_validation :set_community, if: :author
   before_validation :set_author_as_follower, on: :create, if: :author

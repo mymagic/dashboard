@@ -6,6 +6,7 @@ class DiscussionsController < ApplicationController
   end
 
   def show
+    @comment = @discussion.comments.build
   end
 
   def new
@@ -30,8 +31,12 @@ class DiscussionsController < ApplicationController
   end
 
   def follow
-    @discussion.followers << current_member
-    redirect_to :back, notice: 'You are now following the discussion.'
+    if @discussion.followers.include? current_member
+      redirect_to :back, warning: 'You are already following the discussion.'
+    else
+      @discussion.followers << current_member
+      redirect_to :back, notice: 'You are now following the discussion.'
+    end
   end
 
   def unfollow

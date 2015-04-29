@@ -1,0 +1,23 @@
+<div class="comment-wrapper row">
+  <div class="comment-meta-wrapper row">
+    <div class="col-lg-1">
+      <%= image_tag(comment.author.avatar.url(:thumb), class: 'author-thumb img-rounded') %>
+    </div>
+    <div class="col-lg-11">
+        <h3>
+          <%= link_to comment.author.full_name, community_member_path(current_community, comment.author) %>
+          <span class="label label-positions">
+            <%= comment.author.positions_in_companies.map do |company, positions|
+              "#{ company.name } (#{ positions.map(&:name).to_sentence })"
+              end.to_sentence %>
+          </span>
+        </h3>
+        <span class="label-timeago">Posted <%= time_tag comment.created_at %></span>
+    </div>
+  </div>
+  <div class="comment-body-wrapper row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <%= comment.body %>
+    </div>
+  </div>
+</div>
