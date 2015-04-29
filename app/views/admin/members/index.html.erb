@@ -1,6 +1,8 @@
 <%
   title 'Members'
-  page_header 'Members'
+  page_header 'Members' do
+    link_to 'Invite new Member', new_community_admin_member_path(current_community), class: 'btn btn-success'  if can? :create, Member
+  end
 %>
 
 <div class="row">
@@ -20,9 +22,6 @@
           </a>
         </li>
       <% end %>
-      <li class="pull-right">
-        <%= link_to 'Invite new Member', new_community_admin_member_path(current_community)  if can? :create, Member %>
-      </li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active fade in" id="active-members" role="tabpanel">

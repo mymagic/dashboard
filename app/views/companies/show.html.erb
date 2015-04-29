@@ -1,13 +1,11 @@
 <%
   title @company.name
+  page_header @company.name do
+    if can? :manage_company, @company
+      render partial: 'manager_menu', locals: { company: @company }
+    end
+  end
 %>
-
-<div class="page-header">
-  <% if can? :manage_company, @company %>
-    <%= render partial: 'manager_menu', locals: { company: @company } %>
-  <% end %>
-  <h1><%= @company.name %></h1>
-</div>
 
 <div class="row">
   <div class="col-lg-8">
