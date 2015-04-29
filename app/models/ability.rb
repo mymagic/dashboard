@@ -95,7 +95,7 @@ class Ability
 
       manage_social_media_links(member)
 
-      can [:create, :read], Discussion, community_id: member.community_id
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
     when 'mentor'
       can :read, Member
 
@@ -106,7 +106,7 @@ class Ability
 
       manage_social_media_links(member)
 
-      can [:create, :read], Discussion, community_id: member.community_id
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
     else # a regular Member
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
@@ -135,7 +135,7 @@ class Ability
 
       manage_social_media_links(member)
 
-      can [:create, :read], Discussion, community_id: member.community_id
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
     end
   end
 end

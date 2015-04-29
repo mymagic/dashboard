@@ -1,6 +1,8 @@
 <%
   title @discussion.title
-  page_header @discussion.title
+  page_header @discussion.title do
+    render partial: 'shared/follow_button', locals: { object: @discussion }
+  end
 %>
 <div class="row discussion-wrapper">
   <div class="col-lg-8">
