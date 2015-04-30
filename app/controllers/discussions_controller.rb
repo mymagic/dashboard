@@ -30,6 +30,18 @@ class DiscussionsController < ApplicationController
     end
   end
 
+  def destroy
+    @discussion.destroy
+    respond_to do |format|
+      format.html do
+        redirect_to(
+          community_discussions_path(current_community),
+          notice: 'Discussion was successfully deleted.')
+      end
+      format.json { head :no_content }
+    end
+  end
+
   def follow
     if @discussion.followers.include? current_member
       redirect_to :back, warning: 'You are already following the discussion.'
