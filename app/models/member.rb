@@ -137,7 +137,18 @@ class Member < ActiveRecord::Base
 
   concerning :Messages do
     included do
-      has_many :messages, dependent: :destroy
+      def messages
+        Message.where("sender_id = :id OR receiver_id = :id)", id: id)
+      end
+
+      def messages_with(participant)
+        Message.where(
+          [
+            "(sender_id = :my_id AND receiver_id = :participant_id) ",
+            "OR (sender_id = :participant_id AND receiver_id = :my_id)"
+          ].join(''), my_id: id, participant_id: participant.id
+        )
+      end
     end
   end
 

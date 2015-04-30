@@ -4,5 +4,5 @@ class Message < ActiveRecord::Base
   belongs_to :receiver, class_name: 'Member'
 
   # Validations
-  validates :sender, :receiver, :message, presence: true
+  validates :sender, :receiver, :body, presence: true
 end

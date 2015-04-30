@@ -1,0 +1,65 @@
+$chat-border-color: rgba(1, 1, 1, 0.2);
+
+.messages-panel {
+  display: flex;
+
+  &__conversations {
+    margin-bottom: 140px;
+  }
+
+  &__participant {
+    border-right: 1px solid $chat-border-color;
+  }
+
+  &__form {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding-top: 20px;
+    border-top: 1px solid $chat-border-color;
+
+    #message_body {
+      resize: none;
+    }
+  }
+}
+
+.message-box {
+  &__body {
+    padding: $grid-gutter-width;
+
+    &.mine {
+      background: #E6E9ED;
+    }
+
+    &.participant {
+      background: #F5F7FA;
+    }
+  }
+}
+
+.chat-participant {
+  border: 1px solid $chat-border-color;
+  margin-top: 0;
+  padding: $grid-gutter-width / 2;
+
+  &:not(:first-child) {
+    border-top: none;
+  }
+
+  &__link {
+    color: #191919;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &.active {
+    background: #DBDBDB;
+  }
+}
+
+.search-message-group {
+  width: 250px;
+}

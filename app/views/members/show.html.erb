@@ -1,7 +1,12 @@
 <%
   title @member.full_name
-  page_header @member.full_name
 %>
+
+<div class="page-header">
+  <%= link_to('Private Message', community_member_messages_path(current_community, @member), class: 'btn btn-default pull-right') %>
+  <h1><%= @member.full_name %></h1>
+</div>
+
 <div class="row">
   <div class="col-lg-8">
     <%= definition_list("First name" => @member.first_name, "Last name" => @member.last_name) %>

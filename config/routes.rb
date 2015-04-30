@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   end
 
   resources :communities, path: '', except: :index do
-    resources :members, only: [:index, :show]
+    resources :members, only: [:index, :show] do
+      resources :messages
+    end
     resources :companies, only: [:index, :show, :edit, :update] do
       resources :members, only: [:new, :create, :edit, :update]
       resources :companies_members_positions do

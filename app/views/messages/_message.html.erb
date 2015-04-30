@@ -1,0 +1,23 @@
+<% if message.sender == current_member %>
+  <div class="media message-box_mine">
+    <div class="media-body message-box__body mine">
+      <%= message.body %>
+    </div>
+    <div class="media-right">
+      <a href="#">
+        <%= image_tag message.sender.avatar.small_thumb.url %>
+      </a>
+    </div>
+  </div>
+<% else %>
+  <div class="media message-box_participant">
+    <div class="media-left">
+      <a href="#">
+        <%= image_tag message.receiver.avatar.small_thumb.url %>
+      </a>
+    </div>
+    <div class="media-body message-box__body participant">
+      <%= message.body %>
+    </div>
+  </div>
+<% end %>
