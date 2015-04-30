@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  belongs_to :author, class: Member
+  belongs_to :author, class_name: 'Member'
   belongs_to :discussion, counter_cache: true
 
   before_validation :set_author_as_follower,
