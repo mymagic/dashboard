@@ -33,13 +33,15 @@ class Member < ActiveRecord::Base
   has_many :social_media_links, as: :attachable
 
   has_many :follows, dependent: :destroy, inverse_of: :member
-  has_many :followings, as: :followable, class: Follow
+  has_many :followings, as: :followable, class_name: 'Follow'
 
   has_many :discussions, foreign_key: :author_id
   has_many :followed_discussions,
            through: :follows,
            source: :followable,
            source_type: Discussion
+
+  has_many :comments, foreign_key: :author_id
 
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
@@ -94,7 +96,7 @@ class Member < ActiveRecord::Base
       validate :must_have_at_least_one_approved_companies_positions
 
       has_many(:companies_positions,
-               class: CompaniesMembersPosition,
+               class_name: 'CompaniesMembersPosition',
                dependent: :destroy,
                inverse_of: :member)
 
@@ -135,9 +137,9 @@ class Member < ActiveRecord::Base
 
   concerning :OfficeHours do
     included do
-      has_many :office_hours_as_mentor, class: OfficeHour, foreign_key: :mentor_id
+      has_many :office_hours_as_mentor, class_name: 'OfficeHour', foreign_key: :mentor_id
       has_many(:office_hours_as_participant,
-               class: OfficeHour,
+               class_name: 'OfficeHour',
                foreign_key: :participant_id)
 
       accepts_nested_attributes_for :office_hours_as_mentor
