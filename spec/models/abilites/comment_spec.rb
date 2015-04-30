@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  let!(:community) { create(:community) }
-  let!(:other_community) { create(:community) }
-  let!(:comment_in_community) do
+  let(:community) { create(:community) }
+  let(:other_community) { create(:community) }
+  let(:comment_in_community) do
     build(:comment,
           author: create(:author, :confirmed, community: community))
   end
-  let!(:comment_in_other_community) do
+  let(:comment_in_other_community) do
     build(:comment,
           author: create(:author, :confirmed, community: other_community))
   end
