@@ -24,4 +24,18 @@ RSpec.describe CommentsController, type: :controller do
       let(:response) { create_new_comment }
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:comment) do
+      create(:comment, author: create(:member, community: community))
+    end
+    it_behaves_like "accessible by", :administrator do
+      let(:response) do
+        delete(:destroy,
+               community_id: community,
+               discussion_id: comment.discussion,
+               id: comment)
+      end
+    end
+  end
 end
