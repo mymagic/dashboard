@@ -26,6 +26,14 @@ RSpec.describe Discussion, type: :model do
       it { is_expected.to be_able_to(:update, discussion_in_community) }
       it { is_expected.to_not be_able_to(:update, discussion_in_other_community) }
 
+      it { is_expected.to be_able_to(:follow, Discussion) }
+      it { is_expected.to be_able_to(:follow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:follow, discussion_in_other_community) }
+
+      it { is_expected.to be_able_to(:unfollow, Discussion) }
+      it { is_expected.to be_able_to(:unfollow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:unfollow, discussion_in_other_community) }
+
       it { is_expected.to be_able_to(:destroy, Discussion) }
       it { is_expected.to be_able_to(:destroy, discussion_in_community) }
       it { is_expected.to_not be_able_to(:destroy, discussion_in_other_community) }
@@ -40,6 +48,14 @@ RSpec.describe Discussion, type: :model do
       it { is_expected.to be_able_to(:read, Discussion) }
       it { is_expected.to be_able_to(:read, discussion_in_community) }
       it { is_expected.to_not be_able_to(:read, discussion_in_other_community) }
+
+      it { is_expected.to be_able_to(:follow, Discussion) }
+      it { is_expected.to be_able_to(:follow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:follow, discussion_in_other_community) }
+
+      it { is_expected.to be_able_to(:unfollow, Discussion) }
+      it { is_expected.to be_able_to(:unfollow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:unfollow, discussion_in_other_community) }
 
       it { is_expected.to_not be_able_to(:update, Discussion) }
       it { is_expected.to_not be_able_to(:update, discussion_in_community) }
@@ -60,6 +76,14 @@ RSpec.describe Discussion, type: :model do
       it { is_expected.to be_able_to(:read, discussion_in_community) }
       it { is_expected.to_not be_able_to(:read, discussion_in_other_community) }
 
+      it { is_expected.to be_able_to(:follow, Discussion) }
+      it { is_expected.to be_able_to(:follow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:follow, discussion_in_other_community) }
+
+      it { is_expected.to be_able_to(:unfollow, Discussion) }
+      it { is_expected.to be_able_to(:unfollow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:unfollow, discussion_in_other_community) }
+
       it { is_expected.to_not be_able_to(:update, Discussion) }
       it { is_expected.to_not be_able_to(:update, discussion_in_community) }
       it { is_expected.to_not be_able_to(:update, discussion_in_other_community) }
@@ -78,6 +102,14 @@ RSpec.describe Discussion, type: :model do
       it { is_expected.to be_able_to(:read, Discussion) }
       it { is_expected.to be_able_to(:read, discussion_in_community) }
       it { is_expected.to_not be_able_to(:read, discussion_in_other_community) }
+
+      it { is_expected.to be_able_to(:follow, Discussion) }
+      it { is_expected.to be_able_to(:follow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:follow, discussion_in_other_community) }
+
+      it { is_expected.to be_able_to(:unfollow, Discussion) }
+      it { is_expected.to be_able_to(:unfollow, discussion_in_community) }
+      it { is_expected.to_not be_able_to(:unfollow, discussion_in_other_community) }
 
       it { is_expected.to_not be_able_to(:update, Discussion) }
       it { is_expected.to_not be_able_to(:update, discussion_in_community) }

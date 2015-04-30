@@ -9,7 +9,13 @@ Rails.application.routes.draw do
 
   resources :communities, path: '', except: :index do
     resources :members, only: [:index, :show]
-    resources :discussions, except: [:edit, :update]
+    resources :discussions, except: [:edit, :update] do
+      resources :comments, only: [:create]
+      member do
+        patch :follow
+        delete :unfollow
+      end
+    end
     resources :companies, only: [:index, :show, :edit, :update] do
       resources :members, only: [:new, :create, :edit, :update]
       resources :companies_members_positions do

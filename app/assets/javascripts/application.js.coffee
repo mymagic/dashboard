@@ -3,11 +3,13 @@
 #= require jquery_ujs
 #= require turbolinks
 #= require jquery-sortable
+#= require jquery.timeago
 #= require nprogress
 #= require nprogress-turbolinks
 
-#= require admin/positions
 #= require bootstrap-setup
+#= require elements
+#= require admin/positions
 
 
 # Turn off loading spinner

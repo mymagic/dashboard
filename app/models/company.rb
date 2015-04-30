@@ -27,9 +27,9 @@ class Company < ActiveRecord::Base
     end
 
     def managing_members
-      Member.joins(:companies_positions)
-            .where('companies_members_positions.company_id' => id)
-            .distinct
+      Member.joins(:companies_positions).
+        where('companies_members_positions.company_id' => id).
+        distinct
     end
   end
 

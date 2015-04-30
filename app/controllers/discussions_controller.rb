@@ -6,6 +6,7 @@ class DiscussionsController < ApplicationController
   end
 
   def show
+    @comment = @discussion.comments.build
   end
 
   def new
@@ -13,14 +14,34 @@ class DiscussionsController < ApplicationController
 
   def create
     respond_to do |format|
-      if @discussion.update_attributes(discussion_params.merge(author: current_member))
-        format.html { redirect_to [@discussion.community, @discussion], notice: 'Discussion was successfully created.' }
+      if @discussion.
+         update_attributes(discussion_params.merge(author: current_member))
+        format.html do
+          redirect_to([@discussion.community, @discussion],
+                      notice: 'Discussion was successfully created.')
+        end
         format.json { render json: @discussion, status: :created }
       else
         format.html { redirect_to :back, alert: 'Error creating discussion.' }
-        format.json { render json: @discussion.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @discussion.errors, status: :unprocessable_entity
+        end
       end
     end
+  end
+
+  def follow
+    if @discussion.followers.include? current_member
+      redirect_to :back, warning: 'You are already following the discussion.'
+    else
+      @discussion.followers << current_member
+      redirect_to :back, notice: 'You are now following the discussion.'
+    end
+  end
+
+  def unfollow
+    @discussion.followers.delete(current_member)
+    redirect_to :back, notice: 'You stopped following the discussion.'
   end
 
   private
