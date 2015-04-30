@@ -7,9 +7,9 @@
 #= require nprogress
 #= require nprogress-turbolinks
 
-#= require admin/positions
 #= require bootstrap-setup
 #= require elements
+#= require admin/positions
 
 
 # Turn off loading spinner
