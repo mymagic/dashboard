@@ -7,6 +7,14 @@ FactoryGirl.define do
     "Name#{ n }"
   end
 
+  sequence :title do |n|
+    "This is title #{ n }"
+  end
+
+  sequence :body do |n|
+    "This is body #{ n }"
+  end
+
   sequence :position_name do |n|
     "PositionName#{ n }"
   end

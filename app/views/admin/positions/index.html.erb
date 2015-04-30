@@ -1,10 +1,12 @@
 <%
   title 'Positions'
-  page_header 'Positions'
+  page_header 'Positions' do
+    link_to 'New Position', new_community_admin_position_path(current_community), class: 'btn btn-success'  if can? :create, Position
+  end
 %>
 
 <div class="row">
-  <div class="col-sm-9">
+  <div class="col-sm-12">
     <table class='table table-striped table-sortable' data-object-url='<%= community_admin_position_path(current_community, id: 'objectId') %>' data-object-name='position' data-sortable-name='priority_order'>
       <thead>
         <th>Name</th>
@@ -17,10 +19,5 @@
     <p class='small text-right text-muted'>
       Drag-and-Drop rows to set priority order.
     </p>
-  </div>
-  <div class="col-sm-3">
-    <ul class='nav nav-stacked'>
-      <li><%= link_to 'New Position', new_community_admin_position_path(current_community) %></li>
-    </ul>
   </div>
 </div>
