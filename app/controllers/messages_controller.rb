@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   before_action :authenticate_member!
   load_resource :receiver, class: 'Member',
                 id_param: :member_id, only: [:create, :index]
-  load_resource :message, through: :current_member, except: :index
+  load_and_authorize_resource :message, through: :current_member, except: :index
 
   def index
     @messages = current_member.messages_with(@receiver)

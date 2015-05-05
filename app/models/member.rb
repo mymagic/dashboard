@@ -149,6 +149,11 @@ class Member < ActiveRecord::Base
           ].join(''), my_id: id, participant_id: participant.id
         )
       end
+
+      def last_chat_participant
+        participant = Message.where("sender_id = :id OR receiver_id = :id", id: id).last.try(:receiver)
+        participant || Member.where("community_id = :community_id AND id != :id", community_id: community_id, id: id).first
+      end
     end
   end
 

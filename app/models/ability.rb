@@ -28,6 +28,12 @@ class Ability
     can :manage, SocialMediaLink, attachable_type: 'Member', attachable_id: member.id
   end
 
+  def read_messages(member)
+    can :read, Message do |message|
+      message.sender_id == member.id || message.receiver_id == member.id
+    end
+  end
+
   def initialize(member)
     member ||= Member.new # guest user (not logged in)
 
@@ -41,6 +47,11 @@ class Ability
     cannot :have, CompaniesMembersPosition
 
     can :read, Community
+
+    if member.role.present?
+      can :create, Message
+      read_messages(member)
+    end
 
     case member.role
     when 'administrator'
