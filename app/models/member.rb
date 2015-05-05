@@ -151,8 +151,13 @@ class Member < ActiveRecord::Base
       end
 
       def last_chat_participant
-        participant = Message.where("sender_id = :id OR receiver_id = :id", id: id).last.try(:receiver)
-        participant || Member.where("community_id = :community_id AND id != :id", community_id: community_id, id: id).first
+        last_message = Message.where("sender_id = :id OR receiver_id = :id", id: id).last
+
+        if last_message
+          last_message.sender_id == id ? last_message.receiver : last_message.sender
+        else
+          Member.where("community_id = :community_id AND id != :id", community_id: community_id, id: id).first
+        end
       end
     end
   end
