@@ -49,7 +49,7 @@ class Ability
     can :read, Community
 
     if member.role.present?
-      can :create, Message
+      can [:create, :search], Message
       read_messages(member)
     end
 

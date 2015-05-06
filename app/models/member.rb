@@ -138,7 +138,7 @@ class Member < ActiveRecord::Base
   concerning :Messages do
     included do
       def messages
-        Message.where("sender_id = :id OR receiver_id = :id)", id: id)
+        Message.where("sender_id = :id OR receiver_id = :id", id: id)
       end
 
       def messages_with(participant)
