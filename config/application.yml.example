@@ -1,4 +1,18 @@
-aws_access_key: xxxx
-aws_secret_access_key: xxxx
-aws_bucket: magic-staging
-aws_region: ap-southeast-1
+defaults: &defaults
+  ELASTICSEARCH_HOST: "127.0.0.1:9200"
+
+development:
+  <<: *defaults
+  ELASTICSEARCH_INDEX: "magic_development"
+
+test:
+  <<: *defaults
+  ELASTICSEARCH_INDEX: "magic_test"
+
+production:
+  <<: *defaults
+  ELASTICSEARCH_INDEX: "magic_production"
+  aws_access_key: xxxx
+  aws_secret_access_key: xxxx
+  aws_bucket: magic-staging
+  aws_region: ap-southeast-1

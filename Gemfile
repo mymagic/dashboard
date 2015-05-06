@@ -63,6 +63,10 @@ gem 'nprogress-rails'
 # Autoprefixer for easier cross-browser CSS
 gem "autoprefixer-rails"
 
+# Elasticsearch
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
