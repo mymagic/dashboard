@@ -46,4 +46,15 @@ RSpec.describe DiscussionsController, type: :controller do
       let(:response) { create_new_discussion }
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:discussion) do
+      create(:discussion, author: create(:member, community: community))
+    end
+    it_behaves_like "accessible by", :administrator do
+      let(:response) do
+        delete(:destroy, community_id: community, id: discussion)
+      end
+    end
+  end
 end

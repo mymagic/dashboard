@@ -11,6 +11,19 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
   end
 
+  shared_examples "removing a discussion" do
+    it "removes the discussion" do
+      visit community_discussions_path(community)
+      expect(page).to have_content 'Discussions'
+      expect(page).to have_link 'Start a new Discussion'
+      expect(page).to have_content 'To be or not to be?'
+      click_link 'To be or not to be?'
+      click_link 'Remove this Discussion'
+      expect(page).to have_content 'Discussion was successfully deleted.'
+      expect(page).to_not have_content 'To be or not to be?'
+    end
+  end
+
   shared_examples "adding a comment" do
     it "adds a new comment to a discussion" do
       visit community_discussions_path(community)
@@ -23,7 +36,6 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       expect(page).to have_content 'Definitely to be.'
     end
   end
-
 
   shared_examples "following and unfollowing a discussion" do
     it "follows and unfollows a discussion" do
@@ -84,6 +96,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "creating a new discussion"
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
+      it_behaves_like "removing a discussion"
     end
 
     context 'as staff' do

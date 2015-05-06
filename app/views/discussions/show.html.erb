@@ -2,8 +2,7 @@
   title @discussion.title
   page_header @discussion.title do
     render partial: 'shared/follow_button', locals: { object: @discussion }
-  end
-%>
+end  %>
 <div class="row discussion-wrapper">
   <div class="col-lg-8">
     <div class="discussion-list">
@@ -25,6 +24,11 @@
       <%= link_to(image_tag(follower.avatar.url(:icon), class: 'img-rounded'),
                   community_member_path(follower.community, follower)) %>
       <% end %>
+    <% end %>
+    <% if can? :destroy, @discussion %>
+      <div class="text-right col-lg-12">
+        <%= link_to 'Remove this Discussion', community_discussion_path(@discussion.community, @discussion), class: 'btn btn-xs btn-hover btn-hover-danger', method: :delete, data: { confirm: "Are you sure you want to remove this Discussion?"} %>
+      </div>
     <% end %>
   </div>
 </div>
