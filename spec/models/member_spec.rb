@@ -155,7 +155,7 @@ RSpec.describe Member, type: :model do
       context 'without participant' do
         subject { member2.last_chat_participant }
 
-        it { is_expected.to_not eq(participant) }
+        it { is_expected.to be_nil }
       end
     end
   end

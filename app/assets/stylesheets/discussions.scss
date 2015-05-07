@@ -1,0 +1,71 @@
+.discussion-group {
+  .discussion-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    h3 {
+      margin-top: 0;
+    }
+    &:hover {
+      color: #555;
+      text-decoration: none;
+      background-color: #f5f5f5;
+    }
+  }
+}
+
+.discussion-wrapper {
+  .discussion-list {
+    .comment-wrapper {
+      border-bottom: 1px solid #DDD;
+      .comment-meta-wrapper {
+        .label-positions {
+          color: #CCC;
+        }
+        .author-thumb {
+          width: 50px;
+          border-radius: 40px;
+        }
+        .label-timeago {
+          font-weight: bold;
+          color: #CCC;
+        }
+      }
+    }
+    .discussion-starter {
+      .comment-wrapper {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        .comment-body-wrapper {
+          padding: 18px 0;
+        }
+      }
+    }
+    .discussion-nested-comment-list {
+      .comment-wrapper {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        .comment-meta-wrapper {
+          h3 {
+            font-size: 15px;
+            margin: 5px 0 0 0;
+          }
+          .label-timeago {
+            font-size: 11px;
+          }
+          .author-thumb {
+            margin-left: 10px;
+            width: 35px;
+          }
+        }
+        .comment-body-wrapper {
+          padding: 12px 0;
+        }
+      }
+    }
+  }
+}

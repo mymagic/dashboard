@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427083202) do
+ActiveRecord::Schema.define(version: 20150429094142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "author_id"
+    t.integer  "discussion_id"
+    t.text     "body"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "comments", ["discussion_id"], name: "index_comments_on_discussion_id", using: :btree
 
   create_table "communities", force: :cascade do |t|
     t.string   "name",                               null: false
@@ -49,6 +59,28 @@ ActiveRecord::Schema.define(version: 20150427083202) do
   end
 
   add_index "companies_members_positions", ["company_id", "member_id", "position_id"], name: "unique_cmp_index", unique: true, using: :btree
+
+  create_table "discussions", force: :cascade do |t|
+    t.string   "title"
+    t.text     "body"
+    t.integer  "community_id"
+    t.integer  "author_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "comments_count"
+  end
+
+  add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
+
+  create_table "follows", force: :cascade do |t|
+    t.integer  "followable_id"
+    t.string   "followable_type"
+    t.integer  "member_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "follows", ["member_id"], name: "index_follows_on_member_id", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -150,9 +182,12 @@ ActiveRecord::Schema.define(version: 20150427083202) do
   add_index "social_media_links", ["community_id"], name: "index_social_media_links_on_community_id", using: :btree
   add_index "social_media_links", ["service", "handle", "attachable_id", "attachable_type", "community_id"], name: "index_social_media_links_on_unique_keys", unique: true, using: :btree
 
+  add_foreign_key "comments", "discussions"
   add_foreign_key "companies", "communities"
   add_foreign_key "companies_members_positions", "companies"
   add_foreign_key "companies_members_positions", "members"
   add_foreign_key "companies_members_positions", "positions"
+  add_foreign_key "discussions", "communities"
+  add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
 end

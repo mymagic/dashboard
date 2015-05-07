@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.1'
+ruby '2.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -83,6 +83,9 @@ group :development, :test do
   gem 'pry-rails'
   gem 'awesome_print'
 
+  # Use RSPEC for testing framework
+  gem 'rspec-rails'
+
   # guard to auto-run specs
   gem 'guard-rspec'
 end
@@ -90,9 +93,6 @@ end
 group :test do
   # Use DatabaseCleaner
   gem 'database_cleaner'
-
-  # Use RSPEC for testing framework
-  gem 'rspec-rails'
 
   # FactoryGirl as a fixtures replacement
   gem 'factory_girl_rails'

@@ -16,34 +16,36 @@
   </h1>
 </div>
 
-<div class='row messages-panel'>
-  <div class='col-md-4 messages-panel__participant'>
-    <% @members.find_each do |member| %>
-      <div class="chat-participant <%= 'active' if member == @receiver %>">
-        <%= link_to community_member_messages_path(current_community, member), class: 'chat-participant__link' do %>
-          <div class="media">
-            <div class="media-left">
-              <%= image_tag member.avatar.small_thumb.url, class: 'media-object' %>
+<% if @receiver.present? %>
+  <div class='row messages-panel'>
+    <div class='col-md-4 messages-panel__participant'>
+      <% @participants.each do |participant| %>
+        <div class="chat-participant <%= 'active' if participant == @receiver %>">
+          <%= link_to community_member_messages_path(current_community, participant), class: 'chat-participant__link' do %>
+            <div class="media">
+              <div class="media-left">
+                <%= image_tag participant.avatar.small_thumb.url, class: 'media-object' %>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading"><%= participant.full_name %></h4>
+              </div>
             </div>
-            <div class="media-body">
-              <h4 class="media-heading"><%= member.full_name %></h4>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <div class='col-md-8'>
-    <div class='messages-panel__conversations'>
-      <%= render partial: 'message', collection: @messages %>
-    </div>
-    <div class='messages-panel__form'>
-      <%= simple_form_for([current_community, @receiver, Message.new]) do |f| %>
-        <div>
-          <%= f.input :body, label: false %>
-          <%= f.submit 'Send', class: 'btn btn-default' %>
+          <% end %>
         </div>
       <% end %>
     </div>
+    <div class='col-md-8'>
+      <div class='messages-panel__conversations'>
+        <%= render partial: 'message', collection: @messages %>
+      </div>
+      <div class='messages-panel__form'>
+        <%= simple_form_for([current_community, @receiver, Message.new]) do |f| %>
+          <%= f.input :body, label: false %>
+          <%= f.submit 'Send', class: 'btn btn-default' %>
+        <% end %>
+      </div>
+    </div>
   </div>
-</div>
+<% else %>
+  <p>You are not part on any conversations. To start a converstation browse to any member's page and send a message.</p>
+<% end %>

@@ -1,9 +1,11 @@
 <%
   title 'Office Hours'
-  page_header 'Office Hours'
+  page_header 'Office Hours' do
+    link_to 'New Office Hour', new_community_admin_office_hour_path(current_community), class: 'btn btn-success'  if can? :create, OfficeHour
+  end
 %>
 <div class="row">
-  <div class="col-sm-9">
+  <div class="col-sm-12">
     <table class="table table-striped">
       <thead>
         <th>Status</th>
@@ -16,10 +18,5 @@
         <%= render @office_hours %>
       </tbody>
     </table>
-  </div>
-  <div class="col-sm-3">
-    <ul class="nav nav-stacked">
-      <li><%= link_to 'New Office Hour', new_community_admin_office_hour_path(current_community) %></li>
-    </ul>
   </div>
 </div>

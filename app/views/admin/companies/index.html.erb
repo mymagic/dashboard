@@ -1,9 +1,11 @@
 <%
   title 'Companies'
-  page_header 'Companies'
+  page_header 'Companies' do
+    link_to 'New Company', new_community_admin_company_path(current_community), class: 'btn btn-success'
+  end
 %>
 <div class="row">
-  <div class="col-sm-9">
+  <div class="col-sm-12">
     <table class="table table-striped">
       <thead>
         <th></th>
@@ -16,10 +18,5 @@
         <%= render @companies %>
       </tbody>
     </table>
-  </div>
-  <div class="col-sm-3">
-    <ul class="nav nav-stacked">
-      <li><%= link_to 'New Company', new_community_admin_company_path(current_community) %></li>
-    </ul>
   </div>
 </div>

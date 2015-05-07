@@ -1,0 +1,17 @@
+<%- if object.followers.include? current_member %>
+  <%= link_to(
+        'Unfollow',
+        send("unfollow_community_#{ object.class.to_s.downcase }_path",
+             current_community,
+             object),
+        class: 'btn btn-default',
+        method: :delete) %>
+<% else %>
+  <%= link_to(
+        'Follow',
+        send("follow_community_#{ object.class.to_s.downcase }_path",
+             current_community,
+             object),
+        class: 'btn btn-success',
+        method: :patch) %>
+<% end %>

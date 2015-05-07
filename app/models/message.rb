@@ -9,6 +9,9 @@ class Message < ActiveRecord::Base
   # Validations
   validates :sender, :receiver, :body, presence: true
 
+  # Scopes
+  scope :with, -> (participant) { where("sender_id = :id OR receiver_id = :id", id: participant.id) }
+  
   def self.search(query)
     __elasticsearch__.search({
       query: {

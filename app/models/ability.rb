@@ -48,11 +48,6 @@ class Ability
 
     can :read, Community
 
-    if member.role.present?
-      can [:create, :search], Message
-      read_messages(member)
-    end
-
     case member.role
     when 'administrator'
       can :administrate, :application
@@ -80,6 +75,14 @@ class Ability
       can :resend_invitation, Member
       can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
+
+      can [:create, :search], Message
+      read_messages(member)
+
+      can :manage, Discussion, community_id: member.community_id
+      can :manage, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     when 'staff'
       can :administrate, :application
       can :administrate, [Member, Company, CompaniesMembersPosition]
@@ -103,6 +106,14 @@ class Ability
       can :destroy, Member, role: ['mentor', '', nil]
 
       manage_social_media_links(member)
+
+      can [:create, :search], Message
+      read_messages(member)
+
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can :create, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     when 'mentor'
       can :read, Member
 
@@ -112,6 +123,14 @@ class Ability
       can :create, OfficeHour, mentor_id: member.id
 
       manage_social_media_links(member)
+
+      can [:create, :search], Message
+      read_messages(member)
+
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can :create, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     else # a regular Member
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
@@ -139,6 +158,14 @@ class Ability
       end
 
       manage_social_media_links(member)
+
+      can [:create, :search], Message
+      read_messages(member)
+
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can :create, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     end
   end
 end

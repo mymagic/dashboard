@@ -32,6 +32,17 @@ class Member < ActiveRecord::Base
   belongs_to :community
   has_many :social_media_links, as: :attachable
 
+  has_many :follows, dependent: :destroy, inverse_of: :member
+  has_many :followings, as: :followable, class_name: 'Follow'
+
+  has_many :discussions, foreign_key: :author_id
+  has_many :followed_discussions,
+           through: :follows,
+           source: :followable,
+           source_type: Discussion
+
+  has_many :comments, foreign_key: :author_id
+
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
   scope :active, -> {
@@ -85,7 +96,7 @@ class Member < ActiveRecord::Base
       validate :must_have_at_least_one_approved_companies_positions
 
       has_many(:companies_positions,
-               class: CompaniesMembersPosition,
+               class_name: 'CompaniesMembersPosition',
                dependent: :destroy,
                inverse_of: :member)
 
@@ -126,9 +137,9 @@ class Member < ActiveRecord::Base
 
   concerning :OfficeHours do
     included do
-      has_many :office_hours_as_mentor, class: OfficeHour, foreign_key: :mentor_id
+      has_many :office_hours_as_mentor, class_name: 'OfficeHour', foreign_key: :mentor_id
       has_many(:office_hours_as_participant,
-               class: OfficeHour,
+               class_name: 'OfficeHour',
                foreign_key: :participant_id)
 
       accepts_nested_attributes_for :office_hours_as_mentor
@@ -138,26 +149,26 @@ class Member < ActiveRecord::Base
   concerning :Messages do
     included do
       def messages
-        Message.where("sender_id = :id OR receiver_id = :id", id: id)
+        Message.with(self)
+      end
+
+      def chat_participants
+        # It is equal to ..
+        # self.class.find(messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
+
+        Member.joins([
+          "INNER JOIN messages ON ",
+          "(messages.sender_id = members.id OR messages.receiver_id = members.id) ",
+          "AND (messages.sender_id = #{id} OR messages.receiver_id = #{id})"
+        ].join('')).where.not(id: id).uniq
       end
 
       def messages_with(participant)
-        Message.where(
-          [
-            "(sender_id = :my_id AND receiver_id = :participant_id) ",
-            "OR (sender_id = :participant_id AND receiver_id = :my_id)"
-          ].join(''), my_id: id, participant_id: participant.id
-        )
+        messages.with(participant)
       end
 
       def last_chat_participant
-        last_message = Message.where("sender_id = :id OR receiver_id = :id", id: id).last
-
-        if last_message
-          last_message.sender_id == id ? last_message.receiver : last_message.sender
-        else
-          Member.where("community_id = :community_id AND id != :id", community_id: community_id, id: id).first
-        end
+        chat_participants.last
       end
     end
   end

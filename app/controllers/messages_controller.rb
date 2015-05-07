@@ -5,8 +5,10 @@ class MessagesController < ApplicationController
   load_and_authorize_resource :message, through: :current_member, except: :index
 
   def index
-    @messages = current_member.messages_with(@receiver)
-    @members = current_community.members.active.where.not(id: current_member.id)
+    if @receiver.present?
+      @messages = current_member.messages_with(@receiver)
+      @participants = current_member.chat_participants
+    end
   end
 
   def create
