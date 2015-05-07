@@ -10,10 +10,11 @@ module BootstrapHelper
   end
 
   def page_header(name)
+    h = []
+    h << content_tag('div', yield, class: 'page-header-action') if block_given?
+    h << content_tag('h1', name)
     content_for :page_header do
-      content_tag 'div', class: 'page-header' do
-        content_tag 'h1', name
-      end
+      content_tag 'div', h.join("\n").html_safe, class: 'page-header'
     end
   end
 

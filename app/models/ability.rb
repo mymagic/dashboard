@@ -78,6 +78,11 @@ class Ability
 
       can :create, Message
       read_messages(member)
+
+      can :manage, Discussion, community_id: member.community_id
+      can :manage, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     when 'staff'
       can :administrate, :application
       can :administrate, [Member, Company, CompaniesMembersPosition]
@@ -104,6 +109,11 @@ class Ability
 
       can :create, Message
       read_messages(member)
+
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can :create, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     when 'mentor'
       can :read, Member
 
@@ -116,6 +126,11 @@ class Ability
 
       can :create, Message
       read_messages(member)
+
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can :create, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     else # a regular Member
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
@@ -146,6 +161,11 @@ class Ability
 
       can :create, Message
       read_messages(member)
+
+      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can :create, Comment do |comment|
+        comment.discussion.community_id == member.community_id
+      end
     end
   end
 end
