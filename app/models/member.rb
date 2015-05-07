@@ -138,26 +138,26 @@ class Member < ActiveRecord::Base
   concerning :Messages do
     included do
       def messages
-        Message.where("sender_id = :id OR receiver_id = :id)", id: id)
+        Message.with(self)
+      end
+
+      def chat_participants
+        # It is equal to ..
+        # self.class.find(messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
+
+        Member.joins([
+          "INNER JOIN messages ON ",
+          "(messages.sender_id = members.id OR messages.receiver_id = members.id) ",
+          "AND (messages.sender_id = #{id} OR messages.receiver_id = #{id})"
+        ].join('')).where.not(id: id).uniq
       end
 
       def messages_with(participant)
-        Message.where(
-          [
-            "(sender_id = :my_id AND receiver_id = :participant_id) ",
-            "OR (sender_id = :participant_id AND receiver_id = :my_id)"
-          ].join(''), my_id: id, participant_id: participant.id
-        )
+        messages.with(participant)
       end
 
       def last_chat_participant
-        last_message = Message.where("sender_id = :id OR receiver_id = :id", id: id).last
-
-        if last_message
-          last_message.sender_id == id ? last_message.receiver : last_message.sender
-        else
-          Member.where("community_id = :community_id AND id != :id", community_id: community_id, id: id).first
-        end
+        chat_participants.last
       end
     end
   end

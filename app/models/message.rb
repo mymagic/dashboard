@@ -5,4 +5,6 @@ class Message < ActiveRecord::Base
 
   # Validations
   validates :sender, :receiver, :body, presence: true
+
+  scope :with, -> (participant) { where("sender_id = :id OR receiver_id = :id", id: participant.id) }
 end

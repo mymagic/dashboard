@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
 
   resources :communities, path: '', except: :index do
+    resources :messages, only: :index
     resources :members, only: [:index, :show] do
       resources :messages
     end
