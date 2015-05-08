@@ -12,19 +12,12 @@
 <% if @receiver.present? %>
   <div class='row messages-panel'>
     <div class='col-md-4 messages-panel__participant'>
-      <% @participants.each do |participant| %>
-        <div class="chat-participant <%= 'active' if participant == @receiver %>">
-          <%= link_to community_member_messages_path(current_community, participant), class: 'chat-participant__link' do %>
-            <div class="media">
-              <div class="media-left">
-                <%= image_tag participant.avatar.small_thumb.url, class: 'media-object' %>
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading"><%= participant.full_name %></h4>
-              </div>
-            </div>
-          <% end %>
-        </div>
+      <% (@participants + [@receiver]).uniq.each do |participant| %>
+        <%= render partial: 'participant', locals: {
+          participant: participant,
+          receiver: @receiver,
+          unread_count: unread_messages_count_for(participant)
+        } %>
       <% end %>
     </div>
     <div class='col-md-8'>

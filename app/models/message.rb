@@ -11,7 +11,8 @@ class Message < ActiveRecord::Base
 
   # Scopes
   scope :with, -> (participant) { where("sender_id = :id OR receiver_id = :id", id: participant.id) }
-  
+  scope :unread, -> { where(unread: true) }
+
   def self.search(query)
     __elasticsearch__.search({
       query: {

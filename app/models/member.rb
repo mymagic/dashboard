@@ -167,6 +167,13 @@ class Member < ActiveRecord::Base
         messages.with(participant)
       end
 
+      def unread_messages_with(participants)
+        Message.where(sender_id: participants, receiver_id: id)
+               .unread
+               .group(:sender_id, :id)
+               .select('sender_id, COUNT(unread) AS unread_count')
+      end
+
       def last_chat_participant
         chat_participants.last
       end
