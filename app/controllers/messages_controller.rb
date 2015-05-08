@@ -35,6 +35,6 @@ class MessagesController < ApplicationController
   end
 
   def mark_messages_as_read
-    @messages.update_all(unread: false)
+    @messages.update_all(unread: false) if @messages.present?
   end
 end
