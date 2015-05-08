@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :communities, path: '', except: :index do
     resources :members, only: [:index, :show]
     resources :discussions, except: [:edit, :update] do
-      resources :comments, only: [:create]
+      resources :comments, only: [:create, :destroy]
       member do
         patch :follow
         delete :unfollow
