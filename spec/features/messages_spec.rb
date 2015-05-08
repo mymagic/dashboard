@@ -18,6 +18,20 @@ RSpec.describe 'Messages', type: :feature, js: false do
     expect(page).to_not have_content other_message.body
   end
 
+  it 'show unread messages count and disappear after reading them' do
+    xpath = "//*[contains(@class, 'messages-panel__participant')]//h4[contains(text(), '#{participant.full_name}')]/span[contains(@class, 'badge')]"
+
+    visit community_member_messages_path(community, participant)
+
+    within(:xpath, xpath) do
+      expect(page).to have_content '1'
+    end
+
+    visit community_member_messages_path(community, participant)
+
+    expect(page).to_not have_selector('.badge')
+  end
+
   it 'allow send new message' do
     visit community_member_messages_path(community, participant)
 
