@@ -21,6 +21,10 @@ class MessagesController < ApplicationController
     redirect_to community_member_messages_path(current_community, @receiver)
   end
 
+  def search
+    @messages = current_member.messages.search(params['term'])
+  end
+
   protected
 
   def message_params

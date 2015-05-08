@@ -76,7 +76,7 @@ class Ability
       can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
 
-      can :create, Message
+      can [:create, :search], Message
       read_messages(member)
 
       can :manage, Discussion, community_id: member.community_id
@@ -107,7 +107,7 @@ class Ability
 
       manage_social_media_links(member)
 
-      can :create, Message
+      can [:create, :search], Message
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
@@ -124,7 +124,7 @@ class Ability
 
       manage_social_media_links(member)
 
-      can :create, Message
+      can [:create, :search], Message
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
@@ -159,7 +159,7 @@ class Ability
 
       manage_social_media_links(member)
 
-      can :create, Message
+      can [:create, :search], Message
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id

@@ -1,7 +1,7 @@
 <% if message.sender == current_member %>
   <div class="media message-box_mine">
     <div class="media-body message-box__body mine">
-      <%= message.body %>
+      <%= message_body(message) %>
     </div>
     <div class="media-right">
       <a href="#">
@@ -17,7 +17,7 @@
       </a>
     </div>
     <div class="media-body message-box__body participant">
-      <%= message.body %>
+      <%= message_body(message) %>
     </div>
   </div>
 <% end %>

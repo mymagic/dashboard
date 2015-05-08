@@ -2,6 +2,7 @@ machine:
   ruby:
     version: 2.2.2
   services:
+    - elasticsearch
   environment:
     TEST_RETRIES: 3
 
