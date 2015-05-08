@@ -6,14 +6,18 @@
 
 @import "jquery-sortable";
 
+@import "bootstrap-tagsinput";
+
 @import "nprogress";
 @import "nprogress-bootstrap";
 
 @import "shared/variables";
 
 @import "shared/forms";
+@import "shared/typeahead";
 @import "shared/navigation";
 @import "shared/buttons";
+@import "shared/tags";
 @import "shared/admin/navigation";
 @import "shared/admin/members";
 

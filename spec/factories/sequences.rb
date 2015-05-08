@@ -7,6 +7,10 @@ FactoryGirl.define do
     "Name#{ n }"
   end
 
+  sequence :tag_name do |n|
+    "Tag#{ n }"
+  end
+
   sequence :title do |n|
     "This is title #{ n }"
   end

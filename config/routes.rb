@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   end
 
   resources :communities, path: '', except: :index do
+    get 'discussions/tagged/:tag_id', to: 'discussions#index', as: 'discussion_tag'
+    get 'discussions/tags', to: 'discussions#tags', as: 'discussion_tags'
     resources :members, only: [:index, :show]
     resources :discussions, except: [:edit, :update] do
       resources :comments, only: [:create]

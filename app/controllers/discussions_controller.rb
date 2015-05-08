@@ -2,7 +2,10 @@ class DiscussionsController < ApplicationController
   before_action :authenticate_member!
   load_and_authorize_resource through: :current_community
 
+  include TagsConcern
+
   def index
+    @discussions = @discussions.tagged_with(current_tag) if current_tag
   end
 
   def show
@@ -22,7 +25,7 @@ class DiscussionsController < ApplicationController
         end
         format.json { render json: @discussion, status: :created }
       else
-        format.html { redirect_to :back, alert: 'Error creating discussion.' }
+        format.html { render 'new', alert: 'Error creating discussion.' }
         format.json do
           render json: @discussion.errors, status: :unprocessable_entity
         end
@@ -59,6 +62,6 @@ class DiscussionsController < ApplicationController
   private
 
   def discussion_params
-    params.require(:discussion).permit(:title, :body)
+    params.require(:discussion).permit(:title, :body, :tag_list)
   end
 end

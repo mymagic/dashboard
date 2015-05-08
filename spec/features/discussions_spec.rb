@@ -58,15 +58,29 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       fill_in 'Title',  with: 'What is beauty?'
       fill_in 'Body',  with: 'By means of beauty all beautiful '\
                              'things become beautiful.'
+      fill_in 'Tags', with: 'wonderful_tag, great_tag, wonderful_tag'
       click_button 'Post'
       expect(page).to have_content 'Discussion was successfully created.'
       within '.page-header' do
         expect(page).to have_content 'What is beauty?'
       end
+      expect(page).to have_link 'wonderful_tag', count: 1
+      expect(page).to have_link 'great_tag', count: 1
       expect(page).to have_content 'By means of beauty all beautiful '\
                                    'things become beautiful.'
     end
   end
+
+  shared_examples "filtered by tags" do
+    it "filters discussions by tags" do
+      visit community_discussions_path(community)
+      click_link 'To be or not to be?'
+      click_link 'Best Tag'
+      expect(page).to have_content 'Discussions tagged with Best Tag'
+      expect(page).to have_content 'To be or not to be?'
+    end
+  end
+
 
   feature "Company Member Invitation" do
     given!(:community) { create(:community) }
@@ -79,6 +93,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     given!(:discussion) do
       create(
         :discussion,
+        tag_list: 'Best Tag',
         author: create(
           :member,
           :confirmed,
@@ -97,6 +112,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
       it_behaves_like "removing a discussion"
+      it_behaves_like "filtered by tags"
     end
 
     context 'as staff' do
@@ -105,6 +121,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "creating a new discussion"
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
+      it_behaves_like "filtered by tags"
     end
 
     context 'as mentor' do
@@ -113,6 +130,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "creating a new discussion"
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
+      it_behaves_like "filtered by tags"
     end
 
     context 'as member' do
@@ -121,6 +139,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "creating a new discussion"
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
+      it_behaves_like "filtered by tags"
     end
   end
 end

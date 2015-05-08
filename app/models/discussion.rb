@@ -1,4 +1,6 @@
 class Discussion < ActiveRecord::Base
+  include Taggable
+
   # Associations
   belongs_to :community
   belongs_to :author, class_name: 'Member'

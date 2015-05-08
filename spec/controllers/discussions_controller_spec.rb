@@ -20,13 +20,23 @@ RSpec.describe DiscussionsController, type: :controller do
       let!(:discussion_other_community) do
         create(:discussion, author: create(:member))
       end
-      before do
-        login(member)
-        get :index, community_id: community
+      let!(:discussion_tag) do
+        discussion_one.add_tag('tagging')
       end
-      it 'retrieves the correct discussions' do
-        expect(assigns(:discussions)).
-          to contain_exactly(discussion_one, discussion_two)
+      before { login(member) }
+      context 'without tags' do
+        before { get :index, community_id: community }
+        it 'retrieves the correct discussions' do
+          expect(assigns(:discussions)).
+            to contain_exactly(discussion_one, discussion_two)
+        end
+      end
+      context 'with tags' do
+        before { get :index, community_id: community, tag_id: discussion_tag }
+        it 'retrieves the correct discussions' do
+          expect(assigns(:discussions)).
+            to contain_exactly(discussion_one)
+        end
       end
     end
   end
