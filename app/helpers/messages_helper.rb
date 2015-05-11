@@ -11,4 +11,8 @@ module MessagesHelper
                     .first
                     .try(:unread_count) || 0
   end
+
+  def unread_messages
+    current_member.messages.unread
+  end
 end
