@@ -2,11 +2,11 @@ module TagsConcern
   extend ActiveSupport::Concern
 
   def tags
-    tags = tags_class.
-           where(community: current_community).
-           where("name ILIKE ?", "#{ params[:q] }%").
-           order(:name).
-           pluck(:name)
+    tags = Tag.
+            where(type: tags_class, community: current_community).
+            search(params[:q]).
+            results.
+            map(&:name)
 
     respond_to do |format|
       format.json { render json: tags }

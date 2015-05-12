@@ -1,5 +1,5 @@
 .discussion-group {
-  margin-top: 13px;
+  margin: 15px 0 15px 0;
   .discussion-group-item {
     position: relative;
     display: block;
@@ -8,6 +8,13 @@
     color: #555;
     background-color: #fff;
     border: 1px solid #ddd;
+    &:after, &:before {
+      content: " ";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
     h3 {
       margin-top: 0;
     }
@@ -72,6 +79,6 @@
 }
 
 .discussion-filter-wrapper {
-  margin: 20px 0;
+  margin-bottom: 20px;
   line-height: 34px;
 }

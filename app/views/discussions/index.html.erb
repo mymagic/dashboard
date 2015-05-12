@@ -1,6 +1,6 @@
 <%
   title 'Discussions'
-  page_header tagged_with_header('Discussions', tag: @current_tag) do
+  page_header tagged_with_header('Discussions', tag: @tag) do
     link_to 'Start a new Discussion', new_community_discussion_path(current_community), class: 'btn btn-success'
   end
 %>
@@ -12,13 +12,11 @@
     <%= render @discussions %>
   </div>
 
-  <div class="row">
-    <div class="col-lg-6">
-      <%= paginate @discussions %>
-    </div>
-    <div class="col-lg-6 text-right discussion-filter-wrapper text-muted small">
-      <%= discussion_filter_description(@current_filter, tag: @tag) %>
-    </div>
+  <div class="text-center">
+    <%= paginate @discussions %>
+  </div>
+  <div class="text-center discussion-filter-wrapper text-muted small">
+    <%= discussion_filter_description(@current_filter, tag: @tag) %>
   </div>
 <% else %>
   <h3 class="text-center">

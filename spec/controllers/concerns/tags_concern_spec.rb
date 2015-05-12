@@ -21,14 +21,14 @@ RSpec.describe FakesController, type: :controller do
       let(:tag_id) { 123 }
       it 'finds the tag by :tag_id' do
         expect(FakeTag).to receive(:find).with(tag_id).and_return('tag')
-        expect(subject.send(:current_tag)).to eq('tag')
+        expect(subject.send(:tag)).to eq('tag')
       end
     end
     context 'without a tag_id' do
       let(:tag_id) {}
       it 'returns nil' do
         expect(FakeTag).to_not receive(:find).with(tag_id)
-        expect(subject.send(:current_tag)).to be_nil
+        expect(subject.send(:tag)).to be_nil
       end
     end
   end

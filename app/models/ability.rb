@@ -110,7 +110,7 @@ class Ability
       can [:create, :search], Message
       read_messages(member)
 
-      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
@@ -127,7 +127,7 @@ class Ability
       can [:create, :search], Message
       read_messages(member)
 
-      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
@@ -162,7 +162,7 @@ class Ability
       can [:create, :search], Message
       read_messages(member)
 
-      can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
+      can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
