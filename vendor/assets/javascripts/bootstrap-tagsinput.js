@@ -1,3 +1,7 @@
+/*
+ * bootstrap-tagsinput v0.5.0 by Tim Schlechter
+ *
+ */
 (function ($) {
   "use strict";
 
