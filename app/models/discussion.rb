@@ -1,6 +1,8 @@
 class Discussion < ActiveRecord::Base
   include Taggable
 
+  paginates_per 10
+
   # Associations
   belongs_to :community
   belongs_to :author, class_name: 'Member'
@@ -16,6 +18,17 @@ class Discussion < ActiveRecord::Base
 
   validates :title, :body, :author, :community, presence: true
   validate :ensure_author_follows, on: :create
+
+  scope :filter_by, ->(filter) do
+    case filter.try(:to_sym)
+    when :hot
+      filter_by(:popular).where(created_at: 2.weeks.ago..Time.now)
+    when :popular
+      order(follows_count: :desc)
+    when :recent
+      order(created_at: :desc)
+    end
+  end
 
   protected
 

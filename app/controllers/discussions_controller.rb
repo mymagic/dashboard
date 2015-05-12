@@ -6,6 +6,7 @@ class DiscussionsController < ApplicationController
 
   def index
     @discussions = @discussions.tagged_with(current_tag) if current_tag
+    @discussions = @discussions.filter_by(current_filter).page params[:page]
   end
 
   def show
@@ -60,6 +61,10 @@ class DiscussionsController < ApplicationController
   end
 
   private
+
+  def current_filter
+    @current_filter ||= (params[:filter_by] || 'recent').to_sym
+  end
 
   def discussion_params
     params.require(:discussion).permit(:title, :body, :tag_list)
