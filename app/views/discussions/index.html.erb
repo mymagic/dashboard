@@ -5,6 +5,10 @@
   end
 %>
 
+<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter } %>
+
 <div class="discussion-group">
   <%= render @discussions %>
 </div>
+
+<%= paginate @discussions %>
