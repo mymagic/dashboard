@@ -67,6 +67,9 @@ gem "autoprefixer-rails"
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 
+# Pagination in Rails
+gem 'kaminari'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
