@@ -4,7 +4,7 @@ module TagsConcern
   def tags
     tags = tags_class.
            where(community: current_community).
-           where("lower(name) LIKE ?", "#{ params[:q].try(&:downcase) }%").
+           where("name ILIKE ?", "#{ params[:q] }%").
            order(:name).
            pluck(:name)
 
