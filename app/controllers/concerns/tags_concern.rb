@@ -2,9 +2,14 @@ module TagsConcern
   extend ActiveSupport::Concern
 
   def tags
-    tags = tags_class.where(community: current_community)
+    tags = tags_class.
+           where(community: current_community).
+           where("lower(name) LIKE ?", "#{ params[:q].try(&:downcase) }%").
+           order(:name).
+           pluck(:name)
+
     respond_to do |format|
-      format.json { render json: tags.pluck(:name) }
+      format.json { render json: tags }
     end
   end
 

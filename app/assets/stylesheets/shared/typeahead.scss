@@ -26,8 +26,8 @@
   white-space: nowrap;
 }
 
-.tt-suggestion:hover {
-  &:hover, &:focus, .tt-cursor {
+.tt-suggestion {
+  &:hover, &:focus, &.tt-cursor {
     color: #fff;
     text-decoration: none;
     outline: 0;

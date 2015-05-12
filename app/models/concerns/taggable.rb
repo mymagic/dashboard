@@ -2,7 +2,7 @@ module Taggable
   extend ActiveSupport::Concern
 
   included do
-    attr_accessor :new_tags
+    attr_writer :new_tags
     has_many :taggings, as: :taggable
     has_many :tags, through: :taggings, class_name: "#{ name }Tag"
 
