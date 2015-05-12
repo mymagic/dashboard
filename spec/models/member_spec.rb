@@ -128,4 +128,35 @@ RSpec.describe Member, type: :model do
       it { is_expected.to_not be_empty }
     end
   end
+
+  context 'Messages' do
+    let(:community) { create(:community) }
+    let(:member1) { create(:member, community: community) }
+    let(:member2) { create(:member, community: community)}
+    let(:participant) { create(:member, community: community) }
+    let!(:send_message) { create(:message, sender: member1, receiver: participant) }
+    let!(:received_message) { create(:message, sender: participant, receiver: member1) }
+    let!(:other_message) { create(:message) }
+
+    describe '#messages_with' do
+      subject { member1.messages_with(participant) }
+
+      it { is_expected.to include(send_message, received_message) }
+      it { is_expected.to_not include(other_message) }
+    end
+
+    describe '#last_chat_participant' do
+      context 'with participant' do
+        subject { member1.last_chat_participant }
+
+        it { is_expected.to eq(participant) }
+      end
+
+      context 'without participant' do
+        subject { member2.last_chat_participant }
+
+        it { is_expected.to be_nil }
+      end
+    end
+  end
 end

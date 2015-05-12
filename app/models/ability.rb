@@ -28,6 +28,12 @@ class Ability
     can :manage, SocialMediaLink, attachable_type: 'Member', attachable_id: member.id
   end
 
+  def read_messages(member)
+    can :read, Message do |message|
+      message.sender_id == member.id || message.receiver_id == member.id
+    end
+  end
+
   def initialize(member)
     member ||= Member.new # guest user (not logged in)
 
@@ -70,6 +76,9 @@ class Ability
       can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
 
+      can [:create, :search], Message
+      read_messages(member)
+
       can :manage, Discussion, community_id: member.community_id
       can :manage, Comment do |comment|
         comment.discussion.community_id == member.community_id
@@ -98,6 +107,9 @@ class Ability
 
       manage_social_media_links(member)
 
+      can [:create, :search], Message
+      read_messages(member)
+
       can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
@@ -111,6 +123,9 @@ class Ability
       can :create, OfficeHour, mentor_id: member.id
 
       manage_social_media_links(member)
+
+      can [:create, :search], Message
+      read_messages(member)
 
       can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
       can :create, Comment do |comment|
@@ -143,6 +158,9 @@ class Ability
       end
 
       manage_social_media_links(member)
+
+      can [:create, :search], Message
+      read_messages(member)
 
       can [:create, :read, :follow, :unfollow], Discussion, community_id: member.community_id
       can :create, Comment do |comment|

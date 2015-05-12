@@ -1,0 +1,37 @@
+<%
+  title 'Messages'
+%>
+
+<div class="page-header">
+  <h1>
+    <%= render partial: 'search_form' %>
+    <span>Messages</span>
+  </h1>
+</div>
+
+<% if @receiver.present? %>
+  <div class='row messages-panel'>
+    <div class='col-md-4 messages-panel__participant'>
+      <% (@participants + [@receiver]).uniq.each do |participant| %>
+        <%= render partial: 'participant', locals: {
+          participant: participant,
+          receiver: @receiver,
+          unread_count: unread_messages_count_for(participant)
+        } %>
+      <% end %>
+    </div>
+    <div class='col-md-8'>
+      <div class='messages-panel__conversations'>
+        <%= render partial: 'message', collection: @messages %>
+      </div>
+      <div class='messages-panel__form'>
+        <%= simple_form_for([current_community, @receiver, Message.new]) do |f| %>
+          <%= f.input :body, label: false %>
+          <%= f.submit 'Send', class: 'btn btn-default' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <p>You are not part on any conversations. To start a converstation browse to any member's page and send a message.</p>
+<% end %>
