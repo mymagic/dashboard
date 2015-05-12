@@ -1,10 +1,25 @@
 <%
   title 'Discussions'
-  page_header 'Discussions' do
+  page_header tagged_with_header('Discussions', tag: @tag) do
     link_to 'Start a new Discussion', new_community_discussion_path(current_community), class: 'btn btn-success'
   end
 %>
 
-<div class="discussion-group">
-  <%= render @discussions %>
-</div>
+<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter, tag: @tag } %>
+
+<% if @discussions.any? %>
+  <div class="discussion-group">
+    <%= render @discussions %>
+  </div>
+
+  <div class="text-center">
+    <%= paginate @discussions %>
+  </div>
+  <div class="text-center discussion-filter-wrapper text-muted small">
+    <%= discussion_filter_description(@current_filter, tag: @tag) %>
+  </div>
+<% else %>
+  <h3 class="text-center">
+    No discussions found.
+  </h3>
+<% end %>

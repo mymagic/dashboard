@@ -1,13 +1,11 @@
-<%= link_to community_discussion_path(discussion.community, discussion), class: "col-lg-12 discussion-group-item" do %>
-  <div class="row">
-    <div class="col-lg-8">
-      <h3><%= discussion.title %></h3>
-      Posted by <%= discussion.author.full_name %>, <%= time_tag discussion.created_at %>
-    </div>
-    <div class="col-lg-4 text-right">
-      <%- discussion.followers.each do |follower| %>
-        <%= image_tag(follower.avatar.url(:icon), class: 'img-rounded') %>
-      <% end %>
-    </div>
+<%= link_to community_discussion_path(discussion.community, discussion), class: "discussion-group-item" do %>
+  <div class="col-lg-8">
+    <h3><%= discussion.title %></h3>
+    Posted by <%= discussion.author.full_name %>, <%= time_tag discussion.created_at %>
+  </div>
+  <div class="col-lg-4 text-right">
+    <%- discussion.followers.each do |follower| %>
+      <%= image_tag(follower.avatar.url(:icon), class: 'img-rounded') %>
+    <% end %>
   </div>
 <% end %>

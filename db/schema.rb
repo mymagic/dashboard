@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508043833) do
+ActiveRecord::Schema.define(version: 20150512072215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20150508043833) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "comments_count"
+    t.integer  "follows_count"
   end
 
   add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
@@ -183,6 +184,27 @@ ActiveRecord::Schema.define(version: 20150508043833) do
   add_index "social_media_links", ["community_id"], name: "index_social_media_links_on_community_id", using: :btree
   add_index "social_media_links", ["service", "handle", "attachable_id", "attachable_type", "community_id"], name: "index_social_media_links_on_unique_keys", unique: true, using: :btree
 
+  create_table "taggings", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "name"
+    t.string   "type"
+    t.integer  "community_id"
+    t.integer  "taggings_count"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "tags", ["community_id"], name: "index_tags_on_community_id", using: :btree
+
   add_foreign_key "comments", "discussions"
   add_foreign_key "companies", "communities"
   add_foreign_key "companies_members_positions", "companies"
@@ -191,4 +213,6 @@ ActiveRecord::Schema.define(version: 20150508043833) do
   add_foreign_key "discussions", "communities"
   add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "tags", "communities"
 end

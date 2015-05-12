@@ -20,4 +20,9 @@ RSpec.describe Discussion, type: :model do
       end
     end
   end
+
+  context 'tagging' do
+    subject { create(:discussion) }
+    it_behaves_like 'taggable'
+  end
 end

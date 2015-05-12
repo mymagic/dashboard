@@ -4,8 +4,10 @@
 #= require turbolinks
 #= require jquery-sortable
 #= require jquery.timeago
+#= require bootstrap-tagsinput
 #= require nprogress
 #= require nprogress-turbolinks
+#= require typeahead.bundle
 
 #= require bootstrap-setup
 #= require elements

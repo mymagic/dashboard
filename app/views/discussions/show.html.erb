@@ -25,6 +25,14 @@ end  %>
                   community_member_path(follower.community, follower)) %>
       <% end %>
     <% end %>
+    <% if @discussion.tags.any? %>
+      <%= panel "Tags", columns: 12 do %>
+        <%- @discussion.tags.each do |tag| %>
+          <%= link_to_tag tag %>
+        <% end %>
+      <% end %>
+    <% end %>
+
     <% if can? :destroy, @discussion %>
       <div class="text-right col-lg-12">
         <%=
