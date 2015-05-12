@@ -1,6 +1,6 @@
 module TagsHelper
   def tagged_with_header(resource, tag:)
-    return resource unless tag.present?
+    return resource if tag.blank?
     html = [resource]
     html << content_tag('small') do
       ("tagged with " + content_tag('strong', tag.name)).html_safe
