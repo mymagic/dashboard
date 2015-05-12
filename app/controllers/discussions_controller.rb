@@ -5,7 +5,7 @@ class DiscussionsController < ApplicationController
   include TagsConcern
 
   def index
-    @discussions = @discussions.tagged_with(current_tag) if current_tag
+    @discussions = @discussions.tagged_with(tag) if tag
     @discussions = @discussions.filter_by(current_filter).page params[:page]
   end
 

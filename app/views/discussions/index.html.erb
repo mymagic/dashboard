@@ -5,7 +5,7 @@
   end
 %>
 
-<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter, current_tag: @current_tag } %>
+<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter, tag: @tag } %>
 
 <% if @discussions.any? %>
   <div class="discussion-group">
@@ -17,7 +17,7 @@
       <%= paginate @discussions %>
     </div>
     <div class="col-lg-6 text-right discussion-filter-wrapper text-muted small">
-      <%= discussion_filter_description(@current_filter, tag: @current_tag) %>
+      <%= discussion_filter_description(@current_filter, tag: @tag) %>
     </div>
   </div>
 <% else %>
