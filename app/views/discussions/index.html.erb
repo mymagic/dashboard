@@ -5,10 +5,23 @@
   end
 %>
 
-<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter } %>
+<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter, current_tag: @current_tag } %>
 
-<div class="discussion-group">
-  <%= render @discussions %>
-</div>
+<% if @discussions.any? %>
+  <div class="discussion-group">
+    <%= render @discussions %>
+  </div>
 
-<%= paginate @discussions %>
+  <div class="row">
+    <div class="col-lg-6">
+      <%= paginate @discussions %>
+    </div>
+    <div class="col-lg-6 text-right discussion-filter-wrapper text-muted small">
+      <%= discussion_filter_description(@current_filter, tag: @current_tag) %>
+    </div>
+  </div>
+<% else %>
+  <h3 class="text-center">
+    No discussions found.
+  </h3>
+<% end %>
