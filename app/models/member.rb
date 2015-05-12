@@ -146,6 +146,41 @@ class Member < ActiveRecord::Base
     end
   end
 
+  concerning :Messages do
+    included do
+      def messages
+        Message.with(self)
+      end
+
+      def chat_participants
+        # It is equal to ..
+        # self.class.find(messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
+
+        Member.joins([
+          "INNER JOIN messages ON ",
+          "(messages.sender_id = members.id OR messages.receiver_id = members.id) ",
+          "AND (messages.sender_id = #{id} OR messages.receiver_id = #{id})"
+        ].join('')).where.not(id: id).uniq
+      end
+
+      def messages_with(participant)
+        messages.with(participant)
+      end
+
+      def unread_messages_with(participants)
+        Message.where(sender_id: participants, receiver_id: id)
+               .unread
+               .group(:sender_id)
+               .select('sender_id, COUNT(*) AS unread_count')
+               .to_a
+      end
+
+      def last_chat_participant
+        chat_participants.last
+      end
+    end
+  end
+
   protected
 
   def password_required?

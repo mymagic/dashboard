@@ -21,6 +21,17 @@ class CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    @comment.destroy
+    respond_to do |format|
+      format.html do
+        redirect_to([@discussion.community, @discussion],
+                    notice: 'Comment was successfully deleted.')
+      end
+      format.json { head :no_content }
+    end
+  end
+
   private
 
   def comment_params

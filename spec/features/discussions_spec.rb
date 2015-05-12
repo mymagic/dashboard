@@ -14,15 +14,23 @@ RSpec.describe 'Discussion', type: :feature, js: false do
   shared_examples "removing a discussion" do
     it "removes the discussion" do
       visit community_discussions_path(community)
-      expect(page).to have_content 'Discussions'
-      expect(page).to have_link 'Start a new Discussion'
-      expect(page).to have_content 'To be or not to be?'
       click_link 'To be or not to be?'
       click_link 'Remove this Discussion'
       expect(page).to have_content 'Discussion was successfully deleted.'
       expect(page).to_not have_content 'To be or not to be?'
     end
   end
+
+  shared_examples "removing a comment" do
+    it "removes a comment" do
+      visit community_discussions_path(community)
+      click_link 'To be or not to be?'
+      click_link 'Remove this Comment'
+      expect(page).to have_content 'Comment was successfully deleted.'
+      expect(page).to have_content 'To be or not to be?'
+    end
+  end
+
 
   shared_examples "adding a comment" do
     it "adds a new comment to a discussion" do
@@ -104,6 +112,9 @@ RSpec.describe 'Discussion', type: :feature, js: false do
         body: 'That is the question'
       )
     end
+    given!(:comment) do
+      create(:comment, author: discussion.author, discussion: discussion)
+    end
 
     context 'as administrator' do
       background { as_user administrator }
@@ -113,6 +124,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "adding a comment"
       it_behaves_like "removing a discussion"
       it_behaves_like "filtered by tags"
+      it_behaves_like "removing a comment"
     end
 
     context 'as staff' do

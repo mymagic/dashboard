@@ -34,4 +34,8 @@ FactoryGirl.define do
   sequence :community_name do |n|
     "community-#{ n }"
   end
+
+  sequence :message_body do |n|
+    "message-body-#{ n }"
+  end
 end

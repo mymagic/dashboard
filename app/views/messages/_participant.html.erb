@@ -1,0 +1,19 @@
+<div class="chat-participant <%= 'active' if participant == receiver %>">
+  <%= link_to community_member_messages_path(current_community, participant), class: 'chat-participant__link' do %>
+    <div class="media">
+      <div class="media-left">
+        <%= image_tag participant.avatar.small_thumb.url, class: 'media-object' %>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">
+          <%= participant.full_name %>
+          <% if unread_count > 0 %>
+            <span class="badge pull-right">
+              <%= unread_count %>
+            </span>
+          <% end %>
+        </h4>
+      </div>
+    </div>
+  <% end %>
+</div>

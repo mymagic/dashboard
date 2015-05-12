@@ -10,9 +10,14 @@ Rails.application.routes.draw do
   resources :communities, path: '', except: :index do
     get 'discussions/tagged/:tag_id', to: 'discussions#index', as: 'discussion_tag'
     get 'discussions/tags', to: 'discussions#tags', as: 'discussion_tags'
-    resources :members, only: [:index, :show]
+    resources :messages, only: :index do
+      get 'search', on: :collection
+    end
+    resources :members, only: [:index, :show] do
+      resources :messages
+    end
     resources :discussions, except: [:edit, :update] do
-      resources :comments, only: [:create]
+      resources :comments, only: [:create, :destroy]
       member do
         patch :follow
         delete :unfollow
