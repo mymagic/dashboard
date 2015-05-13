@@ -1,20 +1,16 @@
 <% if message.sender == current_member %>
-  <div class="media message-box_mine">
+  <div class="media message-box mine">
     <div class="media-body message-box__body mine">
       <%= message_body(message) %>
     </div>
     <div class="media-right">
-      <a href="#">
-        <%= image_tag message.sender.avatar.small_thumb.url %>
-      </a>
+      <%= small_avatar_for(message) %>
     </div>
   </div>
 <% else %>
-  <div class="media message-box_participant">
+  <div class="media message-box participant">
     <div class="media-left">
-      <a href="#">
-        <%= image_tag message.receiver.avatar.small_thumb.url %>
-      </a>
+      <%= small_avatar_for(message) %>
     </div>
     <div class="media-body message-box__body participant">
       <%= message_body(message) %>
