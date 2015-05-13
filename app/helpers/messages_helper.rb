@@ -21,6 +21,6 @@ module MessagesHelper
   end
 
   def unread_messages
-    current_member.messages.unread
+    current_member.messages.unread.where.not(sender: current_member)
   end
 end
