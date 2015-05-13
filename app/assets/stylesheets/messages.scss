@@ -25,6 +25,8 @@ $chat-border-color: rgba(1, 1, 1, 0.2);
 }
 
 .message-box {
+  clear: both;
+
   &__body {
     padding: $grid-gutter-width;
 
@@ -35,6 +37,13 @@ $chat-border-color: rgba(1, 1, 1, 0.2);
     &.participant {
       background: #F5F7FA;
     }
+  }
+
+  &__timeago {
+    font-style: italic;
+    font-size: 12px;
+    color: #888;
+    margin: 10px 0;
   }
 }
 

@@ -23,6 +23,12 @@
     <div class='col-md-8'>
       <div class='messages-panel__conversations'>
         <%= render partial: 'message', collection: @messages %>
+
+        <% if @messages.last.unread %>
+          <div class='message-box__timeago participant'>
+            <%= time_tag @messages.last.created_at %>
+          </div>
+        <% end %>
       </div>
       <div class='messages-panel__form'>
         <%= simple_form_for([current_community, @receiver, Message.new]) do |f| %>
