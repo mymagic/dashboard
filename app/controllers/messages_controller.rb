@@ -35,6 +35,9 @@ class MessagesController < ApplicationController
   end
 
   def mark_messages_as_read
-    @messages.update_all(unread: false) if @messages.present?
+    return if @messages.blank?
+
+    @messages.where.not(sender: current_member)
+             .update_all(unread: false)
   end
 end
