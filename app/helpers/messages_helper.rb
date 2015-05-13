@@ -23,4 +23,8 @@ module MessagesHelper
   def unread_messages
     current_member.messages.unread.where.not(sender: current_member)
   end
+
+  def small_avatar_for(message)
+    image_tag message.sender.avatar.small_thumb.url
+  end
 end
