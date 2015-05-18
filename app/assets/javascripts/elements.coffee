@@ -25,3 +25,9 @@ $ ->
   $(document).on 'ujs', ->
     setupTagsInput()
     activateTimeago()
+
+    $('.calendar').each ->
+      self = $(@)
+
+      self.fullCalendar
+        events: self.data('url')
