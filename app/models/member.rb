@@ -143,6 +143,10 @@ class Member < ActiveRecord::Base
                foreign_key: :participant_id)
 
       accepts_nested_attributes_for :office_hours_as_mentor
+
+      def office_hours
+        community.office_hours.where("mentor_id = :id OR participant_id = :id", id: id)
+      end
     end
   end
 
