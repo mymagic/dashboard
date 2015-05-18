@@ -31,3 +31,6 @@ $ ->
 
       self.fullCalendar
         events: self.data('url')
+        eventRender: (event, element) ->
+          if event.avatar
+            $(element).find('.fc-content').prepend $('<img />', src: event.avatar, class: 'img-circle')
