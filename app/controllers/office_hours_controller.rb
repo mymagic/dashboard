@@ -7,10 +7,14 @@ class OfficeHoursController < ApplicationController
     @office_hours = @office_hours.ordered
   end
 
+  def new
+
+  end
+
   def create
     respond_to do |format|
-      if @office_hour.update_attributes(office_hour_params.merge(mentor: current_member))
-        format.html { redirect_to :back, notice: 'Office Hour was successfully created.' }
+      if @office_hour.update_attributes(office_hour_params.merge(mentor: @member))
+        format.html { redirect_to community_member_office_hours_path, notice: 'Office Hour was successfully created.' }
         format.json { render json: @office_hour, status: :created }
       else
         format.html { redirect_to :back, alert: 'Error creating office hour.' }
