@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     end
     resources :members, only: [:index, :show] do
       resources :messages
+      resources :office_hours, only: :index
     end
     resources :discussions, except: [:edit, :update] do
       resources :comments, only: [:create, :destroy]
