@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150512072215) do
+ActiveRecord::Schema.define(version: 20150519051757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,21 @@ ActiveRecord::Schema.define(version: 20150512072215) do
   end
 
   add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
+
+  create_table "events", force: :cascade do |t|
+    t.string   "location_detail",                 null: false
+    t.string   "location_type",                   null: false
+    t.datetime "starts_at",                       null: false
+    t.datetime "ends_at",                         null: false
+    t.string   "title",                           null: false
+    t.string   "time_zone",                       null: false
+    t.text     "description"
+    t.integer  "creator_id",                      null: false
+    t.integer  "community_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.boolean  "external",        default: false, null: false
+  end
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id"

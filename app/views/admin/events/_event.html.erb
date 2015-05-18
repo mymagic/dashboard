@@ -1,0 +1,14 @@
+<tr>
+  <td><%= event.external? ? content_tag('span', 'External', class: 'label label-default') : content_tag('span', 'Network', class: 'label label-primary') %></td>
+  <td><%= event.title.truncate(30) %></td>
+  <td><%= event.starts_at.strftime('%d.%m.%y at %R') %></td>
+  <td><%= event.ends_at.strftime('%d.%m.%y at %R') %></td>
+  <td><%= event.time_zone.truncate(15) %></td>
+  <td><%= event.location_detail.truncate(15) %></td>
+  <td><%= link_to image_tag(event.creator.avatar.url(:icon), class: 'img-rounded'), [current_community, event.creator] %></td>
+  <td>
+    <% if can? :update, event %>
+      <%= link_to('Edit', edit_community_admin_event_path(current_community, event), class: 'btn btn-default btn-xs') %>
+    <% end %>
+  </td>
+</tr>

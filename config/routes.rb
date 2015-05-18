@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     get 'admin/dashboard'
 
     namespace :admin do
+      resources :events, except: [:show]
       resources :companies
       resources :companies_members_positions
       resources :office_hours

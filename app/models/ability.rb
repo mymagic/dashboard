@@ -83,6 +83,8 @@ class Ability
       can :manage, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
+
+      can [:manage, :administrate], Event
     when 'staff'
       can :administrate, :application
       can :administrate, [Member, Company, CompaniesMembersPosition]
@@ -114,6 +116,8 @@ class Ability
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
+
+      can [:manage, :administrate], Event
     when 'mentor'
       can :read, Member
 
