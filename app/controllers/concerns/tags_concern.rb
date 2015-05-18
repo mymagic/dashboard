@@ -1,18 +1,6 @@
 module TagsConcern
   extend ActiveSupport::Concern
 
-  def tags
-    tags = Tag.
-            where(type: tags_class, community: current_community).
-            search(params[:q]).
-            results.
-            map(&:name)
-
-    respond_to do |format|
-      format.json { render json: tags }
-    end
-  end
-
   protected
 
   def tag
