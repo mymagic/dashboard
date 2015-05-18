@@ -17,6 +17,12 @@ gem 'coffee-rails', '~> 4.1.0'
 # Bootstrap for views
 gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', tag: 'v3.3.4'
 
+# The Moment.js JavaScript library ready to play with the Rails Asset Pipeline
+gem 'momentjs-rails'
+
+# An asset gem containing Adam Shaw's excellent fullcalendar jquery plugin
+gem 'fullcalendar-rails'
+
 # Use simple_form for forms
 gem 'simple_form'
 
