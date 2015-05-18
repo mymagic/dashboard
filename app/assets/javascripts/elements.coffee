@@ -2,13 +2,11 @@ $ ->
   setupTagsInput = ->
     $('input[data-role=tags]').each ->
       self = $(@)
-      if self.data('typeahead-url')
+      if self.data('typeahead-prefetch')
         tags = new Bloodhound
           datumTokenizer: Bloodhound.tokenizers.whitespace
           queryTokenizer: Bloodhound.tokenizers.whitespace
-          remote:
-            url: self.data('typeahead-url') + '?q=%QUERY'
-            wildcard: '%QUERY'
+          local: self.data('typeahead-prefetch')
         tags.initialize()
         self.tagsinput
           typeaheadjs:
