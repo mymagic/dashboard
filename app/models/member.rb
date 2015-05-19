@@ -137,16 +137,15 @@ class Member < ActiveRecord::Base
 
   concerning :OfficeHours do
     included do
-      has_many :office_hours_as_mentor, class_name: 'OfficeHour', foreign_key: :mentor_id
-      has_many(:office_hours_as_participant,
-               class_name: 'OfficeHour',
-               foreign_key: :participant_id)
+      has_many :office_hours
+      has_many :office_hours_as_mentor,
+               -> { where(role: 'mentor') },
+               class_name: 'OfficeHour'
+      has_many :office_hours_as_participant,
+               -> { where(role: 'mentor') },
+               class_name: 'OfficeHour'
 
       accepts_nested_attributes_for :office_hours_as_mentor
-
-      def office_hours
-        community.office_hours.where("mentor_id = :id OR participant_id = :id", id: id)
-      end
     end
   end
 

@@ -11,10 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150512072215) do
+ActiveRecord::Schema.define(version: 20150519081406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "member_id",                       null: false
+    t.boolean  "recurring",       default: false, null: false
+    t.time     "time",                            null: false
+    t.time     "date",                            null: false
+    t.string   "time_zone"
+    t.string   "location_type"
+    t.string   "location_detail"
+    t.integer  "wday"
+    t.integer  "duration"
+    t.integer  "slot_duration"
+    t.text     "details"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "comments", force: :cascade do |t|
     t.integer  "author_id"
@@ -150,18 +166,16 @@ ActiveRecord::Schema.define(version: 20150512072215) do
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
   create_table "office_hours", force: :cascade do |t|
-    t.datetime "time",           null: false
-    t.string   "time_zone",      null: false
-    t.integer  "mentor_id",      null: false
-    t.integer  "participant_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "time",         null: false
+    t.string   "time_zone",    null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "community_id"
+    t.integer  "member_id"
+    t.string   "role"
   end
 
   add_index "office_hours", ["community_id"], name: "index_office_hours_on_community_id", using: :btree
-  add_index "office_hours", ["mentor_id"], name: "index_office_hours_on_mentor_id", using: :btree
-  add_index "office_hours", ["participant_id"], name: "index_office_hours_on_participant_id", using: :btree
 
   create_table "positions", force: :cascade do |t|
     t.string   "name",           null: false
@@ -172,6 +186,15 @@ ActiveRecord::Schema.define(version: 20150512072215) do
   end
 
   add_index "positions", ["community_id"], name: "index_positions_on_community_id", using: :btree
+
+  create_table "slots", force: :cascade do |t|
+    t.integer  "member_id",       null: false
+    t.integer  "availability_id", null: false
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "social_media_links", force: :cascade do |t|
     t.string  "service"

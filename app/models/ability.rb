@@ -54,6 +54,8 @@ class Ability
 
       can :manage, Community, id: member.community_id
 
+      can :manage, :calendar
+
       can :manage, Position
 
       can :manage, OfficeHour
@@ -96,6 +98,7 @@ class Ability
       create_companies_positions(member)
       can :manage, CompaniesMembersPosition
 
+      can :read, :calendar
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
 
@@ -119,6 +122,7 @@ class Ability
 
       can :read, Company
 
+      can :read, :calendar
       can :read, OfficeHour
       can :create, OfficeHour, mentor_id: member.id
 
@@ -132,6 +136,7 @@ class Ability
         comment.discussion.community_id == member.community_id
       end
     else # a regular Member
+      can :read, :calendar
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
 
