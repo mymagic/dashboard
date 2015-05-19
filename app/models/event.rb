@@ -22,12 +22,20 @@ class Event < ActiveRecord::Base
   scope :upcoming, -> { where('ends_at > ?', Time.now) }
   scope :past, -> { where('ends_at < ?', Time.now) }
 
+  def to_param
+    "#{ id }-#{ title.parameterize }"
+  end
+
   def starts_at_in_zone
     time_in_zone starts_at
   end
 
   def ends_at_in_zone
     time_in_zone ends_at
+  end
+
+  def at_address?
+    location_type == 'Address'
   end
 
   private
