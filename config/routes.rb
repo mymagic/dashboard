@@ -10,12 +10,14 @@ Rails.application.routes.draw do
   resources :communities, path: '', except: :index do
     get 'discussions/tagged/:tag_id', to: 'discussions#index', as: 'discussion_tag'
     get 'discussions/tags', to: 'discussions#tags', as: 'discussion_tags'
+    resource  :calendar, only: :show
+
     resources :messages, only: :index do
       get 'search', on: :collection
     end
     resources :members, only: [:index, :show] do
       resources :messages
-      resources :office_hours, only: :index
+      resources :office_hours, only: [:index, :new, :create]
     end
     resources :discussions, except: [:edit, :update] do
       resources :comments, only: [:create, :destroy]

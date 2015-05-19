@@ -1,7 +1,7 @@
 class OfficeHoursController < ApplicationController
   before_action :authenticate_member!
   load_resource :member
-  load_and_authorize_resource through: [:member, :current_community]
+  load_and_authorize_resource through: :member
 
   def index
     @office_hours = @office_hours.ordered
@@ -13,7 +13,7 @@ class OfficeHoursController < ApplicationController
 
   def create
     respond_to do |format|
-      if @office_hour.update_attributes(office_hour_params.merge(mentor: @member))
+      if @office_hour.update_attributes(office_hour_params.merge(role: 'mentor'))
         format.html { redirect_to community_member_office_hours_path, notice: 'Office Hour was successfully created.' }
         format.json { render json: @office_hour, status: :created }
       else
