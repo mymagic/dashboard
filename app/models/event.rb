@@ -26,23 +26,11 @@ class Event < ActiveRecord::Base
     "#{ id }-#{ title.parameterize }"
   end
 
-  def starts_at_in_zone
-    time_in_zone starts_at
-  end
-
-  def ends_at_in_zone
-    time_in_zone ends_at
-  end
-
   def at_address?
     location_type == 'Address'
   end
 
   private
-
-  def time_in_zone(time)
-    ActiveSupport::TimeZone[time_zone].parse(time.to_s)
-  end
 
   def set_community
     self.community = creator.community

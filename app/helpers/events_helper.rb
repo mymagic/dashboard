@@ -12,18 +12,23 @@ module EventsHelper
   end
 
   def event_header(event)
+    starts_at_in_member_tz = event.
+                             starts_at.
+                             in_time_zone(current_member.time_zone).
+                             strftime('%A, %B %d, %Y at %l:%M%P')
     safe_join([
       event.title,
       tag('br'),
-      content_tag('small', event.starts_at_in_zone.strftime('%A, %B %d, %Y at %l:%M%P %Z'))
+      content_tag('small', starts_at_in_member_tz)
     ])
   end
 
-  def event_times(event)
+  def event_times(event, time_zone)
+    template = '%A, %B %d, %Y at %l:%M%P'
     times = {}
-    times['Begins'] = event.starts_at_in_zone.strftime('%A, %B %d, %Y at %l:%M%P')
-    times['Ends'] = event.ends_at_in_zone.strftime('%A, %B %d, %Y at %l:%M%P')
-    times['Timezone'] = event.ends_at_in_zone.strftime('%Z')
+    times['Begins'] = event.starts_at.in_time_zone(time_zone).strftime(template)
+    times['Ends'] = event.ends_at.in_time_zone(time_zone).strftime(template)
+    times['Timezone'] = time_zone
     times
   end
 end
