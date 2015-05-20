@@ -12,10 +12,12 @@ json.array! @office_hours_group do |group|
   json.avatars do
     json.array!(
       group.avatars.each_with_index.map do |avatar, index|
+        member = Member.new(id: group.member_ids[index])
+
         if avatar.present?
-          "/uploads/member/avatar/#{group.member_ids[index]}/icon_#{avatar}"
+          '/' + member.avatar.icon.store_path(avatar)
         else
-          '/images/missing/member/icon_default.png'
+          member.avatar.icon.default_url
         end
       end
     )
