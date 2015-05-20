@@ -1,6 +1,11 @@
 module EventsHelper
   def event_static_map(event)
-    query = { center: event.location_detail, size: '400x400', zoom: 15 }
+    query = {
+      center: event.location_detail,
+      size: '300x300',
+      zoom: 16,
+      markers: "color:blue|#{ event.location_detail }"
+    }
     url = URI.parse("https://maps.googleapis.com/maps/api/staticmap")
     url.query = query.to_query
     image_tag(url, class: 'img-responsive')
