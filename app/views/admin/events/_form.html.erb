@@ -14,8 +14,8 @@
       <%= panel 'Location and Time', columns: 12 do %>
         <%= f.input :location_type, collection: Event::LOCATION_TYPES, required: true %>
         <%= f.input :location_detail %>
-        <%= f.input :starts_at, wrapper_html: { class: 'datetime-inline' }, label: 'Starts' %>
-        <%= f.input :ends_at, wrapper_html: { class: 'datetime-inline' }, label: 'Ends' %>
+        <%= f.input :starts_at, label: 'Starts', as: :date_time_with_steps, wrapper_html: { class: 'datetime-inline' } %>
+        <%= f.input :ends_at, label: 'Ends', as: :date_time_with_steps, wrapper_html: { class: 'datetime-inline' } %>
         <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
       <% end %>
     </div>

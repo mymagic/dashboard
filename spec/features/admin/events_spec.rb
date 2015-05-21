@@ -5,7 +5,7 @@ RSpec.describe 'Admin/Events', type: :feature, js: false do
     given!(:community) { create(:community, :with_social_media_services) }
     given(:administrator) { create(:administrator, :confirmed, community: community) }
     given(:staff) { create(:staff, :confirmed, community: community) }
-    given(:starts_at) { 1.month.from_now }
+    given(:starts_at) { 1.month.from_now.midnight }
     given(:ends_at) { starts_at + 3.hours }
 
     shared_examples "managing events" do
