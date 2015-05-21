@@ -1,0 +1,22 @@
+<%= panel 'Date and Time', columns: 12 do %>
+  <% if @event.time_zone == current_member.time_zone %>
+    <%= definition_list event_times(event, event.time_zone), horizontal: false %>
+  <% else %>
+    <div role="tabpanel">
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="event-time-in-member-tz">
+          <%= definition_list event_times(event, current_member.time_zone), horizontal: false %>
+          <div class="text-right">
+            <small><a href="#event-time-in-event-tz" aria-controls="event-time-in-event-tz" role="tab" data-toggle="tab">Display in the event's time zone</a></small>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="event-time-in-event-tz">
+          <%= definition_list event_times(event, event.time_zone), horizontal: false %>
+          <div class="text-right">
+            <small><a href="#event-time-in-member-tz" aria-controls="event-time-in-member-tz" role="tab" data-toggle="tab">Display in your time zone</a></small>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -135,6 +135,8 @@ class Ability
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
+
+      can :read, Event
     else # a regular Member
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
@@ -170,6 +172,7 @@ class Ability
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
+      can :read, Event
     end
   end
 end

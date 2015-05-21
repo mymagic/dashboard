@@ -1,0 +1,4 @@
+<%= panel 'Location', columns: 12 do %>
+  <%= content_tag('p', event_static_map(event)) if event.at_address? %>
+  <%= definition_list [[event.location_type, event.location_detail]], horizontal: false %>
+<% end %>

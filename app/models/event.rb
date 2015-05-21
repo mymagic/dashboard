@@ -22,19 +22,15 @@ class Event < ActiveRecord::Base
   scope :upcoming, -> { where('ends_at > ?', Time.now) }
   scope :past, -> { where('ends_at < ?', Time.now) }
 
-  def starts_at_in_zone
-    time_in_zone starts_at
+  def to_param
+    "#{ id }-#{ title.parameterize }"
   end
 
-  def ends_at_in_zone
-    time_in_zone ends_at
+  def at_address?
+    location_type == 'Address'
   end
 
   private
-
-  def time_in_zone(time)
-    ActiveSupport::TimeZone[time_zone].parse(time.to_s)
-  end
 
   def set_community
     self.community = creator.community
