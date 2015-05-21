@@ -4,7 +4,7 @@ class CreateAvailabilities < ActiveRecord::Migration
       t.references :member, null: false
       t.boolean    :recurring, null: false, default: false
       t.time       :time, null: false
-      t.time       :date, null: false
+      t.date       :date, null: false
       t.string     :time_zone
       t.string     :location_type
       t.string     :location_detail

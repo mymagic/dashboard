@@ -2,16 +2,7 @@
   title @member.full_name
 %>
 
-<div class="page-header">
-  <div class='pull-right'>
-    <ul class="nav nav-pills">
-      <li role="presentation" class="active"><a href="#">Details</a></li>
-      <li role="presentation"><%= link_to 'Office Hours', community_member_office_hours_path(current_community, @member) %></li>
-      <li role="presentation"><%= link_to('Private Message', community_member_messages_path(current_community, @member)) %></li>
-    </ul>
-  </div>
-  <h1><%= @member.full_name %></h1>
-</div>
+<%= render partial: 'members/header' %>
 
 <div class="row">
   <div class="col-lg-8">

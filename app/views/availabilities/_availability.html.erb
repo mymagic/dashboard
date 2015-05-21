@@ -1,0 +1,11 @@
+<tr>
+  <td><%= availability.date %></td>
+  <td><%= availability.start_time.strftime("%H:%M %p") %></td>
+  <td><%= availability.end_time.strftime("%H:%M %p") %></td>
+  <td><%= availability.time_zone %></td>
+  <td><%= availability.slot_duration %></td>
+  <td><%= availability.location_type.try(:humanize) %></td>
+  <td><%= availability.location_detail %></td>
+  <td><%= availability.details %></td>
+  <td><%= link_to 'Delete', community_member_availability_path(current_community, availability.member, availability), class: 'btn btn-danger btn-xs', method: :delete, data: { confirm: "Are you sure you want to remove this availability?" } %></td>
+</tr>

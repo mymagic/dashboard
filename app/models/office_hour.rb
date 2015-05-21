@@ -19,8 +19,7 @@ class OfficeHour < ActiveRecord::Base
     ].join(' '))
   end
 
-  delegate :full_name, to: :mentor, prefix: true
-  delegate :full_name, to: :participant, prefix: true, allow_nil: true
+  delegate :full_name, to: :member, prefix: true
 
   def self.group_by_time_with_members(start_date, end_date)
     joins(:member)

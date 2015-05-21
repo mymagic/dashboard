@@ -61,6 +61,8 @@ class Ability
       can :manage, OfficeHour
       book_and_cancel_office_hours(member)
 
+      can :manage, Availability
+
       can :manage, SocialMediaLink
 
       can :manage, Company

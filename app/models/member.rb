@@ -149,6 +149,12 @@ class Member < ActiveRecord::Base
     end
   end
 
+  concerning :Availabilities do
+    included do
+      has_many :availabilities, dependent: :destroy
+    end
+  end
+
   concerning :Messages do
     included do
       def messages

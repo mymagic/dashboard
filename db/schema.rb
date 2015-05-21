@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20150519081406) do
     t.integer  "member_id",                       null: false
     t.boolean  "recurring",       default: false, null: false
     t.time     "time",                            null: false
-    t.time     "date",                            null: false
+    t.date     "date",                            null: false
     t.string   "time_zone"
     t.string   "location_type"
     t.string   "location_detail"
