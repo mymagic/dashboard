@@ -19,8 +19,15 @@ module EventsHelper
     safe_join([
       event.title,
       tag('br'),
-      content_tag('small', starts_at_in_member_tz)
-    ])
+      content_tag('small', starts_at_in_member_tz)], ' ')
+  end
+
+  def event_type_label(event, with_event: false)
+    wording = []
+    wording << (event.external? ? 'External' : 'Community')
+    wording << 'Event' if with_event
+    style = event.external? ? 'label-default' : 'label-primary'
+    content_tag('span', wording.join(' '), class: "label #{ style }")
   end
 
   def event_times(event, time_zone)

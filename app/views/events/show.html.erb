@@ -9,5 +9,8 @@
   <div class="col-sm-4 col-xs-4">
     <%= render partial: 'location', locals: { event: @event } %>
     <%= render partial: 'time', locals: { event: @event } %>
+    <div class="text-center">
+      <%= event_type_label(@event, with_event: true) %>
+    </div>
   </div>
 </div>
