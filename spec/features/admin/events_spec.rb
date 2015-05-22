@@ -38,7 +38,7 @@ RSpec.describe 'Admin/Events', type: :feature, js: false do
         given!(:event) do
           create(
             :event,
-            creator: administrator,
+            community: community,
             starts_at: starts_at,
             title: 'Great Event'
           )

@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Admin::EventsController, type: :controller do
   let(:community) { create(:community) }
-  let(:admin) { create(:administrator, community: community) }
-  let(:event) { create(:event, creator: admin) }
+  let(:event) { create(:event, community: community) }
 
   describe "GET #index" do
     let(:response) { get(:index, community_id: community) }

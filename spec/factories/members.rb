@@ -15,7 +15,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :member, parent: :bare_member, aliases: [:participant, :author, :creator] do
+  factory :member, parent: :bare_member, aliases: [:participant, :author] do
     role ''
     before(:create) do |member|
       member.companies_positions << build(:companies_position,

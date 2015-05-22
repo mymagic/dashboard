@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :event do
     title { generate(:title) }
-    creator
-    community { creator.community }
+    community
+    creator { create(:administrator, :confirmed, community: community) }
     location_detail 'Block 3730 APEC, 63000 Cyberjaya, Malaysia'
     location_type 'Address'
     time_zone 'Bangkok'
