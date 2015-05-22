@@ -13,5 +13,9 @@ FactoryGirl.define do
                   "sed diam nonumy eirmod tempor invidunt ut labore et dolore "\
                   "magna aliquyam erat, sed diam voluptua."
     end
+    trait :in_the_past do
+      starts_at { 1.week.ago }
+      ends_at { 1.week.ago + 3.hours }
+    end
   end
 end

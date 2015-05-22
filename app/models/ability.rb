@@ -85,6 +85,9 @@ class Ability
       end
 
       can [:manage, :administrate], Event
+      cannot :rsvp, Event do |event|
+        event.ended?
+      end
     when 'staff'
       can :administrate, :application
       can :administrate, [Member, Company, CompaniesMembersPosition]
@@ -118,6 +121,9 @@ class Ability
       end
 
       can [:manage, :administrate], Event
+      cannot :rsvp, Event do |event|
+        event.ended?
+      end
     when 'mentor'
       can :read, Member
 
@@ -137,6 +143,9 @@ class Ability
       end
 
       can :read, Event
+      can :rsvp, Event do |event|
+        !event.ended?
+      end
     else # a regular Member
       can :read, OfficeHour
       book_and_cancel_office_hours(member)
@@ -173,6 +182,9 @@ class Ability
         comment.discussion.community_id == member.community_id
       end
       can :read, Event
+      can :rsvp, Event do |event|
+        !event.ended?
+      end
     end
   end
 end

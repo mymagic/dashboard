@@ -25,7 +25,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :events, only: [:show]
+    resources :events, only: [:show] do
+      member do
+        patch :rsvp
+      end
+    end
 
     resources :companies, only: [:index, :show, :edit, :update] do
       resources :members, only: [:new, :create, :edit, :update]

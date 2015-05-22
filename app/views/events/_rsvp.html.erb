@@ -1,0 +1,26 @@
+<%- if rsvp.present? %>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="rsvp_event_menu" data-toggle="dropdown" aria-expanded="true">
+      <%= rsvp.state.humanize %>
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="rsvp_event_menu">
+      <%- Rsvp::STATES.reject { |s| s == rsvp.state }.each do |state| %>
+        <li role="presentation">
+          <%= rsvp_link(
+                event,
+                state,
+                state.humanize,
+                role: 'menuitem',
+                tabindex: '-1') %>
+        </li>
+      <%- end %>
+    </ul>
+  </div>
+<%- else %>
+  <div class="btn-group" role="group" aria-label="rsvp-event">
+    <%- Rsvp::STATES.each do |state| %>
+      <%= rsvp_event_button(event, state) %>
+    <%- end %>
+  </div>
+<%- end %>

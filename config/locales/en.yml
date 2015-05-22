@@ -14,6 +14,10 @@ en:
           attributes:
             ends_at:
               cannot_precede_starts_at: cannot precede starts at
+        rsvp:
+          attributes:
+            event:
+              cannot_be_in_the_past: cannot be a past event
         office_hour:
           attributes:
             participant:
