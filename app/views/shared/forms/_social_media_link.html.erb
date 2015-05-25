@@ -1,11 +1,8 @@
 <div id='magic_social_media_links'>
-  <%= form.simple_fields_for :social_media_links do |social_media_link| %>
+  <%= form.simple_fields_for :social_media_links, @social_media_links do |social_media_link| %>
     <div class='social_media_link'>
-      <%= social_media_link.input :service, collection: current_community.social_media_services.map{ |service| [service.camelize, service] } %>
-      <%= social_media_link.input :handle %>
-      <% if social_media_link.object.persisted? %>
-        <%= social_media_link.input :_destroy, as: :boolean %>
-      <% end %>
+      <%= social_media_link.input :service, as: :hidden %>
+      <%= social_media_link.input :handle, label: social_media_link.object.service %>
     </div>
   <% end %>
 </div>

@@ -3,6 +3,9 @@ module Admin
     load_and_authorize_resource through: :current_community
     before_action :allow_without_password, only: :update
 
+    include SocialMediaLinksConcern
+    before_action only: [:edit] { social_media_links(@member) }
+
     def index
       @invited_members    = @members.invited.ordered
       @active_members     = @members.active.ordered
@@ -11,7 +14,6 @@ module Admin
     def new
       @member.time_zone = current_member.time_zone
       @member.companies_positions.build
-      @member.social_media_links.build
     end
 
     def create
@@ -49,7 +51,6 @@ module Admin
 
     def edit
       @member.companies_positions.build
-      @member.social_media_links.build
     end
 
     def update
