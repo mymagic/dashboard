@@ -1,4 +1,21 @@
 module EventsHelper
+  RSVP_STATES = {
+    attending: 'Join',
+    not_attending: 'Decline',
+    maybe_attending: 'Maybe'
+  }
+
+  def rsvp_event_button(event, state)
+    rsvp_link(event, state, RSVP_STATES[state.to_sym], class: 'btn btn-default')
+  end
+
+  def rsvp_link(event, state, name = nil, html_options = {})
+    link_to(
+      name,
+      rsvp_community_event_path(event.community, event, rsvp: { state: state }),
+      html_options.merge(method: :patch))
+  end
+
   def event_static_map(event)
     query = {
       center: event.location_detail,

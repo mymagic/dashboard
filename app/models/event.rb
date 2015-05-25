@@ -1,10 +1,6 @@
 class Event < ActiveRecord::Base
   LOCATION_TYPES = %w( Address Skype Phone Other )
 
-  # Associations
-  belongs_to :creator, class_name: 'Member'
-  belongs_to :community
-
   # Validations
   before_validation :set_community, if: -> { creator.present? }
   validates :location_detail,
@@ -18,6 +14,25 @@ class Event < ActiveRecord::Base
   validate :ends_at_cannot_precede_starts_at,
            if: -> { ends_at.present? && starts_at.present? }
 
+  # Associations
+  belongs_to :creator, class_name: 'Member'
+  belongs_to :community
+
+  has_many :rsvps
+  has_many :members, through: :rsvps do
+    def attending
+      where(rsvps: { state: 'attending' })
+    end
+
+    def maybe_attending
+      where(rsvps: { state: 'maybe_attending' })
+    end
+
+    def not_attending
+      where(rsvps: { state: 'not_attending' })
+    end
+  end
+
   # Scopes
   scope :upcoming, -> { where('ends_at > ?', Time.now) }
   scope :past, -> { where('ends_at < ?', Time.now) }
@@ -28,6 +43,10 @@ class Event < ActiveRecord::Base
 
   def at_address?
     location_type == 'Address'
+  end
+
+  def ended?
+    ends_at < Time.now
   end
 
   private
