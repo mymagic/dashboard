@@ -13,6 +13,10 @@ Rails.application.routes.draw do
       get 'search', on: :collection
     end
     resources :members, only: [:index, :show] do
+      member do
+        patch :follow
+        delete :unfollow
+      end
       resources :messages
     end
     resources :discussions, except: [:edit, :update] do

@@ -1,9 +1,10 @@
-<%
-  title @member.full_name
-%>
+<% title @member.full_name %>
 
 <div class="page-header">
-  <%= link_to('Private Message', community_member_messages_path(current_community, @member), class: 'btn btn-default pull-right') %>
+  <div class="page-header-action">
+    <%= render partial: 'shared/follow_button', locals: { object: @member } %>
+    <%= link_to('Private Message', community_member_messages_path(current_community, @member), class: 'btn btn-default') %>
+  </div>
   <h1><%= @member.full_name %></h1>
 </div>
 

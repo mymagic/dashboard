@@ -10,6 +10,10 @@ en:
           attributes:
             member:
               community_must_be_the_same_as_position_community: community must be the same as position community
+        follow:
+          attributes:
+            member:
+              cannot_follow_yourself: cannot follow yourself
         office_hour:
           attributes:
             participant:

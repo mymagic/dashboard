@@ -33,6 +33,21 @@ class MembersController < ApplicationController
     )
   end
 
+  def follow
+    if @member.followers.include? current_member
+      redirect_to(
+        :back, warning: "You are already following #{ @member.full_name }.")
+    else
+      @member.followers << current_member
+      redirect_to :back, notice: "You are now following #{ @member.full_name }."
+    end
+  end
+
+  def unfollow
+    @member.followers.delete(current_member)
+    redirect_to :back, notice: "You stopped following #{ @member.full_name }."
+  end
+
   private
 
   def member_params
