@@ -16,6 +16,7 @@ class Community < ActiveRecord::Base
   has_many :discussions, dependent: :destroy
   has_many :tags, dependent: :destroy
   has_many :discussion_tags
+  has_many :events, dependent: :destroy
 
   # Validations
   validates :name, :slug, presence: true

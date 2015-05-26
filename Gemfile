@@ -91,6 +91,9 @@ group :development, :test do
 
   # guard to auto-run specs
   gem 'guard-rspec'
+
+  # guard livereload
+  gem 'guard-livereload'
 end
 
 group :test do

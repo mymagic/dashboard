@@ -1,0 +1,21 @@
+<% title @event.title %>
+<div class="page-header">
+  <div class="page-header-action event-rsvps">
+    <%= render(partial: 'rsvp', locals: { event: @event, rsvp: @rsvp }) if can? :rsvp, @event %>
+    <%= render(partial: 'attendees', locals: { attendees: @event.members.attending }) if @event.members.attending.any? %>
+  </div>
+  <h1><%= event_header(@event) %></h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-8 col-xs-8">
+    <%= @event.description %>
+  </div>
+  <div class="col-sm-4 col-xs-4">
+    <%= render partial: 'location', locals: { event: @event } %>
+    <%= render partial: 'time', locals: { event: @event } %>
+    <div class="text-center">
+      <%= event_type_label(@event, with_event: true) %>
+    </div>
+  </div>
+</div>

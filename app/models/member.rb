@@ -43,6 +43,9 @@ class Member < ActiveRecord::Base
 
   has_many :comments, foreign_key: :author_id
 
+  has_many :rsvps, dependent: :destroy
+  has_many :events, through: :rsvps
+
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
   scope :active, -> {

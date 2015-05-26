@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150512072215) do
+ActiveRecord::Schema.define(version: 20150522040344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,21 @@ ActiveRecord::Schema.define(version: 20150512072215) do
   end
 
   add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
+
+  create_table "events", force: :cascade do |t|
+    t.string   "location_detail",                 null: false
+    t.string   "location_type",                   null: false
+    t.datetime "starts_at",                       null: false
+    t.datetime "ends_at",                         null: false
+    t.string   "title",                           null: false
+    t.string   "time_zone",                       null: false
+    t.text     "description"
+    t.integer  "creator_id",                      null: false
+    t.integer  "community_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.boolean  "external",        default: false, null: false
+  end
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id"
@@ -173,6 +188,17 @@ ActiveRecord::Schema.define(version: 20150512072215) do
 
   add_index "positions", ["community_id"], name: "index_positions_on_community_id", using: :btree
 
+  create_table "rsvps", force: :cascade do |t|
+    t.integer  "event_id"
+    t.integer  "member_id"
+    t.string   "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "rsvps", ["event_id"], name: "index_rsvps_on_event_id", using: :btree
+  add_index "rsvps", ["member_id"], name: "index_rsvps_on_member_id", using: :btree
+
   create_table "social_media_links", force: :cascade do |t|
     t.string  "service"
     t.string  "handle"
@@ -213,6 +239,8 @@ ActiveRecord::Schema.define(version: 20150512072215) do
   add_foreign_key "discussions", "communities"
   add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
+  add_foreign_key "rsvps", "events"
+  add_foreign_key "rsvps", "members"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tags", "communities"
 end
