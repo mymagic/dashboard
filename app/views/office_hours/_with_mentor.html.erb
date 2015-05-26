@@ -1,0 +1,5 @@
+<div class='office-hour-mentor clearfix'>
+  <%= image_tag member.avatar.url(:icon), class: 'office-hour-mentor__image' %>
+  <span class='office-hour-mentor__full-name'><%= member.full_name %></span>
+  <%= link_to 'Reserve', community_member_availabilities_path(current_community, member), class: 'office-hour-mentor__reserve-btn btn btn-success btn-xs pull-right' %>
+</div>

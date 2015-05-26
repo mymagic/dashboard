@@ -8,7 +8,7 @@
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="office-hour-menu">
-          <li role="presentation"><%= link_to 'Calendar', community_member_office_hours_path(current_community, @member) %></li>
+          <li role="presentation"><%= link_to 'All', community_member_office_hours_path(current_community, @member) %></li>
           <li role="presentation"><%= link_to 'New an Office Hour', new_community_member_office_hour_path(current_community, @member) %></li>
         </ul>
       </li>

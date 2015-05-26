@@ -14,6 +14,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+# Brings Rails named routes to javascript
+gem 'js-routes'
+
 # Bootstrap for views
 gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', tag: 'v3.3.4'
 

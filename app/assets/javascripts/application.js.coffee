@@ -4,6 +4,7 @@
 #= require turbolinks
 #= require jquery-sortable
 #= require jquery.timeago
+#= require js-routes
 #= require moment
 #= require bootstrap-tagsinput
 #= require fullcalendar
@@ -13,6 +14,7 @@
 
 #= require bootstrap-setup
 #= require elements
+#= require calendar
 #= require admin/positions
 
 

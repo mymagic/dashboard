@@ -11,7 +11,7 @@
     <%= favicon_link_tag favicon_path, type: 'image/png' %>
     <%= csrf_meta_tags %>
   </head>
-  <body>
+  <body class='<%= controller_name %> <%= action_name %>' data-controller='<%= controller_name %>' data-community-slug='<%= current_community.try(:slug) %>'>
     <%= render partial: 'shared/navigation' %>
 
     <div class="container">

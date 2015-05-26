@@ -10,6 +10,7 @@ class OfficeHour < ActiveRecord::Base
   scope :available, -> { where(participant: nil) }
   scope :booked,    -> { where.not(participant: nil) }
   scope :ordered,   -> { order(time: :desc) }
+  scope :by_date,   -> (date) { where("date(time) = '#{date}'") }
 
   scope :by_daterange, -> (start_date, end_date) do
     where([
@@ -35,7 +36,7 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def self.array_agg_sentence(attr)
-    "array_agg(#{attr}) AS #{attr.pluralize}"
+    "array_agg(DISTINCT #{attr}) AS #{attr.pluralize}"
   end
 
   def booked?

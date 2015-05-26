@@ -1,0 +1,3 @@
+<% @office_hours.each do |office_hour| %>
+  <%= render partial: 'with_mentor', locals: { member: office_hour.member } %>
+<% end %>
