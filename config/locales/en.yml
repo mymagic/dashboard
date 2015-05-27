@@ -18,6 +18,10 @@ en:
           attributes:
             event:
               cannot_be_in_the_past: cannot be a past event
+        follow:
+          attributes:
+            member:
+              cannot_follow_yourself: cannot follow yourself
         office_hour:
           attributes:
             participant:

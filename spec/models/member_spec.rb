@@ -162,4 +162,9 @@ RSpec.describe Member, type: :model do
       end
     end
   end
+
+  context 'followable' do
+    subject(:followable) { create(:member) }
+    it_behaves_like 'followable'
+  end
 end
