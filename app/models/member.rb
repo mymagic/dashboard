@@ -7,6 +7,8 @@ class Member < ActiveRecord::Base
     end
   end
 
+  include SocialMediaLinkable
+
   mount_uploader :avatar, AvatarUploader
 
   # Include default devise modules. Others available are:
@@ -30,7 +32,6 @@ class Member < ActiveRecord::Base
 
   # Associations
   belongs_to :community
-  has_many :social_media_links, as: :attachable
 
   has_many :follows, dependent: :destroy, inverse_of: :member
   has_many :followings, as: :followable, class_name: 'Follow'
@@ -51,8 +52,6 @@ class Member < ActiveRecord::Base
   scope :active, -> {
     where(invitation_token: nil).where.not(confirmed_at: nil)
   }
-
-  accepts_nested_attributes_for :social_media_links, reject_if: :all_blank, allow_destroy: true
 
   def full_name
     "#{ first_name } #{ last_name }"

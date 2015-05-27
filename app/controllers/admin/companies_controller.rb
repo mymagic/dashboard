@@ -2,12 +2,15 @@ module Admin
   class CompaniesController < AdminController
     load_and_authorize_resource through: :current_community
 
+    include SocialMediaLinksConcern
+
+    before_action only: [:edit, :new] { social_media_links(@company) }
+
     def index
       @companies = @companies.ordered
     end
 
     def new
-      @company.social_media_links.build
     end
 
     def create
@@ -23,7 +26,6 @@ module Admin
     end
 
     def edit
-      @company.social_media_links.build
     end
 
     def update

@@ -2,13 +2,21 @@ require 'rails_helper'
 
 RSpec.describe 'Admin/Members', type: :feature, js: false do
   feature "Administration" do
-    given!(:community) { create(:community, :with_social_media_services) }
+    given!(:community) do
+      create(:community, :with_social_media_services, num_of_services: 2)
+    end
     given!(:administrator) { create(:administrator, :confirmed, community: community) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, community: community) }
-    given!(:social_media_link) { create(:social_media_link, attachable: member) }
-    given(:social_media_service) { community.social_media_services.sample }
+    given(:social_media_service) { community.social_media_services.first }
+    given(:other_social_media_service) { community.social_media_services.last }
+    given!(:social_media_link) do
+      create(
+        :social_media_link,
+        service: social_media_service,
+        attachable: member)
+    end
 
     context 'as administrator' do
       background { as_user administrator }
@@ -27,18 +35,13 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         fill_in 'First name', with: 'New First Name'
         fill_in 'Last name', with: 'New Last Name'
 
-        select company.name, from: 'member_companies_positions_attributes_0_company_id'
+        select(
+          company.name,
+          from: 'member_companies_positions_attributes_0_company_id')
 
         # Social Media Links
-        within '.social_media_link:first-child' do
-          select social_media_link.service.camelize, from: 'Service'
-          fill_in 'Handle', with: 'https://facebook.com/handle'
-        end
-
-        within '.social_media_link:last-child' do
-          select social_media_service.camelize, from: 'Service'
-          fill_in 'Handle', with: 'Handle'
-        end
+        fill_in social_media_link.service, with: 'https://facebook.com/handle'
+        fill_in other_social_media_service, with: 'Handle'
 
         click_button 'Save'
 
@@ -49,9 +52,11 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_content('New First Name')
         expect(page).to have_content('New Last Name')
 
-        expect(page).to have_content(social_media_service.camelize)
+        expect(page).to have_content(other_social_media_service.camelize)
         expect(page).to have_content('Handle')
-        expect(page).to have_link(social_media_link.service.camelize, href: 'https://facebook.com/handle')
+        expect(page).to have_link(
+          social_media_link.service.camelize,
+          href: 'https://facebook.com/handle')
       end
 
       scenario 'viewing dashboard' do

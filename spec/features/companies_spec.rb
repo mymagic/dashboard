@@ -30,10 +30,14 @@ RSpec.describe 'Companies', type: :feature, js: false do
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:manager) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, name: "ACME", community: community) }
+    given(:social_media_service) { community.social_media_services.first }
+    given(:other_social_media_service) { community.social_media_services.last }
     given!(:social_media_link) do
-      create(:social_media_link, attachable: company)
+      create(
+        :social_media_link,
+        service: social_media_service,
+        attachable: company)
     end
-    given(:social_media_service) { community.social_media_services.sample }
 
     given!(:manager_position) do
       create(
@@ -62,15 +66,9 @@ RSpec.describe 'Companies', type: :feature, js: false do
           Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
 
       # Social Media Links
-      within '.social_media_link:first-child' do
-        select social_media_link.service.camelize, from: 'Service'
-        fill_in 'Handle', with: 'https://facebook.com/handle'
-      end
-
-      within '.social_media_link:last-child' do
-        select social_media_service.camelize, from: 'Service'
-        fill_in 'Handle', with: 'Handle'
-      end
+      # Social Media Links
+      fill_in social_media_link.service, with: 'https://facebook.com/handle'
+      fill_in other_social_media_service, with: 'Handle'
 
       click_button 'Save'
 
@@ -81,7 +79,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
       expect(page).to have_content("This is a company description")
       expect(page).to have_content("http://example.com")
 
-      expect(page).to have_content(social_media_service.camelize)
+      expect(page).to have_content(other_social_media_service.camelize)
       expect(page).to have_content('Handle')
       expect(page).to have_link(
         social_media_link.service.camelize, href: 'https://facebook.com/handle')
