@@ -62,6 +62,7 @@ class Ability
       book_and_cancel_office_hours(member)
 
       can :manage, Availability
+      can :manage, Slot
 
       can :manage, SocialMediaLink
 

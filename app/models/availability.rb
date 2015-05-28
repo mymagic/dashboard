@@ -11,6 +11,7 @@ class Availability < ActiveRecord::Base
 
   # Associations
   belongs_to :member
+  has_many :slots
 
   # Validations
   validates :member_id, :date, :time, :duration,
@@ -28,10 +29,28 @@ class Availability < ActiveRecord::Base
     persisted? ? time + duration : @end_time
   end
 
+  def slot_steps
+    0.step(duration, slot_duration).collect { |range| time + range * 60 }.each_cons(2)
+  end
+
+  def virtual_slots
+    unavailable_times = slots.pluck(:start_time)
+
+    slot_steps.map do |start_time, end_time|
+      Slot.new(
+        member_id: member_id,
+        availability_id: id,
+        start_time: start_time,
+        end_time: end_time,
+        available: !start_time.in?(unavailable_times)
+      )
+    end
+  end
+
   protected
 
   def set_duration
-    self.duration = parse_time(end_time) - parse_time(start_time)
+    self.duration = (parse_time(end_time) - parse_time(start_time)) / 60
   end
 
   def set_wday

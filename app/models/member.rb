@@ -155,6 +155,12 @@ class Member < ActiveRecord::Base
     end
   end
 
+  concerning :Slots do
+    included do
+      has_many :slots, dependent: :destroy
+    end
+  end
+
   concerning :Messages do
     included do
       def messages

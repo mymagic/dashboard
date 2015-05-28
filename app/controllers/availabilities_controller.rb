@@ -2,9 +2,18 @@ class AvailabilitiesController < ApplicationController
   before_action :authenticate_member!
 
   load_and_authorize_resource :member
-  load_and_authorize_resource :availability, through: :member
+  load_and_authorize_resource through: :member
+  before_action :find_availability, only: :show
+  before_action :find_office_hours, only: :show
+
+  def index
+  end
 
   def new
+  end
+
+  def show
+    @slots = @availability.virtual_slots
   end
 
   def create
@@ -14,9 +23,6 @@ class AvailabilitiesController < ApplicationController
     else
       redirect_to :back, alert: 'Error creating availability.'
     end
-  end
-
-  def index
   end
 
   def destroy
@@ -39,6 +45,19 @@ class AvailabilitiesController < ApplicationController
             :location_detail,
             :details
           )
+  end
+
+  def date_params
+    "#{params[:month]}-#{params[:day]}-#{params[:year]}"
+  end
+
+  def find_availability
+    @availability = @member.availabilities
+                           .find_by(date: date_params)
+  end
+
+  def find_office_hours
+    @office_hours = @member.office_hours.where("date(time) = '#{date_params}'")
   end
 
   def parse_time(param_name)

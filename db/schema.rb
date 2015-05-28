@@ -190,8 +190,8 @@ ActiveRecord::Schema.define(version: 20150519081406) do
   create_table "slots", force: :cascade do |t|
     t.integer  "member_id",       null: false
     t.integer  "availability_id", null: false
-    t.datetime "start_at"
-    t.datetime "end_at"
+    t.time     "start_time",      null: false
+    t.time     "end_time",        null: false
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end

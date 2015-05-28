@@ -3,8 +3,8 @@ class CreateSlots < ActiveRecord::Migration
     create_table :slots do |t|
       t.references :member,       null: false
       t.references :availability, null: false
-      t.datetime   :start_at
-      t.datetime   :end_at
+      t.time       :start_time,   null: false
+      t.time       :end_time,     null: false
 
       t.timestamps null: false
     end

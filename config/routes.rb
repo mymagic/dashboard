@@ -18,7 +18,16 @@ Rails.application.routes.draw do
     resources :members, only: [:index, :show] do
       resources :messages
       resources :office_hours, only: [:index, :new, :create]
-      resources :availabilities
+      get 'availabilities/:year/:month/:day',
+        to: 'availabilities#show',
+        as: 'availability_slots',
+        constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+      resources :availabilities, only: [:index, :new, :create, :destroy] do
+        resource :slots, path: 'slots/:hour/:minute',
+          constraints: { hour: /\d{1,2}/, minute: /\d{1,2}/ } do
+          post :reserve, to: 'slots#create', on: :collection
+        end
+      end
     end
     resources :discussions, except: [:edit, :update] do
       resources :comments, only: [:create, :destroy]
