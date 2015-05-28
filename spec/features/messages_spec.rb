@@ -38,7 +38,7 @@ RSpec.describe 'Messages', type: :feature, js: false do
     fill_in 'message_body', with: 'New Message'
     click_button 'Send'
 
-    expect(page).to have_content 'Message has already send.'
+    expect(page).to have_content 'Message has been sent.'
     expect(page).to have_content 'New Message'
   end
 

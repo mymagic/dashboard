@@ -16,7 +16,7 @@ class MessagesController < ApplicationController
 
   def create
     if @message.update(sender: current_member, receiver: @receiver)
-      flash[:notice] = 'Message has already send.'
+      flash[:notice] = 'Message has been sent.'
     else
       flash[:alert] = 'Error sending message.'
     end
@@ -37,7 +37,8 @@ class MessagesController < ApplicationController
   def mark_messages_as_read
     return if @messages.blank?
 
-    @messages.where.not(sender: current_member)
-             .update_all(unread: false)
+    @messages.
+      where.not(sender: current_member).
+      update_all(unread: false)
   end
 end
