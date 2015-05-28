@@ -57,7 +57,7 @@ class AvailabilitiesController < ApplicationController
   end
 
   def find_office_hours
-    @office_hours = @member.office_hours.where("date(time) = '#{date_params}'")
+    @office_hours = @member.office_hours.by_date(date_params)
   end
 
   def parse_time(param_name)

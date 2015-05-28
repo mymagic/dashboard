@@ -64,11 +64,10 @@ class OfficeHoursController < ApplicationController
   def office_hour_params
     params.require(:office_hour).permit(
       :time_zone,
-      :"time(1i)",
-      :"time(2i)",
-      :"time(3i)",
-      :"time(4i)",
-      :"time(5i)")
+      :start_time,
+      :end_time,
+      :date
+    )
   end
 
   def filter_office_hours

@@ -1,5 +1,5 @@
 class OfficeHour < ActiveRecord::Base
-  validates :community, :member, :role, :time, :time_zone, presence: true
+  validates :community, :member, :role, :start_time, :end_time, :date, :time_zone, presence: true
   validates :role, inclusion: { in: %w(mentor participant) }
 
   belongs_to :member
@@ -9,15 +9,11 @@ class OfficeHour < ActiveRecord::Base
 
   scope :available, -> { where(participant: nil) }
   scope :booked,    -> { where.not(participant: nil) }
-  scope :ordered,   -> { order(time: :desc) }
-  scope :by_date,   -> (date) { where("date(time) = '#{date}'") }
+  scope :ordered,   -> { order(date: :desc) }
+  scope :by_date,   -> (date) { where("date(date) = '#{date}'") }
 
   scope :by_daterange, -> (start_date, end_date) do
-    where([
-      "(CAST(time AS DATE) >= '#{start_date}')",
-      "AND",
-      "(CAST(time AS DATE) <= '#{end_date}')"
-    ].join(' '))
+    where("(date >= '#{start_date}') AND (date <= '#{end_date}')")
   end
 
   delegate :full_name, to: :member, prefix: true
@@ -25,9 +21,9 @@ class OfficeHour < ActiveRecord::Base
   def self.group_by_time_with_members(start_date, end_date)
     joins(:member)
     .by_daterange(start_date, end_date)
-    .group('date(time)')
+    .group('date')
     .select([
-      'date(time) AS time',
+      'date',
       array_agg_sentence('member_id'),
       array_agg_sentence('first_name'),
       array_agg_sentence('last_name'),
@@ -48,7 +44,7 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def time_in_zone
-    ActiveSupport::TimeZone[time_zone].parse(time.to_s(:db))
+    ActiveSupport::TimeZone[time_zone].parse(start_time.to_s(:db))
   end
 
   protected

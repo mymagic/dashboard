@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519081406) do
+ActiveRecord::Schema.define(version: 20150528062043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,13 +166,15 @@ ActiveRecord::Schema.define(version: 20150519081406) do
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
   create_table "office_hours", force: :cascade do |t|
-    t.datetime "time",         null: false
     t.string   "time_zone",    null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "community_id"
     t.integer  "member_id"
     t.string   "role"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.datetime "date"
   end
 
   add_index "office_hours", ["community_id"], name: "index_office_hours_on_community_id", using: :btree

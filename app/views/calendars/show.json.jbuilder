@@ -8,7 +8,7 @@ json.array! @office_hours_group do |group|
     "and #{group.member_ids.size - 3} more"
   end
 
-  json.start group.time
+  json.start group.date
   json.avatars do
     json.array!(
       group.avatars.each_with_index.map do |avatar, index|

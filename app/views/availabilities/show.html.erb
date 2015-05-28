@@ -33,7 +33,7 @@
       <li><h2>Office Hours</h2></li>
       <li><%= @availability.date.strftime('%B %d, %Y') %></li>
       <% @office_hours.each do |office_hour| %>
-        <li><%= office_hour.time %></li>
+        <li><%= office_hour.start_time.strftime('%H:%M %P') %> - <%= office_hour.end_time.strftime('%H:%M %P') %></li>
       <% end %>
     </ul>
   </div>

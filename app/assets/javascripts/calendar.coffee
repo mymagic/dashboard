@@ -23,7 +23,7 @@
             placement: 'top'
             html: true
             container: 'body'
-            content: data
+            content: if !!data.trim() then data else 'There are no office hours for this day.'
             trigger: 'manual'
           self.popover 'show'
           self.data('popover-is-shown', true)
