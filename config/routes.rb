@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     get 'admin/dashboard'
 
     namespace :admin do
+      resource :community, only: [:edit, :update]
       resources :events, except: [:show]
       resources :companies
       resources :companies_members_positions
