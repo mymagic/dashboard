@@ -1,9 +1,8 @@
-<% title 'Availabilities' %>
-<%= render partial: 'members/header' %>
+<% title 'Availabilities'
+  page_header "Available on #{@availability.date.strftime('%B %d, %Y')}"
+%>
 
-<h2 class='text-center'>Available on <%= @availability.date.strftime('%B %d, %Y') %></h2>
-
-<table class='table table-bordered'>
+<table class='table table-striped'>
   <thead>
     <tr>
       <th>Start time - End time</th>
