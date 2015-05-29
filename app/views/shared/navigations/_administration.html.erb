@@ -11,7 +11,7 @@
     </div>
     <div class="navbar-collapse collapse" id="navbar-admin">
       <ul class="nav navbar-nav">
-        <%= nav_link "Community", edit_community_path(current_community) if can? :administrate, Community  %>
+        <%= nav_link "Community", edit_community_admin_community_path(current_community) if can? :administrate, current_community  %>
         <%= nav_link "Companies", community_admin_companies_path(current_community) if can? :administrate, Company  %>
         <%= nav_link "Members", community_admin_members_path(current_community) if can? :administrate, Member %>
         <%= nav_link "Positions", community_admin_positions_path(current_community) if can? :administrate, Position %>
