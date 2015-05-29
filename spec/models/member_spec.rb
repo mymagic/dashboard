@@ -13,10 +13,6 @@ RSpec.describe Member, type: :model do
     it { is_expected.to validate_inclusion_of(:role).in_array(Member::ROLES.map(&:to_s)).allow_blank(true) }
 
     it { is_expected.to have_many(:companies_positions).class_name('CompaniesMembersPosition').dependent(:destroy).inverse_of(:member) }
-
-    it { is_expected.to have_many(:office_hours_as_participant).class_name('OfficeHour').with_foreign_key(:participant_id) }
-    it { is_expected.to have_many(:office_hours_as_mentor).class_name('OfficeHour').with_foreign_key(:mentor_id) }
-    it { is_expected.to accept_nested_attributes_for(:office_hours_as_mentor) }
   end
 
   let(:mentor) { create(:mentor) }

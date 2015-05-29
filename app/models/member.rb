@@ -135,20 +135,6 @@ class Member < ActiveRecord::Base
     end
   end
 
-  concerning :OfficeHours do
-    included do
-      has_many :office_hours
-      has_many :office_hours_as_mentor,
-               -> { where(role: 'mentor') },
-               class_name: 'OfficeHour'
-      has_many :office_hours_as_participant,
-               -> { where(role: 'mentor') },
-               class_name: 'OfficeHour'
-
-      accepts_nested_attributes_for :office_hours_as_mentor
-    end
-  end
-
   concerning :Availabilities do
     included do
       has_many :availabilities, dependent: :destroy

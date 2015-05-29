@@ -1,8 +1,0 @@
-<%
-  title 'New Office Hour'
-  page_header 'New Office Hour'
-%>
-
-<%= panel 'Offer an Office Hour as a mentor', columns: 6 do %>
-  <%= render partial: 'form', locals: { member: @member, office_hour: @member.office_hours_as_mentor.build(time_zone: @member.time_zone) } %>
-<% end %>

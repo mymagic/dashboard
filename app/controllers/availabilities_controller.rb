@@ -2,11 +2,14 @@ class AvailabilitiesController < ApplicationController
   before_action :authenticate_member!
 
   load_and_authorize_resource :member
-  load_and_authorize_resource through: :member
-  before_action :find_availability, only: :show
-  before_action :find_office_hours, only: :show
+  load_and_authorize_resource through: :member, except: :index
 
   def index
+    if @member.present?
+      @availabilities = @member.availabilities
+    else
+      @availabilities = current_community.availabilities.by_date(date_params)
+    end
   end
 
   def new
@@ -48,16 +51,9 @@ class AvailabilitiesController < ApplicationController
   end
 
   def date_params
+    return nil if params[:month].nil? || params[:day].nil? || params[:year].nil?
+
     "#{params[:month]}-#{params[:day]}-#{params[:year]}"
-  end
-
-  def find_availability
-    @availability = @member.availabilities
-                           .find_by(date: date_params)
-  end
-
-  def find_office_hours
-    @office_hours = @member.office_hours.by_date(date_params)
   end
 
   def parse_time(param_name)

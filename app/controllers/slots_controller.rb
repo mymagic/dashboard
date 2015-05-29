@@ -9,7 +9,7 @@ class SlotsController < ApplicationController
     end_time   = start_time + @availability.slot_duration * 60
 
     @availability.slots.create(start_time: start_time, end_time: end_time)
-    redirect_to community_member_availability_slots_path(current_community, @member, *@availability.date.strftime.split('-')),
+    redirect_to community_member_availability_path(current_community, @member, @availability),
       notice: 'Slot has already been reserved.'
   end
 end

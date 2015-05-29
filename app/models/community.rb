@@ -7,10 +7,10 @@ class Community < ActiveRecord::Base
   mount_uploader :logo, LogoUploader
 
   # Associations
-  has_many :companies,    dependent: :destroy
-  has_many :members,      dependent: :destroy
-  has_many :positions,    dependent: :destroy
-  has_many :office_hours, dependent: :destroy
+  has_many :companies,      dependent: :destroy
+  has_many :members,        dependent: :destroy
+  has_many :positions,      dependent: :destroy
+  has_many :availabilities, dependent: :destroy
   has_many :social_media_links, dependent: :destroy
   has_many :companies_members_positions, through: :positions
   has_many :discussions, dependent: :destroy

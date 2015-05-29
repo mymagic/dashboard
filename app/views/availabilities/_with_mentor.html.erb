@@ -1,0 +1,5 @@
+<div class='availability-mentor clearfix'>
+  <%= image_tag mentor.avatar.url(:icon), class: 'availability-mentor__image' %>
+  <span class='availability-mentor__full-name'><%= mentor.full_name %></span>
+  <%= link_to 'Reserve', community_member_availability_path(current_community, mentor, availability), class: 'availability-mentor__reserve-btn btn btn-success btn-xs pull-right' %>
+</div>

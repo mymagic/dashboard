@@ -1,40 +1,27 @@
-<%
-  title 'Availabilities'
-  page_header "Available on #{@availability.date.strftime('%B %d, %Y')}"
-%>
+<% title 'Availabilities' %>
+<%= render partial: 'members/header' %>
 
-<div class='row'>
-  <div class='col-md-8'>
-    <table class='table'>
-      <thead>
-        <tr>
-          <th>Start time - End time</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @slots.each do |slot| %>
-          <tr>
-            <td><%= slot.start_time.strftime('%H:%M %P') %> - <%= slot.end_time.strftime('%H:%M %P') %></td>
-            <td><%= slot.available ? 'Available' : 'Unavailable' %></td>
-            <td>
-              <% if slot.available %>
-                <%= link_to 'Reserve', reserve_community_member_availability_slots_path(current_community, @member, @availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-default btn-sm pull-right', method: :post %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-  <div class='col-md-4'>
-    <ul class='office-hours'>
-      <li><h2>Office Hours</h2></li>
-      <li><%= @availability.date.strftime('%B %d, %Y') %></li>
-      <% @office_hours.each do |office_hour| %>
-        <li><%= office_hour.start_time.strftime('%H:%M %P') %> - <%= office_hour.end_time.strftime('%H:%M %P') %></li>
-      <% end %>
-    </ul>
-  </div>
-</div>
+<h2 class='text-center'>Available on <%= @availability.date.strftime('%B %d, %Y') %></h2>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>Start time - End time</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @slots.each do |slot| %>
+      <tr>
+        <td><%= slot.start_time.strftime('%H:%M %P') %> - <%= slot.end_time.strftime('%H:%M %P') %></td>
+        <td><%= slot.available ? 'Available' : 'Unavailable' %></td>
+        <td>
+          <% if slot.available %>
+            <%= link_to 'Reserve', reserve_community_member_availability_slots_path(current_community, @member, @availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-default btn-sm pull-right', method: :post %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,17 +1,6 @@
 class Ability
   include CanCan::Ability
 
-  def book_and_cancel_office_hours(member)
-    can :book, OfficeHour
-    cannot :book, OfficeHour, mentor_id: member.id
-
-    cannot :cancel, OfficeHour
-    can :cancel, OfficeHour, participant_id: member.id
-
-    cannot :destroy, OfficeHour
-    can :destroy, OfficeHour, mentor_id: member.id
-  end
-
   def can_invite(*member_types)
     member_types.map do |member_type|
       can "invite_#{ member_type }".to_sym, :members
@@ -58,9 +47,6 @@ class Ability
 
       can :manage, Position
 
-      can :manage, OfficeHour
-      book_and_cancel_office_hours(member)
-
       can :manage, Availability
       can :manage, Slot
 
@@ -102,8 +88,6 @@ class Ability
       can :manage, CompaniesMembersPosition
 
       can :read, :calendar
-      can :read, OfficeHour
-      book_and_cancel_office_hours(member)
 
       can [:create, :read], Member
       can_invite :mentor, :regular_member
@@ -126,8 +110,6 @@ class Ability
       can :read, Company
 
       can :read, :calendar
-      can :read, OfficeHour
-      can :create, OfficeHour, mentor_id: member.id
 
       manage_social_media_links(member)
 
@@ -140,8 +122,6 @@ class Ability
       end
     else # a regular Member
       can :read, :calendar
-      can :read, OfficeHour
-      book_and_cancel_office_hours(member)
 
       can :read, Company
       can [:manage_company, :invite_company_member, :manage_members_positions, :update], Company do |company|
