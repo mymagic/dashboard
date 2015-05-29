@@ -2,14 +2,10 @@ class AvailabilitiesController < ApplicationController
   before_action :authenticate_member!
 
   load_and_authorize_resource :member
-  load_and_authorize_resource through: :member, except: :index
+  load_and_authorize_resource through: [:member, :current_community]
 
   def index
-    if @member.present?
-      @availabilities = @member.availabilities
-    else
-      @availabilities = current_community.availabilities.by_date(date_params)
-    end
+    @availabilities = @availabilities.by_date(date_params) if date_params.present?
   end
 
   def new

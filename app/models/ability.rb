@@ -23,6 +23,12 @@ class Ability
     end
   end
 
+  def manage_slots(member)
+    can :manage, Slot do |slot|
+      slot.member_id == member.id || slot.availability.member_id = member.id
+    end
+   end
+
   def initialize(member)
     member ||= Member.new # guest user (not logged in)
 
@@ -95,6 +101,12 @@ class Ability
       can :update, Member, role: ['mentor', '', nil]
       can :destroy, Member, role: ['mentor', '', nil]
 
+      can [:read, :create], Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
+
       manage_social_media_links(member)
 
       can [:create, :search], Message
@@ -110,6 +122,12 @@ class Ability
       can :read, Company
 
       can :read, :calendar
+
+      can [:read, :create], Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
 
       manage_social_media_links(member)
 
@@ -144,6 +162,12 @@ class Ability
           (new_member.companies_positions.map(&:company).uniq -
             member.manageable_companies).empty?
       end
+
+      can [:read, :create], Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
 
       manage_social_media_links(member)
 

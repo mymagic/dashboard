@@ -9,6 +9,10 @@ class Availability < ActiveRecord::Base
   SLOT_DULATIONS = [30, 45, 60].freeze
   LOCATION_TYPES = %w(address skype phone other).freeze
 
+  # Behaviors
+  include TimeInZone
+  time_in_zone_for :date, :time
+
   # Associations
   belongs_to :member
   belongs_to :community
@@ -51,7 +55,7 @@ class Availability < ActiveRecord::Base
   end
 
   def end_time
-    persisted? ? time + duration : @end_time
+    persisted? ? start_time + duration * 60 : @end_time
   end
 
   def slot_steps
