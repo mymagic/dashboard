@@ -20,10 +20,6 @@ Rails.application.routes.draw do
     resources :messages, only: :index do
       get 'search', on: :collection
     end
-    get 'availabilities/:year/:month/:day',
-      to: 'availabilities#index',
-      as: 'availability_slots',
-      constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
     resources :messages, only: :index do
       get 'search', on: :collection
     end
