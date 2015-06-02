@@ -1,0 +1,63 @@
+<%
+  title 'Events'
+  page_header 'Events' do
+    link_to 'Create new Event', new_community_admin_event_path(current_community), class: 'btn btn-success'  if can? :create, Event
+  end
+%>
+
+<div class="row">
+  <div class="col-sm-12" role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active" role="presentation">
+        <a aria-controls="upcoming-events" data-toggle="tab" href="#upcoming-events" role="tab">
+          Upcoming Events
+          <span class="label label-info"><%= @upcoming_events.size %></span>
+        </a>
+      </li>
+      <% if @past_events.any? %>
+        <li role="presentation">
+          <a aria-controls="past-events" data-toggle="tab" href="#past-events" role="tab">
+            Past Events
+            <span class="label label-info"><%= @past_events.size %></span>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active fade in" id="upcoming-events" role="tabpanel">
+        <table class="table table-striped">
+          <thead>
+            <th></th>
+            <th>Title</th>
+            <th>Starts at</th>
+            <th>Ends at</th>
+            <th>Time Zone</th>
+            <th>Location</th>
+            <th>Created by</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <%= render collection: @upcoming_events, partial: 'event' %>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="past-events" role="tabpanel">
+        <table class="table table-striped">
+          <thead>
+            <th></th>
+            <th>Title</th>
+            <th>Starts at</th>
+            <th>Ends at</th>
+            <th>Time Zone</th>
+            <th>Location</th>
+            <th>Created by</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <%= render collection: @past_events, partial: 'event' %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

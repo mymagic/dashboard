@@ -7,6 +7,9 @@ class Member < ActiveRecord::Base
     end
   end
 
+  include SocialMediaLinkable
+  include Followable
+
   mount_uploader :avatar, AvatarUploader
 
   # Include default devise modules. Others available are:
@@ -22,34 +25,48 @@ class Member < ActiveRecord::Base
 
   # Override Validatable module
   validates :email, :community, presence: true
-  validates :email, format: { with: Devise.email_regexp }, allow_blank: true, if: :email_changed?
-  validates :email, uniqueness: { scope: :community_id }, allow_blank: true, if: :email_changed?
+  validates(
+    :email,
+    format: { with: Devise.email_regexp },
+    allow_blank: true,
+    if: :email_changed?)
+  validates(
+    :email,
+    uniqueness: { scope: :community_id },
+    allow_blank: true,
+    if: :email_changed?)
 
-  validates :password, presence: true, confirmation: true, if: :password_required?
-  validates :password, length: { within: Devise.password_length }, allow_blank: true
+  validates(
+    :password, presence: true, confirmation: true, if: :password_required?)
+  validates(
+    :password, length: { within: Devise.password_length }, allow_blank: true)
 
   # Associations
   belongs_to :community
-  has_many :social_media_links, as: :attachable
 
-  has_many :follows, dependent: :destroy, inverse_of: :member
-  has_many :followings, as: :followable, class_name: 'Follow'
+  has_many :follows, dependent: :destroy
+  has_many(
+    :followed_members,
+    through: :follows,
+    source: :followable,
+    source_type: Member)
+  has_many(
+    :followed_discussions,
+    through: :follows,
+    source: :followable,
+    source_type: Discussion)
 
   has_many :discussions, foreign_key: :author_id
-  has_many :followed_discussions,
-           through: :follows,
-           source: :followable,
-           source_type: Discussion
-
   has_many :comments, foreign_key: :author_id
+
+  has_many :rsvps, dependent: :destroy
+  has_many :events, through: :rsvps
 
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
   scope :active, -> {
     where(invitation_token: nil).where.not(confirmed_at: nil)
   }
-
-  accepts_nested_attributes_for :social_media_links, reject_if: :all_blank, allow_destroy: true
 
   def full_name
     "#{ first_name } #{ last_name }"
@@ -131,7 +148,9 @@ class Member < ActiveRecord::Base
     def must_have_at_least_one_approved_companies_positions
       return unless regular_member?
       return if companies_positions.find(&:approver_id).present?
-      errors.add(:companies_positions, :must_have_at_least_one_approved_companies_positions)
+      errors.add(
+        :companies_positions,
+        :must_have_at_least_one_approved_companies_positions)
     end
   end
 
@@ -155,11 +174,13 @@ class Member < ActiveRecord::Base
 
       def chat_participants
         # It is equal to ..
-        # self.class.find(messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
+        # self.class.find(
+        #   messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
 
         Member.joins([
           "INNER JOIN messages ON ",
-          "(messages.sender_id = members.id OR messages.receiver_id = members.id) ",
+          "(messages.sender_id = members.id OR "\
+          "messages.receiver_id = members.id) ",
           "AND (messages.sender_id = #{id} OR messages.receiver_id = #{id})"
         ].join('')).where.not(id: id).uniq
       end
@@ -169,11 +190,11 @@ class Member < ActiveRecord::Base
       end
 
       def unread_messages_with(participants)
-        Message.where(sender_id: participants, receiver_id: id)
-               .unread
-               .group(:sender_id)
-               .select('sender_id, COUNT(*) AS unread_count')
-               .to_a
+        Message.where(sender_id: participants, receiver_id: id).
+          unread.
+          group(:sender_id).
+          select('sender_id, COUNT(*) AS unread_count').
+          to_a
       end
 
       def last_chat_participant
@@ -185,6 +206,7 @@ class Member < ActiveRecord::Base
   protected
 
   def password_required?
-    !skip_password && (!persisted? || !password.nil? || !password_confirmation.nil?)
+    !skip_password &&
+      (!persisted? || !password.nil? || !password_confirmation.nil?)
   end
 end

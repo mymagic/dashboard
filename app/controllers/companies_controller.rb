@@ -2,6 +2,10 @@ class CompaniesController < ApplicationController
   before_action :authenticate_member!
   load_and_authorize_resource through: :current_community
 
+  include SocialMediaLinksConcern
+
+  before_action only: [:edit] { social_media_links(@company) }
+
   def index
     @companies = @companies.ordered
   end
@@ -10,7 +14,6 @@ class CompaniesController < ApplicationController
   end
 
   def edit
-    @company.social_media_links.build
   end
 
   def update

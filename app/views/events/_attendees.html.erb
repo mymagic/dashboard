@@ -1,0 +1,8 @@
+<div class='event-attendees'>
+  <% attendees.last(10).each do |member| %>
+    <%= member_avatar_link(member) %>
+  <% end %>
+  <% if attendees.size > 10  %>
+    <span class='text-muted small'>and <%= pluralize(attendees.size - 10, 'other') %></span>
+  <% end %>
+</div>

@@ -13,6 +13,8 @@ RSpec.describe Member, type: :model do
     it { is_expected.to validate_inclusion_of(:role).in_array(Member::ROLES.map(&:to_s)).allow_blank(true) }
 
     it { is_expected.to have_many(:companies_positions).class_name('CompaniesMembersPosition').dependent(:destroy).inverse_of(:member) }
+    it { is_expected.to have_many(:rsvps).dependent(:destroy) }
+    it { is_expected.to have_many(:events).through(:rsvps) }
   end
 
   let(:mentor) { create(:mentor) }
@@ -154,5 +156,10 @@ RSpec.describe Member, type: :model do
         it { is_expected.to be_nil }
       end
     end
+  end
+
+  context 'followable' do
+    subject(:followable) { create(:member) }
+    it_behaves_like 'followable'
   end
 end

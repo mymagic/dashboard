@@ -1,5 +1,6 @@
 class Discussion < ActiveRecord::Base
   include Taggable
+  include Followable
 
   paginates_per 10
 
@@ -7,8 +8,6 @@ class Discussion < ActiveRecord::Base
   belongs_to :community
   belongs_to :author, class_name: 'Member'
 
-  has_many :follows, as: :followable, dependent: :destroy, inverse_of: :followable
-  has_many :followers, through: :follows, source: :member, class_name: 'Member'
   has_many :comments, dependent: :destroy
 
   has_many :nested_comments, -> { ordered }, class_name: 'Comment'

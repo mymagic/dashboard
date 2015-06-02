@@ -72,13 +72,22 @@ class Ability
       can :resend_invitation, Member
       can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
+      can [:follow, :unfollow], Member do |other_member|
+        other_member.id != member.id
+      end
 
       can [:create, :search], Message
       read_messages(member)
 
       can :manage, Discussion, community_id: member.community_id
+      cannot :unfollow, Discussion, author_id: member.id
       can :manage, Comment do |comment|
         comment.discussion.community_id == member.community_id
+      end
+
+      can [:manage, :administrate], Event
+      cannot :rsvp, Event do |event|
+        event.ended?
       end
     when 'staff'
       can :administrate, :application
@@ -100,6 +109,9 @@ class Ability
       can :resend_invitation, Member
       can :update, Member, role: ['mentor', '', nil]
       can :destroy, Member, role: ['mentor', '', nil]
+      can [:follow, :unfollow], Member do |other_member|
+        other_member.id != member.id
+      end
 
       can [:read, :create], Availability
       can :manage, Availability, member_id: member.id
@@ -113,11 +125,20 @@ class Ability
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
+      cannot :unfollow, Discussion, author_id: member.id
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
+
+      can [:manage, :administrate], Event
+      cannot :rsvp, Event do |event|
+        event.ended?
+      end
     when 'mentor'
       can :read, Member
+      can [:follow, :unfollow], Member do |other_member|
+        other_member.id != member.id
+      end
 
       can :read, Company
 
@@ -135,8 +156,14 @@ class Ability
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
+      cannot :unfollow, Discussion, author_id: member.id
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
+      end
+
+      can :read, Event
+      can :rsvp, Event do |event|
+        !event.ended?
       end
     else # a regular Member
       can :read, :calendar
@@ -162,6 +189,9 @@ class Ability
           (new_member.companies_positions.map(&:company).uniq -
             member.manageable_companies).empty?
       end
+      can [:follow, :unfollow], Member do |other_member|
+        other_member.id != member.id
+      end
 
       can [:read, :create], Availability
       can :manage, Availability, member_id: member.id
@@ -175,8 +205,13 @@ class Ability
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
+      cannot :unfollow, Discussion, author_id: member.id
       can :create, Comment do |comment|
         comment.discussion.community_id == member.community_id
+      end
+      can :read, Event
+      can :rsvp, Event do |event|
+        !event.ended?
       end
     end
   end

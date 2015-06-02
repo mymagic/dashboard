@@ -11,11 +11,12 @@
     </div>
     <div class="navbar-collapse collapse" id="navbar-admin">
       <ul class="nav navbar-nav">
-        <%= nav_link "Community", edit_community_path(current_community) if can? :administrate, Community  %>
+        <%= nav_link "Community", edit_community_admin_community_path(current_community) if can? :administrate, current_community  %>
         <%= nav_link "Companies", community_admin_companies_path(current_community) if can? :administrate, Company  %>
         <%= nav_link "Members", community_admin_members_path(current_community) if can? :administrate, Member %>
         <%= nav_link "Positions", community_admin_positions_path(current_community) if can? :administrate, Position %>
         <%= nav_link "Companies Members Positions", community_admin_companies_members_positions_path(current_community) if can? :administrate, CompaniesMembersPosition %>
+        <%= nav_link "Events", community_admin_events_path(current_community) if can? :administrate, Event %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <%= nav_link "Invite new Member", new_community_admin_member_path(current_community) if can? :create, Member %>
