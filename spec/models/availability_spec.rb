@@ -6,7 +6,6 @@ RSpec.describe Availability, type: :model do
 
     it { is_expected.to validate_presence_of(:date) }
     it { is_expected.to validate_presence_of(:time) }
-    it { is_expected.to validate_presence_of(:duration) }
     it { is_expected.to validate_presence_of(:slot_duration) }
     it { is_expected.to validate_presence_of(:time_zone) }
     it { is_expected.to validate_presence_of(:location_type) }

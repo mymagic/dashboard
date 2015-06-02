@@ -19,17 +19,17 @@ class Availability < ActiveRecord::Base
   has_many :slots
 
   # Validations
-  validates :member_id, :date, :time, :duration,
+  validates :member_id, :date, :time,
             :slot_duration, :time_zone,
             :location_type, :location_detail, presence: true
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
-  validates :start_time_must_less_than_end_time
-  validates :divisible_by_slot_duration
+  validate :start_time_must_less_than_end_time
+  validate :divisible_by_slot_duration
 
   # Callbacks
-  before_validation :set_duration
+  before_validation :set_duration, if: -> { start_time && end_time }
   before_validation :set_wday, if: :date
   before_save :set_community
 
@@ -81,8 +81,11 @@ class Availability < ActiveRecord::Base
   protected
 
   def set_duration
-    return unless start_time.is_a?(String) && end_time.is_a?(String)
-    self.duration = (parse_time(end_time) - parse_time(start_time)) / 60
+    self.duration = if start_time.is_a?(String) && end_time.is_a?(String)
+      (parse_time(end_time) - parse_time(start_time)) / 60
+    else
+      (end_time - start_time) / 60
+    end
   end
 
   def set_wday
@@ -99,14 +102,18 @@ class Availability < ActiveRecord::Base
 
     "#{time[1]}-#{time[2]}-#{time[3]} #{time[4]}:#{time[5]}".to_time
   end
-  
+
   def start_time_must_less_than_end_time
+    return unless start_time && end_time
+
     if start_time >= end_time
       errors.add(:end_time, "and starts at must be divisible by slot duration")
     end
   end
 
   def divisible_by_slot_duration
+    return unless start_time && end_time && slot_duration
+
     unless (end_time - start_time) % slot_duration == 0
       errors.add(:end_time, "and starts at must be divisible by slot duration")
     end

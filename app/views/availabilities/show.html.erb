@@ -7,6 +7,9 @@
     <tr>
       <th>Start time - End time</th>
       <th>Status</th>
+      <% if can? :manage, @availability %>
+        <th>Reserved By</th>
+      <% end %>
       <th>Action</th>
     </tr>
   </thead>
@@ -15,6 +18,9 @@
       <tr>
         <td><%= slot.start_time.strftime('%H:%M %P') %> - <%= slot.end_time.strftime('%H:%M %P') %></td>
         <td><%= slot.available ? 'Available' : 'Unavailable' %></td>
+        <% if can? :manage, @availability %>
+          <td><%= slot.member.full_name %></td>
+        <% end %>
         <td>
           <% if slot.available %>
             <%= link_to 'Reserve', reserve_community_member_availability_slots_path(current_community, @member, @availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-default btn-sm pull-right', method: :post %>
