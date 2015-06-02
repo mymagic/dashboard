@@ -25,6 +25,8 @@ class Availability < ActiveRecord::Base
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
+  validates :start_time_must_less_than_end_time
+  validates :divisible_by_slot_duration
 
   # Callbacks
   before_validation :set_duration
@@ -96,5 +98,17 @@ class Availability < ActiveRecord::Base
     return time if time.class.in? [DateTime, Time]
 
     "#{time[1]}-#{time[2]}-#{time[3]} #{time[4]}:#{time[5]}".to_time
+  end
+  
+  def start_time_must_less_than_end_time
+    if start_time >= end_time
+      errors.add(:end_time, "and starts at must be divisible by slot duration")
+    end
+  end
+
+  def divisible_by_slot_duration
+    unless (end_time - start_time) % slot_duration == 0
+      errors.add(:end_time, "and starts at must be divisible by slot duration")
+    end
   end
 end
