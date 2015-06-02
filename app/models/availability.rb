@@ -20,15 +20,15 @@ class Availability < ActiveRecord::Base
 
   # Validations
   validates :member_id, :date, :time, :duration,
-            :slot_duration, :time_zone, :wday,
+            :slot_duration, :time_zone,
             :location_type, :location_detail, presence: true
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
 
   # Callbacks
-  before_validation :set_duration, unless: :duration
-  before_validation :set_wday, unless: :wday
+  before_validation :set_duration
+  before_validation :set_wday, if: :date
   before_save :set_community
 
   # Scopes
@@ -79,6 +79,7 @@ class Availability < ActiveRecord::Base
   protected
 
   def set_duration
+    return unless start_time.is_a?(String) && end_time.is_a?(String)
     self.duration = (parse_time(end_time) - parse_time(start_time)) / 60
   end
 

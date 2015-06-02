@@ -14,10 +14,10 @@ class Slot < ActiveRecord::Base
   delegate :time_zone, to: :availability
 
   # Validations
-  validates :start_time, :end_time, :member, :availability, presence: true
+  validates :start_time, :end_time, :availability, presence: true
 
   # Callbacks
-  before_validation :add_member
+  before_validation :add_member, if: :availability
 
   protected
 
