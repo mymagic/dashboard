@@ -57,11 +57,11 @@ class Availability < ActiveRecord::Base
   end
 
   def end_time
-    persisted? ? start_time + duration * 60 : @end_time
+    persisted? ? start_time + duration.minute : @end_time
   end
 
   def slot_steps
-    0.step(duration, slot_duration).collect { |range| time + range * 60 }.each_cons(2)
+    0.step(duration, slot_duration).collect { |range| time + range.minute }.each_cons(2)
   end
 
   def virtual_slots
@@ -82,9 +82,9 @@ class Availability < ActiveRecord::Base
 
   def set_duration
     self.duration = if start_time.is_a?(String) && end_time.is_a?(String)
-      (parse_time(end_time) - parse_time(start_time)) / 60
+      (parse_time(end_time) - parse_time(start_time)) / 1.minute
     else
-      (end_time - start_time) / 60
+      (end_time - start_time) / 1.minute
     end
   end
 

@@ -27,7 +27,7 @@ class Ability
     can :manage, Slot do |slot|
       slot.member_id == member.id || slot.availability.member_id = member.id
     end
-   end
+  end
 
   def initialize(member)
     member ||= Member.new # guest user (not logged in)
