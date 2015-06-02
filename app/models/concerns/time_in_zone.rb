@@ -7,7 +7,7 @@ module TimeInZone
         define_method(name) do |*params|
           value_from_super = super(*params)
 
-          if has_attribute?(:time_zone) && value_from_super
+          if has_attribute?(:time_zone) && time_zone.present? && value_from_super
             value_from_super.in_time_zone(time_zone)
           else
             value_from_super

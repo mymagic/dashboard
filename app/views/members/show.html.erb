@@ -1,24 +1,35 @@
-<% title @member.full_name %>
+<%
+  title @member.full_name
+  page_header @member.full_name
+%>
 
-<%= render partial: 'members/header' %>
+<ul class="nav nav-tabs">
+  <%= nav_link 'Details', community_member_path(current_community, @member) %>
+  <%= nav_link 'Availabilities', community_member_availabilities_path(current_community, @member) %>
+  <li><%= render partial: 'shared/follow_button', locals: { object: @member } %></li>
+  <%= nav_link 'Private Message', community_member_messages_path(current_community, @member) %>
+</ul>
 
-<div class="row">
-  <div class="col-lg-8">
-    <%= definition_list("First name" => @member.first_name, "Last name" => @member.last_name) %>
-    <%= render partial: 'shared/forms/social_media_links', locals: { attachable: @member } %>
-  </div>
-  <div class="col-lg-4">
-    <div class="col-lg-12">
-      <div class="thumbnail">
-        <div class="member-thumb-wrapper">
-          <%= image_tag(@member.avatar.url(:thumb)) %>
+
+<div class="tab-content">
+  <div class="row tab-pane active">
+    <div class="col-lg-8">
+      <%= definition_list("First name" => @member.first_name, "Last name" => @member.last_name) %>
+      <%= render partial: 'shared/forms/social_media_links', locals: { attachable: @member } %>
+    </div>
+    <div class="col-lg-4">
+      <div class="col-lg-12">
+        <div class="thumbnail">
+          <div class="member-thumb-wrapper">
+            <%= image_tag(@member.avatar.url(:thumb)) %>
+          </div>
         </div>
       </div>
-    </div>
-    <% @member.positions_in_companies.each do |company, positions| %>
-      <%= panel company.name, columns: 12 do %>
-        <%= positions.map(&:name).to_sentence %>
+      <% @member.positions_in_companies.each do |company, positions| %>
+        <%= panel company.name, columns: 12 do %>
+          <%= positions.map(&:name).to_sentence %>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
   </div>
 </div>

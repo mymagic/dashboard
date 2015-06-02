@@ -1,7 +1,7 @@
 json.array! @availabilities do |group|
   json.title case group.member_ids.size
   when 1
-    "#{group.first_names.first} #{group.last_names.first}"
+    truncate "#{group.first_names.first} #{group.last_names.first}", length: 20
   when 2..3
     ''
   else

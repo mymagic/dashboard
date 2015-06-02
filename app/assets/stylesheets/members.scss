@@ -23,3 +23,11 @@
     @include text-overflow;
   }
 }
+
+.members {
+  &.show {
+    .tab-content {
+      margin-top: $grid-gutter-width;
+    }
+  }
+}

@@ -20,7 +20,7 @@ class AvailabilitiesController < ApplicationController
       redirect_to community_member_availabilities_path(current_community, @member),
                   notice: 'Availability has successfully created.'
     else
-      redirect_to :back, alert: 'Error creating availability.'
+      render 'new', alert: 'Error creating availability.'
     end
   end
 
