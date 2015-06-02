@@ -46,6 +46,15 @@ RSpec.describe Member, type: :model do
       # SocialMediaLink
       it { is_expected.to be_able_to(:manage, SocialMediaLink) }
 
+      # Availability
+      it { is_expected.to be_able_to(:manage, Availability) }
+
+      # Slot
+      it { is_expected.to be_able_to(:manage, Slot) }
+
+      # Calendar
+      it { is_expected.to be_able_to(:manage, :calendar) }
+
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
       it { is_expected.to be_able_to(:read, CompaniesMembersPosition) }
@@ -98,6 +107,20 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:manage, FactoryGirl.build(:social_media_link, attachable: member)) }
       it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:social_media_link, :member)) }
 
+      # Availability
+      it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:create, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
+
+      # Slot
+      it { is_expected.to be_able_to(:read, Slot) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:slot)) }
+
+      # Calendar
+      it { is_expected.to be_able_to(:read, :calendar) }
+
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }
       it { is_expected.to be_able_to(:read, CompaniesMembersPosition) }
@@ -145,6 +168,20 @@ RSpec.describe Member, type: :model do
       # SocialMediaLink
       it { is_expected.to be_able_to(:manage, FactoryGirl.build(:social_media_link, attachable: member)) }
       it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:social_media_link, :member)) }
+
+      # Availability
+      it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:create, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
+
+      # Slot
+      it { is_expected.to be_able_to(:read, Slot) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:slot)) }
+
+      # Calendar
+      it { is_expected.to be_able_to(:read, :calendar) }
 
       # CompaniesMembersPosition
       it { is_expected.to_not be_able_to(:have, CompaniesMembersPosition) }
@@ -197,6 +234,20 @@ RSpec.describe Member, type: :model do
       # SocialMediaLink
       it { is_expected.to be_able_to(:manage, FactoryGirl.build(:social_media_link, attachable: member)) }
       it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:social_media_link, :member)) }
+
+      # Availability
+      it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:create, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
+
+      # Slot
+      it { is_expected.to be_able_to(:read, Slot) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:slot)) }
+
+      # Calendar
+      it { is_expected.to be_able_to(:read, :calendar) }
 
       # CompaniesMembersPosition
       it { is_expected.to be_able_to(:have, CompaniesMembersPosition) }

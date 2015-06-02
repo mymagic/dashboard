@@ -20,15 +20,15 @@ class Availability < ActiveRecord::Base
 
   # Validations
   validates :member_id, :date, :time, :duration,
-            :slot_duration, :time_zone, :recurring,
-            :wday, :location_type, :location_detail, presence: true
+            :slot_duration, :time_zone, :wday,
+            :location_type, :location_detail, presence: true
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
 
   # Callbacks
-  before_validation :set_duration
-  before_validation :set_wday
+  before_validation :set_duration, unless: :duration
+  before_validation :set_wday, unless: :wday
   before_save :set_community
 
   # Scopes

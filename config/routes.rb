@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  concern :calendar_availabilities do
+    get 'availabilities/:year/:month/:day',
+      to: 'availabilities#index',
+      as: 'availability_slots',
+      constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+  end
   scope ':community_id' do
     devise_for :members, controllers: {
       registrations: 'registrations',
@@ -8,6 +14,7 @@ Rails.application.routes.draw do
   end
 
   resources :communities, path: '', except: :index do
+    concern :calendar_availabilities
     resource  :calendar, only: :show
 
     resources :messages, only: :index do
@@ -26,10 +33,7 @@ Rails.application.routes.draw do
         delete :unfollow
       end
       resources :messages
-      get 'availabilities/:year/:month/:day',
-        to: 'availabilities#index',
-        as: 'availability_slots',
-        constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+      concern :calendar_availabilities
       resources :availabilities do
         resource :slots, path: 'slots/:hour/:minute',
           constraints: { hour: /\d{1,2}/, minute: /\d{1,2}/ } do
