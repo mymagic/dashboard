@@ -28,6 +28,15 @@ class Ability
     can :manage, SocialMediaLink, attachable_type: 'Member', attachable_id: member.id
   end
 
+  def create_messages(member)
+    can :create, Message do |message|
+      message.receiver_id != member.id
+    end
+    can :send_message_to, Member do |receiver|
+      receiver != member
+    end
+  end
+
   def read_messages(member)
     can :read, Message do |message|
       message.sender_id == member.id || message.receiver_id == member.id
@@ -79,7 +88,8 @@ class Ability
         other_member.id != member.id
       end
 
-      can [:create, :search], Message
+      can :search, Message
+      create_messages(member)
       read_messages(member)
 
       can :manage, Discussion, community_id: member.community_id
@@ -119,7 +129,8 @@ class Ability
 
       manage_social_media_links(member)
 
-      can [:create, :search], Message
+      can :search, Message
+      create_messages(member)
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
@@ -145,7 +156,8 @@ class Ability
 
       manage_social_media_links(member)
 
-      can [:create, :search], Message
+      can :search, Message
+      create_messages(member)
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id
@@ -189,7 +201,8 @@ class Ability
 
       manage_social_media_links(member)
 
-      can [:create, :search], Message
+      can :search, Message
+      create_messages(member)
       read_messages(member)
 
       can [:create, :read, :follow, :unfollow, :tags], Discussion, community_id: member.community_id

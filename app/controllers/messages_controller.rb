@@ -15,6 +15,7 @@ class MessagesController < ApplicationController
   end
 
   def create
+    authorize! :send_message_to, @receiver
     if @message.update(sender: current_member, receiver: @receiver)
       flash[:notice] = 'Message has been sent.'
     else
