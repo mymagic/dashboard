@@ -8,7 +8,6 @@
     <%= f.input :time_zone, include_blank: 'Please select a time zone…' %>
     <%= f.input :location_type, collection: Availability::LOCATION_TYPES.map { |type| [type.humanize, type] } %>
     <%= f.input :location_detail %>
-    <%= f.input :recurring %>
     <%= f.input :details %>
   </div>
 
