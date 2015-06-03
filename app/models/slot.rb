@@ -17,14 +17,7 @@ class Slot < ActiveRecord::Base
   validates :start_time, :end_time, :availability, presence: true
   validate :participant_must_not_be_mentor
 
-  # Callbacks
-  before_validation :add_member, if: :availability
-
   protected
-
-  def add_member
-    self.member = availability.member
-  end
 
   def participant_must_not_be_mentor
     if availability.member == member

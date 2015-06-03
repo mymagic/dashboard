@@ -9,7 +9,7 @@ class SlotsController < ApplicationController
     start_time = time.change(hour: params[:hour].to_i, min: params[:minute].to_i).to_time
     end_time   = start_time + @availability.slot_duration * 60
 
-    if @slot.update(start_time: start_time, end_time: end_time)
+    if @slot.update(start_time: start_time, end_time: end_time, member: current_member)
       redirect_to community_member_availability_path(current_community, @member, @availability),
         notice: 'You have successfully reserved the slot.'
     else
