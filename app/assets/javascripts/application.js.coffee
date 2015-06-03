@@ -14,6 +14,7 @@
 
 #= require bootstrap-setup
 #= require elements
+#= require availabilities
 #= require calendar
 #= require admin/positions
 

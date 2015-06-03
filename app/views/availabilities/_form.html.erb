@@ -2,9 +2,9 @@
   <%= f.error_notification %>
   <div class="form-inputs">
     <%= f.input :date, autofocus: true, wrapper_html: { class: 'datetime-inline' } %>
+    <%= f.input :slot_duration, collection: Availability::SLOT_DULATIONS %>
     <%= f.input :start_time, as: :time, minute_step: 15, ignore_date: true, wrapper_html: { class: 'datetime-inline' } %>
     <%= f.input :end_time, as: :time, minute_step: 15, ignore_date: true, wrapper_html: { class: 'datetime-inline' } %>
-    <%= f.input :slot_duration, collection: Availability::SLOT_DULATIONS %>
     <%= f.input :time_zone, include_blank: 'Please select a time zone…' %>
     <%= f.input :location_type, collection: Availability::LOCATION_TYPES.map { |type| [type.humanize, type] } %>
     <%= f.input :location_detail %>
