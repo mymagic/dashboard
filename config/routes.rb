@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         patch :follow
         delete :unfollow
       end
+      resource  :calendar, only: :show
       resources :messages
       get 'availabilities/:year/:month/:day',
         to: 'availabilities#index',

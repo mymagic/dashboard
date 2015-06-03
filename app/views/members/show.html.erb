@@ -11,7 +11,11 @@
 
 <ul class="nav nav-tabs">
   <%= nav_link 'Details', community_member_path(current_community, @member) %>
-  <%= nav_link 'Availabilities', community_member_availabilities_path(current_community, @member) %>
+  <% if can? :manage, @member %>
+    <%= nav_link 'Availabilities', community_member_availabilities_path(current_community, @member) %>
+  <% else %>
+    <%= nav_link 'Events', community_member_calendar_path(current_community, @member) %>
+  <% end %>
 </ul>
 
 
