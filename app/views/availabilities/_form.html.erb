@@ -5,11 +5,11 @@
     <%= f.input :start_time, as: :time, minute_step: 15, ignore_date: true, wrapper_html: { class: 'datetime-inline' } %>
     <%= f.input :end_time, as: :time, minute_step: 15, ignore_date: true, wrapper_html: { class: 'datetime-inline' } %>
     <%= f.input :slot_duration, collection: Availability::SLOT_DULATIONS %>
+    <%= f.input :time_zone, include_blank: 'Please select a time zone…' %>
     <%= f.input :location_type, collection: Availability::LOCATION_TYPES.map { |type| [type.humanize, type] } %>
     <%= f.input :location_detail %>
     <%= f.input :recurring %>
     <%= f.input :details %>
-    <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
   </div>
 
   <div class="form-actions text-right">
