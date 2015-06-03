@@ -107,7 +107,7 @@ class Availability < ActiveRecord::Base
     return unless start_time && end_time
 
     if start_time >= end_time
-      errors.add(:end_time, "and starts at must be divisible by slot duration")
+      errors.add(:end_time, "and start time must less than end time")
     end
   end
 
@@ -115,7 +115,7 @@ class Availability < ActiveRecord::Base
     return unless start_time && end_time && slot_duration
 
     unless (end_time - start_time) % slot_duration == 0
-      errors.add(:end_time, "and starts at must be divisible by slot duration")
+      errors.add(:end_time, "and start time must be divisible by slot duration")
     end
   end
 end

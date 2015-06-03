@@ -22,7 +22,7 @@
           <td><%= slot.member.full_name %></td>
         <% end %>
         <td>
-          <% if slot.available %>
+          <% if slot.available && slot.availability.member != current_member %>
             <%= link_to 'Reserve', reserve_community_member_availability_slots_path(current_community, @member, @availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-default btn-sm pull-right', method: :post %>
           <% end %>
         </td>
