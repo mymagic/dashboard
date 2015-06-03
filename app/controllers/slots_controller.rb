@@ -11,7 +11,7 @@ class SlotsController < ApplicationController
 
     if @slot.update(start_time: start_time, end_time: end_time)
       redirect_to community_member_availability_path(current_community, @member, @availability),
-        notice: 'Slot has already been reserved.'
+        notice: 'You have successfully reserved the slot.'
     else
       redirect_to :back, alert: 'Error creating slot.'
     end

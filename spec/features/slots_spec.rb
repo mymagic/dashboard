@@ -14,7 +14,7 @@ RSpec.describe 'Slots', type: :feature, js: false do
       click_on 'Reserve'
     end
 
-    expect(page).to have_content 'Slot has already been reserved.'
+    expect(page).to have_content 'You have successfully reserved the slot.'
     expect(page).to have_content administrator.full_name
   end
 end
