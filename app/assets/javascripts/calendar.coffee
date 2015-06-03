@@ -3,6 +3,11 @@
     .on 'click', '.calendar .fc-event-container', ->
       self = $(@)
 
+      $('.fc-event-container')
+        .not(@)
+        .popover 'hide'
+        .data('popover-is-shown', false)
+
       if self.data('popover-is-shown')
         self.popover 'hide'
         self.data('popover-is-shown', false)
