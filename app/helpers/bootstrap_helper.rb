@@ -5,7 +5,6 @@ module BootstrapHelper
 
   def nav_link(name = nil, options = nil, html_options = {}, &block)
     page_options = block_given? ? name : options
-
     content_tag 'li', class: current_page?(page_options) ? 'active' : false do
       link_to name, options, html_options, &block
     end

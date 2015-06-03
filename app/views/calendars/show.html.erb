@@ -1,7 +1,10 @@
-<%
-  title 'Events'
-  page_header 'Events'
-%>
+<% title 'Events' %>
+
+<% if @member %>
+  <%= render partial: 'members/header' %>
+<% else %>
+  <% page_header 'Events' %>
+<% end %>
 
 <div class='calendar' data-url='<%= community_calendar_path(current_community) %>' data-ignore-time=true>
 </div>

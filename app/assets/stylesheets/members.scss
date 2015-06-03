@@ -24,10 +24,6 @@
   }
 }
 
-.members {
-  &.show {
-    .tab-content {
-      margin-top: $grid-gutter-width;
-    }
-  }
+.nav-tabs {
+  margin-bottom: $grid-gutter-width;
 }

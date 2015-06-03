@@ -1,22 +1,25 @@
-<%
-  page_header 'Availabilities' do
-    link_to 'New Availability', new_community_member_availability_path(current_community, @member), class: 'btn btn-success'
-  end
-%>
+<%= render partial: 'members/header' %>
 
-<table class="table table-striped">
-  <thead>
-    <th>Date</th>
-    <th>Start Time</th>
-    <th>End Time</th>
-    <th>Timezone</th>
-    <th>Slot Duration</th>
-    <th>Location Type</th>
-    <th>Location Detail</th>
-    <th>Details</th>
-    <th>Actions</th>
-  </thead>
-  <tbody>
-    <%= render partial: 'availability', collection: @availabilities %>
-  </tbody>
-</table>
+<div class="tab-content">
+  <div class='tab-pane active'>
+    <h2>
+      <%= link_to 'New Availability', new_community_member_availability_path(current_community, @member), class: 'btn btn-success btn-sm pull-right' %>
+    </h2>
+    <table class="table table-striped">
+      <thead>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Timezone</th>
+        <th>Slot Duration</th>
+        <th>Location Type</th>
+        <th>Location Detail</th>
+        <th>Details</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+        <%= render partial: 'availability', collection: @availabilities %>
+      </tbody>
+    </table>
+  </div>
+</div>
