@@ -15,7 +15,7 @@ class Slot < ActiveRecord::Base
 
   # Validations
   validates :start_time, :end_time, :availability, presence: true
-  validate :participant_must_not_be_mentor
+  validate :participant_must_not_be_mentor, if: :availability
 
   protected
 
