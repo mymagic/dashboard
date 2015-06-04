@@ -1,5 +1,5 @@
-<% if @member %>
-  <%= render partial: 'without_mentors' %>
-<% else %>
+<% if request.xhr? %>
   <%= render partial: 'with_mentors' %>
+<% else %>
+  <%= render partial: 'without_mentors' %>
 <% end %>

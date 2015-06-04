@@ -2,6 +2,7 @@ json.array! [@availabilities + (@events || [])].flatten do |group|
   json.type group.class.to_s
 
   if group.is_a? Availability
+    json.availabilities_ids group.availabilities_ids
     json.title case group.member_ids.size
     when 1
       truncate "#{group.first_names.first} #{group.last_names.first}", length: 20

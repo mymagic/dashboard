@@ -45,6 +45,7 @@ class Availability < ActiveRecord::Base
     .group('date')
     .select([
       'date',
+      array_agg_sentence('availabilities.id'),
       array_agg_sentence('member_id'),
       array_agg_sentence('first_name'),
       array_agg_sentence('last_name'),
@@ -53,7 +54,7 @@ class Availability < ActiveRecord::Base
   end
 
   def self.array_agg_sentence(attr)
-    "array_agg(DISTINCT #{attr}) AS #{attr.pluralize}"
+    "array_agg(DISTINCT #{attr}) AS #{attr.gsub('.', '_').pluralize}"
   end
 
   def end_time

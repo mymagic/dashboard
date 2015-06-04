@@ -10,6 +10,7 @@ $ ->
 
     .on 'click', '.calendar .fc-event-container.availability', ->
       self = $(@)
+      memberId = self.closest('.calendar').data('member-id')
 
       $('.fc-event-container')
         .not(@)
@@ -29,6 +30,7 @@ $ ->
 
       $.ajax
         url: Routes.community_availability_slots_path(communitySlug, date.year(), date.month() + 1, date.date())
+        data: { member_id: memberId } if memberId
         success: (data) ->
           self.popover
             title: "Office hours on #{date.format("MMM DD, YYYY")}"

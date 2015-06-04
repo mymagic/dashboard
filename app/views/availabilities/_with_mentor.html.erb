@@ -2,7 +2,9 @@
   <%= image_tag mentor.avatar.url(:icon), class: 'availability-mentor__image' %>
   <span class='availability-mentor__full-name'><%= truncate mentor.full_name, length: 12 %></span>
   <div class='pull-right'>
-    <%= link_to 'Reserve', community_member_availability_path(current_community, mentor, availability), class: 'availability-mentor__reserve-btn btn btn-success btn-xs' %>
+    <% if availability.member != current_member %>
+      <%= link_to 'Reserve', community_member_availability_path(current_community, mentor, availability), class: 'availability-mentor__reserve-btn btn btn-success btn-xs' %>
+    <% end %>
     <% if can? :manage, availability %>
       <%= link_to 'Edit', edit_community_member_availability_path(current_community, mentor, availability), class: 'availability-mentor__reserve-btn btn btn-default btn-xs' %>
     <% end %>
