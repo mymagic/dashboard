@@ -1,6 +1,8 @@
 class Company < ActiveRecord::Base
   include SocialMediaLinkable
 
+  paginates_per 24
+
   mount_uploader :logo, LogoUploader
 
   validates :name, :community, presence: true

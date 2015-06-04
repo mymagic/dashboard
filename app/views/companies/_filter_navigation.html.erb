@@ -1,0 +1,7 @@
+<ul class="nav nav-pills filter-navigation">
+  <% %i(portfolio mine).each do |filter| %>
+    <%= content_tag 'li', role: 'presentation', class: (current_filter == filter ? 'active' : false) do %>
+      <%= link_to filter.to_s.humanize, community_companies_path(current_community, filter_by: filter) %>
+    <% end %>
+  <% end %>
+</ul>

@@ -130,6 +130,8 @@ class Member < ActiveRecord::Base
                dependent: :destroy,
                inverse_of: :member)
 
+      has_many :companies, -> { uniq }, through: :companies_positions
+
       accepts_nested_attributes_for(:companies_positions,
                                     allow_destroy: true,
                                     reject_if: proc do |attributes|
