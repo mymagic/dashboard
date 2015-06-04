@@ -1,11 +1,11 @@
 module MembersHelper
   def member_role(member)
-    return unless member.role
+    role = member.regular_member? ? 'member' : member.role
     content_tag(
       'span',
-      member.role.humanize,
-      class: "member-role #{ member.role }",
-      title: member.role.to_s.humanize,)
+      role.humanize,
+      class: "member-role #{ role }",
+      title: role.to_s.humanize,)
   end
 
   def member_avatar_link(member)
@@ -13,5 +13,14 @@ module MembersHelper
       image_tag(member.avatar.url(:icon), class: 'img-rounded'),
       community_member_path(current_community, member)
     )
+  end
+
+  def member_filter_description(filter)
+    {
+      everyone: "Members, mentors and staff.",
+      members: "All regular members.",
+      mentors: "All mentors.",
+      staff: "Staff and administrators."
+    }[filter]
   end
 end

@@ -5,7 +5,11 @@ class MembersController < ApplicationController
   skip_authorize_resource only: [:new, :create]
 
   def index
-    @members = @members.active.ordered
+    @members = @members.
+               active.
+               filter_by(current_filter).
+               ordered.
+               page params[:page]
   end
 
   def show
@@ -88,5 +92,9 @@ class MembersController < ApplicationController
   def invite_member(&block)
     return add_position_to_existing_member if existing_member
     Member.invite!(member_params, current_member, &block)
+  end
+
+  def current_filter
+    @current_filter ||= (params[:filter_by] || 'everyone').to_sym
   end
 end

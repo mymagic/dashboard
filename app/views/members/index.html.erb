@@ -1,5 +1,19 @@
 <%
   title 'Members'
-  page_header 'Members'
+  page_header "#{ current_community.name } Directory"
 %>
-<%= render @members %>
+
+<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter } %>
+
+<div class="member-group row">
+  <%= render @members %>
+</div>
+
+<div class="row">
+  <div class="text-center">
+    <%= paginate @members %>
+  </div>
+  <div class="text-center discussion-filter-wrapper text-muted small">
+    <%= member_filter_description(@current_filter) %>
+  </div>
+</div>

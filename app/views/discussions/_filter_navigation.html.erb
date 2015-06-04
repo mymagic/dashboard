@@ -1,4 +1,4 @@
-<ul class="nav nav-pills">
+<ul class="nav nav-pills filter-navigation">
   <% %i(recent hot popular).each do |filter| %>
     <%= content_tag 'li', role: 'presentation', class: (current_filter == filter ? 'active' : false) do %>
       <% if tag %>

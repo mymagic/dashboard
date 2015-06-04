@@ -2,7 +2,7 @@ class Discussion < ActiveRecord::Base
   include Taggable
   include Followable
 
-  paginates_per 10
+  paginates_per 25
 
   # Associations
   belongs_to :community
