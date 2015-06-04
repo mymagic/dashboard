@@ -15,4 +15,19 @@ module DiscussionsHelper
       discussion.title,
       community_discussion_path(current_community, discussion))
   end
+
+  def discussion_meta(discussion)
+    o = [
+      "Posted by #{ discussion.author.full_name },",
+      time_tag(discussion.created_at) + '.',
+      pluralize(discussion.followers.size, 'follower')
+    ]
+
+    if discussion.comments.size > 0
+      o << "and #{ pluralize(discussion.comments.size, 'reply') }, "\
+           "latest from #{ discussion.comments.first.author.full_name }"
+    end
+
+    safe_join(o, ' ') + '.'
+  end
 end

@@ -48,6 +48,11 @@ RSpec.describe 'Discussion', type: :feature, js: false do
   shared_examples "following and unfollowing a discussion" do
     it "follows and unfollows a discussion" do
       visit community_discussions_path(community)
+      expect(page).
+        to have_content '1 follower and 1 reply, '\
+                        'latest from William Shakespeare.'
+      expect(page).to_not have_content '2 followers'
+
       click_link 'To be or not to be?'
       within '.page-header' do
         expect(page).to have_content 'To be or not to be?'
@@ -56,6 +61,10 @@ RSpec.describe 'Discussion', type: :feature, js: false do
         click_link 'Follow'
       end
       expect(page).to have_content 'You are now following the discussion.'
+
+      visit community_discussions_path(community)
+      expect(page).to_not have_content '1 follower'
+      expect(page).to have_content '2 followers'
     end
   end
 
@@ -76,6 +85,11 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       expect(page).to have_link 'great_tag', count: 1
       expect(page).to have_content 'By means of beauty all beautiful '\
                                    'things become beautiful.'
+
+      visit community_discussions_path(community)
+      expect(page).to have_link 'wonderful_tag', count: 1
+      expect(page).to have_link 'great_tag', count: 1
+      expect(page).to have_content '1 follower'
     end
   end
 
