@@ -9,4 +9,10 @@ module DiscussionsHelper
     desc << [", tagged with ", content_tag('strong', tag.name)] if tag
     safe_join(desc) + '.'
   end
+
+  def discussion_link(discussion)
+    link_to(
+      discussion.title,
+      community_discussion_path(current_community, discussion))
+  end
 end
