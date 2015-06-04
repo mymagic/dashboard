@@ -1,10 +1,12 @@
 .fc-content-skeleton td.fc-event-container {
-  border-radius: 10px;
   color: #FFF;
   cursor: pointer;
 
   &.availability {
-    background: $brand-info;
+    .fc-content {
+      background: $brand-info;
+      border-radius: 10px;
+    }
   }
 
   img {
