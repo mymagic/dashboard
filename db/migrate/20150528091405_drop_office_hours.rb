@@ -9,6 +9,7 @@ class DropOfficeHours < ActiveRecord::Migration
       t.string :time_zone, null: false
       t.integer :mentor_id, index: true, null: false
       t.integer :participant_id, index: true
+      t.references :community, index: true
 
       t.timestamps null: false
     end
