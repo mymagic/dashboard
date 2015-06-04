@@ -1,5 +1,18 @@
 <%
   title 'Companies'
-  page_header 'Companies'
+  page_header "#{ current_community.name } Portfolio"
 %>
-<%= render @companies %>
+
+<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter } %>
+
+<div class="company-group row">
+  <%= render @companies %>
+</div>
+
+<div class="text-center row">
+  <%= paginate @companies %>
+</div>
+
+<div class="text-center text-muted small row">
+  <%= company_filter_description(@current_filter) %>
+</div>

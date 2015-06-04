@@ -86,8 +86,26 @@ RSpec.describe 'Companies', type: :feature, js: false do
     end
 
     context 'as manager' do
-      background do
-        as_user manager
+      background { as_user manager }
+
+      context 'with another company' do
+        given!(:other_company) do
+          create(:company, name: "piedpiper", community: community)
+        end
+        scenario 'viewing and filtering companies' do
+          visit community_companies_path(company.community)
+          within '.company-group' do
+            expect(page).to have_content("piedpiper")
+            expect(page).to have_content("ACME")
+          end
+          within '.filter-navigation' do
+            click_link 'Mine'
+          end
+          within '.company-group' do
+            expect(page).to_not have_content("piedpiper")
+            expect(page).to have_content("ACME")
+          end
+        end
       end
 
       scenario 'viewing company page' do
