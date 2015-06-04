@@ -18,6 +18,7 @@ class Discussion < ActiveRecord::Base
   validates :title, :body, :author, :community, presence: true
   validate :ensure_author_follows, on: :create
 
+  FILTERS = %i(recent hot popular unanswered).freeze
   scope :filter_by, ->(filter) do
     case filter.try(:to_sym)
     when :unanswered

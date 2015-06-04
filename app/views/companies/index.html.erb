@@ -1,18 +1,11 @@
 <%
-  title 'Companies'
+  title 'Portfolio'
   page_header "#{ current_community.name } Portfolio"
 %>
 
-<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter } %>
+<%= render(partial: 'filters',
+           layout:  'layouts/filter_navigation',
+           locals: { current_filter: @filter, filters: Company::FILTERS }) %>
 
-<div class="company-group row">
-  <%= render @companies %>
-</div>
-
-<div class="text-center row">
-  <%= paginate @companies %>
-</div>
-
-<div class="text-center text-muted small row">
-  <%= company_filter_description(@current_filter) %>
-</div>
+<%= render(partial: 'shared/paginated_collection',
+           locals: { objects: @companies, class_name: 'Company' }) %>

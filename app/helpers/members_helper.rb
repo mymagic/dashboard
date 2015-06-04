@@ -15,12 +15,12 @@ module MembersHelper
     )
   end
 
-  def member_filter_description(filter)
+  def member_filter_description
     {
       everyone: "Members, mentors and staff.",
       members: "All regular members.",
       mentors: "All mentors.",
       staff: "Staff and administrators."
-    }[filter]
+    }[@filter]
   end
 end

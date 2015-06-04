@@ -4,6 +4,7 @@ class CompaniesController < ApplicationController
   before_action :load_companies, only: :index
 
   include SocialMediaLinksConcern
+  include FilterConcern
 
   before_action only: [:edit] { social_media_links(@company) }
 
@@ -55,15 +56,15 @@ class CompaniesController < ApplicationController
     )
   end
 
-  def current_filter
-    @current_filter ||= (params[:filter_by] || 'portfolio').to_sym
+  def default_filter
+    :portfolio
   end
 
   def load_companies
-    @companies = if current_filter == :mine
-                   current_member.companies
-                 else
+    @companies = if filter == :portfolio
                    current_community.companies
+                 else
+                   current_member.companies
                  end
   end
 end

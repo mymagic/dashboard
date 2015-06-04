@@ -1,19 +1,11 @@
 <%
-  title 'Members'
+  title 'Directory'
   page_header "#{ current_community.name } Directory"
 %>
 
-<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter } %>
+<%= render(partial: 'filters',
+           layout:  'layouts/filter_navigation',
+           locals: { current_filter: @filter, filters: Member::FILTERS }) %>
 
-<div class="member-group row">
-  <%= render @members %>
-</div>
-
-<div class="row">
-  <div class="text-center">
-    <%= paginate @members %>
-  </div>
-  <div class="text-center discussion-filter-wrapper text-muted small">
-    <%= member_filter_description(@current_filter) %>
-  </div>
-</div>
+<%= render(partial: 'shared/paginated_collection',
+           locals: { objects: @members, class_name: 'Member' }) %>

@@ -4,10 +4,12 @@ class MembersController < ApplicationController
   load_resource through: :current_community
   skip_authorize_resource only: [:new, :create]
 
+  include FilterConcern
+
   def index
     @members = @members.
                active.
-               filter_by(current_filter).
+               filter_by(filter).
                ordered.
                page params[:page]
   end
@@ -94,7 +96,7 @@ class MembersController < ApplicationController
     Member.invite!(member_params, current_member, &block)
   end
 
-  def current_filter
-    @current_filter ||= (params[:filter_by] || 'everyone').to_sym
+  def default_filter
+    :everyone
   end
 end

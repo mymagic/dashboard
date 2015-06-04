@@ -64,6 +64,7 @@ class Member < ActiveRecord::Base
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
 
+  FILTERS = %i(everyone members mentors staff).freeze
   scope :filter_by, ->(filter) do
     case filter.try(:to_sym)
     when :members
