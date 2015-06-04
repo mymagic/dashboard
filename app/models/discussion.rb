@@ -20,6 +20,8 @@ class Discussion < ActiveRecord::Base
 
   scope :filter_by, ->(filter) do
     case filter.try(:to_sym)
+    when :unanswered
+      where(comments_count: [nil, 0]).order(created_at: :desc)
     when :hot
       filter_by(:popular).where(created_at: 2.weeks.ago..Time.now)
     when :popular

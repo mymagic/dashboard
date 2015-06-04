@@ -1,10 +1,10 @@
 <ul class="nav nav-pills filter-navigation">
-  <% %i(recent hot popular).each do |filter| %>
+  <% %i(recent hot popular unanswered).each do |filter| %>
     <%= content_tag 'li', role: 'presentation', class: (current_filter == filter ? 'active' : false) do %>
       <% if tag %>
         <%= link_to filter.to_s.humanize, community_discussion_tag_path(current_community, tag_id: tag, filter_by: filter) %>
       <% else %>
-      <%= link_to filter.to_s.humanize, community_discussions_path(current_community, filter_by: filter) %>
+        <%= link_to filter.to_s.humanize, community_discussions_path(current_community, filter_by: filter) %>
       <% end %>
     <% end %>
   <% end %>
