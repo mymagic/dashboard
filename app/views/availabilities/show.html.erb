@@ -1,32 +1,37 @@
-<% title 'Availabilities'
-  page_header "Available on #{@availability.date.strftime('%B %d, %Y')}"
-%>
+<% title 'Availabilities' %>
+<%= render partial: 'members/header' %>
 
-<table class='table table-striped'>
-  <thead>
-    <tr>
-      <th>Start time - End time</th>
-      <th>Status</th>
-      <% if can? :manage, @availability %>
-        <th>Reserved By</th>
-      <% end %>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @slots.each do |slot| %>
-      <tr>
-        <td><%= slot.start_time.strftime('%H:%M %P') %> - <%= slot.end_time.strftime('%H:%M %P') %></td>
-        <td><%= slot.available ? 'Available' : 'Unavailable' %></td>
-        <% if can? :manage, @availability %>
-          <td><%= slot.member.full_name %></td>
-        <% end %>
-        <td>
-          <% if slot.available && slot.availability.member != current_member %>
-            <%= link_to 'Reserve', reserve_community_member_availability_slots_path(current_community, @member, @availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-default btn-sm pull-right', method: :post %>
+<div class="tab-content">
+  <div class="tab-pane active">
+    <h2>Available on <%= @availability.date.strftime('%B %d, %Y') %></h2>
+    
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th>Start time - End time</th>
+          <th>Status</th>
+          <% if can? :manage, @availability %>
+            <th>Reserved By</th>
           <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @slots.each do |slot| %>
+          <tr>
+            <td><%= slot.start_time.strftime('%H:%M %P') %> - <%= slot.end_time.strftime('%H:%M %P') %></td>
+            <td><%= slot.available ? 'Available' : 'Unavailable' %></td>
+            <% if can? :manage, @availability %>
+              <td><%= slot.member.full_name %></td>
+            <% end %>
+            <td>
+              <% if slot.available && slot.availability.member != current_member %>
+                <%= link_to 'Reserve', reserve_community_member_availability_slots_path(current_community, @member, @availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-default btn-sm pull-right', method: :post %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

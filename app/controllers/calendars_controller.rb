@@ -1,8 +1,8 @@
 class CalendarsController < ApplicationController
   before_action :authenticate_member!
   load_resource :member
-  before_action :find_availabilities, only: :show, if: -> { request.xhr? }
-  before_action :find_events, only: :show, if: -> { request.xhr? }
+  before_action :find_availabilities, only: :show
+  before_action :find_events, only: :show
 
   def show
 
@@ -11,6 +11,8 @@ class CalendarsController < ApplicationController
   protected
 
   def find_availabilities
+    return unless request.xhr?
+
     start_date = Date.parse(params[:start])
     end_date = Date.parse(params[:end])
 
@@ -19,6 +21,7 @@ class CalendarsController < ApplicationController
   end
 
   def find_events
+    return unless request.xhr? && @member.nil?
     @events = current_community.events
   end
 end

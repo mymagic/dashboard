@@ -7,11 +7,9 @@
 </div>
 
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-pills">
   <%= nav_link 'Details', community_member_path(current_community, @member) %>
-  <% if can? :administrate, @member %>
-    <%= nav_link 'Availabilities', community_member_availabilities_path(current_community, @member) %>
-  <% else %>
-    <%= nav_link 'Events', community_member_calendar_path(current_community, @member) %>
-  <% end %>
+  <li class=<%= 'active' if controller_name.in? %w(availabilities calendars) %>>
+    <%= link_to 'Availabilities', community_member_calendar_path(current_community, @member) %>
+  </li>
 </ul>

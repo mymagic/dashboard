@@ -1,4 +1,4 @@
-json.array! [@availabilities + @events].flatten do |group|
+json.array! [@availabilities + (@events || [])].flatten do |group|
   json.type group.class.to_s
 
   if group.is_a? Availability
