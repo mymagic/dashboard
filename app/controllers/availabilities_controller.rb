@@ -9,6 +9,7 @@ class AvailabilitiesController < ApplicationController
   end
 
   def new
+    @availability.time_zone = current_member.time_zone
   end
 
   def show
