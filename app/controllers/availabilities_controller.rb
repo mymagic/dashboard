@@ -16,6 +16,17 @@ class AvailabilitiesController < ApplicationController
     @slots = @availability.virtual_slots
   end
 
+  def edit
+  end
+
+  def update
+    @availability.slots.destroy_all
+    @availability.save
+
+    redirect_to community_member_availabilities_path(current_community, @member),
+                notice: 'Availability has successfully updated.'
+  end
+
   def create
     if @availability.update(start_time: parse_time('start_time'), end_time: parse_time('end_time'))
       redirect_to community_member_availabilities_path(current_community, @member),

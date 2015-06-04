@@ -1,16 +1,11 @@
 <% title 'Events' %>
 
-<% if @member %>
-  <%= render partial: 'members/header' %>
-<% else %>
 <div class="page-header">
   <h1>Events</h1>
   <span class='calendar-label events'>Events</span>
   <span class='calendar-label availabilities'>Activities</span>
 </div>
-<% end %>
 
 <div class='calendar'
-     data-url='<%= community_calendar_path(current_community) %>'
-     data-member-id='<%= @member.try(:id) %>'>
+     data-url='<%= community_calendar_path(current_community) %>'>
 </div>

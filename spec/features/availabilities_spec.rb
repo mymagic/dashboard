@@ -22,14 +22,6 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
     expect(page).to have_content 'Availability has successfully created.'
   end
 
-  it 'allow to delete an availability' do
-    visit community_member_availabilities_path(community, administrator)
-    click_on 'Delete'
-
-    expect(page).to have_content 'Availability has successfully deleted.'
-    expect(page).to_not have_content availability.date
-  end
-
   it 'generate slots by slot duration' do
     visit community_member_availability_path(community, administrator, availability)
 

@@ -1,25 +1,11 @@
 <%= render partial: 'members/header' %>
-
-<div class="tab-content">
-  <div class='tab-pane active'>
-    <h2>
-      <%= link_to 'New Availability', new_community_member_availability_path(current_community, @member), class: 'btn btn-success btn-sm pull-right' %>
-    </h2>
-    <table class="table table-striped">
-      <thead>
-        <th>Date</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Timezone</th>
-        <th>Slot Duration</th>
-        <th>Location Type</th>
-        <th>Location Detail</th>
-        <th>Details</th>
-        <th>Actions</th>
-      </thead>
-      <tbody>
-        <%= render partial: 'availability', collection: @availabilities %>
-      </tbody>
-    </table>
+<% if can? :administrate, @member %>
+  <div class='pull-right'>
+    <%= link_to 'New Availability', new_community_member_availability_path(current_community, @member), id: 'new-availability-btn', class: 'btn btn-success btn-sm' %>
   </div>
+<% end %>
+
+<div class='calendar'
+     data-url='<%= community_calendar_path(current_community) %>'
+     data-member-id='<%= @member.try(:id) %>'>
 </div>
