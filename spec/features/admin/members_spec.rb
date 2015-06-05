@@ -1,6 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe 'Admin/Members', type: :feature, js: false do
+  shared_examples "sign up as invited member" do |opts|
+    scenario 'open invitiation and sign in' do
+      open_email(email)
+
+      expect(current_email).to have_content "You have been invited to join #{ community.name }"
+      current_email.click_link 'Accept invitation'
+
+      expect(page.find_field('First name').value).to eq 'Johann'
+      expect(page.find_field('Last name').value).to eq 'Faust'
+      expect(page).to_not have_field('Email')
+
+      fill_in 'member[password]', with: 'password0'
+      fill_in 'member[password_confirmation]', with: 'password0'
+      click_button 'Set my password'
+      expect(page).to have_content("Your password was set successfully. You are now signed in.")
+      if [:administrator, :staff].include?(opts[:role])
+        expect(page).to have_css('nav.navbar-admin')
+      else
+        expect(page).to_not have_css('nav.navbar-admin')
+      end
+    end
+  end
+
   feature "Administration" do
     given!(:community) do
       create(:community, :with_social_media_services, num_of_services: 2)
@@ -10,7 +33,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, community: community) }
     given(:social_media_service) { community.social_media_services.first }
-    given(:other_social_media_service) { community.social_media_services.last }
     given!(:social_media_link) do
       create(
         :social_media_link,
@@ -41,7 +63,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
         # Social Media Links
         fill_in social_media_link.service, with: 'https://facebook.com/handle'
-        fill_in other_social_media_service, with: 'Handle'
 
         click_button 'Save'
 
@@ -52,10 +73,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_content('New First Name')
         expect(page).to have_content('New Last Name')
 
-        expect(page).to have_content(other_social_media_service.camelize)
-        expect(page).to have_content('Handle')
         expect(page).to have_link(
-          social_media_link.service.camelize,
+          social_media_link.service,
           href: 'https://facebook.com/handle')
       end
 
@@ -129,10 +148,10 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
   context 'as a Administrator' do
     let!(:administrator) { create(:administrator, :confirmed) }
-    let!(:community) { administrator.community }
+    let(:community) { administrator.community }
 
-    let!(:other_community) { create(:community) }
-    let!(:member_of_other_community) do
+    let(:other_community) { create(:community) }
+    let(:member_of_other_community) do
       create(:member, :confirmed, community: other_community)
     end
 
@@ -140,10 +159,11 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     let!(:position) { create(:position, community: community) }
 
     feature 'inviting a Member who is already member of another community' do
+      given(:email) { member_of_other_community.email }
       background do
         as_user administrator
         invite_new_member(
-          email: member_of_other_community.email,
+          email: email,
           community: community,
           attributes: {
             first_name: 'Johann',
@@ -156,29 +176,36 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         sign_out
       end
 
-      scenario 'Sign up as invited member' do
-        open_email(member_of_other_community.email)
+      it_behaves_like "sign up as invited member", role: :regular_member
+    end
 
-        expect(current_email).to have_content "You have been invited to join #{ community.name }"
-        current_email.click_link 'Accept invitation'
-
-        expect(page.find_field('First name').value).to eq 'Johann'
-        expect(page.find_field('Last name').value).to eq 'Faust'
-        expect(page).to_not have_field('Email')
-
-        fill_in 'member[password]', with: 'password0'
-        fill_in 'member[password_confirmation]', with: 'password0'
-        click_button 'Set my password'
-        expect(page).to have_content("Your password was set successfully. You are now signed in.")
-        expect(page).to_not have_css('nav.navbar-admin')
+    feature 'inviting a Staff Member' do
+      given!(:email) { 'new_member@example.com' }
+      background do
+        as_user administrator
+        invite_new_member(
+          email: email,
+          community: community,
+          attributes: {
+            first_name: 'Johann',
+            last_name: 'Faust',
+            role: 'Staff',
+            company: company.name,
+            position: position.name
+          }
+        )
+        sign_out
       end
+
+      it_behaves_like "sign up as invited member", role: :staff
     end
 
     feature 'inviting a Regular Member' do
+      given!(:email) { 'new_member@example.com' }
       background do
         as_user administrator
         invite_new_member(
-          email: 'new_member@example.com',
+          email: email,
           community: community,
           attributes: {
             first_name: 'Johann',
@@ -191,64 +218,15 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         sign_out
       end
 
-      scenario 'Sign up as invited member' do
-        open_email('new_member@example.com')
-
-        expect(current_email).to have_content "You have been invited to join #{ community.name }"
-        current_email.click_link 'Accept invitation'
-
-        expect(page.find_field('First name').value).to eq 'Johann'
-        expect(page.find_field('Last name').value).to eq 'Faust'
-        expect(page).to_not have_field('Email')
-
-        fill_in 'member[password]', with: 'password0'
-        fill_in 'member[password_confirmation]', with: 'password0'
-        click_button 'Set my password'
-        expect(page).to have_content("Your password was set successfully. You are now signed in.")
-        expect(page).to_not have_css('nav.navbar-admin')
-      end
-    end
-
-    feature 'inviting a Regular Member' do
-      background do
-        as_user administrator
-        invite_new_member(
-          email: 'new_member@example.com',
-          community: community,
-          attributes: {
-            first_name: 'Johann',
-            last_name: 'Faust',
-            role: 'Regular Member',
-            company: company.name,
-            position: position.name
-          }
-        )
-        sign_out
-      end
-
-      scenario 'Sign up as invited member' do
-        open_email('new_member@example.com')
-
-        expect(current_email).to have_content "You have been invited to join #{ community.name }"
-        current_email.click_link 'Accept invitation'
-
-        expect(page.find_field('First name').value).to eq 'Johann'
-        expect(page.find_field('Last name').value).to eq 'Faust'
-        expect(page).to_not have_field('Email')
-
-        fill_in 'member[password]', with: 'password0'
-        fill_in 'member[password_confirmation]', with: 'password0'
-        click_button 'Set my password'
-        expect(page).to have_content("Your password was set successfully. You are now signed in.")
-        expect(page).to_not have_css('nav.navbar-admin')
-      end
+      it_behaves_like "sign up as invited member", role: :regular_member
     end
 
     feature 'inviting an Administrator' do
+      given!(:email) { 'new_member@example.com' }
       background do
         as_user administrator
         invite_new_member(
-          email: 'new_member@example.com',
+          email: email,
           community: community,
           attributes: {
             first_name: 'Johann',
@@ -259,22 +237,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         sign_out
       end
 
-      scenario 'Sign up as invited member' do
-        open_email('new_member@example.com')
-
-        expect(current_email).to have_content "You have been invited to join #{ community.name }"
-        current_email.click_link 'Accept invitation'
-
-        expect(page.find_field('First name').value).to eq 'Johann'
-        expect(page.find_field('Last name').value).to eq 'Faust'
-        expect(page).to_not have_field('Email')
-
-        fill_in 'member[password]', with: 'password0'
-        fill_in 'member[password_confirmation]', with: 'password0'
-        click_button 'Set my password'
-        expect(page).to have_content("Your password was set successfully. You are now signed in.")
-        expect(page).to have_css('nav.navbar-admin')
-      end
+      it_behaves_like "sign up as invited member", role: :administrator
     end
   end
 end

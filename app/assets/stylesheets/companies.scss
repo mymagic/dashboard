@@ -9,11 +9,41 @@
     height: 150px;
     .img-responsive {
       max-height: 150px;
+      padding: 10px;
       margin: 0 auto;
     }
   }
   h4 {
     text-align: center;
     font-size: 14px;
+  }
+}
+
+.company {
+  &__new_position {
+    text-align: center;
+    margin: 15px 0;
+  }
+  &__sidebar {
+    &__logo, &__website {
+      text-align: center;
+    }
+    &__logo, &__website, &__description {
+      margin-bottom: 10px;
+    }
+    &__social_media_links {
+      text-align: center;
+      margin-bottom: 10px;
+      a {
+        margin: 0 5px;
+      }
+    }
+  }
+  &__member {
+    &__caption {
+      h4 {
+        font-size: 14px;
+      }
+    }
   }
 }
