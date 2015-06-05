@@ -11,6 +11,7 @@
 
 #= require bootstrap-setup
 #= require elements
+#= require messages
 #= require admin/positions
 
 

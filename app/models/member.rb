@@ -194,12 +194,12 @@ class Member < ActiveRecord::Base
         # self.class.find(
         #   messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
 
-        Member.joins([
-          "INNER JOIN messages ON ",
-          "(messages.sender_id = members.id OR "\
-          "messages.receiver_id = members.id) ",
-          "AND (messages.sender_id = #{id} OR messages.receiver_id = #{id})"
-        ].join('')).where.not(id: id).uniq
+        Member.
+          joins("JOIN messages ON (messages.sender_id = members.id OR "\
+                "messages.receiver_id = members.id)").
+          where("messages.sender_id = #{id} OR messages.receiver_id = #{id}").
+          order("messages.created_at DESC").
+          where.not(id: id)
       end
 
       def messages_with(participant)

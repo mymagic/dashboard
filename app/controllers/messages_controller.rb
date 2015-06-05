@@ -1,17 +1,18 @@
 class MessagesController < ApplicationController
   before_action :authenticate_member!
-  load_resource :receiver, class: 'Member',
-                id_param: :member_id, only: [:create, :index]
+  load_resource :receiver,
+                class: 'Member',
+                id_param: :member_id,
+                only: [:create, :index]
   load_and_authorize_resource :message, through: :current_member, except: :index
 
   after_action :mark_messages_as_read, only: :index
 
   def index
-    if @receiver.present?
-      @messages = current_member.messages_with(@receiver)
-      @participants = current_member.chat_participants
-      @unread_messages = current_member.unread_messages_with(@participants)
-    end
+    return unless @receiver.present?
+    @messages = current_member.messages_with(@receiver).ordered
+    @participants = current_member.chat_participants
+    @unread_messages = current_member.unread_messages_with(@participants)
   end
 
   def create

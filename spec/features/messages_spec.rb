@@ -36,6 +36,13 @@ RSpec.describe 'Messages', type: :feature, js: false do
         receiver: alice,
         body: 'Received Message')
     end
+    let!(:last_message) do
+      create(
+        :message,
+        sender: alice,
+        receiver: bob,
+        body: 'Last Message')
+    end
     let!(:other_message) { create(:message) }
 
     it_behaves_like 'sending a new message'
@@ -43,8 +50,15 @@ RSpec.describe 'Messages', type: :feature, js: false do
     it 'show all participant messages' do
       visit community_member_messages_path(community, bob)
 
-      expect(page).to have_content send_message.body
-      expect(page).to have_content received_message.body
+      within '.messages-panel__conversations .message-box:nth-child(1)' do
+        expect(page).to have_content send_message.body
+      end
+      within '.messages-panel__conversations .message-box:nth-child(2)' do
+        expect(page).to have_content received_message.body
+      end
+      within '.messages-panel__conversations .message-box:nth-child(3)' do
+        expect(page).to have_content last_message.body
+      end
       expect(page).to_not have_content other_message.body
     end
 
