@@ -10,6 +10,8 @@ class Member < ActiveRecord::Base
   include SocialMediaLinkable
   include Followable
 
+  paginates_per 60
+
   mount_uploader :avatar, AvatarUploader
 
   # Include default devise modules. Others available are:
@@ -59,8 +61,22 @@ class Member < ActiveRecord::Base
   has_many :discussions, foreign_key: :author_id
   has_many :comments, foreign_key: :author_id
 
+  has_many :activities, foreign_key: :owner_id, dependent: :destroy
+
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
+
+  FILTERS = %i(everyone members mentors staff).freeze
+  scope :filter_by, ->(filter) do
+    case filter.try(:to_sym)
+    when :members
+      where(role: ['', nil])
+    when :mentors
+      where(role: :mentor)
+    when :staff
+      where(role: [:staff, :administrator])
+    end
+  end
 
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
@@ -116,6 +132,8 @@ class Member < ActiveRecord::Base
                class_name: 'CompaniesMembersPosition',
                dependent: :destroy,
                inverse_of: :member)
+
+      has_many :companies, -> { uniq }, through: :companies_positions
 
       accepts_nested_attributes_for(:companies_positions,
                                     allow_destroy: true,
@@ -177,12 +195,12 @@ class Member < ActiveRecord::Base
         # self.class.find(
         #   messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
 
-        Member.joins([
-          "INNER JOIN messages ON ",
-          "(messages.sender_id = members.id OR "\
-          "messages.receiver_id = members.id) ",
-          "AND (messages.sender_id = #{id} OR messages.receiver_id = #{id})"
-        ].join('')).where.not(id: id).uniq
+        Member.
+          joins("JOIN messages ON (messages.sender_id = members.id OR "\
+                "messages.receiver_id = members.id)").
+          where("messages.sender_id = #{id} OR messages.receiver_id = #{id}").
+          order("messages.created_at DESC").
+          where.not(id: id)
       end
 
       def messages_with(participant)
@@ -198,7 +216,7 @@ class Member < ActiveRecord::Base
       end
 
       def last_chat_participant
-        chat_participants.last
+        chat_participants.first
       end
     end
   end

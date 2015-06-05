@@ -2,7 +2,7 @@ class Discussion < ActiveRecord::Base
   include Taggable
   include Followable
 
-  paginates_per 10
+  paginates_per 25
 
   # Associations
   belongs_to :community
@@ -18,8 +18,13 @@ class Discussion < ActiveRecord::Base
   validates :title, :body, :author, :community, presence: true
   validate :ensure_author_follows, on: :create
 
+  after_create :create_activity
+
+  FILTERS = %i(recent hot popular unanswered).freeze
   scope :filter_by, ->(filter) do
     case filter.try(:to_sym)
+    when :unanswered
+      where(comments_count: [nil, 0]).order(created_at: :desc)
     when :hot
       filter_by(:popular).where(created_at: 2.weeks.ago..Time.now)
     when :popular
@@ -30,6 +35,10 @@ class Discussion < ActiveRecord::Base
   end
 
   protected
+
+  def create_activity
+    DiscussionActivity.create(owner: author, resource: self)
+  end
 
   def set_community
     self.community = author.community

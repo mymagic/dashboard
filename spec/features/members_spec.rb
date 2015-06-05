@@ -1,13 +1,76 @@
 require 'rails_helper'
 
 RSpec.describe 'Members', type: :feature, js: false do
-  feature "Company Member Invitation" do
-    given(:community) { create(:community) }
-    given(:staff) { create(:staff, :confirmed, community: community) }
+  feature 'Community Members' do
+    given!(:community) { create(:community) }
+    given!(:staff) { create(:staff, :confirmed, community: community) }
+    given!(:member) { create(:member, :confirmed, community: community) }
+    given!(:mentor) { create(:mentor, :confirmed, community: community) }
+    given!(:administrator) do
+      create(:administrator, :confirmed, community: community)
+    end
+    given(:company) { create(:company, name: "ACME", community: community) }
+    given(:position) { create(:position, community: community) }
+
     given(:manager) { create(:member, :confirmed, community: community) }
-    given(:member) { create(:member, :confirmed, community: community) }
-    given!(:company) { create(:company, name: "ACME", community: community) }
-    given!(:position) { create(:position, community: community) }
+    given!(:manager_position) do
+      create(
+        :companies_members_position,
+        :approved,
+        :managable,
+        position: position,
+        member: manager,
+        company: company
+      )
+    end
+
+    shared_examples "filtering the directory" do
+      context 'on the community directory' do
+        background { visit community_members_path(community) }
+        scenario 'showing all members' do
+          within '.member-group' do
+            [administrator, staff, member, mentor, manager].each do |m|
+              expect(page).to have_content m.send(:full_name)
+            end
+          end
+        end
+        scenario 'showing all mentors' do
+          within '.filter-navigation' do
+            click_link 'Mentors'
+          end
+          within '.member-group' do
+            expect(page).to have_content mentor.full_name
+            [administrator, staff, member, manager].each do |m|
+              expect(page).to_not have_content m.send(:full_name)
+            end
+          end
+        end
+        scenario 'showing all staff and administrators' do
+          within '.filter-navigation' do
+            click_link 'Staff'
+          end
+          within '.member-group' do
+            expect(page).to have_content administrator.full_name
+            expect(page).to have_content staff.full_name
+            [member, mentor, manager].each do |m|
+              expect(page).to_not have_content m.send(:full_name)
+            end
+          end
+        end
+        scenario 'showing all regular members' do
+          within '.filter-navigation' do
+            click_link 'Members'
+          end
+          within '.member-group' do
+            expect(page).to have_content member.full_name
+            expect(page).to have_content manager.full_name
+            [administrator, staff, mentor].each do |m|
+              expect(page).to_not have_content m.send(:full_name)
+            end
+          end
+        end
+      end
+    end
 
     shared_examples "following another member" do
       context 'with another member' do
@@ -61,18 +124,17 @@ RSpec.describe 'Members', type: :feature, js: false do
             to have_content("Your password was set successfully. "\
                             "You are now signed in.")
           visit community_company_path(community, company)
-          within ".company-members" do
+          within ".company__members" do
             expect(page).to have_content("Johann Faust")
           end
         end
       end
-
     end
 
     context 'as member' do
       background { as_user member }
-
       it_behaves_like 'following another member'
+      it_behaves_like 'filtering the directory'
 
       scenario 'viewing company page' do
         visit community_company_path(community, company)
@@ -82,24 +144,16 @@ RSpec.describe 'Members', type: :feature, js: false do
 
     context 'as staff' do
       background { as_user staff }
-      it_behaves_like 'managing the company'
       it_behaves_like 'following another member'
+      it_behaves_like 'managing the company'
+      it_behaves_like 'filtering the directory'
     end
 
     context 'as manager' do
-      background do
-        create(
-          :companies_members_position,
-          :approved,
-          :managable,
-          position: position,
-          member: manager,
-          company: company
-        )
-        as_user manager
-      end
-      it_behaves_like 'managing the company'
+      background { as_user manager }
       it_behaves_like 'following another member'
+      it_behaves_like 'managing the company'
+      it_behaves_like 'filtering the directory'
     end
   end
 end

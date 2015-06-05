@@ -16,7 +16,15 @@ class Rsvp < ActiveRecord::Base
     define_method("#{ state }!") { self.update_attributes(state: state) }
   end
 
+  after_save :create_or_update_activity
+
   private
+
+  def create_or_update_activity
+    RsvpActivity.
+      find_or_create_by(owner: member, event: event).
+      update(data: { state: state })
+  end
 
   def event_cannot_be_in_the_past
     errors.add(:event, :cannot_be_in_the_past) if event.ended?

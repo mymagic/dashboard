@@ -1,12 +1,10 @@
 module SocialMediaLinksHelper
-  def social_link(social_media_link)
-    handle = social_media_link.handle
-    service = social_media_link.service.camelize
-
-    if handle =~ URI::regexp(%w(http https))
-      service, handle = link_to(service, handle, target: '_blank'), ''
+  def social_media_links(resource)
+    existing_services = resource.social_media_links.map(&:service)
+    services = current_community.social_media_services - existing_services
+    services.each do |service|
+      resource.social_media_links.build(service: service)
     end
-
-    definition_list(service => handle)
+    resource.social_media_links.sort_by(&:service)
   end
 end

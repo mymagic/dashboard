@@ -20,7 +20,6 @@
       <div class="navbar-collapse collapse" id="navbar">
         <ul class="nav navbar-nav">
           <% if current_community %>
-            <%= nav_link "Welcome", community_path(current_community) %>
             <%= nav_link "Discussions", [current_community, Discussion] if can? :read, Discussion %>
             <%= nav_link "Members", [current_community, Member] if can? :read, Member %>
             <%= nav_link "Companies", [current_community, Company] if can? :read, Company %>
@@ -42,12 +41,23 @@
           <li class="dropdown">
             <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">
               <%= image_tag(current_member.avatar.url(:icon), class: 'img-rounded') %>
-              <%= current_member.full_name %>
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
-              <%= nav_link "Edit my Account", edit_member_registration_path(current_community) %>
-              <li class="divider"></li>
+              <% if current_member.companies.any? %>
+                <% current_member.companies.each do |company| %>
+                  <%= nav_link company.name, community_company_path(current_community, company) %>
+                <% end %>
+                <li class="divider"></li>
+              <% end %>
+              <%= nav_link "#{ current_member.full_name }'s Profile", community_member_path(current_community, current_member) %>
+              <%= nav_link "Preferences", edit_member_registration_path(current_community) %>
+              <% if can? :read, Message %>
+                <%= nav_link [current_community, current_member.last_chat_participant, Message] do %>
+                    Messages
+                    <%= content_tag('span', unread_messages.size, class: 'badge') if unread_messages.present? %>
+                <% end %>
+              <% end %>
               <%= nav_link "Sign out", destroy_member_session_path(current_community), method: :delete %>
             </ul>
           </li>

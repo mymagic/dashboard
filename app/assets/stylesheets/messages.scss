@@ -3,18 +3,16 @@ $chat-border-color: rgba(1, 1, 1, 0.2);
 .messages-panel {
   display: flex;
 
-  &__conversations {
-    margin-bottom: 140px;
-  }
-
   &__participant {
     border-right: 1px solid $chat-border-color;
   }
 
+  &__conversations {
+    height: 500px;
+    overflow-y: scroll;
+  }
+
   &__form {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
     padding-top: 20px;
     border-top: 1px solid $chat-border-color;
 

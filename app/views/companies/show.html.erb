@@ -8,42 +8,33 @@
 %>
 
 <div class="row">
-  <div class="col-lg-8">
-    <% if @company.description.present? %>
-      <%= panel columns: 12 do %>
-        <%= @company.description %>
-      <% end %>
-    <% end %>
-    <% if @company.website.present? %>
-      <%= definition_list(Website: link_to(@company.website, @company.website)) %>
-    <% end %>
-    <%= render partial: 'shared/forms/social_media_links', locals: { attachable: @company } %>
-  </div>
-  <div class="col-lg-4">
-    <div class="col-lg-12">
-      <div class="thumbnail">
-        <div class="company-thumb-wrapper">
-          <%= image_tag(@company.logo.url(:thumb)) %>
-        </div>
-      </div>
-    </div>
-    <div class="company-members">
+  <div class="col-lg-9">
+    <div class="company__members col-lg-12">
       <% @company.positions_with_members.each do |position, members| %>
-        <div class="col-lg-12">
-          <ul class="list-group">
-            <li class="list-group-item disabled"><%= position.name.pluralize(members.count) %></li>
-            <% members.each do |member| %>
-              <li class="list-group-item">
-                <%= image_tag(member.avatar.url(:icon)) %>
-                <%= link_to member.full_name, community_member_path(member.community, member) %>
-              </li>
-            <% end %>
-          </ul>
+        <div class="row">
+          <h4><%= position.name.pluralize(members.count) %></h4>
+          <%= render collection: members, partial: 'member' %>
         </div>
       <% end %>
     </div>
-    <div class="col-lg-12 text-center">
+    <div class="company__new_position col-lg-12">
       <%= render partial: 'companies_members_positions/form', locals: { companies_members_position: current_member.companies_positions.new(company: @company) } %>
+    </div>
+  </div>
+  <div class="col-lg-3 company__sidebar">
+    <div class="company__sidebar__logo">
+      <%= image_tag(@company.logo.url(:thumb)) %>
+    </div>
+    <% if @company.website.present? %>
+      <div class="company__sidebar__website">
+        <%= link_to(@company.website, @company.website) %>
+      </div>
+    <% end %>
+    <div class="company__sidebar__description">
+      <%= @company.description %>
+    </div>
+    <div class="company__sidebar__social_media_links">
+      <%= render partial: 'shared/social_media_link', collection: @company.social_media_links %>
     </div>
   </div>
 </div>

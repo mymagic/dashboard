@@ -12,6 +12,7 @@ shared_examples "accessible by" do |*authorized_members|
       context "#{ role }" do
         before &login
         it "displays the page without errors" do
+          expect(response).to_not redirect_to(root_path)
           expect(response).to_not redirect_to(community_path(community))
           expect(response).to_not redirect_to(new_member_session_path(community))
         end
@@ -39,7 +40,7 @@ end
 shared_examples "logging in" do
   it "logs the user in" do
     visit community_path(community)
-    expect_to_be_signed_out
+    expect_to_require_signing_in
     log_in community, user.email
     expect_to_be_signed_in
   end
@@ -50,14 +51,13 @@ shared_examples "logging out" do
     log_in community, user.email
     expect_to_be_signed_in
     sign_out
-    expect_to_be_signed_out
   end
 end
 
 shared_examples "canceling account" do
-  it "logs the user in" do
+  it "cancels the members account" do
     cancel_my_account(community)
-    expect_to_be_signed_out
+    expect(page).to have_content('Your account has been successfully cancelled')
   end
 end
 

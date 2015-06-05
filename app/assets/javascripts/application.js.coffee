@@ -16,6 +16,7 @@
 #= require elements
 #= require availabilities
 #= require calendar
+#= require messages
 #= require admin/positions
 
 

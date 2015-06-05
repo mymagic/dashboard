@@ -1,6 +1,10 @@
 class Company < ActiveRecord::Base
   include SocialMediaLinkable
 
+  FILTERS = %i(portfolio mine).freeze
+
+  paginates_per 24
+
   mount_uploader :logo, LogoUploader
 
   validates :name, :community, presence: true
@@ -8,7 +12,10 @@ class Company < ActiveRecord::Base
   validates :description, length: { minimum: 5 }, allow_blank: true
   validates(
     :website,
-    format: { with: URI::regexp(%w(http https)) },
+    format: {
+      with: URI::regexp(%w(http https)),
+      message: 'is not a valid URL'
+    },
     allow_blank: true)
 
   # Associations

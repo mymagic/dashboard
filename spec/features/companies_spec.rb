@@ -31,7 +31,6 @@ RSpec.describe 'Companies', type: :feature, js: false do
     given!(:manager) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, name: "ACME", community: community) }
     given(:social_media_service) { community.social_media_services.first }
-    given(:other_social_media_service) { community.social_media_services.last }
     given!(:social_media_link) do
       create(
         :social_media_link,
@@ -66,9 +65,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
           Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
 
       # Social Media Links
-      # Social Media Links
       fill_in social_media_link.service, with: 'https://facebook.com/handle'
-      fill_in other_social_media_service, with: 'Handle'
 
       click_button 'Save'
 
@@ -79,15 +76,31 @@ RSpec.describe 'Companies', type: :feature, js: false do
       expect(page).to have_content("This is a company description")
       expect(page).to have_content("http://example.com")
 
-      expect(page).to have_content(other_social_media_service.camelize)
-      expect(page).to have_content('Handle')
       expect(page).to have_link(
-        social_media_link.service.camelize, href: 'https://facebook.com/handle')
+        social_media_link.service, href: 'https://facebook.com/handle')
     end
 
     context 'as manager' do
-      background do
-        as_user manager
+      background { as_user manager }
+
+      context 'with another company' do
+        given!(:other_company) do
+          create(:company, name: "piedpiper", community: community)
+        end
+        scenario 'viewing and filtering companies' do
+          visit community_companies_path(company.community)
+          within '.company-group' do
+            expect(page).to have_content("piedpiper")
+            expect(page).to have_content("ACME")
+          end
+          within '.filter-navigation' do
+            click_link 'Mine'
+          end
+          within '.company-group' do
+            expect(page).to_not have_content("piedpiper")
+            expect(page).to have_content("ACME")
+          end
+        end
       end
 
       scenario 'viewing company page' do

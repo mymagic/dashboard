@@ -4,7 +4,7 @@
 
 <div class="page-header">
   <h1>
-    <%= render partial: 'search_form' %>
+    <%= render partial: 'search_form' if @receiver.present? %>
     <span>Messages</span>
   </h1>
 </div>
@@ -23,8 +23,7 @@
     <div class='col-md-8'>
       <div class='messages-panel__conversations'>
         <%= render partial: 'message', collection: @messages %>
-
-        <% if @messages.last.unread %>
+        <% if @messages.any? %>
           <div class='message-box__timeago participant'>
             <%= time_tag @messages.last.created_at %>
           </div>
@@ -39,5 +38,8 @@
     </div>
   </div>
 <% else %>
-  <p>You are not part on any conversations. To start a converstation browse to any member's page and send a message.</p>
+  <p>
+    You've not participated in any conversations yet. To start a new conversation,
+    browse to any member's page and send them a message.
+  </p>
 <% end %>

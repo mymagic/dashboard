@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
       :time_zone,
       :password,
       :password_confirmation,
-      social_media_links_attributes: [:id, :_destroy, :handle, :service]
+      social_media_links_attributes: [:id, :_destroy, :url, :service]
     ]
 
     case params[:controller]
@@ -65,10 +65,6 @@ class ApplicationController < ActionController::Base
         u.permit(member_params)
       end
     end
-  end
-
-  def after_sign_out_path_for(_resource_or_scope)
-    current_community ? community_path(current_community) : root_path
   end
 
   def access_denied(exception)

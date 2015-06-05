@@ -1,3 +1,31 @@
+.member-group {
+  margin: 15px 0 15px 0;
+  .member {
+    height: 250px;
+    max-width: 150px;
+    h4, p {
+      @include text-overflow;
+    }
+    h4 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 12px;
+    }
+    &__caption{
+      text-align: center;
+    }
+    &__role {
+      display: block;
+      margin: 3px 0;
+      color: darken(#FFF, 50);
+    }
+    &__avatar {
+      border: 0;
+    }
+  }
+}
+
 .member-thumb-wrapper {
   width: 200px;
   height: 200px;
@@ -8,18 +36,5 @@
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-  }
-}
-
-.member-wrapper {
-  height: 300px;
-  max-width: 200px;
-  .member-role {
-    display: block;
-    font-weight: bold;
-    margin: 3px 0;
-  }
-  h4, p {
-    @include text-overflow;
   }
 }

@@ -5,7 +5,7 @@
   <div class="row tab-pane active">
     <div class="col-lg-8">
       <%= definition_list("First name" => @member.first_name, "Last name" => @member.last_name) %>
-      <%= render partial: 'shared/forms/social_media_links', locals: { attachable: @member } %>
+      <%= render partial: 'shared/social_media_link', collection: @member.social_media_links %>
     </div>
     <div class="col-lg-4">
       <div class="col-lg-12">

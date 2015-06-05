@@ -1,5 +1,11 @@
 <%
-  title 'Members'
-  page_header 'Members'
+  title 'Directory'
+  page_header "#{ current_community.name } Directory"
 %>
-<%= render @members %>
+
+<%= render(partial: 'filters',
+           layout:  'layouts/filter_navigation',
+           locals: { current_filter: @filter, filters: Member::FILTERS }) %>
+
+<%= render(partial: 'shared/paginated_collection',
+           locals: { objects: @members, class_name: 'Member' }) %>
