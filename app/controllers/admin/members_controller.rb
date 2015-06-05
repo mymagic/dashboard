@@ -3,9 +3,6 @@ module Admin
     load_and_authorize_resource through: :current_community
     before_action :allow_without_password, only: :update
 
-    include SocialMediaLinksConcern
-    before_action only: [:edit] { social_media_links(@member) }
-
     def index
       @invited_members    = @members.invited.ordered
       @active_members     = @members.active.ordered
@@ -128,7 +125,7 @@ module Admin
           [
             :id,
             :service,
-            :handle,
+            :url,
             :_destroy
           ]
       ).tap do |attrs|

@@ -27,12 +27,12 @@ FactoryGirl.define do
     "service-#{ n }"
   end
 
-  sequence :handle do |n|
-    "handle-#{ n }"
-  end
-
   sequence :community_name do |n|
     "community-#{ n }"
+  end
+
+  sequence :url do |n|
+    "http://website#{ n }.com"
   end
 
   sequence :message_body do |n|

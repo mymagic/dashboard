@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
       :time_zone,
       :password,
       :password_confirmation,
-      social_media_links_attributes: [:id, :_destroy, :handle, :service]
+      social_media_links_attributes: [:id, :_destroy, :url, :service]
     ]
 
     case params[:controller]

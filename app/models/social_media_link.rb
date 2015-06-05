@@ -14,6 +14,12 @@ class SocialMediaLink < ActiveRecord::Base
             uniqueness: {
               scope: [:attachable_id, :attachable_type, :community_id]
             }
+  validates :url,
+            format: {
+              with: URI::regexp(%w(http https)),
+              message: 'is not a valid URL'
+            },
+            allow_blank: true
 
   # Callbacks
   before_validation :set_community, if: :attachable

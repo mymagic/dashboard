@@ -3,10 +3,7 @@ class CompaniesController < ApplicationController
   load_and_authorize_resource through: :current_community, except: :index
   before_action :load_companies, only: :index
 
-  include SocialMediaLinksConcern
   include FilterConcern
-
-  before_action only: [:edit] { social_media_links(@company) }
 
   def index
     @companies = @companies.ordered.page params[:page]
@@ -50,7 +47,7 @@ class CompaniesController < ApplicationController
         [
           :id,
           :service,
-          :handle,
+          :url,
           :_destroy
         ]
     )
