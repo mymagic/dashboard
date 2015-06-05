@@ -1,6 +1,10 @@
 class Company < ActiveRecord::Base
   include SocialMediaLinkable
 
+  FILTERS = %i(portfolio mine).freeze
+
+  paginates_per 24
+
   mount_uploader :logo, LogoUploader
 
   validates :name, :community, presence: true

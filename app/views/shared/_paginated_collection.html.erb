@@ -1,0 +1,15 @@
+<% if objects.any? %>
+  <div class="<%= class_name.underscore %>-group">
+    <%= render objects %>
+  </div>
+  <div class="row text-center">
+    <%= paginate objects %>
+  </div>
+  <div class="row text-center text-muted small filter-description">
+    <%= send(class_name.underscore + '_filter_description') %>
+  </div>
+<% else %>
+  <h3 class="text-center">
+    No <%= object_name.pluralize %> found.
+  </h3>
+<% end %>

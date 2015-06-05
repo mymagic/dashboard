@@ -1,13 +1,15 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource through: :current_community
+  load_and_authorize_resource through: :current_community, except: :index
+  before_action :load_companies, only: :index
 
   include SocialMediaLinksConcern
+  include FilterConcern
 
   before_action only: [:edit] { social_media_links(@company) }
 
   def index
-    @companies = @companies.ordered
+    @companies = @companies.ordered.page params[:page]
   end
 
   def show
@@ -20,11 +22,17 @@ class CompaniesController < ApplicationController
     @company.update(company_params)
     respond_to do |format|
       if @company.save
-        format.html { redirect_to community_company_path(current_community, @company), notice: 'Company was successfully updated.' }
+        format.html do
+          redirect_to(
+            community_company_path(current_community, @company),
+            notice: 'Company was successfully updated.')
+        end
         format.json { render json: @company, status: :created }
       else
         format.html { render 'edit', alert: 'Error updating company.' }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @company.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -46,5 +54,17 @@ class CompaniesController < ApplicationController
           :_destroy
         ]
     )
+  end
+
+  def default_filter
+    :portfolio
+  end
+
+  def load_companies
+    @companies = if filter == :portfolio
+                   current_community.companies
+                 else
+                   current_member.companies
+                 end
   end
 end

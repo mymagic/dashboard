@@ -89,6 +89,17 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
   end
 
+  shared_examples "unsanswered filter" do
+    it "filters unanswered discussions" do
+      visit community_discussions_path(community)
+      expect(page).to have_content 'No Answer For Me'
+      expect(page).to have_content 'To be or not to be?'
+      click_link 'Unanswered'
+      expect(page).to have_content 'No Answer For Me'
+      expect(page).to have_content 'Unanswered discussions'
+      expect(page).to_not have_content 'To be or not to be?'
+    end
+  end
 
   feature "Company Member Invitation" do
     given!(:community) { create(:community) }
@@ -98,6 +109,9 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     given(:staff) { create(:staff, :confirmed, community: community) }
     given(:mentor) { create(:mentor, :confirmed, community: community) }
     given(:member) { create(:member, :confirmed, community: community) }
+    given!(:unanswered_discussion) do
+      create(:discussion, author: member, title: 'No Answer For Me')
+    end
     given!(:discussion) do
       create(
         :discussion,
@@ -125,6 +139,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "removing a discussion"
       it_behaves_like "filtered by tags"
       it_behaves_like "removing a comment"
+      it_behaves_like "unsanswered filter"
     end
 
     context 'as staff' do
@@ -134,6 +149,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
       it_behaves_like "filtered by tags"
+      it_behaves_like "unsanswered filter"
     end
 
     context 'as mentor' do
@@ -143,6 +159,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
       it_behaves_like "filtered by tags"
+      it_behaves_like "unsanswered filter"
     end
 
     context 'as member' do
@@ -152,6 +169,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       it_behaves_like "following and unfollowing a discussion"
       it_behaves_like "adding a comment"
       it_behaves_like "filtered by tags"
+      it_behaves_like "unsanswered filter"
     end
   end
 end

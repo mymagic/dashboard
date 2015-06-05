@@ -10,6 +10,8 @@ class Member < ActiveRecord::Base
   include SocialMediaLinkable
   include Followable
 
+  paginates_per 60
+
   mount_uploader :avatar, AvatarUploader
 
   # Include default devise modules. Others available are:
@@ -61,6 +63,18 @@ class Member < ActiveRecord::Base
 
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
+
+  FILTERS = %i(everyone members mentors staff).freeze
+  scope :filter_by, ->(filter) do
+    case filter.try(:to_sym)
+    when :members
+      where(role: ['', nil])
+    when :mentors
+      where(role: :mentor)
+    when :staff
+      where(role: [:staff, :administrator])
+    end
+  end
 
   scope :ordered, -> { order(last_name: :asc) }
   scope :invited, -> { where.not(invitation_token: nil) }
@@ -116,6 +130,8 @@ class Member < ActiveRecord::Base
                class_name: 'CompaniesMembersPosition',
                dependent: :destroy,
                inverse_of: :member)
+
+      has_many :companies, -> { uniq }, through: :companies_positions
 
       accepts_nested_attributes_for(:companies_positions,
                                     allow_destroy: true,

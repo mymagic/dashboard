@@ -3,10 +3,11 @@ class DiscussionsController < ApplicationController
   load_and_authorize_resource through: :current_community
 
   include TagsConcern
+  include FilterConcern
 
   def index
     @discussions = @discussions.tagged_with(tag) if tag
-    @discussions = @discussions.filter_by(current_filter).page params[:page]
+    @discussions = @discussions.filter_by(filter).page params[:page]
   end
 
   def show
@@ -62,8 +63,8 @@ class DiscussionsController < ApplicationController
 
   private
 
-  def current_filter
-    @current_filter ||= (params[:filter_by] || 'recent').to_sym
+  def default_filter
+    :recent
   end
 
   def discussion_params

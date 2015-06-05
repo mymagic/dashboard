@@ -1,0 +1,5 @@
+<% filters.each do |filter| %>
+  <%= content_tag 'li', role: 'presentation', class: (current_filter == filter ? 'active' : false) do %>
+    <%= link_to filter.to_s.humanize, community_members_path(current_community, filter: filter) %>
+  <% end %>
+<% end %>

@@ -5,21 +5,9 @@
   end
 %>
 
-<%= render partial: 'filter_navigation', locals: { current_filter: @current_filter, tag: @tag } %>
+<%= render(partial: 'filters',
+           layout:  'layouts/filter_navigation',
+           locals: { current_filter: @filter, tag: @tag, filters: Discussion::FILTERS }) %>
 
-<% if @discussions.any? %>
-  <div class="discussion-group">
-    <%= render @discussions %>
-  </div>
-
-  <div class="text-center">
-    <%= paginate @discussions %>
-  </div>
-  <div class="text-center discussion-filter-wrapper text-muted small">
-    <%= discussion_filter_description(@current_filter, tag: @tag) %>
-  </div>
-<% else %>
-  <h3 class="text-center">
-    No discussions found.
-  </h3>
-<% end %>
+<%= render(partial: 'shared/paginated_collection',
+           locals: { objects: @discussions, class_name: 'Discussion' }) %>

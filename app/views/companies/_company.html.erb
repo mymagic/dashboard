@@ -1,10 +1,10 @@
-<div class="col-lg-3">
-  <div class="thumbnail">
-    <div class="company-thumb-wrapper">
-      <%= image_tag(company.logo.url(:thumb)) %>
+<div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+  <div class="company-wrapper">
+    <div class="logo-wrapper">
+      <%= link_to(
+            image_tag(company.logo.url(:thumb), class: 'img-responsive'),
+            [current_community, company]) %>
     </div>
-    <div class="caption">
-      <h3><%= link_to company.name, [current_community, company] %></h3>
-    </div>
+    <h4><%= link_to company.name, [current_community, company] %></h4>
   </div>
 </div>
