@@ -10,8 +10,11 @@ class Message < ActiveRecord::Base
   validates :sender, :receiver, :body, presence: true
 
   # Scopes
-  scope :with, -> (participant) { where("sender_id = :id OR receiver_id = :id", id: participant.id) }
+  scope :with, -> (participant) do
+    where("sender_id = :id OR receiver_id = :id", id: participant.id)
+  end
   scope :unread, -> { where(unread: true) }
+  scope :ordered, -> { order(created_at: :asc) }
 
   def self.search(query)
     __elasticsearch__.search({

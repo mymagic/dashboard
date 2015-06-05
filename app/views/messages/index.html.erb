@@ -23,8 +23,7 @@
     <div class='col-md-8'>
       <div class='messages-panel__conversations'>
         <%= render partial: 'message', collection: @messages %>
-
-        <% if @messages.last.try(&:unread) %>
+        <% if @messages.any? %>
           <div class='message-box__timeago participant'>
             <%= time_tag @messages.last.created_at %>
           </div>
