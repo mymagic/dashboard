@@ -50,7 +50,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:manage, Availability) }
 
       # Slot
-      it { is_expected.to be_able_to(:manage, Slot) }
+      it { is_expected.to be_able_to(:read, Slot) }
+      it { is_expected.to be_able_to(:update, Slot) }
+      it { is_expected.to be_able_to(:destroy, Slot) }
 
       # Calendar
       it { is_expected.to be_able_to(:manage, :calendar) }
@@ -115,8 +117,9 @@ RSpec.describe Member, type: :model do
 
       # Slot
       it { is_expected.to be_able_to(:read, Slot) }
-      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:slot, member: member)) }
-      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:slot)) }
+      it { is_expected.to be_able_to(:update, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to be_able_to(:destroy, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to be_able_to(:create, FactoryGirl.build(:slot)) }
 
       # Calendar
       it { is_expected.to be_able_to(:read, :calendar) }
@@ -177,8 +180,9 @@ RSpec.describe Member, type: :model do
 
       # Slot
       it { is_expected.to be_able_to(:read, Slot) }
-      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:slot, member: member)) }
-      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:slot)) }
+      it { is_expected.to be_able_to(:update, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to be_able_to(:destroy, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to be_able_to(:create, FactoryGirl.build(:slot)) }
 
       # Calendar
       it { is_expected.to be_able_to(:read, :calendar) }
@@ -243,8 +247,9 @@ RSpec.describe Member, type: :model do
 
       # Slot
       it { is_expected.to be_able_to(:read, Slot) }
-      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:slot, member: member)) }
-      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:slot)) }
+      it { is_expected.to be_able_to(:update, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to be_able_to(:destroy, FactoryGirl.build(:slot, member: member)) }
+      it { is_expected.to be_able_to(:create, FactoryGirl.build(:slot)) }
 
       # Calendar
       it { is_expected.to be_able_to(:read, :calendar) }
