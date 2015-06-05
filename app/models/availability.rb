@@ -34,6 +34,7 @@ class Availability < ActiveRecord::Base
   before_save :set_community
 
   # Scopes
+  scope :ordered, -> { order(time: :desc) }
   scope :by_date, -> (date) { where("date(date) = '#{date}'") }
   scope :by_daterange, -> (start_date, end_date) do
     where("(date >= '#{start_date}') AND (date <= '#{end_date}')")
@@ -58,7 +59,8 @@ class Availability < ActiveRecord::Base
   end
 
   def end_time
-    persisted? ? start_time + duration.minute : @end_time
+    return @end_time if @end_time
+    duration ? start_time + duration.minute : 0
   end
 
   def slot_steps
@@ -66,15 +68,15 @@ class Availability < ActiveRecord::Base
   end
 
   def virtual_slots
-    unavailable_times = slots.pluck(:start_time)
+    unavailable_times = slots.pluck(:start_time, :member_id)
 
     slot_steps.map do |start_time, end_time|
       Slot.new(
-        member_id: member_id,
+        member_id: unavailable_times.detect { |item| item.first == start_time }.try(:last),
         availability_id: id,
         start_time: start_time,
         end_time: end_time,
-        available: !start_time.in?(unavailable_times)
+        available: !start_time.in?(unavailable_times.map(&:first))
       )
     end
   end
@@ -82,11 +84,7 @@ class Availability < ActiveRecord::Base
   protected
 
   def set_duration
-    self.duration = if start_time.is_a?(String) && end_time.is_a?(String)
-      (parse_time(end_time) - parse_time(start_time)) / 1.minute
-    else
-      (end_time - start_time) / 1.minute
-    end
+    self.duration = (end_time - start_time) / 1.minute
   end
 
   def set_wday
@@ -95,13 +93,6 @@ class Availability < ActiveRecord::Base
 
   def set_community
     self.community = member.community
-  end
-
-  def parse_time(time)
-    return nil unless time
-    return time if time.class.in? [DateTime, Time]
-
-    "#{time[1]}-#{time[2]}-#{time[3]} #{time[4]}:#{time[5]}".to_time
   end
 
   def start_time_must_less_than_end_time

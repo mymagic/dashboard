@@ -34,7 +34,10 @@ Rails.application.routes.draw do
       resources :availabilities do
         resource :slots, path: 'slots/:hour/:minute',
           constraints: { hour: /\d{1,2}/, minute: /\d{1,2}/ } do
-          post :reserve, to: 'slots#create', on: :collection
+          collection do
+            post :reserve, to: 'slots#create'
+            delete :release, to: 'slots#destroy'
+          end
         end
       end
     end

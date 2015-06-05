@@ -5,7 +5,7 @@ class AvailabilitiesController < ApplicationController
   load_and_authorize_resource through: [:member, :current_community]
 
   def index
-    @availabilities = @availabilities.by_date(date_params) if date_params.present?
+    @availabilities = @availabilities.by_date(date_params).ordered if date_params.present?
   end
 
   def new
@@ -21,14 +21,14 @@ class AvailabilitiesController < ApplicationController
 
   def update
     @availability.slots.destroy_all
-    @availability.save
+    update_availability
 
     redirect_to community_member_availabilities_path(current_community, @member),
                 notice: 'Availability has successfully updated.'
   end
 
   def create
-    if @availability.update(start_time: parse_time('start_time'), end_time: parse_time('end_time'))
+    if update_availability
       redirect_to community_member_availabilities_path(current_community, @member),
                   notice: 'Availability has successfully created.'
     else
@@ -66,7 +66,16 @@ class AvailabilitiesController < ApplicationController
 
   def parse_time(param_name)
     root_params = params[:availability]
+    time_zone   = root_params[:time_zone]
 
-    "#{root_params[param_name + '(4i)']}:#{root_params[param_name + '(5i)']}".to_time
+    time = "#{root_params[param_name + '(4i)']}:#{root_params[param_name + '(5i)']}".to_time
+
+    ActiveSupport::TimeZone.new(time_zone)
+                           .local_to_utc(time)
+                           .in_time_zone(time_zone)
+  end
+
+  def update_availability
+    @availability.update(start_time: parse_time('start_time'), end_time: parse_time('end_time'))
   end
 end
