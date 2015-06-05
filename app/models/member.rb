@@ -61,6 +61,8 @@ class Member < ActiveRecord::Base
   has_many :discussions, foreign_key: :author_id
   has_many :comments, foreign_key: :author_id
 
+  has_many :activities, foreign_key: :owner_id, dependent: :destroy
+
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
 

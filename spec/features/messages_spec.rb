@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Messages', type: :feature, js: false do
-
   shared_examples "sending a new message" do
     it 'allows to send a new message' do
       visit community_member_messages_path(community, bob)

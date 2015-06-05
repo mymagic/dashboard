@@ -1,5 +1,13 @@
 <%
-  title 'Welcome'
-  page_header 'Welcome'
+  title 'Dashboard'
+  page_header "Activity feed for #{ current_community.name }"
 %>
-<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+
+<div class="row">
+  <div class="col-sm-8">
+    <%= render partial: 'activities' %>
+  </div>
+  <div class="col-sm-4">
+    <!-- Office Hours -->
+  </div>
+</div>

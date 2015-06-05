@@ -55,6 +55,8 @@ class Ability
     cannot :invite_company_member, Company
     cannot :have, CompaniesMembersPosition
 
+    can :read, Activity
+
     can :read, Community
 
     case member.role

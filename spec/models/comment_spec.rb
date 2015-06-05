@@ -20,4 +20,18 @@ RSpec.describe Comment, type: :model do
       end
     end
   end
+
+  context 'activitiy' do
+    context 'after creating a comment' do
+      let!(:comment) { create(:comment) }
+      it 'created a new comment activity' do
+        expect(
+          CommentActivity.find_by(
+            owner: comment.author,
+            comment: comment,
+            discussion: comment.discussion)
+        ).to_not be_nil
+      end
+    end
+  end
 end

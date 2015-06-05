@@ -36,7 +36,6 @@ RSpec.describe 'Registrations', type: :feature, js: false do
     end
 
     context 'as regular member' do
-
       scenario 'changing my first name' do
         as_user member
         visit root_path
@@ -56,21 +55,10 @@ RSpec.describe 'Registrations', type: :feature, js: false do
         log_in member.community, member.email, 'newpassword'
         expect_to_be_signed_in
       end
-
     end
 
     context 'as mentor' do
       background { as_user mentor }
-      scenario 'changing my first name' do
-        visit root_path
-        within(:css, 'nav.navbar-member') do
-          expect(page).to have_content(mentor.first_name)
-        end
-        update_my_account(community: community, first_name: 'NewFirstName')
-        within(:css, 'nav.navbar-member') do
-          expect(page).to have_content('NewFirstName')
-        end
-      end
       given(:user) { administrator }
       it_behaves_like 'changing first name'
     end
@@ -100,37 +88,21 @@ RSpec.describe 'Registrations', type: :feature, js: false do
 
     context 'as administrator' do
       background { as_user administrator }
-      scenario 'canceling my account' do
-        cancel_my_account(community)
-        expect_to_be_signed_out
-      end
       it_behaves_like "canceling account"
     end
 
     context 'as staff' do
       background { as_user staff }
-      scenario 'canceling my account' do
-        cancel_my_account(community)
-        expect_to_be_signed_out
-      end
       it_behaves_like "canceling account"
     end
 
     context 'as regular member' do
       background { as_user member }
-      scenario 'canceling my account' do
-        cancel_my_account(community)
-        expect_to_be_signed_out
-      end
       it_behaves_like "canceling account"
     end
 
     context 'as mentor' do
       background { as_user mentor }
-      scenario 'canceling my account' do
-        cancel_my_account(community)
-        expect_to_be_signed_out
-      end
       it_behaves_like "canceling account"
     end
   end

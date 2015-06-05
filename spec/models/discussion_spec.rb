@@ -30,4 +30,17 @@ RSpec.describe Discussion, type: :model do
     subject(:followable) { create(:discussion) }
     it_behaves_like 'followable'
   end
+
+  context 'activitiy' do
+    context 'after creating a discussion' do
+      let!(:discussion) { create(:discussion) }
+      it 'created a new discussion activity' do
+        expect(
+          DiscussionActivity.find_by(
+            owner: discussion.author,
+            discussion: discussion)
+        ).to_not be_nil
+      end
+    end
+  end
 end

@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150525101344) do
+ActiveRecord::Schema.define(version: 20150529075136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "owner_id",                null: false
+    t.integer  "community_id",            null: false
+    t.integer  "resource_id",             null: false
+    t.string   "resource_type",           null: false
+    t.integer  "secondary_resource_id"
+    t.string   "secondary_resource_type"
+    t.json     "data"
+    t.string   "type",                    null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "activities", ["owner_id"], name: "index_activities_on_owner_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "author_id"
@@ -170,9 +185,9 @@ ActiveRecord::Schema.define(version: 20150525101344) do
     t.string   "time_zone",      null: false
     t.integer  "mentor_id",      null: false
     t.integer  "participant_id"
+    t.integer  "community_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.integer  "community_id"
   end
 
   add_index "office_hours", ["community_id"], name: "index_office_hours_on_community_id", using: :btree

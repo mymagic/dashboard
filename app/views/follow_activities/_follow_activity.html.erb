@@ -1,0 +1,3 @@
+<%= render layout: 'shared/activity', locals: { activity: follow_activity } do %>
+  started following <%= followable_link(follow_activity.followable) %>
+<% end %>

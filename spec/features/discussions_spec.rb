@@ -31,7 +31,6 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
   end
 
-
   shared_examples "adding a comment" do
     it "adds a new comment to a discussion" do
       visit community_discussions_path(community)
@@ -63,8 +62,10 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       expect(page).to have_content 'You are now following the discussion.'
 
       visit community_discussions_path(community)
-      expect(page).to_not have_content '1 follower'
-      expect(page).to have_content '2 followers'
+      expect(page).to_not have_content '1 follower and 1 reply, '\
+                      'latest from William Shakespeare.'
+      expect(page).to have_content '2 followers and 1 reply, '\
+                      'latest from William Shakespeare.'
     end
   end
 

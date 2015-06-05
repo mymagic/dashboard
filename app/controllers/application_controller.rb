@@ -61,10 +61,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def after_sign_out_path_for(_resource_or_scope)
-    current_community ? community_path(current_community) : root_path
-  end
-
   def access_denied(exception)
     if current_member
       msg = exception.message

@@ -11,7 +11,13 @@ class Comment < ActiveRecord::Base
 
   scope :ordered, -> { order(created_at: :asc) }
 
+  after_create :create_activity
+
   protected
+
+  def create_activity
+    CommentActivity.create(owner: author, comment: self, discussion: discussion)
+  end
 
   def set_author_as_follower
     return if discussion.followers.include? author

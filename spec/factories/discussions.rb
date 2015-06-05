@@ -3,6 +3,5 @@ FactoryGirl.define do
     title { generate(:title) }
     body { generate(:body) }
     author
-    community { author.community }
   end
 end

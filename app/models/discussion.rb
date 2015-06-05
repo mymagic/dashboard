@@ -18,6 +18,8 @@ class Discussion < ActiveRecord::Base
   validates :title, :body, :author, :community, presence: true
   validate :ensure_author_follows, on: :create
 
+  after_create :create_activity
+
   FILTERS = %i(recent hot popular unanswered).freeze
   scope :filter_by, ->(filter) do
     case filter.try(:to_sym)
@@ -33,6 +35,10 @@ class Discussion < ActiveRecord::Base
   end
 
   protected
+
+  def create_activity
+    DiscussionActivity.create(owner: author, resource: self)
+  end
 
   def set_community
     self.community = author.community

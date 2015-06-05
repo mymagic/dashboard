@@ -24,6 +24,13 @@ module MembersHelper
     ], ' ')
   end
 
+  def member_link(member)
+    safe_join([
+      member_avatar_link(member),
+      member_name_link(member)
+    ], ' ')
+  end
+
   def member_avatar_link(member)
     link_to(
       image_tag(member.avatar.url(:icon), class: 'img-rounded'),
