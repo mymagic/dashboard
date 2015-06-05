@@ -61,7 +61,7 @@ RSpec.describe 'Members', type: :feature, js: false do
             to have_content("Your password was set successfully. "\
                             "You are now signed in.")
           visit community_company_path(community, company)
-          within ".company-members" do
+          within ".company__members" do
             expect(page).to have_content("Johann Faust")
           end
         end

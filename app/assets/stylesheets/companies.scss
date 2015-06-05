@@ -1,12 +1,28 @@
-.company-thumb-wrapper {
-  width: 200px;
-  height: 200px;
-  text-align: center;
-  margin: 0 auto;
-  img {
-    display: inline-block;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+.company {
+  &__new_position {
+    text-align: center;
+    margin: 15px 0;
+  }
+  &__sidebar {
+    &__logo, &__website {
+      text-align: center;
+    }
+    &__logo, &__website, &__description {
+      margin-bottom: 10px;
+    }
+    &__social_media_links {
+      text-align: center;
+      margin-bottom: 10px;
+      a {
+        margin: 0 5px;
+      }
+    }
+  }
+  &__member {
+    &__caption {
+      h4 {
+        font-size: 14px;
+      }
+    }
   }
 }
