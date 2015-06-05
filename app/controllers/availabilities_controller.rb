@@ -20,8 +20,8 @@ class AvailabilitiesController < ApplicationController
   end
 
   def update
-    @availability.slots.destroy_all
     update_availability
+    @availability.slots.destroy_all
 
     redirect_to community_member_availabilities_path(current_community, @member),
                 notice: 'Availability has successfully updated.'
@@ -48,7 +48,6 @@ class AvailabilitiesController < ApplicationController
   def availability_params
     params.require(:availability)
           .permit(
-            :date,
             :slot_duration,
             :time_zone,
             :recurring,
@@ -76,6 +75,13 @@ class AvailabilitiesController < ApplicationController
   end
 
   def update_availability
-    @availability.update(start_time: parse_time('start_time'), end_time: parse_time('end_time'))
+    # Seems like cancancan does not auto update :date params
+    availability_params = params[:availability]
+
+    @availability.update(
+      start_time: parse_time('start_time'),
+      end_time: parse_time('end_time'),
+      date: "#{availability_params['date(1i)']}-#{availability_params['date(2i)']}-#{availability_params['date(3i)']}"
+    )
   end
 end
