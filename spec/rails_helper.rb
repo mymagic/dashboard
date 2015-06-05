@@ -8,6 +8,7 @@ require 'shoulda/matchers'
 require "cancan/matchers"
 require 'capybara/rspec'
 require 'capybara/email/rspec'
+require 'capybara/poltergeist'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -60,6 +61,8 @@ RSpec.configure do |config|
   config.include ControllerMacros, type: :controller
   config.include FeatureHelper, type: :feature
   config.include TaskHelper, type: :task
+
+  Capybara.javascript_driver = :poltergeist
 
   config.before(:each, direct_upload: true) do
     presigned_post = double(fields: {}, url: double(to_s: '', host: ''))

@@ -4,6 +4,10 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with :deletion
   end
 
+  config.before(:each, js: true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
   config.before(:each) do |example|
     if example.metadata[:elasticsearch].present?
       DatabaseCleaner.strategy = :truncation

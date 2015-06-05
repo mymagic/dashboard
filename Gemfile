@@ -120,6 +120,9 @@ group :test do
 
   # Email spec
   gem 'capybara-email'
+
+  # Headless browser
+  gem 'poltergeist'
 end
 
 group :production, :staging do
