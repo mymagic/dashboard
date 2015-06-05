@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529075136) do
+ActiveRecord::Schema.define(version: 20150605082022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,14 +217,14 @@ ActiveRecord::Schema.define(version: 20150529075136) do
 
   create_table "social_media_links", force: :cascade do |t|
     t.string  "service"
-    t.string  "handle"
+    t.string  "url"
     t.integer "attachable_id"
     t.string  "attachable_type"
     t.integer "community_id"
   end
 
   add_index "social_media_links", ["community_id"], name: "index_social_media_links_on_community_id", using: :btree
-  add_index "social_media_links", ["service", "handle", "attachable_id", "attachable_type", "community_id"], name: "index_social_media_links_on_unique_keys", unique: true, using: :btree
+  add_index "social_media_links", ["service", "url", "attachable_id", "attachable_type", "community_id"], name: "index_social_media_links_on_unique_keys", unique: true, using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"

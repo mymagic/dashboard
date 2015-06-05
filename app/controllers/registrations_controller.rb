@@ -1,7 +1,4 @@
 class RegistrationsController < Devise::RegistrationsController
-  include SocialMediaLinksConcern
-  before_action only: [:edit, :new] { social_media_links(@member) }
-
   def new
     head :forbidden
   end
