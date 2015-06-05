@@ -1,5 +1,29 @@
 .member-group {
   margin: 15px 0 15px 0;
+  .member {
+    height: 250px;
+    max-width: 150px;
+    h4, p {
+      @include text-overflow;
+    }
+    h4 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 12px;
+    }
+    &__caption{
+      text-align: center;
+    }
+    &__role {
+      display: block;
+      margin: 3px 0;
+      color: darken(#FFF, 50);
+    }
+    &__avatar {
+      border: 0;
+    }
+  }
 }
 
 .member-thumb-wrapper {
@@ -12,30 +36,5 @@
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-  }
-}
-
-.member-wrapper {
-  height: 250px;
-  max-width: 150px;
-  .member-role {
-    display: block;
-    margin: 3px 0;
-    color: darken(#FFF, 50);
-  }
-  .caption {
-    text-align: center;
-  }
-  img.thumbnail {
-    border: 0;
-  }
-  h4, p {
-    @include text-overflow;
-  }
-  h4 {
-    font-size: 14px;
-  }
-  p {
-    font-size: 12px;
   }
 }

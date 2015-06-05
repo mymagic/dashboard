@@ -13,7 +13,7 @@ module MembersHelper
     content_tag(
       'span',
       role.humanize,
-      class: "member-role #{ role }",
+      class: "member__role member_role--#{ role }",
       title: role.to_s.humanize,)
   end
 
