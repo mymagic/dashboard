@@ -1,11 +1,18 @@
-<%= link_to community_discussion_path(discussion.community, discussion), class: "discussion-group-item" do %>
-  <div class="col-lg-8">
-    <h3><%= discussion.title %></h3>
-    Posted by <%= discussion.author.full_name %>, <%= time_tag discussion.created_at %>
-  </div>
-  <div class="col-lg-4 text-right">
-    <%- discussion.followers.each do |follower| %>
-      <%= image_tag(follower.avatar.url(:icon), class: 'img-rounded') %>
+<div class="discussion-group-item">
+  <div class="col-lg-9">
+    <h3>
+      <%= link_to discussion.title, community_discussion_path(discussion.community, discussion) %>
+    </h3>
+    <p class='small text-muted'>
+      <%= discussion_meta(discussion) %>
+    </p>
+    <%- discussion.tags.each do |tag| %>
+      <%= link_to_tag tag %>
     <% end %>
   </div>
-<% end %>
+  <div class="col-lg-3 text-right">
+    <%- discussion.followers.first(20).each do |follower| %>
+      <%= member_avatar_link follower %>
+    <% end %>
+  </div>
+</div>

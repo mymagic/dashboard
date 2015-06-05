@@ -55,4 +55,8 @@ module EventsHelper
     times['Timezone'] = time_zone
     times
   end
+
+  def event_link(event)
+    link_to event.title, community_event_path(current_community, event)
+  end
 end
