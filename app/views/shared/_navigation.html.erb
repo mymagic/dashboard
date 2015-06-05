@@ -20,7 +20,6 @@
       <div class="navbar-collapse collapse" id="navbar">
         <ul class="nav navbar-nav">
           <% if current_community %>
-            <%= nav_link "Welcome", community_path(current_community) %>
             <%= nav_link "Discussions", [current_community, Discussion] if can? :read, Discussion %>
             <%= nav_link "Members", [current_community, Member] if can? :read, Member %>
             <%= nav_link "Companies", [current_community, Company] if can? :read, Company %>
