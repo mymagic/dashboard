@@ -215,7 +215,7 @@ class Member < ActiveRecord::Base
       end
 
       def last_chat_participant
-        chat_participants.last
+        chat_participants.first
       end
     end
   end
