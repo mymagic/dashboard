@@ -2,9 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'Members', type: :feature, js: false do
   feature 'Community Members' do
-    given!(:community) { create(:community) }
+    given(:community) { create(:community) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
-    given!(:member) { create(:member, :confirmed, community: community) }
+    given!(:regular_member) do
+      create(:member, :confirmed, community: community)
+    end
     given!(:mentor) { create(:mentor, :confirmed, community: community) }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
@@ -29,7 +31,7 @@ RSpec.describe 'Members', type: :feature, js: false do
         background { visit community_members_path(community) }
         scenario 'showing all members' do
           within '.member-group' do
-            [administrator, staff, member, mentor, manager].each do |m|
+            [administrator, staff, regular_member, mentor, manager].each do |m|
               expect(page).to have_content m.send(:full_name)
             end
           end
@@ -40,7 +42,7 @@ RSpec.describe 'Members', type: :feature, js: false do
           end
           within '.member-group' do
             expect(page).to have_content mentor.full_name
-            [administrator, staff, member, manager].each do |m|
+            [administrator, staff, regular_member, manager].each do |m|
               expect(page).to_not have_content m.send(:full_name)
             end
           end
@@ -52,7 +54,7 @@ RSpec.describe 'Members', type: :feature, js: false do
           within '.member-group' do
             expect(page).to have_content administrator.full_name
             expect(page).to have_content staff.full_name
-            [member, mentor, manager].each do |m|
+            [regular_member, mentor, manager].each do |m|
               expect(page).to_not have_content m.send(:full_name)
             end
           end
@@ -62,7 +64,7 @@ RSpec.describe 'Members', type: :feature, js: false do
             click_link 'Members'
           end
           within '.member-group' do
-            expect(page).to have_content member.full_name
+            expect(page).to have_content regular_member.full_name
             expect(page).to have_content manager.full_name
             [administrator, staff, mentor].each do |m|
               expect(page).to_not have_content m.send(:full_name)
@@ -82,6 +84,10 @@ RSpec.describe 'Members', type: :feature, js: false do
           click_link 'Follow'
           expect(page).
             to have_content("You are now following #{ other_member.full_name }")
+
+          open_email(other_member.email)
+          expect(current_email.subject).
+            to eq "#{ member.full_name } has started following you"
         end
       end
     end
@@ -132,6 +138,7 @@ RSpec.describe 'Members', type: :feature, js: false do
     end
 
     context 'as member' do
+      given(:member) { regular_member }
       background { as_user member }
       it_behaves_like 'following another member'
       it_behaves_like 'filtering the directory'
@@ -143,14 +150,16 @@ RSpec.describe 'Members', type: :feature, js: false do
     end
 
     context 'as staff' do
-      background { as_user staff }
+      given(:member) { staff }
+      background { as_user member }
       it_behaves_like 'following another member'
       it_behaves_like 'managing the company'
       it_behaves_like 'filtering the directory'
     end
 
     context 'as manager' do
-      background { as_user manager }
+      given(:member) { manager }
+      background { as_user member }
       it_behaves_like 'following another member'
       it_behaves_like 'managing the company'
       it_behaves_like 'filtering the directory'

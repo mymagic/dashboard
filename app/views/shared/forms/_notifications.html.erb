@@ -1,0 +1,11 @@
+<%= form.simple_fields_for :notifications do |n_form| %>
+  <%- form.object.notifications.each do |action, setting| %>
+    <%= n_form.input(
+          action,
+          as: :boolean,
+          label: t("notifications.labels.#{ action }"),
+          checked_value: true,
+          unchecked_value: false,
+          input_html: { checked: setting == "true" } ) %>
+  <% end %>
+<% end %>

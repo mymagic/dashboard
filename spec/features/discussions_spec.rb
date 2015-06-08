@@ -41,6 +41,10 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       end
       expect(page).to have_content 'Comment was successfully created.'
       expect(page).to have_content 'Definitely to be.'
+
+      open_email(discussion.author.email)
+      expect(current_email.subject).
+        to eq "#{ member.full_name } commented on #{ discussion.title }"
     end
   end
 
@@ -123,7 +127,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
     given(:staff) { create(:staff, :confirmed, community: community) }
     given(:mentor) { create(:mentor, :confirmed, community: community) }
-    given(:member) { create(:member, :confirmed, community: community) }
+    given(:regular_member) { create(:member, :confirmed, community: community) }
     given!(:unanswered_discussion) do
       create(:discussion, author: member, title: 'No Answer For Me')
     end
@@ -146,7 +150,8 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
 
     context 'as administrator' do
-      background { as_user administrator }
+      given(:member) { administrator }
+      background { as_user member }
       it_behaves_like "browsing the discussions page"
       it_behaves_like "creating a new discussion"
       it_behaves_like "following and unfollowing a discussion"
@@ -158,7 +163,8 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
 
     context 'as staff' do
-      background { as_user staff }
+      given(:member) { staff }
+      background { as_user member }
       it_behaves_like "browsing the discussions page"
       it_behaves_like "creating a new discussion"
       it_behaves_like "following and unfollowing a discussion"
@@ -168,7 +174,8 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
 
     context 'as mentor' do
-      background { as_user mentor }
+      given(:member) { mentor }
+      background { as_user member }
       it_behaves_like "browsing the discussions page"
       it_behaves_like "creating a new discussion"
       it_behaves_like "following and unfollowing a discussion"
@@ -178,6 +185,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     end
 
     context 'as member' do
+      given(:member) { regular_member }
       background { as_user member }
       it_behaves_like "browsing the discussions page"
       it_behaves_like "creating a new discussion"

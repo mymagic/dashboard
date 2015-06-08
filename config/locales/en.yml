@@ -1,4 +1,9 @@
 en:
+  notifications:
+    labels:
+      follower_notification: when someone starts following me
+      comment_notification: when someone comments on a discussion I follow
+      message_notification: when someone sends me a new message
   activerecord:
     errors:
       models:

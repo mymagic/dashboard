@@ -1,0 +1,11 @@
+<p>
+<%= @sender.full_name %> has sent you a new message:
+</p>
+<div style="background-color: #EEE; padding: 15px;">
+  <p>
+    <%= @body %>
+  </p>
+</div>
+<p>
+  <%= link_to("Click here to continue the conversation.", [@receiver.community, @sender, Message]) %>
+</p>

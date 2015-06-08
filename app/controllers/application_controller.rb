@@ -39,6 +39,7 @@ class ApplicationController < ActionController::Base
       :time_zone,
       :password,
       :password_confirmation,
+      notifications: NotificationMailer.action_methods.map(&:to_sym),
       social_media_links_attributes: [:id, :_destroy, :url, :service]
     ]
 
