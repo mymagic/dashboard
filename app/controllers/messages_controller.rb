@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
                 class: 'Member',
                 id_param: :member_id,
                 only: [:create, :index]
+  before_action :redirect_if_invalid_receiver, only: :index
   load_and_authorize_resource :message, through: :current_member, except: :index
 
   after_action :mark_messages_as_read, only: :index
@@ -42,5 +43,9 @@ class MessagesController < ApplicationController
     @messages.
       where.not(sender: current_member).
       update_all(unread: false)
+  end
+
+  def redirect_if_invalid_receiver
+    authorize! :read_messages_with, @receiver if @receiver.present?
   end
 end
