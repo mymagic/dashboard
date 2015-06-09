@@ -16,7 +16,6 @@
         <%= nav_link "Members", community_admin_members_path(current_community) if can? :administrate, Member %>
         <%= nav_link "Positions", community_admin_positions_path(current_community) if can? :administrate, Position %>
         <%= nav_link "Companies Members Positions", community_admin_companies_members_positions_path(current_community) if can? :administrate, CompaniesMembersPosition %>
-        <%= nav_link "Office Hours", community_admin_office_hours_path(current_community) if can? :administrate, OfficeHour %>
         <%= nav_link "Events", community_admin_events_path(current_community) if can? :administrate, Event %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
