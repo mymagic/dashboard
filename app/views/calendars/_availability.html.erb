@@ -1,0 +1,15 @@
+<div class='availability-mentor clearfix'>
+  <%= image_tag member.avatar.url(:icon), class: 'availability-mentor__image' %>
+  <span class='availability-mentor__full-name'><%= truncate member.full_name, length: 15 %></span>
+  <div class='pull-right'>
+    <%=
+    link_to(member == current_member ? 'View' : 'Reserve',
+            community_member_availability_slots_path(
+              current_community,
+              member,
+              year: date.year,
+              month: date.month,
+              day: date.day),
+            class: 'availability-mentor__reserve-btn btn btn-success btn-xs') %>
+  </div>
+</div>

@@ -34,13 +34,13 @@ class Ability
   end
 
   def reserve_slots(member)
-    can :create, Slot do |slot|
+    can [:create, :reserve], Slot do |slot|
       slot.availability.member_id != member.id
     end
   end
 
   def manage_slots(member)
-    can [:create, :update, :destroy], Slot do |slot|
+    can [:update, :destroy], Slot do |slot|
       slot.member_id == member.id || slot.availability.member_id == member.id
     end
   end
@@ -71,8 +71,11 @@ class Ability
 
       can :manage, Position
 
-      can :manage, Availability
-      can [:read, :update, :destroy], Slot
+      can :read, Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
       reserve_slots(member)
 
       can :manage, SocialMediaLink
@@ -133,7 +136,7 @@ class Ability
         other_member.id != member.id
       end
 
-      can [:read, :create], Availability
+      can :read, Availability
       can :manage, Availability, member_id: member.id
 
       can :read, Slot
@@ -166,7 +169,7 @@ class Ability
 
       can :read, :calendar
 
-      can [:read, :create], Availability
+      can :read, Availability
       can :manage, Availability, member_id: member.id
 
       can :read, Slot
@@ -217,7 +220,7 @@ class Ability
         other_member.id != member.id
       end
 
-      can [:read, :create], Availability
+      can :read, Availability
       can :manage, Availability, member_id: member.id
 
       can :read, Slot

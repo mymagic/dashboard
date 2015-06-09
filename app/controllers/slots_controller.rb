@@ -9,8 +9,14 @@ class SlotsController < ApplicationController
 
   def create
     if @slot.update(start_time: @start_time, end_time: @end_time, member: current_member)
-      redirect_to community_member_availability_path(current_community, @member, @availability),
-        notice: 'You have successfully reserved the slot.'
+      redirect_to(
+        community_member_availability_slots_path(
+          current_community,
+          @member,
+          year: @availability.date.year,
+          month: @availability.date.month,
+          day: @availability.date.day),
+        notice: 'You have successfully reserved the slot.')
     else
       redirect_to :back, alert: 'Error creating slot.'
     end
@@ -19,8 +25,14 @@ class SlotsController < ApplicationController
   def destroy
     @availability.slots.where(start_time: @start_time, end_time: @end_time).destroy_all
 
-    redirect_to community_member_availability_path(current_community, @member, @availability),
-      notice: 'You have successfully released the slot.'
+    redirect_to(
+      community_member_availability_slots_path(
+        current_community,
+        @member,
+        year: @availability.date.year,
+        month: @availability.date.month,
+        day: @availability.date.day),
+      notice: 'You have successfully released the slot.')
   end
 
   protected

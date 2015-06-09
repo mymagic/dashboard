@@ -47,7 +47,9 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:manage, SocialMediaLink) }
 
       # Availability
-      it { is_expected.to be_able_to(:manage, Availability) }
+      it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
+      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
 
       # Slot
       it { is_expected.to be_able_to(:read, Slot) }
@@ -111,7 +113,6 @@ RSpec.describe Member, type: :model do
 
       # Availability
       it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
-      it { is_expected.to be_able_to(:create, FactoryGirl.build(:availability)) }
       it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
       it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
 
@@ -174,7 +175,6 @@ RSpec.describe Member, type: :model do
 
       # Availability
       it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
-      it { is_expected.to be_able_to(:create, FactoryGirl.build(:availability)) }
       it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
       it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
 
@@ -241,7 +241,6 @@ RSpec.describe Member, type: :model do
 
       # Availability
       it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
-      it { is_expected.to be_able_to(:create, FactoryGirl.build(:availability)) }
       it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
       it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
 

@@ -4,6 +4,9 @@ $ ->
     .on 'ujs', ->
       setCalendars()
 
+    .on 'focus', ':not(.popover, .availability)', ->
+      $('.popover').popover('hide')
+
     .on 'click', '.calendar .fc-event-container.event', ->
       communitySlug = $('body').data('community-slug')
       window.location.href = Routes.community_event_path(communitySlug, $(@).data('id'))
@@ -29,7 +32,7 @@ $ ->
                         .data('date'))
 
       $.ajax
-        url: Routes.community_availability_slots_path(communitySlug, date.year(), date.month() + 1, date.date())
+        url: Routes.community_availability_calendar_path(communitySlug, date.year(), date.month() + 1, date.date())
         data: { member_id: memberId } if memberId
         success: (data) ->
           self.popover

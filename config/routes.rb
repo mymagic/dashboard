@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   resources :communities, path: '', except: :index do
     resource  :calendar, only: :show
     get 'availabilities/:year/:month/:day',
-      to: 'availabilities#index',
-      as: 'availability_slots',
+      to: 'availabilities#calendar',
+      as: 'availability_calendar',
       constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
 
     resources :messages, only: :index do
@@ -28,10 +28,10 @@ Rails.application.routes.draw do
       resource  :calendar, only: :show
       resources :messages
       get 'availabilities/:year/:month/:day',
-        to: 'availabilities#index',
+        to: 'availabilities#slots',
         as: 'availability_slots',
         constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
-      resources :availabilities do
+      resources :availabilities, except: [:show] do
         resource :slots, path: 'slots/:hour/:minute',
           constraints: { hour: /\d{1,2}/, minute: /\d{1,2}/ } do
           collection do

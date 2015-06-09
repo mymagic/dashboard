@@ -175,6 +175,9 @@ class Member < ActiveRecord::Base
   concerning :Availabilities do
     included do
       has_many :availabilities, dependent: :destroy
+      scope :by_availability_date, ->(date) {
+        joins(:availabilities).where(availabilities: { date: date }).uniq
+      }
     end
   end
 

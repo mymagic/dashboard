@@ -25,8 +25,9 @@ class Availability < ActiveRecord::Base
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
-  validate :start_time_must_less_than_end_time
+  validate :start_time_must_be_less_than_end_time
   validate :divisible_by_slot_duration
+
 
   # Callbacks
   before_validation :set_duration, if: -> { start_time && end_time }
@@ -35,7 +36,7 @@ class Availability < ActiveRecord::Base
 
   # Scopes
   scope :ordered, -> { order(time: :desc) }
-  scope :by_date, -> (date) { where("date(date) = '#{date}'") }
+  scope :by_date, -> (date) { where(date: date) }
   scope :by_daterange, -> (start_date, end_date) do
     where("(date >= '#{start_date}') AND (date <= '#{end_date}')")
   end
@@ -72,7 +73,9 @@ class Availability < ActiveRecord::Base
 
     slot_steps.map do |start_time, end_time|
       Slot.new(
-        member_id: unavailable_times.detect { |item| item.first == start_time }.try(:last),
+        member_id: unavailable_times.detect do |item|
+          item.first == start_time
+        end.try(:last),
         availability_id: id,
         start_time: start_time,
         end_time: end_time,
@@ -95,7 +98,7 @@ class Availability < ActiveRecord::Base
     self.community = member.community
   end
 
-  def start_time_must_less_than_end_time
+  def start_time_must_be_less_than_end_time
     return unless start_time && end_time
 
     if start_time >= end_time

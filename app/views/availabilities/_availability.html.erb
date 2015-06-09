@@ -1,11 +1,30 @@
-<tr>
-  <td><%= availability.date %></td>
-  <td><%= availability.start_time.strftime("%H:%M %p") %></td>
-  <td><%= availability.end_time.strftime("%H:%M %p") %></td>
-  <td><%= availability.time_zone %></td>
-  <td><%= availability.slot_duration %></td>
-  <td><%= availability.location_type.try(:humanize) %></td>
-  <td><%= availability.location_detail %></td>
-  <td><%= availability.details %></td>
-  <td><%= link_to 'Delete', community_member_availability_path(current_community, availability.member, availability), class: 'btn btn-danger btn-xs', method: :delete, data: { confirm: "Are you sure you want to remove this availability?" } %></td>
-</tr>
+<div class="availabilities-group">
+  <h3>
+    <%= availability.start_time.in_time_zone(current_member.time_zone).strftime('%H:%M') %>-<%= availability.end_time.in_time_zone(current_member.time_zone).strftime('%H:%M')%> <%= current_member.time_zone %>
+    <% unless availability.time_zone == current_member.time_zone %>
+      <small>
+        <%= availability.start_time.strftime('%H:%M') %>-<%= availability.end_time.strftime('%H:%M') %> <%= availability.time_zone %>
+      </small>
+    <% end %>
+    <% if can? :manage, availability %>
+      <div class='pull-right'>
+        <%= link_to 'Edit', edit_community_member_availability_path(current_community, availability.member, availability), class: 'btn btn-default btn-xs' %>
+      </div>
+    <% end %>
+  </h3>
+  <hr>
+  <% if availability.details.present? %>
+  <p>
+    <%= availability.details %>
+  </p>
+  <hr>
+  <% end %>
+  <h4>
+    <%= availability.location_type.humanize %>: <%= availability.location_detail %>
+  </h4>
+  <table class='table table-striped'>
+    <tbody>
+      <%= render partial: 'slot', collection: availability.virtual_slots, as: :slot, locals: { availability: availability, member: @member } %>
+    </tbody>
+  </table>
+</div>

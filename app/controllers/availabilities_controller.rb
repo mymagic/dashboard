@@ -2,18 +2,23 @@ class AvailabilitiesController < ApplicationController
   before_action :authenticate_member!
 
   load_and_authorize_resource :member
-  load_and_authorize_resource through: [:member, :current_community]
+  load_and_authorize_resource(
+    through: [:member, :current_community], except: [:calendar, :slots])
 
   def index
-    @availabilities = @availabilities.by_date(date_params).ordered if date_params.present?
+  end
+
+  def calendar
+    @members = @member ? [@member] : Member.by_availability_date(date)
+    @date = date
+  end
+
+  def slots
+    @availabilities = @member.availabilities.by_date(date)
   end
 
   def new
     @availability.time_zone = current_member.time_zone
-  end
-
-  def show
-    @slots = @availability.virtual_slots
   end
 
   def edit
@@ -24,13 +29,13 @@ class AvailabilitiesController < ApplicationController
     @availability.slots.destroy_all
 
     redirect_to community_member_availabilities_path(current_community, @member),
-                notice: 'Availability has successfully updated.'
+                notice: 'Availability was successfully updated.'
   end
 
   def create
     if update_availability
       redirect_to community_member_availabilities_path(current_community, @member),
-                  notice: 'Availability has successfully created.'
+                  notice: 'Availability was successfully created.'
     else
       render 'new', alert: 'Error creating availability.'
     end
@@ -40,7 +45,7 @@ class AvailabilitiesController < ApplicationController
     @availability.destroy
 
     redirect_to community_member_availabilities_path(current_community, @member),
-                notice: 'Availability has successfully deleted.'
+                notice: 'Availability was successfully deleted.'
   end
 
   protected
@@ -57,10 +62,14 @@ class AvailabilitiesController < ApplicationController
           )
   end
 
-  def date_params
-    return nil if params[:month].nil? || params[:day].nil? || params[:year].nil?
-
-    "#{params[:month]}-#{params[:day]}-#{params[:year]}"
+  def date
+    if params[:year].nil? || params[:month].nil? || params[:day].nil?
+      redirect_to(
+        community_member_path(current_community, @member),
+        alert: 'Invalid date.')
+    else
+      @date = Date.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
+    end
   end
 
   def parse_time(param_name)

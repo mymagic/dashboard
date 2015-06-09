@@ -1,0 +1,10 @@
+<% title 'Availabilities' %>
+<%= render partial: 'members/header' %>
+<div class="row">
+  <div class="col-lg-8">
+    <%= render partial: 'members/navigation' %>
+    <h2 class='availability-date'><%= @date.strftime('%B %d, %Y') %></h2>
+    <%= render @availabilities %>
+  </div>
+  <%= render partial: 'members/sidebar' %>
+</div>

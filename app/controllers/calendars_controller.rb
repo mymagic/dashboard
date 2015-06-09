@@ -5,7 +5,6 @@ class CalendarsController < ApplicationController
   before_action :find_events, only: :show
 
   def show
-
   end
 
   protected
