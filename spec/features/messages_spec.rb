@@ -13,6 +13,10 @@ RSpec.describe 'Messages', type: :feature, js: false do
       within '.messages-panel__conversations' do
         expect(page).to have_content 'Lorem ipsum'
       end
+
+      open_email(bob.email)
+      expect(current_email.subject).
+        to eq "#{ alice.full_name } has sent you a new message"
     end
   end
 

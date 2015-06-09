@@ -22,6 +22,11 @@
               <%= f.input :password_confirmation, required: false %>
             <% end %>
           </div>
+          <div class="row">
+            <%= panel 'Notifications', columns: 12 do %>
+              <%= render partial: 'shared/forms/notifications', locals: { form: f } %>
+            <% end %>
+          </div>
         </div>
         <div class="col-lg-6">
           <div class="row">

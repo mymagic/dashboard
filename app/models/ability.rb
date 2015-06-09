@@ -35,6 +35,9 @@ class Ability
     can :send_message_to, Member do |receiver|
       receiver != member
     end
+    can :read_messages_with, Member do |receiver|
+      receiver != member
+    end
   end
 
   def read_messages(member)

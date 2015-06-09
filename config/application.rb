@@ -25,5 +25,8 @@ module Magic
 
     # Use local file storage for carrierwave uploaders
     config.x.uploader_storage = :file
+
+    # Add lib to autoload_paths
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

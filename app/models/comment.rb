@@ -12,8 +12,19 @@ class Comment < ActiveRecord::Base
   scope :ordered, -> { order(created_at: :asc) }
 
   after_create :create_activity
+  after_create :send_notifications
 
   protected
+
+  def send_notifications
+    discussion.followers.where.not(id: author).find_each do |receiver|
+      Notifier.deliver(
+        :comment_notification,
+        receiver,
+        author: author,
+        discussion: discussion)
+    end
+  end
 
   def create_activity
     CommentActivity.create(owner: author, comment: self, discussion: discussion)

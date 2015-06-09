@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150605082022) do
+ActiveRecord::Schema.define(version: 20150608074233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "activities", force: :cascade do |t|
     t.integer  "owner_id",                null: false
@@ -158,6 +159,7 @@ ActiveRecord::Schema.define(version: 20150605082022) do
     t.integer  "invitations_count",      default: 0
     t.integer  "community_id"
     t.integer  "follows_count"
+    t.hstore   "notifications",          default: {}, null: false
   end
 
   add_index "members", ["community_id", "email"], name: "index_members_on_community_id_and_email", unique: true, using: :btree
