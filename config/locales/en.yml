@@ -27,7 +27,3 @@ en:
           attributes:
             member:
               cannot_follow_yourself: cannot follow yourself
-        office_hour:
-          attributes:
-            participant:
-              cannot_book_own_office_hour: cannot book own office hour
