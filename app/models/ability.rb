@@ -18,10 +18,11 @@ class Ability
   end
 
   def create_messages(member)
-    can :create, Message do |message|
-      message.receiver_id != member.id
-    end
+    can :create, Message
     can :send_message_to, Member do |receiver|
+      receiver.id != member.id
+    end
+    can :read_messages_with, Member do |receiver|
       receiver != member
     end
   end

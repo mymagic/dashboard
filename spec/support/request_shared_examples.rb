@@ -53,24 +53,3 @@ shared_examples "logging out" do
     sign_out
   end
 end
-
-shared_examples "canceling account" do
-  it "cancels the members account" do
-    cancel_my_account(community)
-    expect(page).to have_content('Your account has been successfully cancelled')
-  end
-end
-
-shared_examples "changing first name" do
-  background { as_user user }
-  it "changes my first name" do
-    visit root_path
-    within(:css, 'nav.navbar-member') do
-      expect(page).to have_content(user.first_name)
-    end
-    update_my_account(community: community, first_name: 'NewFirstName')
-    within(:css, 'nav.navbar-member') do
-      expect(page).to have_content('NewFirstName')
-    end
-  end
-end

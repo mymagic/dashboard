@@ -11,11 +11,20 @@ class Follow < ActiveRecord::Base
   validate :cannot_follow_yourself, if: -> { member && followable }
 
   after_create :create_activity
+  after_create :send_notifications
 
   private
 
   def create_activity
     FollowActivity.create(owner: member, followable: followable)
+  end
+
+  def send_notifications
+    return unless followable.is_a? Member
+    Notifier.deliver(
+      :follower_notification,
+      followable,
+      follower: member)
   end
 
   def cannot_follow_yourself

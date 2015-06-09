@@ -221,6 +221,21 @@ class Member < ActiveRecord::Base
     end
   end
 
+  concerning :Notifications do
+    def receive?(action)
+      notifications[action.to_s] != "false"
+    end
+
+    # populate the notifications hash with "true" as default for each
+    # notification action.
+    def notifications
+      settings = read_attribute(:notifications)
+      NotificationMailer.action_methods.each_with_object({}) do |action, hash|
+        hash[action] = settings[action] || "true"
+      end
+    end
+  end
+
   protected
 
   def password_required?

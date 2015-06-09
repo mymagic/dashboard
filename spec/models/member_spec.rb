@@ -162,4 +162,22 @@ RSpec.describe Member, type: :model do
     subject(:followable) { create(:member) }
     it_behaves_like 'followable'
   end
+
+  context 'notifications' do
+    describe 'receive?' do
+      before do
+        member.notifications = {
+          'message_notification' => 'false',
+          'comment_notification' => 'true'
+        }
+      end
+      it 'returns true if action is not set to \'false\'' do
+        expect(member.receive?(:comment_notification)).to be_truthy
+        expect(member.receive?(:other_notification)).to be_truthy
+      end
+      it 'returns false if action is set to \'false\'' do
+        expect(member.receive?(:message_notification)).to be_falsey
+      end
+    end
+  end
 end

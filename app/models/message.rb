@@ -16,6 +16,8 @@ class Message < ActiveRecord::Base
   scope :unread, -> { where(unread: true) }
   scope :ordered, -> { order(created_at: :asc) }
 
+  after_create :send_notifications
+
   def self.search(query)
     __elasticsearch__.search({
       query: {
@@ -46,5 +48,14 @@ class Message < ActiveRecord::Base
         receiver: participant_attrs
       }
     )
+  end
+
+  private
+
+  def send_notifications
+    Notifier.deliver(
+      :message_notification,
+      receiver,
+      message: self)
   end
 end

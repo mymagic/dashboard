@@ -1,0 +1,7 @@
+<p>
+<%= @follower.full_name %> has started following you.
+</p>
+<p>
+  Click here to view the profile of: <br>
+  <%= link_to(@follower.full_name, community_member_url(@follower.community, @follower)) %>
+</p>

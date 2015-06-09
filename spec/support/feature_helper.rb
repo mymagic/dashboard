@@ -103,19 +103,20 @@ module FeatureHelper
   def update_my_account(attributes = {})
     visit edit_member_registration_path(attributes[:community])
 
+    attributes[:notifications] ||= []
+
     fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
     fill_in 'Password',  with: attributes[:password] if attributes[:password]
 
     fill_in 'Current password',  with: attributes[:current_password] if attributes[:current_password]
 
-    if attributes[:social_media_link]
-      select attributes[:social_media_link][:service], from: 'Service'
-      fill_in 'Handle', with: attributes[:social_media_link][:handle]
-    end
-
     if attributes[:password_confirmation] || attributes[:password]
       fill_in 'Password confirmation',  with: attributes[:password_confirmation] || attributes[:password]
+    end
+
+    attributes[:notifications].each do |notification|
+      uncheck notification
     end
 
     click_button 'Update'

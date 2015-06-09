@@ -119,7 +119,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
           expect(page).to have_link('Members')
           expect(page).to_not have_link('Positions', exact: true)
           expect(page).to have_link('Companies Members Positions')
-          expect(page).to_not have_link('Office Hours')
         end
       end
     end
