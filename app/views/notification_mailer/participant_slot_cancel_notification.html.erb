@@ -1,0 +1,19 @@
+<p>
+The office hour with <%= link_to(@mentor.full_name, community_member_url(@mentor.community, @mentor)) %> on
+</p>
+<p>
+  <%= @date_and_time %>
+</p>
+<p>
+  has been cancelled.
+</p>
+<p>
+  <%= link_to("Click here to manage the office hours with #{ @mentor.full_name } for this date.",
+  community_member_availability_slots_url(
+    @availability.community,
+    @availability.member,
+    year: @availability.date.year,
+    month: @availability.date.month,
+    day: @availability.date.day)
+) %>
+</p>

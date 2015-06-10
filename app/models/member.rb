@@ -233,7 +233,7 @@ class Member < ActiveRecord::Base
     # notification action.
     def notifications
       settings = read_attribute(:notifications)
-      NotificationMailer.action_methods.each_with_object({}) do |action, hash|
+      NotificationMailer::NOTIFICATIONS.each_with_object({}) do |action, hash|
         hash[action] = settings[action] || "true"
       end
     end
