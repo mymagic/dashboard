@@ -1,17 +1,6 @@
 class Ability
   include CanCan::Ability
 
-  def book_and_cancel_office_hours(member)
-    can :book, OfficeHour
-    cannot :book, OfficeHour, mentor_id: member.id
-
-    cannot :cancel, OfficeHour
-    can :cancel, OfficeHour, participant_id: member.id
-
-    cannot :destroy, OfficeHour
-    can :destroy, OfficeHour, mentor_id: member.id
-  end
-
   def can_invite(*member_types)
     member_types.map do |member_type|
       can "invite_#{ member_type }".to_sym, :members
@@ -44,6 +33,18 @@ class Ability
     end
   end
 
+  def reserve_slots(member)
+    can [:create, :reserve], Slot do |slot|
+      slot.availability.member_id != member.id
+    end
+  end
+
+  def manage_slots(member)
+    can [:update, :destroy], Slot do |slot|
+      slot.member_id == member.id || slot.availability.member_id == member.id
+    end
+  end
+
   def initialize(member)
     member ||= Member.new # guest user (not logged in)
 
@@ -66,10 +67,16 @@ class Ability
 
       can :manage, Community, id: member.community_id
 
+      can :manage, :calendar
+
       can :manage, Position
 
-      can :manage, OfficeHour
-      book_and_cancel_office_hours(member)
+      can :read, Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
+      reserve_slots(member)
 
       can :manage, SocialMediaLink
 
@@ -118,8 +125,7 @@ class Ability
       create_companies_positions(member)
       can :manage, CompaniesMembersPosition
 
-      can :read, OfficeHour
-      book_and_cancel_office_hours(member)
+      can :read, :calendar
 
       can [:create, :read], Member
       can_invite :mentor, :regular_member
@@ -129,6 +135,13 @@ class Ability
       can [:follow, :unfollow], Member do |other_member|
         other_member.id != member.id
       end
+
+      can :read, Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
+      reserve_slots(member)
 
       manage_social_media_links(member)
 
@@ -154,8 +167,14 @@ class Ability
 
       can :read, Company
 
-      can :read, OfficeHour
-      can :create, OfficeHour, mentor_id: member.id
+      can :read, :calendar
+
+      can :read, Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
+      reserve_slots(member)
 
       manage_social_media_links(member)
 
@@ -174,8 +193,7 @@ class Ability
         !event.ended?
       end
     else # a regular Member
-      can :read, OfficeHour
-      book_and_cancel_office_hours(member)
+      can :read, :calendar
 
       can :read, Company
       can [:manage_company, :invite_company_member, :manage_members_positions, :update], Company do |company|
@@ -201,6 +219,13 @@ class Ability
       can [:follow, :unfollow], Member do |other_member|
         other_member.id != member.id
       end
+
+      can :read, Availability
+      can :manage, Availability, member_id: member.id
+
+      can :read, Slot
+      manage_slots(member)
+      reserve_slots(member)
 
       manage_social_media_links(member)
 

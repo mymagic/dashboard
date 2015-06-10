@@ -8,16 +8,38 @@ Rails.application.routes.draw do
   end
 
   resources :communities, path: '', except: :index do
+    resource  :calendar, only: :show
+    get 'availabilities/:year/:month/:day',
+      to: 'availabilities#calendar',
+      as: 'availability_calendar',
+      constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+
     resources :messages, only: :index do
       get 'search', on: :collection
     end
-
+    resources :messages, only: :index do
+      get 'search', on: :collection
+    end
     resources :members, only: [:index, :show] do
       member do
         patch :follow
         delete :unfollow
       end
+      resource  :calendar, only: :show
       resources :messages
+      get 'availabilities/:year/:month/:day',
+        to: 'availabilities#slots',
+        as: 'availability_slots',
+        constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+      resources :availabilities, except: [:show] do
+        resource :slots, path: 'slots/:hour/:minute',
+          constraints: { hour: /\d{1,2}/, minute: /\d{1,2}/ } do
+          collection do
+            post :reserve, to: 'slots#create'
+            delete :release, to: 'slots#destroy'
+          end
+        end
+      end
     end
 
     get 'discussions/tagged/:tag_id', to: 'discussions#index', as: 'discussion_tag'
@@ -45,11 +67,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :office_hours, only: [:index, :create, :destroy] do
-      patch 'book', on: :member
-      delete 'cancel', on: :member
-    end
-
     get 'admin/dashboard'
 
     namespace :admin do
@@ -57,7 +74,6 @@ Rails.application.routes.draw do
       resources :events, except: [:show]
       resources :companies
       resources :companies_members_positions
-      resources :office_hours
       resources :members do
         patch 'resend_invitation', on: :member
       end

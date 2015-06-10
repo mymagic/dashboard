@@ -14,7 +14,13 @@ class ApplicationController < ActionController::Base
 
   add_flash_types :warning
 
+  layout :application_unless_xhr
+
   protected
+
+  def application_unless_xhr
+    request.xhr? ? false : 'application'
+  end
 
   def current_community
     return unless params[:community_id]

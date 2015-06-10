@@ -4,13 +4,18 @@
 #= require turbolinks
 #= require jquery-sortable
 #= require jquery.timeago
+#= require js-routes
+#= require moment
 #= require bootstrap-tagsinput
+#= require fullcalendar
 #= require nprogress
 #= require nprogress-turbolinks
 #= require typeahead.bundle
 
 #= require bootstrap-setup
 #= require elements
+#= require availabilities
+#= require calendar
 #= require messages
 #= require admin/positions
 

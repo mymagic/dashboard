@@ -14,8 +14,17 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+# Brings Rails named routes to javascript
+gem 'js-routes'
+
 # Bootstrap for views
 gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', tag: 'v3.3.4'
+
+# The Moment.js JavaScript library ready to play with the Rails Asset Pipeline
+gem 'momentjs-rails'
+
+# An asset gem containing Adam Shaw's excellent fullcalendar jquery plugin
+gem 'fullcalendar-rails'
 
 # Use simple_form for forms
 gem 'simple_form'
@@ -111,6 +120,9 @@ group :test do
 
   # Email spec
   gem 'capybara-email'
+
+  # Headless browser
+  gem 'poltergeist'
 end
 
 group :production, :staging do

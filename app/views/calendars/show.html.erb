@@ -1,0 +1,12 @@
+<% title 'Events' %>
+
+<div class="page-header">
+  <h1>Events</h1>
+  <span class='calendar-label community-events'><%= current_community.name %> Events</span>
+  <span class='calendar-label external-events'>External Events</span>
+  <span class='calendar-label office-hours'>Office hours</span>
+</div>
+
+<div class='calendar'
+     data-url='<%= community_calendar_path(current_community) %>'>
+</div>

@@ -32,6 +32,23 @@ ActiveRecord::Schema.define(version: 20150608074233) do
 
   add_index "activities", ["owner_id"], name: "index_activities_on_owner_id", using: :btree
 
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "member_id",                       null: false
+    t.boolean  "recurring",       default: false, null: false
+    t.time     "time",                            null: false
+    t.date     "date",                            null: false
+    t.string   "time_zone"
+    t.string   "location_type"
+    t.string   "location_detail"
+    t.integer  "wday"
+    t.integer  "duration"
+    t.integer  "slot_duration"
+    t.text     "details"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "community_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.integer  "author_id"
     t.integer  "discussion_id"
@@ -182,20 +199,6 @@ ActiveRecord::Schema.define(version: 20150608074233) do
   add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
-  create_table "office_hours", force: :cascade do |t|
-    t.datetime "time",           null: false
-    t.string   "time_zone",      null: false
-    t.integer  "mentor_id",      null: false
-    t.integer  "participant_id"
-    t.integer  "community_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
-  add_index "office_hours", ["community_id"], name: "index_office_hours_on_community_id", using: :btree
-  add_index "office_hours", ["mentor_id"], name: "index_office_hours_on_mentor_id", using: :btree
-  add_index "office_hours", ["participant_id"], name: "index_office_hours_on_participant_id", using: :btree
-
   create_table "positions", force: :cascade do |t|
     t.string   "name",           null: false
     t.datetime "created_at",     null: false
@@ -216,6 +219,15 @@ ActiveRecord::Schema.define(version: 20150608074233) do
 
   add_index "rsvps", ["event_id"], name: "index_rsvps_on_event_id", using: :btree
   add_index "rsvps", ["member_id"], name: "index_rsvps_on_member_id", using: :btree
+
+  create_table "slots", force: :cascade do |t|
+    t.integer  "member_id",       null: false
+    t.integer  "availability_id", null: false
+    t.time     "start_time",      null: false
+    t.time     "end_time",        null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "social_media_links", force: :cascade do |t|
     t.string  "service"

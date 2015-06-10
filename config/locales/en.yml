@@ -4,6 +4,11 @@ en:
       follower_notification: when someone starts following me
       comment_notification: when someone comments on a discussion I follow
       message_notification: when someone sends me a new message
+      mentor_slot_reserve_notification: when someone reserves an office hour with me
+      mentor_slot_cancel_notification: when someone cancels a reserved office hour with me
+      participant_slot_reserve_notification: when I reserve an office hour with someone
+      participant_slot_cancel_notification: when my reserved office hour gets cancelled
+      event_rsvp_notification: when I RSVP to an event
   activerecord:
     errors:
       models:
@@ -27,7 +32,3 @@ en:
           attributes:
             member:
               cannot_follow_yourself: cannot follow yourself
-        office_hour:
-          attributes:
-            participant:
-              cannot_book_own_office_hour: cannot book own office hour

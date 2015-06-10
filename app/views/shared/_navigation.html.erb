@@ -23,6 +23,7 @@
             <%= nav_link "Discussions", [current_community, Discussion] if can? :read, Discussion %>
             <%= nav_link "Members", [current_community, Member] if can? :read, Member %>
             <%= nav_link "Companies", [current_community, Company] if can? :read, Company %>
+            <%= nav_link "Events", community_calendar_path(current_community) if can? :read, :calendar %>
           <% else %>
             <%= nav_link "Welcome", root_path %>
           <% end %>

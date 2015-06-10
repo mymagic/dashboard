@@ -1,0 +1,61 @@
+.fc-content-skeleton td.fc-event-container {
+  color: #FFF;
+  cursor: pointer;
+
+  &.availability {
+    .fc-content {
+      background: $brand-info;
+      border-radius: 10px;
+    }
+  }
+
+  &.community-event {
+    .fc-event {
+      background: $community-event-color;
+      border-color: $community-event-color;
+    }
+  }
+
+  &.external-event {
+    .fc-event {
+      background: $external-event-color;
+      border-color: $external-event-color;
+    }
+  }
+
+
+  img {
+    margin-right: 3px;
+  }
+}
+
+.calendar {
+  &-label {
+    &:before {
+      content: ' ';
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    &.community-events {
+      &:before {
+        background: $community-event-color;
+      }
+    }
+
+    &.external-events {
+      &:before {
+        background: $external-event-color;
+      }
+    }
+
+    &.office-hours {
+      &:before {
+        background: $brand-info;
+      }
+    }
+  }
+}

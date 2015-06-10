@@ -1,0 +1,20 @@
+<%= simple_form_for([current_community, member, availability], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs">
+    <%= f.input :date, autofocus: true, wrapper_html: { class: 'datetime-inline' } %>
+    <%= f.input :slot_duration, collection: Availability::SLOT_DULATIONS %>
+    <%= f.input :start_time, as: :time, minute_step: 15, ignore_date: true, wrapper_html: { class: 'datetime-inline' } %>
+    <%= f.input :end_time, as: :time, minute_step: 15, ignore_date: true, wrapper_html: { class: 'datetime-inline' } %>
+    <%= f.input :time_zone, include_blank: 'Please select a time zone…' %>
+    <%= f.input :location_type, collection: Availability::LOCATION_TYPES.map { |type| [type.humanize, type] } %>
+    <%= f.input :location_detail %>
+    <%= f.input :details %>
+  </div>
+
+  <div class="form-actions text-right">
+    <%= f.button :submit %>
+    <% if f.object.persisted? %>
+      <%= link_to 'Delete', community_member_availability_path(current_community, member, availability), class: 'btn btn-danger', method: :delete, data: { confirm: "It will remove your slots. Are you sure you want to remove this availability?" } %>
+    <% end %>
+  </div>
+<% end %>

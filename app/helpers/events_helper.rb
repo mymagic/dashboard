@@ -43,7 +43,7 @@ module EventsHelper
     wording = []
     wording << (event.external? ? 'External' : 'Community')
     wording << 'Event' if with_event
-    style = event.external? ? 'label-default' : 'label-primary'
+    style = event.external? ? 'external-event' : 'community-event'
     content_tag('span', wording.join(' '), class: "label #{ style }")
   end
 

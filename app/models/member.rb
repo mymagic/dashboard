@@ -172,14 +172,18 @@ class Member < ActiveRecord::Base
     end
   end
 
-  concerning :OfficeHours do
+  concerning :Availabilities do
     included do
-      has_many :office_hours_as_mentor, class_name: 'OfficeHour', foreign_key: :mentor_id
-      has_many(:office_hours_as_participant,
-               class_name: 'OfficeHour',
-               foreign_key: :participant_id)
+      has_many :availabilities, dependent: :destroy
+      scope :by_availability_date, ->(date) {
+        joins(:availabilities).where(availabilities: { date: date }).uniq
+      }
+    end
+  end
 
-      accepts_nested_attributes_for :office_hours_as_mentor
+  concerning :Slots do
+    included do
+      has_many :slots, dependent: :destroy
     end
   end
 
@@ -229,7 +233,7 @@ class Member < ActiveRecord::Base
     # notification action.
     def notifications
       settings = read_attribute(:notifications)
-      NotificationMailer.action_methods.each_with_object({}) do |action, hash|
+      NotificationMailer::NOTIFICATIONS.each_with_object({}) do |action, hash|
         hash[action] = settings[action] || "true"
       end
     end
