@@ -14,7 +14,7 @@ class EventsController < ApplicationController
           redirect_to(
             community_event_path(current_community, @event),
             notice: "You RSVP'd to the event as "\
-                    "#{ rsvp_params[:state].humanize(capitalize: false) }.")
+                    "#{ @rsvp.state.humanize(capitalize: false) }.")
         end
         format.json { render json: @rsvp, status: :created }
       else

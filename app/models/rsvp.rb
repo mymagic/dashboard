@@ -17,6 +17,7 @@ class Rsvp < ActiveRecord::Base
   end
 
   after_save :create_or_update_activity
+  after_create :send_notification
 
   private
 
@@ -29,4 +30,14 @@ class Rsvp < ActiveRecord::Base
   def event_cannot_be_in_the_past
     errors.add(:event, :cannot_be_in_the_past) if event.ended?
   end
+
+  def send_notification
+    Notifier.deliver(
+      :event_rsvp_notification,
+      member,
+      event: event,
+      state: state
+    )
+  end
+
 end

@@ -9,6 +9,7 @@ class NotificationMailer < ApplicationMailer
     mentor_slot_cancel_notification
     participant_slot_reserve_notification
     participant_slot_cancel_notification
+    event_rsvp_notification
   )
 
   def follower_notification(receiver, follower:)
@@ -104,4 +105,14 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
+  def event_rsvp_notification(receiver, event:, state:)
+    @receiver = receiver
+    @event = event
+    @state = state.humanize(capitalize: false)
+    mail(
+      to: receiver.email,
+      subject: "You have RSVP'd to #{ @event.title } as #{ @state }"
+    )
+
+  end
 end

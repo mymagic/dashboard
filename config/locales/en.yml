@@ -8,6 +8,7 @@ en:
       mentor_slot_cancel_notification: when someone cancels a reserved office hour with me
       participant_slot_reserve_notification: when I reserve an office hour with someone
       participant_slot_cancel_notification: when my reserved office hour gets cancelled
+      event_rsvp_notification: when I RSVP to an event
   activerecord:
     errors:
       models:

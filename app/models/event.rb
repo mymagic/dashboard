@@ -1,18 +1,9 @@
 class Event < ActiveRecord::Base
   LOCATION_TYPES = %w( Address Skype Phone Other )
 
-  # Validations
-  before_validation :set_community, if: -> { creator.present? }
-  validates :location_detail,
-            :starts_at,
-            :ends_at,
-            :title,
-            :time_zone,
-            :creator,
-            presence: true
-  validates :location_type, inclusion: { in: LOCATION_TYPES }
-  validate :ends_at_cannot_precede_starts_at,
-           if: -> { ends_at.present? && starts_at.present? }
+  # Behaviors
+  include TimeInZone
+  time_in_zone_for :starts_at, :ends_at
 
   # Associations
   belongs_to :creator, class_name: 'Member'
@@ -32,6 +23,19 @@ class Event < ActiveRecord::Base
       where(rsvps: { state: 'not_attending' })
     end
   end
+
+  # Validations
+  before_validation :set_community, if: -> { creator.present? }
+  validates :location_detail,
+            :starts_at,
+            :ends_at,
+            :title,
+            :time_zone,
+            :creator,
+            presence: true
+  validates :location_type, inclusion: { in: LOCATION_TYPES }
+  validate :ends_at_cannot_precede_starts_at,
+           if: -> { ends_at.present? && starts_at.present? }
 
   # Scopes
   scope :upcoming, -> { where('ends_at > ?', Time.now) }

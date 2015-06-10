@@ -1,0 +1,10 @@
+<p>
+you have RSVP'd as <%= @state %> for
+</p>
+<p>
+  <%= link_to(@event.title, community_event_url(@event.community, @event)) %>
+</p>
+<p>
+  The event starts <%= @event.starts_at.strftime('%B %d, %Y %H:%M') %>.<br>
+  <%= @event.location_type %>: <%= @event.location_detail %>
+</p>
