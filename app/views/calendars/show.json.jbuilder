@@ -30,5 +30,6 @@ json.array! [@availabilities + (@events || [])].flatten do |group|
     json.id group.id
     json.title group.title
     json.start group.starts_at
+    json.css_style group.external ? 'external-event' : 'community-event'
   end
 end

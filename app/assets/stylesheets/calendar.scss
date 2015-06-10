@@ -9,6 +9,21 @@
     }
   }
 
+  &.community-event {
+    .fc-event {
+      background: $community-event-color;
+      border-color: $community-event-color;
+    }
+  }
+
+  &.external-event {
+    .fc-event {
+      background: $external-event-color;
+      border-color: $external-event-color;
+    }
+  }
+
+
   img {
     margin-right: 3px;
   }
@@ -25,9 +40,15 @@
       margin-right: 5px;
     }
 
-    &.events {
+    &.community-events {
       &:before {
-        background: $brand-primary;
+        background: $community-event-color;
+      }
+    }
+
+    &.external-events {
+      &:before {
+        background: $external-event-color;
       }
     }
 

@@ -73,4 +73,5 @@ $ ->
           element = $(element)
           element.closest('.fc-event-container')
                  .addClass(event.type.toLowerCase())
+                 .addClass(event.css_style)
                  .attr('data-id', event.id)

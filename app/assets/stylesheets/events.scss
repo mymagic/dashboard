@@ -11,3 +11,12 @@
   text-align: right;
   width: 30%;
 }
+
+.label {
+  &.community-event {
+    background-color: $community-event-color;
+  }
+  &.external-event {
+    background-color: $external-event-color;
+  }
+}
