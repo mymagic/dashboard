@@ -10,11 +10,14 @@
     <%= f.input :location_detail %>
     <%= f.input :details %>
   </div>
-
-  <div class="form-actions text-right">
-    <%= f.button :submit %>
-    <% if f.object.persisted? %>
-      <%= link_to 'Delete', community_member_availability_path(current_community, member, availability), class: 'btn btn-danger', method: :delete, data: { confirm: "It will remove your slots. Are you sure you want to remove this availability?" } %>
-    <% end %>
+  <div class="row">
+    <div class="col-lg-6">
+      <%= f.button :submit %>
+    </div>
+    <div class="col-lg-6 text-right small">
+      <% if f.object.persisted? %>
+        <%= link_to 'Delete this Availability', community_member_availability_path(current_community, member, availability), method: :delete, data: { confirm: "All slots of this availability will be removed. Are you sure you want to remove this availability?" } %>
+      <% end %>
+    </div>
   </div>
 <% end %>
