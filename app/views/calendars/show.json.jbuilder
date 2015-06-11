@@ -16,13 +16,8 @@ json.array! [@availabilities + (@events || [])].flatten do |group|
     json.avatars do
       json.array!(
         group.avatars.each_with_index.map do |avatar, index|
-          member = Member.new(id: group.member_ids[index])
-
-          if avatar.present?
-            '/' + member.avatar.icon.store_path(avatar)
-          else
-            member.avatar.icon.default_url
-          end
+          member = Member.find(group.member_ids[index])
+          member.avatar.url(:icon)
         end
       )
     end

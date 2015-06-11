@@ -37,4 +37,8 @@ module MembersHelper
       community_member_path(current_community, member)
     )
   end
+
+  def viewing_current_member?
+    @member == current_member
+  end
 end

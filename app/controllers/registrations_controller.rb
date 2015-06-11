@@ -19,4 +19,8 @@ class RegistrationsController < Devise::RegistrationsController
       resource.update_with_password(params)
     end
   end
+
+  def after_update_path_for(member)
+    community_member_path(member.community, member)
+  end
 end

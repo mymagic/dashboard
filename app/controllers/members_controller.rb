@@ -15,6 +15,7 @@ class MembersController < ApplicationController
   end
 
   def show
+    @activities = @member.activities.ordered.limit(20)
   end
 
   def new

@@ -38,3 +38,33 @@
     transform: translateY(-50%);
   }
 }
+
+
+.member {
+  &__new_position {
+    text-align: center;
+    margin: 15px 0;
+  }
+  &__sidebar {
+    &__avatar, &__positions {
+      text-align: center;
+    }
+    &__avatar, &__positions, &__description {
+      margin-bottom: 10px;
+    }
+    &__social_media_links {
+      text-align: center;
+      margin-bottom: 10px;
+      a {
+        margin: 0 5px;
+      }
+    }
+  }
+  &__member {
+    &__caption {
+      h4 {
+        font-size: 14px;
+      }
+    }
+  }
+}

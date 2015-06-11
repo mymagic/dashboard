@@ -113,6 +113,8 @@ module Admin
         :role,
         :avatar,
         :avatar_cache,
+        :description,
+        notifications: NotificationMailer.action_methods.map(&:to_sym),
         companies_positions_attributes:
           [
             :company_id,
