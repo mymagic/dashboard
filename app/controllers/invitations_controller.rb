@@ -32,6 +32,7 @@ class InvitationsController < DeviseController
       flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
       set_flash_message :notice, flash_message if is_flashing_format?
       sign_in(resource_name, resource)
+      resource.create_signup_activity if resource.is_a? Member
       respond_with resource, :location => after_accept_path_for(resource)
     else
       respond_with_navigational(resource){ render :edit }

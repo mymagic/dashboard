@@ -74,10 +74,30 @@ RSpec.describe 'Members', type: :feature, js: false do
       end
     end
 
-    shared_examples "following another member" do
+    shared_examples "browsing a member page" do
       context 'with another member' do
         let!(:other_member) do
-          create(:member, :confirmed, community: community)
+          create(
+            :member,
+            :confirmed,
+            community: community,
+            description: 'A happy member of this community.')
+        end
+        let!(:other_member_position) do
+          create(
+            :companies_members_position,
+            :approved,
+            position: position,
+            member: other_member,
+            company: company
+          )
+        end
+        scenario 'see member info' do
+          visit community_member_path(community, other_member)
+          within '.member__sidebar' do
+            expect(page).to have_content('A happy member of this community.')
+            expect(page).to have_content(company.name)
+          end
         end
         scenario 'follow the other member' do
           visit community_member_path(community, other_member)
@@ -140,7 +160,7 @@ RSpec.describe 'Members', type: :feature, js: false do
     context 'as member' do
       given(:member) { regular_member }
       background { as_user member }
-      it_behaves_like 'following another member'
+      it_behaves_like 'browsing a member page'
       it_behaves_like 'filtering the directory'
 
       scenario 'viewing company page' do
@@ -152,7 +172,7 @@ RSpec.describe 'Members', type: :feature, js: false do
     context 'as staff' do
       given(:member) { staff }
       background { as_user member }
-      it_behaves_like 'following another member'
+      it_behaves_like 'browsing a member page'
       it_behaves_like 'managing the company'
       it_behaves_like 'filtering the directory'
     end
@@ -160,7 +180,7 @@ RSpec.describe 'Members', type: :feature, js: false do
     context 'as manager' do
       given(:member) { manager }
       background { as_user member }
-      it_behaves_like 'following another member'
+      it_behaves_like 'browsing a member page'
       it_behaves_like 'managing the company'
       it_behaves_like 'filtering the directory'
     end

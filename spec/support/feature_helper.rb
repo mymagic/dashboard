@@ -127,7 +127,7 @@ module FeatureHelper
   def cancel_my_account(community)
     visit edit_member_registration_path(community)
 
-    click_link 'Cancel my account'
+    click_link 'Cancel your account'
 
     expect(page).to have_content(
       "Bye! Your account has been successfully cancelled. "\

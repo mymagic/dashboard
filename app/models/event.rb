@@ -40,6 +40,7 @@ class Event < ActiveRecord::Base
   # Scopes
   scope :upcoming, -> { where('ends_at > ?', Time.now) }
   scope :past, -> { where('ends_at < ?', Time.now) }
+  scope :ordered, -> { order(starts_at: :asc) }
 
   def to_param
     "#{ id }-#{ title.parameterize }"

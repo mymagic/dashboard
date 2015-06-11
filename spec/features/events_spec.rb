@@ -32,6 +32,12 @@ RSpec.describe 'Events', type: :feature, js: false do
           expect(page).to have_content('Come visit!')
           expect(page).to have_content('Skype')
           expect(page).to have_content('great.event')
+
+          visit community_path(community)
+          within '.community-sidebar' do
+            expect(page).to have_content('Upcoming Events')
+            expect(page).to have_content('Great Event')
+          end
         end
       end
     end

@@ -97,6 +97,12 @@ class Member < ActiveRecord::Base
   end
   delegate :can?, :cannot?, to: :ability
 
+  concerning :Registrations do
+    def create_signup_activity
+      SignupActivity.create(owner: self, invited_by: invited_by)
+    end
+  end
+
   concerning :Roles do
     included do
       def self.assignable_roles_for(member)

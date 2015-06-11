@@ -8,3 +8,13 @@
 .activity-group {
   margin-top: 20px;
 }
+
+.community-sidebar {
+  &__events, &__availabilities {
+    margin-bottom: 15px;
+    h4 {
+      border-bottom: 1px solid #DDD;
+      padding-bottom: 5px;
+    }
+  }
+}

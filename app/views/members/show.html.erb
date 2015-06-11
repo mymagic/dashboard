@@ -1,10 +1,13 @@
 <% title @member.full_name %>
 <%= render partial: 'members/header' %>
-<div class="row">
-  <div class="col-lg-8">
+<div class="row member">
+  <div class="col-lg-9 member__activities">
     <%= render partial: 'members/navigation' %>
-    <%= definition_list("First name" => @member.first_name, "Last name" => @member.last_name) %>
-    <%= render partial: 'shared/social_media_link', collection: @member.social_media_links %>
+    <table class="table table-striped activity-group">
+      <tbody>
+        <%= render(@activities) || "<tr><td>Sorry, there is nothing to see yet.</td></tr>".html_safe %>
+      </tbody>
+    </table>
   </div>
   <%= render partial: 'members/sidebar' %>
 </div>

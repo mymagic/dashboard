@@ -35,7 +35,7 @@ class Availability < ActiveRecord::Base
   before_save :set_community
 
   # Scopes
-  scope :ordered, -> { order(time: :desc) }
+  scope :ordered, -> { order(date: :asc, time: :desc) }
   scope :by_date, -> (date) { where(date: date) }
   scope :by_daterange, -> (start_date, end_date) do
     where("(date >= '#{start_date}') AND (date <= '#{end_date}')")

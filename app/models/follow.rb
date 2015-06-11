@@ -16,7 +16,7 @@ class Follow < ActiveRecord::Base
   private
 
   def create_activity
-    FollowActivity.create(owner: member, followable: followable)
+    FollowActivity.find_or_create_by(owner: member, followable: followable)
   end
 
   def send_notifications

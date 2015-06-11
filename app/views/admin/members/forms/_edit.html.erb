@@ -11,9 +11,13 @@
           <%= f.input :password, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8 %>
           <%= f.input :password_confirmation, required: member.new_record?, placeholder: member.new_record? ? nil : '*' * 8 %>
           <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
+          <%= f.input :description %>
         <% end %>
         <%= panel 'Member Role', columns: 12 do %>
           <%= render partial: 'admin/members/forms/member_role', locals: { form: f } %>
+        <% end %>
+        <%= panel 'Notifications', columns: 12 do %>
+          <%= render partial: 'shared/forms/notifications', locals: { form: f } %>
         <% end %>
       </div>
     </div>

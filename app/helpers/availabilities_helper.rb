@@ -16,4 +16,21 @@ module AvailabilitiesHelper
       'Unavailable'
     end
   end
+
+  def viewing_availabilities?
+    controller_name.in? %w(availabilities calendars)
+  end
+
+  def member_availability_link(member, date)
+    path = community_member_availability_slots_path(
+             current_community,
+             member,
+             year: date.year,
+             month: date.month,
+             day: date.day)
+    safe_join([
+      link_to(image_tag(member.avatar.url(:icon), class: 'img-rounded'), path),
+      link_to(member.full_name,path)
+    ], ' ')
+  end
 end
