@@ -74,7 +74,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
       visit community_company_path(company.community, company)
       expect(page).to have_content("New Company Name")
       expect(page).to have_content("This is a company description")
-      expect(page).to have_content("http://example.com")
+      expect(page).to have_link("example.com", href: 'http://example.com')
 
       expect(page).to have_link(
         social_media_link.service, href: 'https://facebook.com/handle')

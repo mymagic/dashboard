@@ -24,7 +24,7 @@
     </div>
     <% if @company.website.present? %>
       <div class="company__sidebar__website">
-        <%= link_to(@company.website, @company.website) %>
+        <%= website_link(@company) %>
       </div>
     <% end %>
     <div class="company__sidebar__description">
