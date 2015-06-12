@@ -12,6 +12,11 @@ class Discussion < ActiveRecord::Base
 
   has_many :nested_comments, -> { ordered }, class_name: 'Comment'
 
+  has_many :following_activities,
+           class_name: 'Activity::Following',
+           as: :resource,
+           dependent: :destroy
+
   before_validation :set_community, if: :author
   before_validation :set_author_as_follower, on: :create, if: :author
 

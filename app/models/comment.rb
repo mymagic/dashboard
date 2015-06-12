@@ -14,6 +14,11 @@ class Comment < ActiveRecord::Base
   after_create :create_activity
   after_create :send_notifications
 
+  has_many :commenting_activities,
+           class_name: 'Activity::Commenting',
+           as: :resource,
+           dependent: :destroy
+
   protected
 
   def send_notifications

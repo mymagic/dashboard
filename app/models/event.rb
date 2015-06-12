@@ -24,6 +24,10 @@ class Event < ActiveRecord::Base
     end
   end
 
+  has_many :activities,
+           as: :resource,
+           dependent: :destroy
+
   # Validations
   before_validation :set_community, if: -> { creator.present? }
   validates :location_detail,
