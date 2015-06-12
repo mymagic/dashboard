@@ -27,4 +27,22 @@
   <div class="member__sidebar__social_media_links">
     <%= render partial: 'shared/social_media_link', collection: @member.social_media_links %>
   </div>
+
+  <% if @member.followed_members.any? %>
+    <div class="member__sidebar__follows">
+      <h5>Following</h5>
+      <% for followed in @member.followed_members %>
+        <%= member_avatar_link(followed) %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @member.followers.any? %>
+    <div class="member__sidebar__followers">
+      <h5>Followed by</h5>
+      <% for follower in @member.followers %>
+        <%= member_avatar_link(follower) %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
