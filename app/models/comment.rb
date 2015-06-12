@@ -27,7 +27,10 @@ class Comment < ActiveRecord::Base
   end
 
   def create_activity
-    CommentActivity.create(owner: author, comment: self, discussion: discussion)
+    Activity::Commenting.create(
+      owner: author,
+      comment: self,
+      discussion: discussion)
   end
 
   def set_author_as_follower

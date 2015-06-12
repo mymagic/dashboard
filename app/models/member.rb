@@ -99,7 +99,7 @@ class Member < ActiveRecord::Base
 
   concerning :Registrations do
     def create_signup_activity
-      SignupActivity.create(owner: self, invited_by: invited_by)
+      Activity::Registering.create(owner: self, invited_by: invited_by)
     end
   end
 

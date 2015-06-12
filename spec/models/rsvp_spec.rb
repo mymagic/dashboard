@@ -27,13 +27,14 @@ RSpec.describe Rsvp, type: :model do
         let!(:rsvp) { create(:rsvp) }
         it 'created a new rsvp activity' do
           expect(
-            RsvpActivity.find_by(
+            Activity::Rsvping.find_by(
               owner: rsvp.member,
               event: rsvp.event)
           ).to_not be_nil
         end
         it 'stores the state as data' do
-          activity = RsvpActivity.find_by(owner: rsvp.member, event: rsvp.event)
+          activity = Activity::Rsvping.find_by(
+            owner: rsvp.member, event: rsvp.event)
           expect(activity.state).to eq rsvp.state
         end
       end

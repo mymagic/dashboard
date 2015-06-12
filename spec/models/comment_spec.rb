@@ -26,7 +26,7 @@ RSpec.describe Comment, type: :model do
       let!(:comment) { create(:comment) }
       it 'created a new comment activity' do
         expect(
-          CommentActivity.find_by(
+          Activity::Commenting.find_by(
             owner: comment.author,
             comment: comment,
             discussion: comment.discussion)
