@@ -17,6 +17,10 @@ class Availability < ActiveRecord::Base
   belongs_to :member, counter_cache: true
   belongs_to :community
   has_many :slots
+  has_many :availability_creating_activities,
+           class_name: 'Activity::AvailabilityCreating',
+           as: :resource,
+           dependent: :destroy
 
   # Validations
   validates :member_id, :date, :time,
