@@ -4,13 +4,22 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
   let(:community) { create(:community) }
   let(:mentor) { create(:member, :confirmed, community: community) }
   let(:participant) { create(:member, :confirmed, community: community) }
-  let!(:availability) { create(:availability, community: community, member: mentor, slot_duration: 30) }
+  let!(:availability) do
+    create(:availability,
+           community: community,
+           member: mentor,
+           slot_duration: 30)
+  end
 
   shared_examples_for 'creating an availability' do
+    let(:next_year) { 1.year.from_now.year }
     it 'creates a availability' do
       visit community_member_availabilities_path(community, member)
       click_on 'New Availability'
 
+      select next_year, from: 'availability_date_1i'
+      select 'January', from: 'availability_date_2i'
+      select '1', from: 'availability_date_3i'
       select '15', from: 'availability_start_time_4i'
       select '17', from: 'availability_end_time_4i'
       select '30', from: 'Slot duration'
@@ -20,6 +29,13 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
       click_on 'Create Availability'
 
       expect(page).to have_content 'Availability was successfully created.'
+
+      visit community_path(community)
+      within '.activity-group' do
+        expect(page).
+          to have_content("#{ member.full_name } setup office hours on "\
+                          "January 01, #{ next_year }")
+      end
     end
   end
 
