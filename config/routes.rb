@@ -25,8 +25,10 @@ Rails.application.routes.draw do
         patch :follow
         delete :unfollow
       end
-      resource  :calendar, only: :show
+      resource :calendar, only: :show
       resources :messages
+      resources :discussions, only: :index
+
       get 'availabilities/:year/:month/:day',
         to: 'availabilities#slots',
         as: 'availability_slots',

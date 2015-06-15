@@ -28,7 +28,9 @@ class MembersController < ApplicationController
     authorize! :create, @member
     @member = invite_member
     if @member.errors.empty?
-      redirect_to community_company_path(@company.community, @company), notice: 'Member was successfully invited.'
+      redirect_to(
+        community_company_path(@company.community, @company),
+        notice: 'Member was successfully invited.')
     else
       @member.companies_positions.build unless @member.companies_positions.any?
       render 'new', alert: 'Error inviting member.'

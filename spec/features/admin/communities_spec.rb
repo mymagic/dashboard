@@ -20,7 +20,7 @@ RSpec.describe 'Admin/Communities', type: :feature, js: false do
 
         expect(page).to have_content('Community was successfully updated.')
 
-        within '.navbar-member .navbar-brand' do
+        within '.navbar-standard .navbar-brand' do
           expect(page).to have_content 'GreatCommunity'
         end
       end
