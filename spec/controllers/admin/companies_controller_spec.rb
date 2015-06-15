@@ -17,7 +17,13 @@ RSpec.describe Admin::CompaniesController, type: :controller do
   describe 'PATCH #update' do
     let(:community) { create(:community) }
     let(:company) { create(:company, community: community) }
-    let(:response) { get(:edit, id: company, community_id: community, company: { name: 'New Company Name'}) }
+    let(:response) do
+      get(
+        :edit,
+        id: company,
+        community_id: community,
+        company: { name: 'New Company Name'})
+    end
     it_behaves_like "accessible by", :administrator, :staff
   end
 
@@ -33,7 +39,10 @@ RSpec.describe Admin::CompaniesController, type: :controller do
     let(:company_required_attributes) { { name: 'New Company' } }
 
     def create_new_company(attributes = {})
-      put :create, community_id: community, company: (company_required_attributes).merge(attributes)
+      put(
+        :create,
+        community_id: community,
+        company: (company_required_attributes).merge(attributes))
     end
 
     it_behaves_like "accessible by", :administrator, :staff do

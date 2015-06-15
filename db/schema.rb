@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615075220) do
+ActiveRecord::Schema.define(version: 20150616052905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,18 +80,6 @@ ActiveRecord::Schema.define(version: 20150615075220) do
   end
 
   add_index "companies", ["community_id"], name: "index_companies_on_community_id", using: :btree
-
-  create_table "companies_members_positions", force: :cascade do |t|
-    t.integer  "member_id"
-    t.integer  "company_id"
-    t.integer  "position_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.boolean  "can_manage_company", default: false, null: false
-    t.integer  "approver_id"
-  end
-
-  add_index "companies_members_positions", ["company_id", "member_id", "position_id"], name: "unique_cmp_index", unique: true, using: :btree
 
   create_table "discussions", force: :cascade do |t|
     t.string   "title"
@@ -203,14 +191,19 @@ ActiveRecord::Schema.define(version: 20150615075220) do
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
   create_table "positions", force: :cascade do |t|
-    t.string   "name",           null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.integer  "priority_order"
-    t.integer  "community_id"
+    t.integer  "member_id",                    null: false
+    t.integer  "community_id",                 null: false
+    t.integer  "company_id",                   null: false
+    t.boolean  "founder",      default: false, null: false
+    t.string   "role"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   add_index "positions", ["community_id"], name: "index_positions_on_community_id", using: :btree
+  add_index "positions", ["company_id", "member_id", "role", "founder"], name: "unique_position_index", unique: true, using: :btree
+  add_index "positions", ["company_id"], name: "index_positions_on_company_id", using: :btree
+  add_index "positions", ["member_id"], name: "index_positions_on_member_id", using: :btree
 
   create_table "rsvps", force: :cascade do |t|
     t.integer  "event_id"
@@ -266,9 +259,6 @@ ActiveRecord::Schema.define(version: 20150615075220) do
 
   add_foreign_key "comments", "discussions"
   add_foreign_key "companies", "communities"
-  add_foreign_key "companies_members_positions", "companies"
-  add_foreign_key "companies_members_positions", "members"
-  add_foreign_key "companies_members_positions", "positions"
   add_foreign_key "discussions", "communities"
   add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"

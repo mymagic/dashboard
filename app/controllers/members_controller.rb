@@ -10,6 +10,7 @@ class MembersController < ApplicationController
     @members = @members.
                active.
                filter_by(filter).
+               uniq.
                ordered.
                page params[:page]
   end
@@ -20,7 +21,7 @@ class MembersController < ApplicationController
 
   def new
     @member = Member.new(time_zone: current_member.time_zone)
-    @member.companies_positions.build(company: @company)
+    @member.positions.build(company: @company)
     authorize! :create, @member
   end
 
@@ -32,10 +33,10 @@ class MembersController < ApplicationController
         community_company_path(@company.community, @company),
         notice: 'Member was successfully invited.')
     else
-      @member.companies_positions.build unless @member.companies_positions.any?
+      @member.positions.build unless @member.positions.any?
       render 'new', alert: 'Error inviting member.'
     end
-  rescue CompaniesMembersPosition::AlreadyExistsError => exception
+  rescue Position::AlreadyExistsError => exception
     redirect_to(
       new_community_company_member_path(@company.community, @company),
       warning: exception.message
@@ -65,20 +66,19 @@ class MembersController < ApplicationController
       :last_name,
       :email,
       :time_zone,
-      companies_positions_attributes:
+      positions_attributes:
         [
-          :position_id,
-          :can_manage_company,
+          :founder,
+          :role,
           :_destroy,
           :id
         ]
     ).tap do |attrs|
       attrs[:community_id] = current_community.id
-      attrs[:companies_positions_attributes].map do |key, value|
+      attrs[:positions_attributes].map do |key, value|
         param = key.is_a?(Hash) ? key : value
-        param[:approver_id] = current_member.id
         param[:company_id]  = @company.id
-      end if attrs[:companies_positions_attributes]
+      end if attrs[:positions_attributes]
     end
   end
 
@@ -88,10 +88,10 @@ class MembersController < ApplicationController
   end
 
   def add_position_to_existing_member
-    existing_member.update(member_params.slice(:companies_positions_attributes))
+    existing_member.update(member_params.slice(:positions_attributes))
     existing_member
   rescue ActiveRecord::RecordNotUnique
-    raise CompaniesMembersPosition::AlreadyExistsError
+    raise Position::AlreadyExistsError
   end
 
   def invite_member(&block)

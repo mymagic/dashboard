@@ -8,7 +8,7 @@
       <%= member_role(member) %>
       <p>
       <%= member.positions_in_companies.map do |company, positions|
-        "#{ company.name } (#{ positions.map(&:name).to_sentence })"
+        "#{ company.name } (#{ positions.to_sentence })"
       end.to_sentence %>
       </p>
     </div>

@@ -12,7 +12,6 @@ class Community < ActiveRecord::Base
   has_many :positions,      dependent: :destroy
   has_many :availabilities, dependent: :destroy
   has_many :social_media_links, dependent: :destroy
-  has_many :companies_members_positions, through: :positions
   has_many :discussions, dependent: :destroy
   has_many :tags, dependent: :destroy
   has_many :discussion_tags

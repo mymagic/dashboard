@@ -10,6 +10,8 @@ class CompaniesController < ApplicationController
   end
 
   def show
+    @founders = @company.members.founders.active.ordered
+    @team_members = @company.members.team_members.active.ordered
   end
 
   def edit

@@ -64,11 +64,13 @@ class Member < ActiveRecord::Base
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
 
-  FILTERS = %i(everyone members mentors staff).freeze
+  FILTERS = %i(everyone founders members mentors staff).freeze
   scope :filter_by, ->(filter) do
     case filter.try(:to_sym)
     when :members
-      where(role: ['', nil])
+      joins(:positions).where(positions: { founder: false })
+    when :founders
+      joins(:positions).where(positions: { founder: true })
     when :mentors
       where(role: :mentor)
     when :staff
@@ -140,49 +142,36 @@ class Member < ActiveRecord::Base
 
   concerning :Positions do
     included do
-      validate :must_have_at_least_one_approved_companies_positions
+      validate :must_have_at_least_one_position
 
-      has_many(:companies_positions,
-               class_name: 'CompaniesMembersPosition',
-               dependent: :destroy,
-               inverse_of: :member)
+      has_many :positions, inverse_of: :member, dependent: :destroy
+      has_many :companies, -> { uniq }, through: :positions do
+        def founded
+          where(positions: { founder: true })
+        end
+      end
 
-      has_many :companies, -> { uniq }, through: :companies_positions
-
-      accepts_nested_attributes_for(:companies_positions,
+      accepts_nested_attributes_for(:positions,
                                     allow_destroy: true,
                                     reject_if: proc do |attributes|
-                                      attributes[:company_id].blank? &&
-                                        attributes[:position_id].blank?
+                                      attributes[:company_id].blank?
                                     end)
-    end
 
-    def positions_in_companies
-      Position.positions_in_companies(member: self)
+      def positions_in_companies
+        positions.includes(:company).group_by(&:company)
+      end
     end
 
     def can_invite_member_to_company?(company)
       can?(:invite_company_member, company) unless company.blank?
     end
 
-    def manageable_companies
-      companies_positions.
-        includes(:company).
-        manageable.
-        approved.
-        map(&:company).
-        flatten.
-        uniq
-    end
-
     private
 
-    def must_have_at_least_one_approved_companies_positions
+    def must_have_at_least_one_position
       return unless regular_member?
-      return if companies_positions.find(&:approver_id).present?
-      errors.add(
-        :companies_positions,
-        :must_have_at_least_one_approved_companies_positions)
+      return if positions.present?
+      errors.add :positions, :must_have_at_least_one_position
     end
   end
 

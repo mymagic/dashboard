@@ -1,9 +1,0 @@
-<% if companies_members_position.possible_positions_for_member.any? %>
-  <%= simple_form_for([current_community, companies_members_position.company, companies_members_position], html: { class: 'form-inline' }, wrapper: :inline_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
-    <%=
-      f.association :position,
-      collection: companies_members_position.possible_positions_for_member,
-      include_blank: "I worked at #{ companies_members_position.company.name } as…",
-      input_html: { onchange: "this.form.submit();" } %>
-  <% end %>
-<% end %>

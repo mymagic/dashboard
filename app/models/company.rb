@@ -25,17 +25,16 @@ class Company < ActiveRecord::Base
 
   concerning :Positions do
     included do
-      has_many :companies_members_positions, dependent: :destroy
-    end
+      has_many :positions, dependent: :destroy
+      has_many :members, -> { uniq }, through: :positions do
+        def founders
+          where(positions: { founder: true })
+        end
 
-    def positions_with_members
-      Position.positions_with_members(company: self)
-    end
-
-    def managing_members
-      Member.joins(:companies_positions).
-        where('companies_members_positions.company_id' => id).
-        distinct
+        def team_members
+          where(positions: { founder: false })
+        end
+      end
     end
   end
 

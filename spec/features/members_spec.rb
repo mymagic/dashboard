@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Members', type: :feature, js: false do
   feature 'Community Members' do
-    given(:community) { create(:community) }
+    given!(:community) { create(:community) }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:regular_member) do
       create(:member, :confirmed, community: community)
@@ -12,18 +12,9 @@ RSpec.describe 'Members', type: :feature, js: false do
       create(:administrator, :confirmed, community: community)
     end
     given(:company) { create(:company, name: "ACME", community: community) }
-    given(:position) { create(:position, community: community) }
-
     given(:manager) { create(:member, :confirmed, community: community) }
-    given!(:manager_position) do
-      create(
-        :companies_members_position,
-        :approved,
-        :managable,
-        position: position,
-        member: manager,
-        company: company
-      )
+    before do
+      create(:position, founder: true, member: manager, company: company)
     end
 
     shared_examples "filtering the directory" do
@@ -83,15 +74,8 @@ RSpec.describe 'Members', type: :feature, js: false do
             community: community,
             description: 'A happy member of this community.')
         end
-        let!(:other_member_position) do
-          create(
-            :companies_members_position,
-            :approved,
-            position: position,
-            member: other_member,
-            company: company
-          )
-        end
+        before { create(:position, member: other_member, company: company) }
+
         scenario 'see member info' do
           visit community_member_path(community, other_member)
           within '.member__sidebar' do
@@ -130,8 +114,7 @@ RSpec.describe 'Members', type: :feature, js: false do
             company,
             'new_member@example.com',
             first_name: "Johann",
-            last_name: "Faust",
-            position: position.name)
+            last_name: "Faust")
           sign_out
         end
 
