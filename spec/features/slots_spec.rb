@@ -2,20 +2,28 @@ require 'rails_helper'
 
 RSpec.describe 'Slots', type: :feature, js: false do
   let(:community) { create(:community) }
-  let(:mentor) { create(:member, :confirmed, community: community) }
   let(:other_member) { create(:member, :confirmed, community: community) }
-  let!(:availability) { create(:availability, member: mentor) }
   let!(:other_availability) { create(:availability, member: other_member) }
 
-  before { as_user mentor }
+  let(:administrator) do
+    create(:administrator, :confirmed, community: community)
+  end
+  let(:staff) { create(:staff, :confirmed, community: community) }
+  let(:mentor) { create(:mentor, :confirmed, community: community) }
+  let(:regular_member) { create(:member, :confirmed, community: community) }
 
-  describe 'reserve slot' do
+
+  shared_examples_for 'reserving a slot' do
+
+    before { as_user member }
+
     context 'own slot' do
+      let!(:availability) { create(:availability, member: member) }
       it 'does not allow me to reserve a slot' do
         visit(
           community_member_availability_slots_path(
             community,
-            mentor,
+            member,
             year: availability.date.year,
             month: availability.date.month,
             day: availability.date.day))
@@ -41,7 +49,34 @@ RSpec.describe 'Slots', type: :feature, js: false do
         end
 
         expect(page).to have_content 'You have successfully reserved the slot.'
+
+        visit community_path(community)
+        within '.activity-group' do
+          expect(page).
+            to have_content "#{ member.full_name } booked office hours with "\
+                            "#{ other_member.full_name }"
+        end
       end
     end
+  end
+
+  context 'as administrator' do
+    let(:member) { administrator }
+    it_behaves_like "reserving a slot"
+  end
+
+  context 'as staff' do
+    let(:member) { administrator }
+    it_behaves_like "reserving a slot"
+  end
+
+  context 'as mentor' do
+    let(:member) { mentor }
+    it_behaves_like "reserving a slot"
+  end
+
+  context 'as member' do
+    let(:member) { regular_member }
+    it_behaves_like "reserving a slot"
   end
 end

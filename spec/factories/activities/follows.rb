@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :follow_activity do
+  factory :follow_activity, class: Activity::Following do
     owner { create(:member, :confirmed) }
     trait :follow_other_member do
       followable { create(:member, community: owner.community) }

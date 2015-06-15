@@ -24,6 +24,10 @@ class Event < ActiveRecord::Base
     end
   end
 
+  has_many :activities,
+           as: :resource,
+           dependent: :destroy
+
   # Validations
   before_validation :set_community, if: -> { creator.present? }
   validates :location_detail,
@@ -38,9 +42,11 @@ class Event < ActiveRecord::Base
            if: -> { ends_at.present? && starts_at.present? }
 
   # Scopes
-  scope :upcoming, -> { where('ends_at > ?', Time.now) }
-  scope :past, -> { where('ends_at < ?', Time.now) }
+  scope :upcoming, -> { where('ends_at > ?', Time.zone.now) }
+  scope :past, -> { where('ends_at < ?', Time.zone.now) }
   scope :ordered, -> { order(starts_at: :asc) }
+
+  after_create :create_activity
 
   def to_param
     "#{ id }-#{ title.parameterize }"
@@ -51,10 +57,14 @@ class Event < ActiveRecord::Base
   end
 
   def ended?
-    ends_at < Time.now
+    ends_at < Time.zone.now
   end
 
   private
+
+  def create_activity
+    Activity::EventCreating.create(owner: creator, event: self)
+  end
 
   def set_community
     self.community = creator.community

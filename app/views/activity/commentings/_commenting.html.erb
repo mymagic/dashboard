@@ -1,0 +1,3 @@
+<%= render layout: 'shared/activity', locals: { activity: commenting } do %>
+  added a <%= link_to 'comment', community_discussion_path(current_community, commenting.discussion, anchor: "comment-#{ commenting.comment.id }") %> to <%= discussion_link commenting.discussion %>
+<% end %>

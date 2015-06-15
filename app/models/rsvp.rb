@@ -22,7 +22,7 @@ class Rsvp < ActiveRecord::Base
   private
 
   def create_or_update_activity
-    RsvpActivity.
+    Activity::Rsvping.
       find_or_create_by(owner: member, event: event).
       update(data: { state: state })
   end
@@ -39,5 +39,4 @@ class Rsvp < ActiveRecord::Base
       state: state
     )
   end
-
 end

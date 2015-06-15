@@ -61,8 +61,6 @@ class Member < ActiveRecord::Base
   has_many :discussions, foreign_key: :author_id
   has_many :comments, foreign_key: :author_id
 
-  has_many :activities, foreign_key: :owner_id, dependent: :destroy
-
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
 
@@ -99,7 +97,17 @@ class Member < ActiveRecord::Base
 
   concerning :Registrations do
     def create_signup_activity
-      SignupActivity.create(owner: self, invited_by: invited_by)
+      Activity::Registering.create(owner: self, invited_by: invited_by)
+    end
+  end
+
+  concerning :Activities do
+    included do
+      has_many :activities, foreign_key: :owner_id, dependent: :destroy
+      has_many :following_activities,
+               class_name: 'Activity::Following',
+               as: :resource,
+               dependent: :destroy
     end
   end
 

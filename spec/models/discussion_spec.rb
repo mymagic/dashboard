@@ -36,7 +36,7 @@ RSpec.describe Discussion, type: :model do
       let!(:discussion) { create(:discussion) }
       it 'created a new discussion activity' do
         expect(
-          DiscussionActivity.find_by(
+          Activity::Discussing.find_by(
             owner: discussion.author,
             discussion: discussion)
         ).to_not be_nil

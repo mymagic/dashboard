@@ -8,14 +8,14 @@ class Activity < ActiveRecord::Base
 
   before_validation :set_community, if: :owner
 
-  FILTERS = %i{public personal}.freeze
+  FILTERS = %i(public personal).freeze
 
   scope :ordered, -> { order(updated_at: :desc) }
   scope :for, ->(member) do
     where(
       "activities.owner_id IN (:followed_members) OR "\
       "(activities.secondary_resource_id IN (:followed_discussions) "\
-      "AND type = 'CommentActivity')",
+      "AND type = 'Activity::Commenting')",
       followed_members: member.followed_members.pluck(:id),
       followed_discussions: member.followed_discussions.pluck(:id)
     )

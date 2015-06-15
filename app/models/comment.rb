@@ -14,6 +14,11 @@ class Comment < ActiveRecord::Base
   after_create :create_activity
   after_create :send_notifications
 
+  has_many :commenting_activities,
+           class_name: 'Activity::Commenting',
+           as: :resource,
+           dependent: :destroy
+
   protected
 
   def send_notifications
@@ -27,7 +32,10 @@ class Comment < ActiveRecord::Base
   end
 
   def create_activity
-    CommentActivity.create(owner: author, comment: self, discussion: discussion)
+    Activity::Commenting.create(
+      owner: author,
+      comment: self,
+      discussion: discussion)
   end
 
   def set_author_as_follower

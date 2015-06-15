@@ -19,6 +19,7 @@ class Slot < ActiveRecord::Base
   validate :participant_must_not_be_mentor, if: :availability
 
   after_create :send_reserve_notifications
+  after_create :create_activity
   before_destroy :send_cancel_notifications
 
   def mentor
@@ -63,6 +64,13 @@ class Slot < ActiveRecord::Base
       :participant_slot_reserve_notification,
       participant,
       slot: self,
+      mentor: mentor
+    )
+  end
+
+  def create_activity
+    Activity::SlotBooking.create(
+      owner: participant,
       mentor: mentor
     )
   end

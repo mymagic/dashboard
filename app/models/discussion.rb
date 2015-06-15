@@ -12,6 +12,11 @@ class Discussion < ActiveRecord::Base
 
   has_many :nested_comments, -> { ordered }, class_name: 'Comment'
 
+  has_many :following_activities,
+           class_name: 'Activity::Following',
+           as: :resource,
+           dependent: :destroy
+
   before_validation :set_community, if: :author
   before_validation :set_author_as_follower, on: :create, if: :author
 
@@ -26,7 +31,7 @@ class Discussion < ActiveRecord::Base
     when :unanswered
       where(comments_count: [nil, 0]).order(created_at: :desc)
     when :hot
-      filter_by(:popular).where(created_at: 2.weeks.ago..Time.now)
+      filter_by(:popular).where(created_at: 2.weeks.ago..Time.zone.now)
     when :popular
       order(follows_count: :desc)
     when :recent
@@ -37,7 +42,7 @@ class Discussion < ActiveRecord::Base
   protected
 
   def create_activity
-    DiscussionActivity.create(owner: author, resource: self)
+    Activity::Discussing.create(owner: author, discussion: self)
   end
 
   def set_community

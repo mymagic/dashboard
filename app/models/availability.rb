@@ -33,6 +33,7 @@ class Availability < ActiveRecord::Base
   before_validation :set_duration, if: -> { start_time && end_time }
   before_validation :set_wday, if: :date
   before_save :set_community
+  after_create :create_activity
 
   # Scopes
   scope :ordered, -> { order(date: :asc, time: :desc) }
@@ -112,5 +113,12 @@ class Availability < ActiveRecord::Base
     unless (end_time - start_time) % slot_duration == 0
       errors.add(:end_time, "and start time must be divisible by slot duration")
     end
+  end
+
+  def create_activity
+    Activity::AvailabilityCreating.find_or_create_by(
+      owner: member,
+      availability: self
+    )
   end
 end
