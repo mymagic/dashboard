@@ -1,5 +1,8 @@
-<ul class="nav nav-pills">
+<ul class="nav nav-pills navbar-member">
   <%= nav_link viewing_current_member? ? 'Your Activities' : 'Activities', community_member_path(current_community, @member) %>
+  <% if @member.discussions.any? %>
+    <%= nav_link 'Discussions', community_member_discussions_path(current_community, @member) %>
+  <% end %>
   <% if @member.availabilities.any? %>
     <%= content_tag 'li', class: (viewing_availabilities? ? 'active' : nil) do  %>
       <%= link_to 'Office Hours', community_member_availabilities_path(current_community, @member) %>

@@ -14,7 +14,7 @@ class Availability < ActiveRecord::Base
   time_in_zone_for :date, :time
 
   # Associations
-  belongs_to :member
+  belongs_to :member, counter_cache: true
   belongs_to :community
   has_many :slots
 

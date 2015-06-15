@@ -6,7 +6,7 @@ class Discussion < ActiveRecord::Base
 
   # Associations
   belongs_to :community
-  belongs_to :author, class_name: 'Member'
+  belongs_to :author, class_name: 'Member', counter_cache: true
 
   has_many :comments, dependent: :destroy
 

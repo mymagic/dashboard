@@ -1,0 +1,11 @@
+<% title @member.full_name %>
+<%= render partial: 'members/header' %>
+<div class="row member">
+  <div class="col-lg-9 member__activities">
+    <%= render partial: 'members/navigation' %>
+    <div class="discussion-group">
+      <%= render(@discussions) || "<tr><td>Sorry, there #{ @member.full_name } has not created any discussions yet.</td></tr>".html_safe %>
+    </div>
+  </div>
+  <%= render partial: 'members/sidebar' %>
+</div>

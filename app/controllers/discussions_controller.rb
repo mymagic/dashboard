@@ -6,8 +6,17 @@ class DiscussionsController < ApplicationController
   include FilterConcern
 
   def index
-    @discussions = @discussions.tagged_with(tag) if tag
-    @discussions = @discussions.filter_by(filter).page params[:page]
+    if params[:member_id]
+      @member = Member.find(params[:member_id])
+      @discussions = @discussions.
+                     where(author: @member).
+                     filter_by(:recent).
+                     limit(10)
+      render 'members/discussions'
+    else
+      @discussions = @discussions.tagged_with(tag) if tag
+      @discussions = @discussions.filter_by(filter).page params[:page]
+    end
   end
 
   def show

@@ -85,7 +85,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'viewing the user menus' do
         visit community_path(community)
-        expect(page).to have_css('nav.navbar-member')
+        expect(page).to have_css('nav.navbar-standard')
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
           expect(page).to have_link('Members')
@@ -113,7 +113,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'viewing the user menus' do
         visit root_path
-        expect(page).to have_css('nav.navbar-member')
+        expect(page).to have_css('nav.navbar-standard')
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
           expect(page).to have_link('Members')
@@ -128,7 +128,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'viewing the user menus' do
         visit root_path
-        expect(page).to have_css('nav.navbar-member')
+        expect(page).to have_css('nav.navbar-standard')
         expect(page).to_not have_css('nav.navbar-admin')
       end
 

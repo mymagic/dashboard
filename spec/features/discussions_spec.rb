@@ -95,6 +95,13 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       expect(page).to have_link 'wonderful_tag', count: 1
       expect(page).to have_link 'great_tag', count: 1
       expect(page).to have_content '1 follower'
+
+      visit community_member_path(community, member)
+
+      within '.navbar-member' do
+        click_link 'Discussions'
+      end
+      expect(page).to have_content 'What is beauty?'
     end
   end
 

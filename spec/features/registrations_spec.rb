@@ -13,11 +13,11 @@ RSpec.describe 'Registrations', type: :feature, js: false do
     background { as_user user }
     it "changes my first name" do
       visit root_path
-      within(:css, 'nav.navbar-member') do
+      within(:css, 'nav.navbar-standard') do
         expect(page).to have_content(user.first_name)
       end
       update_my_account(community: community, first_name: 'NewFirstName')
-      within(:css, 'nav.navbar-member') do
+      within(:css, 'nav.navbar-standard') do
         expect(page).to have_content('NewFirstName')
       end
     end
