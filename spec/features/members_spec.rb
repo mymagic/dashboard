@@ -12,9 +12,9 @@ RSpec.describe 'Members', type: :feature, js: false do
       create(:administrator, :confirmed, community: community)
     end
     given(:company) { create(:company, name: "ACME", community: community) }
-    given(:manager) { create(:member, :confirmed, community: community) }
+    given(:founder) { create(:member, :confirmed, community: community) }
     before do
-      create(:position, founder: true, member: manager, company: company)
+      create(:position, founder: true, member: founder, company: company)
     end
 
     shared_examples "filtering the directory" do
@@ -22,7 +22,7 @@ RSpec.describe 'Members', type: :feature, js: false do
         background { visit community_members_path(community) }
         scenario 'showing all members' do
           within '.member-group' do
-            [administrator, staff, regular_member, mentor, manager].each do |m|
+            [administrator, staff, regular_member, mentor, founder].each do |m|
               expect(page).to have_content m.send(:full_name)
             end
           end
@@ -33,7 +33,7 @@ RSpec.describe 'Members', type: :feature, js: false do
           end
           within '.member-group' do
             expect(page).to have_content mentor.full_name
-            [administrator, staff, regular_member, manager].each do |m|
+            [administrator, staff, regular_member, founder].each do |m|
               expect(page).to_not have_content m.send(:full_name)
             end
           end
@@ -45,7 +45,7 @@ RSpec.describe 'Members', type: :feature, js: false do
           within '.member-group' do
             expect(page).to have_content administrator.full_name
             expect(page).to have_content staff.full_name
-            [regular_member, mentor, manager].each do |m|
+            [regular_member, mentor, founder].each do |m|
               expect(page).to_not have_content m.send(:full_name)
             end
           end
@@ -56,8 +56,19 @@ RSpec.describe 'Members', type: :feature, js: false do
           end
           within '.member-group' do
             expect(page).to have_content regular_member.full_name
-            expect(page).to have_content manager.full_name
+            expect(page).to have_content founder.full_name
             [administrator, staff, mentor].each do |m|
+              expect(page).to_not have_content m.send(:full_name)
+            end
+          end
+        end
+        scenario 'showing all founders' do
+          within '.filter-navigation' do
+            click_link 'Founders'
+          end
+          within '.member-group' do
+            expect(page).to have_content founder.full_name
+            [administrator, staff, mentor, regular_member].each do |m|
               expect(page).to_not have_content m.send(:full_name)
             end
           end
@@ -160,8 +171,8 @@ RSpec.describe 'Members', type: :feature, js: false do
       it_behaves_like 'filtering the directory'
     end
 
-    context 'as manager' do
-      given(:member) { manager }
+    context 'as founder' do
+      given(:member) { founder }
       background { as_user member }
       it_behaves_like 'browsing a member page'
       it_behaves_like 'managing the company'
