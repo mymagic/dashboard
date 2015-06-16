@@ -16,6 +16,8 @@ RSpec.describe 'Admin/Communities', type: :feature, js: false do
         fill_in 'Name', with: 'GreatCommunity'
         fill_in 'Social media services', with: 'Hogwards, MIT'
 
+        fill_in 'Email', with: 'email@greatcommunity.local'
+
         click_button 'Update Community'
 
         expect(page).to have_content('Community was successfully updated.')

@@ -1,6 +1,6 @@
 class CustomDeviseMailer < Devise::Mailer
-  default from:     :sender_email,
-          reply_to: :sender_email
+  default from: ->(_) { sender_email },
+          reply_to: ->(_) { sender_email }
 
   protected
 

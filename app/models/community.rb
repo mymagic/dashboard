@@ -21,6 +21,7 @@ class Community < ActiveRecord::Base
   # Validations
   validates :name, :slug, presence: true
   validates :name, :slug, uniqueness: true
+  validates :email, presence: true, on: :update
 
   # Callbacks
   after_save :destroy_social_media_services, if: -> { social_media_services_changed? }
