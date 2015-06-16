@@ -6,11 +6,7 @@
     <div class="member__caption">
       <h4><%= link_to member.full_name, [current_community, member] %></h4>
       <%= member_role(member) %>
-      <p>
-      <%= member.positions_in_companies.map do |company, positions|
-        "#{ company.name } (#{ positions.map(&:name).to_sentence })"
-      end.to_sentence %>
-      </p>
+      <p><%= member_positions(member) %></p>
     </div>
   </div>
 </div>

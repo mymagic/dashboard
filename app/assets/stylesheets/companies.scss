@@ -40,10 +40,17 @@
     }
   }
   &__member {
+    text-align: center;
     &__caption {
       h4 {
         font-size: 14px;
+        margin-bottom: 3px;
       }
+    }
+    &__positions {
+      font-size: 12px;
+      display: block;
+      color: darken(#FFF, 50);
     }
   }
 }

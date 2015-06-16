@@ -5,7 +5,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     scenario 'open invitiation and sign in' do
       open_email(email)
 
-      expect(current_email).to have_content "You have been invited to join #{ community.name }"
+      expect(current_email).
+        to have_content "You have been invited to join #{ community.name }"
       current_email.click_link 'Accept invitation'
 
       expect(page.find_field('First name').value).to eq 'Johann'
@@ -15,7 +16,10 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       fill_in 'member[password]', with: 'password0'
       fill_in 'member[password_confirmation]', with: 'password0'
       click_button 'Set my password'
-      expect(page).to have_content("Your password was set successfully. You are now signed in.")
+      expect(page).
+        to have_content(
+          "Your password was set successfully. You are now signed in.")
+
       if [:administrator, :staff].include?(opts[:role])
         expect(page).to have_css('nav.navbar-admin')
       else
@@ -28,7 +32,9 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     given!(:community) do
       create(:community, :with_social_media_services, num_of_services: 2)
     end
-    given!(:administrator) { create(:administrator, :confirmed, community: community) }
+    given!(:administrator) do
+      create(:administrator, :confirmed, community: community)
+    end
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, community: community) }
@@ -57,9 +63,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         fill_in 'First name', with: 'New First Name'
         fill_in 'Last name', with: 'New Last Name'
 
-        select(
-          company.name,
-          from: 'member_companies_positions_attributes_0_company_id')
+        # Position
+        select(company.name, from: 'member_positions_attributes_0_company_id')
 
         # Social Media Links
         fill_in social_media_link.service, with: 'https://facebook.com/handle'
@@ -72,10 +77,12 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
         expect(page).to have_content('New First Name')
         expect(page).to have_content('New Last Name')
+        expect(page).to have_content(company.name)
 
-        expect(page).to have_link(
-          social_media_link.service,
-          href: 'https://facebook.com/handle')
+        expect(page).
+          to have_link(
+            social_media_link.service,
+            href: 'https://facebook.com/handle')
       end
 
       scenario 'viewing dashboard' do
@@ -90,8 +97,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         within(:css, 'nav.navbar-admin') do
           expect(page).to have_link('Members')
           expect(page).to have_link('Companies')
-          expect(page).to have_link('Positions')
-          expect(page).to have_link('Companies Members Positions')
         end
       end
     end
@@ -117,8 +122,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_css('nav.navbar-admin')
         within(:css, 'nav.navbar-admin') do
           expect(page).to have_link('Members')
-          expect(page).to_not have_link('Positions', exact: true)
-          expect(page).to have_link('Companies Members Positions')
         end
       end
     end
@@ -144,7 +147,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     end
   end
 
-  context 'as a Administrator' do
+  context 'as an Administrator' do
     let!(:administrator) { create(:administrator, :confirmed) }
     let(:community) { administrator.community }
 
@@ -154,7 +157,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     end
 
     let!(:company) { create(:company, community: community) }
-    let!(:position) { create(:position, community: community) }
 
     feature 'inviting a Member who is already member of another community' do
       given(:email) { member_of_other_community.email }
@@ -167,8 +169,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
             first_name: 'Johann',
             last_name: 'Faust',
             role: 'Regular Member',
-            company: company.name,
-            position: position.name
+            company: company.name
           }
         )
         sign_out
@@ -188,8 +189,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
             first_name: 'Johann',
             last_name: 'Faust',
             role: 'Staff',
-            company: company.name,
-            position: position.name
+            company: company.name
           }
         )
         sign_out
@@ -209,8 +209,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
             first_name: 'Johann',
             last_name: 'Faust',
             role: 'Regular Member',
-            company: company.name,
-            position: position.name
+            company: company.name
           }
         )
         sign_out

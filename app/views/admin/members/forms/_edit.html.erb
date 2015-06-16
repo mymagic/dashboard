@@ -30,8 +30,8 @@
           <%= render partial: 'shared/forms/social_media_link', locals: { form: f } %>
         <% end %>
         <%= panel 'Positions', columns: 12 do %>
-          <%= f.error :companies_positions %>
-          <%= render partial: 'admin/members/forms/companies_positions', locals: { form: f } %>
+          <%= f.error :positions %>
+          <%= render partial: 'admin/members/forms/positions', locals: { form: f } %>
         <% end %>
       </div>
     </div>

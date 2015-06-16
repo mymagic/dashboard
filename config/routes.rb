@@ -61,12 +61,6 @@ Rails.application.routes.draw do
 
     resources :companies, only: [:index, :show, :edit, :update] do
       resources :members, only: [:new, :create, :edit, :update]
-      resources :companies_members_positions do
-        member do
-          patch :approve
-          delete :reject
-        end
-      end
     end
 
     get 'admin/dashboard'
@@ -75,16 +69,8 @@ Rails.application.routes.draw do
       resource :community, only: [:edit, :update]
       resources :events, except: [:show]
       resources :companies
-      resources :companies_members_positions
       resources :members do
         patch 'resend_invitation', on: :member
-      end
-      resources :positions
-      resources :companies_members_positions do
-        member do
-          patch :approve
-          delete :reject
-        end
       end
     end
   end

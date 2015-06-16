@@ -10,7 +10,7 @@ module Admin
 
     def new
       @member.time_zone = current_member.time_zone
-      @member.companies_positions.build
+      @member.positions.build
     end
 
     def create
@@ -26,7 +26,7 @@ module Admin
           end
           format.json { render json: @member, status: :created }
         else
-          @member.companies_positions.build
+          @member.positions.build
           format.html { render 'new', alert: 'Error inviting member.' }
           format.json do
             render json: @member.errors, status: :unprocessable_entity
@@ -47,7 +47,7 @@ module Admin
     end
 
     def edit
-      @member.companies_positions.build
+      @member.positions.build
     end
 
     def update
@@ -115,11 +115,11 @@ module Admin
         :avatar_cache,
         :description,
         notifications: NotificationMailer.action_methods.map(&:to_sym),
-        companies_positions_attributes:
+        positions_attributes:
           [
             :company_id,
-            :position_id,
-            :can_manage_company,
+            :role,
+            :founder,
             :_destroy,
             :id
           ],
@@ -132,10 +132,6 @@ module Admin
           ]
       ).tap do |attrs|
         attrs[:community_id] = current_community.id
-        attrs[:companies_positions_attributes].map do |key, value|
-          param = key.is_a?(Hash) ? key : value
-          param[:approver_id] = current_member.id
-        end if attrs[:companies_positions_attributes]
       end
       raise CanCan::AccessDenied unless current_member.
                                         can_assign_role? permitted[:role]

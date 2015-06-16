@@ -10,10 +10,20 @@
 <div class="row">
   <div class="col-lg-9">
     <div class="company__members col-lg-12">
-      <% @company.positions_with_members.each do |position, members| %>
+      <% if @founders.any? %>
         <div class="row">
-          <h4><%= position.name.pluralize(members.count) %></h4>
-          <%= render collection: members, partial: 'member' %>
+          <h4><%= 'Founder'.pluralize(@founders.size) %></h4>
+          <% @founders.keys.sort_by(&:last_name).each do |member| %>
+            <%= render partial: 'member', object: member, locals: { positions: @founders[member] } %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if @team_members.any? %>
+        <div class="row">
+          <h4><%= 'Team Member'.pluralize(@team_members.size) %></h4>
+          <% @team_members.keys.sort_by(&:last_name).each do |member| %>
+            <%= render partial: 'member', object: member, locals: { positions: @team_members[member] } %>
+          <% end %>
         </div>
       <% end %>
     </div>

@@ -18,18 +18,17 @@ RSpec.describe 'Companies', type: :feature, js: false do
     scenario 'viewing the company' do
       visit community_companies_path(community)
       click_on company.name
-
       expect(page).to have_content(company.name)
       expect(page).to have_content(company.website)
     end
   end
 
   feature "Manage Company" do
-    given!(:community) { create(:community, :with_social_media_services) }
-    given!(:position) { create(:position, community: community) }
-    given!(:staff) { create(:staff, :confirmed, community: community) }
-    given!(:manager) { create(:member, :confirmed, community: community) }
-    given!(:company) { create(:company, name: "ACME", community: community) }
+    given(:community) { create(:community, :with_social_media_services) }
+
+    given(:staff) { create(:staff, :confirmed, community: community) }
+    given(:manager) { create(:member, :confirmed, community: community) }
+    given(:company) { create(:company, name: "ACME", community: community) }
     given(:social_media_service) { community.social_media_services.first }
     given!(:social_media_link) do
       create(
@@ -38,46 +37,41 @@ RSpec.describe 'Companies', type: :feature, js: false do
         attachable: company)
     end
 
-    given!(:manager_position) do
-      create(
-        :companies_members_position,
-        :approved,
-        :managable,
-        position: position,
-        member: manager,
-        company: company
-      )
+    before do
+      create(:position, founder: true, member: manager, company: company)
     end
 
-    def edit_a_company
-      visit community_company_path(company.community, company)
-      click_link "Edit company info"
+    shared_examples "editing a company" do
+      scenario 'editing a company' do
+        visit community_company_path(company.community, company)
+        click_link "Edit company info"
 
-      expect(page.find_field('Name').value).to eq 'ACME'
+        expect(page.find_field('Name').value).to eq 'ACME'
 
-      # General Information
-      fill_in 'Name', with: 'New Company Name'
-      fill_in 'Description', with: 'This is a company description'
-      fill_in 'Website', with: 'http://example.com'
-      attach_file(
-        'Logo',
-        File.join(
-          Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
+        # General Information
+        fill_in 'Name', with: 'New Company Name'
+        fill_in 'Description', with: 'This is a company description'
+        fill_in 'Website', with: 'http://example.com'
+        attach_file(
+          'Logo',
+          File.join(
+            Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
 
-      # Social Media Links
-      fill_in social_media_link.service, with: 'https://facebook.com/handle'
+        # Social Media Links
+        fill_in social_media_link.service, with: 'https://facebook.com/handle'
 
-      click_button 'Save'
+        click_button 'Save'
 
-      expect(page).to have_content("Company was successfully updated.")
+        expect(page).to have_content("Company was successfully updated.")
 
-      visit community_company_path(company.community, company)
-      expect(page).to have_content("New Company Name")
-      expect(page).to have_content("This is a company description")
-      expect(page).to have_link("example.com", href: 'http://example.com')
+        visit community_company_path(company.community, company)
+        expect(page).to have_content("New Company Name")
+        expect(page).to have_content("This is a company description")
+        expect(page).to have_link("example.com", href: 'http://example.com')
 
-      expect(page).to have_link(
-        social_media_link.service, href: 'https://facebook.com/handle')
+        expect(page).to have_link(
+          social_media_link.service, href: 'https://facebook.com/handle')
+      end
     end
 
     context 'as manager' do
@@ -114,9 +108,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
         expect(page).to have_content("Edit Company")
       end
 
-      scenario 'edit a company' do
-        edit_a_company
-      end
+      it_behaves_like 'editing a company'
     end
 
     context 'as staff' do
@@ -135,9 +127,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
         expect(page).to have_content("Edit Company")
       end
 
-      scenario 'edit a company' do
-        edit_a_company
-      end
+      it_behaves_like 'editing a company'
     end
   end
 end

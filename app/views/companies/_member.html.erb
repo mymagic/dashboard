@@ -6,5 +6,8 @@
     <div class="company__member__caption">
       <h4><%= link_to member.full_name, [current_community, member] %></h4>
     </div>
+    <div class="company__member__positions">
+      <%= positions.to_sentence %>
+    </div>
   </div>
 </div>

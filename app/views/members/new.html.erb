@@ -1,5 +1,7 @@
 <div class="row">
-  <%= panel "Invite New Member to #{ @company.name }", columns: 12 do %>
-    <%= render partial: 'members/forms/new', locals: { company: @company, member: @member } %>
-  <% end %>
+  <div class="col-lg-6 col-lg-push-3">
+    <%= panel "Invite New Member to #{ @company.name }", columns: 12 do %>
+      <%= render partial: 'members/forms/new', locals: { company: @company, member: @member } %>
+    <% end %>
+  </div>
 </div>

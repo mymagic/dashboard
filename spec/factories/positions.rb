@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :position do
-    name { generate(:position_name) }
-    community
+    member
+    company { create(:company, community: member.community) }
   end
 end

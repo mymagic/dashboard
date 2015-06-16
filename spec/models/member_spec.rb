@@ -8,11 +8,21 @@ RSpec.describe Member, type: :model do
     it { is_expected.to validate_presence_of(:last_name).on(:update) }
     it { is_expected.to validate_presence_of(:time_zone).on(:update) }
     it { is_expected.to validate_presence_of(:email) }
-    it { is_expected.to validate_uniqueness_of(:email).scoped_to(:community_id) }
+    it do
+      is_expected.to validate_uniqueness_of(:email).scoped_to(:community_id)
+    end
     it { is_expected.to validate_confirmation_of(:password) }
-    it { is_expected.to validate_inclusion_of(:role).in_array(Member::ROLES.map(&:to_s)).allow_blank(true) }
-
-    it { is_expected.to have_many(:companies_positions).class_name('CompaniesMembersPosition').dependent(:destroy).inverse_of(:member) }
+    it do
+      is_expected.
+        to(
+          validate_inclusion_of(:role).
+          in_array(Member::ROLES.map(&:to_s)).
+          allow_blank(true))
+    end
+    it do
+      is_expected.
+        to have_many(:positions).dependent(:destroy).inverse_of(:member)
+    end
     it { is_expected.to have_many(:rsvps).dependent(:destroy) }
     it { is_expected.to have_many(:events).through(:rsvps) }
   end
@@ -130,10 +140,14 @@ RSpec.describe Member, type: :model do
   context 'Messages' do
     let(:community) { create(:community) }
     let(:member1) { create(:member, community: community) }
-    let(:member2) { create(:member, community: community)}
+    let(:member2) { create(:member, community: community) }
     let(:participant) { create(:member, community: community) }
-    let!(:send_message) { create(:message, sender: member1, receiver: participant) }
-    let!(:received_message) { create(:message, sender: participant, receiver: member1) }
+    let!(:send_message) do
+      create(:message, sender: member1, receiver: participant)
+    end
+    let!(:received_message) do
+      create(:message, sender: participant, receiver: member1)
+    end
     let!(:other_message) { create(:message) }
 
     describe '#messages_with' do

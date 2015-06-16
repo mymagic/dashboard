@@ -25,17 +25,32 @@ class Company < ActiveRecord::Base
 
   concerning :Positions do
     included do
-      has_many :companies_members_positions, dependent: :destroy
+      has_many :positions, dependent: :destroy
+      has_many :members, -> { uniq }, through: :positions do
+        def founders
+          where(positions: { founder: true })
+        end
+
+        def team_members
+          where(positions: { founder: false })
+        end
+      end
     end
 
-    def positions_with_members
-      Position.positions_with_members(company: self)
-    end
-
-    def managing_members
-      Member.joins(:companies_positions).
-        where('companies_members_positions.company_id' => id).
-        distinct
+    def founders_and_team_members
+      positions.
+        joins(:member).
+        where(members: { invitation_token: nil }).
+        where.not(members: { confirmed_at: nil }).
+        includes(:member).
+        group_by(&:founder).
+        each_with_object(
+          founders: [],
+          team_members: []
+        ) do |(is_founder, positions), group|
+          key = is_founder ? :founders : :team_members
+          group[key] = positions.group_by(&:member)
+        end
     end
   end
 

@@ -4,9 +4,7 @@
   </div>
 
   <div class="member__sidebar__positions">
-    <%= safe_join(@member.positions_in_companies.map do |company, positions|
-      safe_join([link_to(company.name, community_company_path(current_community, company)), "(#{ positions.map(&:name).to_sentence })"], ' ')
-    end, tag('br')) %>
+    <%= member_positions(@member, with_spacing: true) %>
   </div>
 
   <% if @member.description.present? %>
