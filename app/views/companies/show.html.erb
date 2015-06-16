@@ -13,13 +13,17 @@
       <% if @founders.any? %>
         <div class="row">
           <h4><%= 'Founder'.pluralize(@founders.size) %></h4>
-          <%= render collection: @founders, partial: 'member' %>
+          <% @founders.keys.sort_by(&:last_name).each do |member| %>
+            <%= render partial: 'member', object: member, locals: { positions: @founders[member] } %>
+          <% end %>
         </div>
       <% end %>
       <% if @team_members.any? %>
         <div class="row">
           <h4><%= 'Team Member'.pluralize(@team_members.size) %></h4>
-          <%= render collection: @team_members, partial: 'member' %>
+          <% @team_members.keys.sort_by(&:last_name).each do |member| %>
+            <%= render partial: 'member', object: member, locals: { positions: @team_members[member] } %>
+          <% end %>
         </div>
       <% end %>
     </div>

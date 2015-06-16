@@ -10,8 +10,9 @@ class CompaniesController < ApplicationController
   end
 
   def show
-    @founders = @company.members.founders.active.ordered
-    @team_members = @company.members.team_members.active.ordered
+    founders_and_team_members = @company.founders_and_team_members
+    @founders = founders_and_team_members[:founders]
+    @team_members = founders_and_team_members[:team_members]
   end
 
   def edit

@@ -1,5 +1,4 @@
 class Position < ActiveRecord::Base
-
   class AlreadyExistsError < StandardError
     def message
       "Member already has this position in the company."
@@ -17,9 +16,11 @@ class Position < ActiveRecord::Base
   scope :founders, -> { where(founder: true) }
 
   def to_s
-    return 'Founder' if founder?
-    return role if role.present?
-    'Team Member'
+    if founder?
+      role.present? ? "Founder (#{ role })" : 'Founder'
+    else
+      role.present? ? role : 'Team Member'
+    end
   end
 
   protected

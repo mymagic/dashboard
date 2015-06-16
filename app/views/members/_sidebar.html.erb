@@ -4,7 +4,7 @@
   </div>
 
   <div class="member__sidebar__positions">
-    <%= member_positions(@member) %>
+    <%= member_positions(@member, with_spacing: true) %>
   </div>
 
   <% if @member.description.present? %>
