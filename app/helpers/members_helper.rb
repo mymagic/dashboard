@@ -41,4 +41,11 @@ module MembersHelper
   def viewing_current_member?
     @member == current_member
   end
+
+  def member_positions(member, with_spacing: false)
+    positions = member.positions_in_companies.map do |company, positions|
+      "#{ company.name } (#{ positions.to_sentence })"
+    end
+    with_spacing ? safe_join(positions, tag('br')) : positions.to_sentence
+  end
 end

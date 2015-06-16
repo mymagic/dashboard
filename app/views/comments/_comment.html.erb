@@ -5,11 +5,9 @@
     </div>
     <div class="col-lg-11">
         <h3>
-          <%= link_to comment.author.full_name, community_member_path(current_community, comment.author) %>
+          <%= member_name_link(comment.author) %>
           <span class="label label-positions">
-            <%= comment.author.positions_in_companies.map do |company, positions|
-              "#{ company.name } (#{ positions.to_sentence })"
-              end.to_sentence %>
+            <%= member_positions(comment.author) %>
           </span>
         </h3>
         <span class="label-timeago">Posted <%= time_tag comment.created_at %></span>
