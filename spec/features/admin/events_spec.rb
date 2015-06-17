@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Admin/Events', type: :feature, js: false do
   feature "Administration" do
-    given!(:community) { create(:community, :with_social_media_services) }
+    given!(:community) { create(:community) }
     given(:administrator) { create(:administrator, :confirmed, community: community) }
     given(:staff) { create(:staff, :confirmed, community: community) }
     given(:starts_at) { 1.month.from_now.midnight }

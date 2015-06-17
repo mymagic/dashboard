@@ -1,1 +1,5 @@
-<%= link_to(social_media_link.service, social_media_link.url, target: '_blank', class: 'btn btn-default btn-sm') %>
+<% if social_media_link.as_icon? %>
+  <%= link_to(social_media_icon(social_media_link.service), social_media_link.url, target: '_blank', class: 'social-media-link__icon') %>
+<% else %>
+  <%= link_to(social_media_link.service, social_media_link.url, target: '_blank', class: 'btn btn-default btn-sm social-media-link__btn') %>
+<% end %>

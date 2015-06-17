@@ -30,7 +30,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
   feature "Administration" do
     given!(:community) do
-      create(:community, :with_social_media_services, num_of_services: 2)
+      create(:community)
     end
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
@@ -38,7 +38,11 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
     given!(:company) { create(:company, community: community) }
-    given(:social_media_service) { community.social_media_services.first }
+    given(:social_media_service) do
+      community.social_media_services << 'other service'
+      community.save
+      'other service'
+    end
     given!(:social_media_link) do
       create(
         :social_media_link,
