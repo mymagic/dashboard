@@ -7,9 +7,5 @@
     <%= content_tag 'li', class: (viewing_availabilities? ? 'active' : nil) do  %>
       <%= link_to 'Office Hours', community_member_availabilities_path(current_community, @member) %>
     <% end %>
-  <% elsif can?(:create, Availability.new(member: @member)) && !viewing_availabilities? %>
-    <li class='pull-right'>
-      <%= link_to 'New office hour availability', new_community_member_availability_path(current_community, @member) %>
-    </li>
   <% end %>
 </ul>

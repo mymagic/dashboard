@@ -14,8 +14,11 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
   shared_examples_for 'creating an availability' do
     let(:next_year) { 1.year.from_now.year }
     it 'creates a availability' do
-      visit community_member_availabilities_path(community, member)
-      click_on 'New Availability'
+      visit community_path(community)
+
+      within '.navbar-standard' do
+        click_on 'Setup Office Hours'
+      end
 
       select next_year, from: 'availability_date_1i'
       select 'January', from: 'availability_date_2i'
@@ -56,7 +59,7 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
 
       click_link 'Edit'
 
-      expect(page).to have_content 'Edit Availability'
+      expect(page).to have_content 'Edit Office Hour'
 
       select '9', from: 'availability_date_3i'
       click_on 'Update Availability'
