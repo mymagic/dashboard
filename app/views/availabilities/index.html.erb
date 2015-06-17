@@ -1,11 +1,5 @@
 <%= render partial: 'members/header' %>
 <%= render partial: 'members/navigation' %>
-<% if can? :create, Availability.new(member: @member) %>
-  <div class='pull-right'>
-    <%= link_to 'New Availability', new_community_member_availability_path(current_community, @member), id: 'new-availability-btn', class: 'btn btn-success btn-sm' %>
-  </div>
-<% end %>
-
 <div class='calendar'
      data-url='<%= community_calendar_path(current_community) %>'
      data-member-id='<%= @member.try(:id) %>'>

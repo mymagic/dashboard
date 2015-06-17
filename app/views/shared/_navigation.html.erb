@@ -24,6 +24,7 @@
             <%= nav_link "Members", [current_community, Member] if can? :read, Member %>
             <%= nav_link "Companies", [current_community, Company] if can? :read, Company %>
             <%= nav_link "Events", community_calendar_path(current_community) if can? :read, :calendar %>
+            <%= nav_link 'Setup Office Hours', new_community_member_availability_path(current_community, current_member) if can? :create, Availability %>
           <% else %>
             <%= nav_link "Welcome", root_path %>
           <% end %>

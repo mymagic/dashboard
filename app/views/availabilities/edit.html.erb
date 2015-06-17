@@ -4,8 +4,8 @@
 
 <div class="col-sm-6 col-sm-push-2">
   <div class="row">
-    <%= panel "Edit Availability", columns: 12 do %>
-      <%= render partial: 'form', locals: { member: @member, availability: @availability } %>
+    <%= panel "Edit Office Hour", columns: 12 do %>
+      <%= render partial: 'availabilities/forms/form', locals: { member: @member, availability: @availability } %>
     <% end %>
   </div>
 </div>
