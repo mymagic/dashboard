@@ -1,47 +1,34 @@
-<%
-  title @company.name
-  page_header @company.name do
-    if can? :manage_company, @company
-      render partial: 'manager_menu', locals: { company: @company }
-    end
-  end
-%>
-
+<% title @company.name %>
 <div class="row">
-  <div class="col-lg-9">
-    <div class="company__members col-lg-12">
-      <% if @founders.any? %>
-        <div class="row">
-          <h4><%= 'Founder'.pluralize(@founders.size) %></h4>
-          <% @founders.keys.sort_by(&:last_name).each do |member| %>
-            <%= render partial: 'member', object: member, locals: { positions: @founders[member] } %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if @team_members.any? %>
-        <div class="row">
-          <h4><%= 'Team Member'.pluralize(@team_members.size) %></h4>
-          <% @team_members.keys.sort_by(&:last_name).each do |member| %>
-            <%= render partial: 'member', object: member, locals: { positions: @team_members[member] } %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
   <div class="col-lg-3 company__sidebar">
     <div class="company__sidebar__logo">
       <%= image_tag(@company.logo.url(:thumb)) %>
     </div>
-    <% if @company.website.present? %>
-      <div class="company__sidebar__website">
-        <%= website_link(@company) %>
-      </div>
-    <% end %>
-    <div class="company__sidebar__description">
-      <%= @company.description %>
-    </div>
-    <div class="company__sidebar__social_media_links">
-      <%= render partial: 'shared/social_media_link', collection: @company.social_media_links %>
+  </div>
+  <div class="col-lg-9">
+    <%= render partial: 'header' %>
+    <div class="company__members col-lg-12">
+      <% if @founders.any? %>
+        <div class="row">
+          <div class="col-lg-12">
+            <h4 class='company__members-h4'><%= 'Founder'.pluralize(@founders.size) %></h4>
+            <% @founders.keys.sort_by(&:last_name).each do |member| %>
+              <%= render partial: 'member', object: member, locals: { positions: @founders[member] } %>
+            <% end %>
+          </div>
+        </div>
+        <%= tag('hr') if @team_members.any? %>
+      <% end %>
+      <% if @team_members.any? %>
+        <div class="row">
+          <div class="col-lg-12">
+            <h4 class='company__members-h4'><%= 'Team Member'.pluralize(@team_members.size) %></h4>
+            <% @team_members.keys.sort_by(&:last_name).each do |member| %>
+              <%= render partial: 'member', object: member, locals: { positions: @team_members[member] } %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
