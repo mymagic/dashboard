@@ -21,17 +21,22 @@ class Community < ActiveRecord::Base
   # Validations
   validates :name, :slug, presence: true
   validates :name, :slug, uniqueness: true
-  validates :email, presence: true, on: :update
+  validates :email, presence: true
 
   # Callbacks
-  after_save :destroy_social_media_services, if: -> { social_media_services_changed? }
+  after_save :destroy_social_media_services,
+             if: -> { social_media_services_changed? }
+  before_validation :set_default_email, on: :create
+  before_validation :populate_with_default_social_media_services, on: :create
 
   # Exception classes
   class CommunityNotFound < StandardError
   end
 
   def social_media_services=(values)
-    values = values.split(',').map(&:strip).select(&:present?) if values.is_a? String
+    if values.is_a? String
+      values = values.split(',').map(&:strip).select(&:present?)
+    end
     super(values)
   end
 
@@ -41,5 +46,14 @@ class Community < ActiveRecord::Base
     social_media_services_change.inject(:-).each do |service|
       social_media_links.where(service: service).destroy_all
     end
+  end
+
+  def populate_with_default_social_media_services
+    self.social_media_services = SocialMediaLink::DEFAULTS
+  end
+
+  def set_default_email
+    hostname = Rails.configuration.action_mailer.default_url_options[:host]
+    self.email = "noreply@#{ hostname }"
   end
 end

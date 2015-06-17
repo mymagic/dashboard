@@ -3,6 +3,7 @@
   <!-- Nav tabs -->
   <ul class="nav nav-pills" role="tablist">
     <li role="presentation" class="active"><a href="#general" aria-controls="profile" role="tab" data-toggle="tab">General</a></li>
+    <li role="presentation"><a href="#social-media-services" aria-controls="messages" role="tab" data-toggle="tab">Social Media Services</a></li>
     <li role="presentation"><a href="#notifications" aria-controls="messages" role="tab" data-toggle="tab">Notifications</a></li>
     <li role="presentation"><a href="#security" aria-controls="settings" role="tab" data-toggle="tab">Security</a></li>
   </ul>
@@ -21,6 +22,12 @@
           </div>
           <div class="col-lg-6">
             <%= render partial: 'shared/forms/avatar', locals: { form: f } %>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="social-media-services">
+        <div class="row">
+          <div class="col-lg-6">
             <%= render partial: 'shared/forms/social_media_link', locals: { form: f } %>
           </div>
         </div>

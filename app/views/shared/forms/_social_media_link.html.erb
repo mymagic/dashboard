@@ -2,7 +2,7 @@
   <%= form.simple_fields_for :social_media_links, social_media_links(form.object) do |social_media_link| %>
     <div class='social_media_link'>
       <%= social_media_link.input :service, as: :hidden %>
-      <%= social_media_link.input :url, label: social_media_link.object.service, placeholder: 'http://…' %>
+      <%= social_media_link.input :url, label: social_media_icon_or_text(social_media_link.object.service), placeholder: 'http://…' %>
     </div>
   <% end %>
 </div>
