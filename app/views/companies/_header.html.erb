@@ -1,0 +1,21 @@
+<% if can? :manage_company, @company %>
+  <div class="page-header-action">
+    <%= render partial: 'manager_menu', locals: { company: @company } %>
+  </div>
+<% end %>
+<h1><%= @company.name %></h1>
+<% if @company.website.present? %>
+  <div class="company__header__website">
+    <%= website_link(@company) %>
+  </div>
+<% end %>
+<% if @company.social_media_links.any? %>
+  <div class="company__header__social_media_links">
+    <%= render partial: 'shared/social_media_link', collection: @company.social_media_links %>
+  </div>
+<% end %>
+<% if @company.description.present? %>
+  <div class="company__header__description">
+    <%= @company.description %>
+  </div>
+<% end %>
