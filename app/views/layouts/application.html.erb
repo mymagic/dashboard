@@ -11,13 +11,20 @@
     <%= favicon_link_tag favicon_path, type: 'image/png' %>
     <%= csrf_meta_tags %>
   </head>
-  <body class='<%= controller_name %> <%= action_name %>' data-controller='<%= controller_name %>' data-community-slug='<%= current_community.try(:slug) %>'>
-    <%= render partial: 'shared/navigation' %>
-
-    <div class="container">
-    <%= render partial: 'shared/flash' %>
-    <%= yield :page_header %>
-    <%= yield %>
-    </div>
+  <body data-controller='<%= controller_name %>' data-community-slug='<%= current_community.try(:slug) %>'>
+    <header class='page-row'>
+      <div id="color-bar"></div>
+      <%= render partial: 'shared/navigation' %>
+    </header>
+    <main class='page-row page-row-expanded'>
+      <div class="container">
+        <%= render partial: 'shared/flash' %>
+        <%= yield :page_header %>
+        <%= yield %>
+      </div>
+    </main>
+    <footer class='page-row'>
+      <%= render partial: 'shared/footer' %>
+    </footer>
   </body>
 </html>

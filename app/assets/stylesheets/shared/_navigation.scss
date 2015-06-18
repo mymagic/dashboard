@@ -1,16 +1,92 @@
+.navbar-magic {
+  background-color: $nav-background-color;
+  border: 0;
+  .navbar-toggle {
+    .icon-bar {
+      background-color: $nav-link-color;
+    }
+  }
+  a {
+    color: $nav-link-color;
+    &:hover {
+      color: $nav-link-color-hover;
+      background-color: $nav-background-color-hover;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+  li {
+    border-right: 1px solid $nav-border-color;
+    &.active, &.open {
+      background-color: $nav-background-color-hover;
+      a {
+        color: $nav-link-color-hover;
+      }
+      a.dropdown-toggle {
+        &:focus {
+          background-color: $nav-background-color-hover;
+          color: $nav-link-color-hover;
+        }
+      }
+    }
+    &.dropdown {
+      border: 0;
+      img {
+        vertical-align: top;
+      }
+      li {
+        border-right: 0;
+      }
+      ul.dropdown-menu {
+        li {
+          a {
+            &:hover {
+              background-color: lighten($nav-background-color, 50);
+              color: $nav-link-color;
+            }
+          }
+        }
+        li.active {
+          a {
+            background-color: $nav-background-color;
+            color: $nav-link-color;
+          }
+        }
+      }
+      a.dropdown-toggle {
+        &:focus {
+          background-color: $nav-background-color;
+          color: $nav-link-color;
+        }
+      }
+      &.open {
+        a.dropdown-toggle {
+          &:focus {
+            background-color: $nav-background-color-hover;
+            color: $nav-link-color-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
 .navbar-brand {
+  border-right: 1px solid $nav-border-color;
   img {
     display: inline-block;
   }
   .community-brand {
     font-weight: bold;
-    border-bottom: 2px solid $brand-color;
+    border-bottom: 2px solid $nav-link-color;
     padding-bottom: 2px;
-    color: $brand-color;
-    &:hover {
-      border-bottom: 2px solid $brand-color-hover;
-      color: $brand-color-hover;
-      transition: all 0.2s ease-in-out;
+    color: $nav-link-color;
+  }
+  &:hover {
+    background-color: $nav-background-color-hover;
+    transition: all 0.2s ease-in-out;
+    .community-brand {
+      color: $nav-link-color-hover;
+      border-color: $nav-link-color-hover;
     }
   }
 }

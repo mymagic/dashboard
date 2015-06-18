@@ -9,7 +9,6 @@
 #= require bootstrap-tagsinput
 #= require fullcalendar
 #= require nprogress
-#= require nprogress-turbolinks
 #= require typeahead.bundle
 
 #= require bootstrap-setup
@@ -23,6 +22,7 @@
 # Turn off loading spinner
 NProgress.configure(showSpinner: false)
 
+
 $ ->
   $(document)
     # Trigger ujs after page load
@@ -33,5 +33,8 @@ $ ->
     .on 'ajax:success', ->
       $(@).trigger('ujs')
 
+    .on 'page:fetch', -> NProgress.start()
+    .on 'page:change', -> NProgress.done()
+    .on 'page:restore', -> NProgress.remove()
     .trigger('page:change')
     .trigger('page:load')

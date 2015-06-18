@@ -1,0 +1,30 @@
+.footer {
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  background: $footer-background-color;
+  color: $footer-color;
+  margin-top: 60px;
+  padding-top: 60px;
+  padding-bottom: 30px;
+  a {
+    color: $footer-color;
+  }
+  &__logo {
+    margin-bottom: 20px;
+  }
+  &__nav {
+    li {
+      a {
+        text-transform: uppercase;
+        &:hover, &:focus, &:active {
+          color: darken($link-color, 10);
+          background-color: $nav-link-hover-bg;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  address {
+    line-height: 24px;
+  }
+}

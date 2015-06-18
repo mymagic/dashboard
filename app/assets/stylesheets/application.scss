@@ -11,13 +11,14 @@
 @import "fullcalendar";
 
 @import "nprogress";
-@import "nprogress-bootstrap";
 
 @import "shared/variables";
 
 @import "shared/forms";
 @import "shared/typeahead";
 @import "shared/navigation";
+@import "shared/footer";
+
 @import "shared/buttons";
 @import "shared/tags";
 @import "shared/social_media_links";
@@ -33,3 +34,21 @@
 @import "calendar";
 @import "availabilities";
 @import "events";
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: table;
+  width: 100%;
+}
+
+.page-row {
+  display: table-row;
+  height: 1px;
+}
+
+.page-row-expanded {
+  height: 100%;
+}

@@ -1,3 +1,8 @@
+#color-bar {
+  background: image_url('color-bar.jpg') repeat-x;
+  height: 4px;
+}
+
 .popover {
   width: 500px;
 }
@@ -28,4 +33,17 @@
 .filter-description {
   margin-bottom: 20px;
   line-height: 34px;
+}
+
+ul.pagination {
+  li.active {
+    a {
+      background-color: $nav-pills-active-link-hover-bg;
+      border-color: $nav-pills-active-link-hover-bg;
+      &:hover, &:active, &:focus {
+        background-color: $nav-pills-active-link-hover-bg;
+        border-color: $nav-pills-active-link-hover-bg;
+      }
+    }
+  }
 }

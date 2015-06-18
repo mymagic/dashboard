@@ -66,9 +66,6 @@ gem 'ranked-model'
 # Create pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models
 gem 'friendly_id'
 
-# turbolinks progress bar
-gem 'nprogress-rails'
-
 # Autoprefixer for easier cross-browser CSS
 gem "autoprefixer-rails"
 

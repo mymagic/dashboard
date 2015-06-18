@@ -1,0 +1,42 @@
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-2">
+        <%= image_tag('logobw.png', class: 'img-responsive footer__logo') %>
+      </div>
+      <div class="col-lg-2">
+        <ul class='nav footer__nav'>
+          <li><%= link_to 'About', 'http://mymagic.my/about' %></li>
+          <li><%= link_to 'Community', 'http://mymagic.my/community' %></li>
+          <li><%= link_to 'Programs', 'http://mymagic.my/programs' %></li>
+          <li><%= link_to 'Events', 'http://mymagic.my/events' %></li>
+        </ul>
+      </div>
+      <div class="col-lg-2">
+        <ul class='nav footer__nav'>
+          <li><%= link_to 'Newsletter', 'http://mymagic.my/newsletter' %> </li>
+          <li><%= link_to 'News', 'http://mymagic.my/news' %> </li>
+          <li><%= link_to 'Jobs', 'http://mymagic.my/jobs' %> </li>
+          <li><%= link_to 'Contact', 'http://mymagic.my/contact' %> </li>
+        </ul>
+      </div>
+      <div class="col-lg-6 text-right">
+        <address>
+          Malaysian Global Innovation & Creativity Centre,<br>
+          Block 3730 APEC, 63000 Cyberjaya, Malaysia.<br>
+          Tel: +60 3 8324 4800<br>
+          Email: <%= mail_to 'enquiries@mymagic.my' %>
+        </address>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-lg-3">
+        <!-- social icons -->
+      </div>
+      <div class="col-lg-3 col-lg-push-6 text-right">
+        <%= link_to('Privacy Policy', 'http://mymagic.my/privacy-policy', target: '_blank') %> | Initiated by M.O.F.
+      </div>
+    </div>
+  </div>
+</div>
