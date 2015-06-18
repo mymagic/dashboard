@@ -41,23 +41,30 @@
 
 
 .member {
-  &__new_position {
-    text-align: center;
-    margin: 15px 0;
+  &__header {
+    margin-bottom: 15px;
   }
-  &__sidebar {
-    &__avatar, &__positions {
-      text-align: center;
-    }
-    &__avatar, &__positions, &__description, &__followers, &__follows {
+  &__details {
+    &__positions, &__description, &__followers, &__follows {
       margin-bottom: 10px;
     }
     &__social_media_links {
-      text-align: center;
       margin-bottom: 10px;
       a {
-        margin: 0 5px;
+        margin: 5px 5px 0 5px;
       }
+    }
+    &__description {
+      padding: 15px;
+      border: 1px solid $member-border-color;
+    }
+  }
+  &__sidebar {
+    &__avatar {
+      text-align: center;
+    }
+    &__avatar {
+      margin-bottom: 10px;
     }
   }
   &__member {

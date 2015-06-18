@@ -1,0 +1,10 @@
+<% title "#{ @member.full_name } Office Hours for #{ @date.strftime('%B %d, %Y') }" %>
+
+<div class="row member">
+  <%= render partial: 'members/sidebar' %>
+  <div class="col-lg-9">
+    <%= render partial: 'members/header' %>
+    <h2 class='availability-date'><%= @date.strftime('%B %d, %Y') %></h2>
+    <%= render @availabilities %>
+  </div>
+</div>

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         patch :follow
         delete :unfollow
       end
+      resources :activities, only: :index
       resource :calendar, only: :show
       resources :messages
       resources :discussions, only: :index

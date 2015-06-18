@@ -1,0 +1,62 @@
+<div class="row member__details">
+  <% if @member.social_media_links.any? %>
+    <div class="member__details__social_media_links">
+      <%= render partial: 'shared/social_media_link', collection: @member.social_media_links %>
+    </div>
+  <% end %>
+
+  <% if @member.description.present? %>
+    <div class="member__details__description">
+      <%= @member.description %>
+    </div>
+  <% end %>
+
+  <% if @member.positions_in_companies.any? %>
+    <div class="member__details__positions">
+      <table class="table">
+        <thead>
+          <th>
+            Company
+          </th>
+          <th>
+            Role
+          </th>
+        </thead>
+        <tbody>
+          <% @member.positions_in_companies.each do |company, positions| %>
+            <tr>
+              <td>
+                <%= company_link(company) %>
+              </td>
+              <td>
+                <%= positions.to_sentence %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <% if @member.followed_members.any? || @member.followers.any? %>
+    <div class="row">
+      <% if @member.followed_members.any? %>
+        <div class="member__details__follows col-lg-6">
+          <h5>Following</h5>
+          <% @member.followed_members.each do |followed| %>
+            <%= member_avatar_link(followed) %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @member.followers.any? %>
+        <div class="member__details__followers col-lg-6">
+          <h5>Followed by</h5>
+          <% @member.followers.each do |follower| %>
+            <%= member_avatar_link(follower) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
