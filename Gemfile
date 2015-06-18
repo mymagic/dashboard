@@ -123,6 +123,9 @@ group :test do
 
   # Headless browser
   gem 'poltergeist'
+
+  # Code climate reporter
+  gem 'codeclimate-test-reporter', require: false
 end
 
 group :production, :staging do
