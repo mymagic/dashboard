@@ -1,5 +1,6 @@
-<ul class="nav nav-pills navbar-member">
-  <%= nav_link viewing_current_member? ? 'Your Activities' : 'Activities', community_member_path(current_community, @member) %>
+<ul class="nav nav-pills navbar-member nav-stacked">
+  <%= nav_link 'Details', community_member_path(current_community, @member) %>
+  <%= nav_link 'Activities', community_member_activities_path(current_community, @member) %>
   <% if @member.discussions.any? %>
     <%= nav_link 'Discussions', community_member_discussions_path(current_community, @member) %>
   <% end %>

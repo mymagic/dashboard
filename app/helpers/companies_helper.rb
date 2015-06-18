@@ -7,6 +7,23 @@ module CompaniesHelper
   end
 
   def website_link(company)
-    link_to(company.website.gsub(/https?:\/\//,''), company.website, target: '_blank')
+    link_to(
+      company.website.gsub(/https?:\/\//, ''),
+      company.website, target: '_blank')
+  end
+
+  def company_link(company)
+    safe_join([company_logo_link(company), company_name_link(company)], ' ')
+  end
+
+  def company_logo_link(company)
+    link_to(
+      image_tag(company.logo.url(:icon), class: 'img-rounded'),
+      community_company_path(current_community, company)
+    )
+  end
+
+  def company_name_link(company)
+    link_to(company.name, community_company_path(current_community, company))
   end
 end

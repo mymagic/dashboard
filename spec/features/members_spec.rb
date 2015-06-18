@@ -89,7 +89,7 @@ RSpec.describe 'Members', type: :feature, js: false do
 
         scenario 'see member info' do
           visit community_member_path(community, other_member)
-          within '.member__sidebar' do
+          within '.member__details' do
             expect(page).to have_content('A happy member of this community.')
             expect(page).to have_content(company.name)
           end

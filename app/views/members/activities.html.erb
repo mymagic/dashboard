@@ -5,9 +5,9 @@
   <div class="col-lg-9">
     <%= render partial: 'members/header' %>
     <div class="row">
-      <div class="discussion-group">
-        <%= render(@discussions) || "<tr><td>Sorry, there #{ @member.full_name } has not created any discussions yet.</td></tr>".html_safe %>
-      </div>
+      <table class="table table-striped activity-group">
+        <%= render(@activities) || "<tr><td>Sorry, there is nothing to see yet.</td></tr>".html_safe %>
+      </table>
     </div>
   </div>
 </div>

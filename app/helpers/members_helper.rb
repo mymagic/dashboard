@@ -18,10 +18,7 @@ module MembersHelper
   end
 
   def member_link(member)
-    safe_join([
-      member_avatar_link(member),
-      member_name_link(member)
-    ], ' ')
+    safe_join([member_avatar_link(member), member_name_link(member)], ' ')
   end
 
   def member_avatar_link(member)
@@ -32,20 +29,13 @@ module MembersHelper
   end
 
   def member_name_link(member)
-    link_to(
-      member.full_name,
-      community_member_path(current_community, member)
-    )
-  end
-
-  def viewing_current_member?
-    @member == current_member
+    link_to(member.full_name, community_member_path(current_community, member))
   end
 
   def member_positions(member, with_spacing: false)
-    positions = member.positions_in_companies.map do |company, positions|
+    comp_pos = member.positions_in_companies.map do |company, positions|
       "#{ company.name } (#{ positions.to_sentence })"
     end
-    with_spacing ? safe_join(positions, tag('br')) : positions.to_sentence
+    with_spacing ? safe_join(comp_pos, tag('br')) : comp_pos.to_sentence
   end
 end

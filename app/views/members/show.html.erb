@@ -1,13 +1,9 @@
 <% title @member.full_name %>
-<%= render partial: 'members/header' %>
+
 <div class="row member">
-  <div class="col-lg-9 member__activities">
-    <%= render partial: 'members/navigation' %>
-    <table class="table table-striped activity-group">
-      <tbody>
-        <%= render(@activities) || "<tr><td>Sorry, there is nothing to see yet.</td></tr>".html_safe %>
-      </tbody>
-    </table>
+  <%= render partial: 'sidebar' %>
+  <div class="col-lg-9">
+    <%= render partial: 'header' %>
+    <%= render partial: 'details' %>
   </div>
-  <%= render partial: 'members/sidebar' %>
 </div>
