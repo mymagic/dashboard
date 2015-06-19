@@ -27,4 +27,18 @@
   address {
     line-height: 24px;
   }
+  &__social-media-services {
+    a {
+      img {
+        border-radius: 10px;
+        filter: grayscale(100%);
+      }
+      &:hover {
+        img {
+          filter: grayscale(0%);
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+  }
 }
