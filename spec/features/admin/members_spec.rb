@@ -89,11 +89,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
             href: 'https://facebook.com/handle')
       end
 
-      scenario 'viewing dashboard' do
-        visit community_admin_dashboard_path(community)
-        expect(page).to have_css('nav.navbar-admin')
-      end
-
       scenario 'viewing the user menus' do
         visit community_path(community)
         expect(page).to have_css('nav.navbar-standard')
@@ -113,11 +108,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
         expect(page).to have_content(administrator.first_name)
         expect(page).to have_content(staff.first_name)
         expect(page).to have_content(member.first_name)
-      end
-
-      scenario 'viewing dashboard' do
-        visit community_admin_dashboard_path(community)
-        expect(page).to have_css('nav.navbar-admin')
       end
 
       scenario 'viewing the user menus' do
@@ -141,11 +131,6 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
       scenario 'viewing members' do
         visit community_admin_members_path(community)
-        expect(page).to have_unauthorized_message
-      end
-
-      scenario 'viewing dashboard' do
-        visit community_admin_dashboard_path(community)
         expect(page).to have_unauthorized_message
       end
     end

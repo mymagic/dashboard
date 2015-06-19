@@ -23,3 +23,12 @@ form {
     }
   }
 }
+
+.search-message-group {
+  .input-group-btn {
+    button {
+      border: 1px solid #ccc;
+      border-left: 0;
+    }
+  }
+}

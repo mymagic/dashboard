@@ -90,3 +90,29 @@
     }
   }
 }
+
+.navbar-admin {
+  .navbar-brand {
+    border: none;
+  }
+}
+
+.nav-pills.nav-stacked {
+  li {
+    background-color: #F6F6F6;
+    a {
+      font-weight: bold;
+      color: #666666;
+      &:active, &:focus, &:hover {
+        background-color: #F66616;
+        color: #FFFFFF;
+      }
+    }
+    &.active {
+      a {
+        background-color: #F66616;
+        color: #FFFFFF;
+      }
+    }
+  }
+}
