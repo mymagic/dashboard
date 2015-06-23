@@ -9,7 +9,7 @@ module Admin
       if @current_community.update_attributes(community_params)
         redirect_to(
           community_path(@current_community),
-          notice: 'Community was successfully updated.')
+          notice: 'Settings were successfully updated.')
       else
         render 'edit', alert: 'Error updating community.'
       end

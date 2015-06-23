@@ -9,7 +9,7 @@ RSpec.describe 'Admin/Communities', type: :feature, js: false do
       it "creates a new event" do
         visit community_path(community)
         within '.navbar-admin' do
-          click_link "Community"
+          click_link "Settings"
         end
 
         # General Information
@@ -18,9 +18,9 @@ RSpec.describe 'Admin/Communities', type: :feature, js: false do
 
         fill_in 'Email', with: 'email@greatcommunity.local'
 
-        click_button 'Update Community'
+        click_button 'Update Settings'
 
-        expect(page).to have_content('Community was successfully updated.')
+        expect(page).to have_content('Settings were successfully updated.')
 
         within '.navbar-standard .navbar-brand' do
           expect(page).to have_content 'GreatCommunity'

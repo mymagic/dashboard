@@ -1,14 +1,14 @@
 <div class='row'>
   <div class='col-sm-6 col-sm-offset-3'>
     <div class='row'>
-      <%= panel "#{action_name.capitalize} Community", columns: 12 do %>
+      <%= panel "Dashboard Settings", columns: 12 do %>
         <%= simple_form_for(community, url: community_admin_community_path(community), html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
-          <%= f.input :name, autofocus: true, placeholder: 'Enter Community Name' %>
-          <%= f.input :logo, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
-          <%= f.input :email %>
-          <%= f.input :social_media_services, placeholder: 'Separate each type by comma.', input_html: { value: current_community.social_media_services.join(', ') } %>
+          <%= f.input :name, autofocus: true, placeholder: 'Name' %>
+          <%= f.input :logo, as: :image_preview, hint: 'PNG, JPG or GIF. Images 100x100 work best.', label: 'Favicon', input_html: { preview_version: :icon } %>
+          <%= f.input :email, hint: "The from and reply-to address used for notifications."  %>
+          <%= f.input :social_media_services, placeholder: 'google, facebook…', input_html: { value: current_community.social_media_services.join(', '), rows: 6 }, hint: 'Please separate by comma.' %>
           <div class='text-right'>
-            <%= f.button :submit, class: 'btn-success' %>
+            <%= f.button :submit, class: 'btn-success', value: 'Update Settings' %>
           </div>
         <% end %>
       <% end %>
