@@ -6,13 +6,11 @@
   <td><%= member.email %></td>
   <td><%= member.invitation_sent_at %></td>
   <td>
-    <div class="btn-group">
-      <% if can? :resend_invitation, member %>
-        <%= link_to('Resend invitation', resend_invitation_community_admin_member_path(member.community, member), data: { method: 'patch' }, class: 'btn btn-default btn-xs') %>
-      <% end %>
-      <% if can? :update, member %>
-        <%= link_to('Edit', edit_community_admin_member_path(member.community, member), class: 'btn btn-default btn-xs') %>
-      <% end %>
-    </div>
+    <% if can? :resend_invitation, member %>
+      <%= link_to('Resend invitation', resend_invitation_community_admin_member_path(member.community, member), data: { method: 'patch' }, class: 'btn btn-default btn-xs') %>
+    <% end %>
+    <% if can? :update, member %>
+      <%= link_to('Edit', edit_community_admin_member_path(member.community, member), class: 'btn btn-default btn-xs') %>
+    <% end %>
   </td>
 </tr>
