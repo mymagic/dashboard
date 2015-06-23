@@ -6,20 +6,12 @@ class DiscussionsController < ApplicationController
   include FilterConcern
 
   def index
-    if params[:member_id]
-      @member = Member.find(params[:member_id])
-      @discussions = @discussions.
-                     where(author: @member).
-                     filter_by(:recent).
-                     limit(10)
-      render 'members/discussions'
-    else
-      @discussions = @discussions.tagged_with(tag) if tag
-      @discussions = @discussions.
-                     includes(:author, :comments, :followers).
-                     filter_by(filter).
-                     page params[:page]
-    end
+    return member_discussions if params[:member_id]
+    @discussions = @discussions.tagged_with(tag) if tag
+    @discussions = @discussions.
+                   includes(:author, :comments, :followers, :tags).
+                   filter_by(filter).
+                   page params[:page]
   end
 
   def show
@@ -74,6 +66,15 @@ class DiscussionsController < ApplicationController
   end
 
   private
+
+  def member_discussions
+    @member = Member.find(params[:member_id])
+    @discussions = @discussions.
+                   where(author: @member).
+                   filter_by(:recent).
+                   limit(10)
+    render 'members/discussions'
+  end
 
   def default_filter
     :recent

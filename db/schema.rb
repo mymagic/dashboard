@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150622051929) do
+ActiveRecord::Schema.define(version: 20150623032008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,7 +30,11 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.datetime "updated_at",              null: false
   end
 
+  add_index "activities", ["community_id"], name: "index_activities_on_community_id", using: :btree
+  add_index "activities", ["id", "type"], name: "index_activities_on_id_and_type", using: :btree
   add_index "activities", ["owner_id"], name: "index_activities_on_owner_id", using: :btree
+  add_index "activities", ["resource_id", "resource_type"], name: "index_activities_on_resource_id_and_resource_type", using: :btree
+  add_index "activities", ["secondary_resource_id", "secondary_resource_type"], name: "activities_secondary_resource_index", using: :btree
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "member_id",                       null: false
@@ -49,6 +53,9 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.integer  "community_id"
   end
 
+  add_index "availabilities", ["community_id"], name: "index_availabilities_on_community_id", using: :btree
+  add_index "availabilities", ["member_id"], name: "index_availabilities_on_member_id", using: :btree
+
   create_table "comments", force: :cascade do |t|
     t.integer  "author_id"
     t.integer  "discussion_id"
@@ -57,6 +64,7 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.datetime "updated_at",    null: false
   end
 
+  add_index "comments", ["author_id"], name: "index_comments_on_author_id", using: :btree
   add_index "comments", ["discussion_id"], name: "index_comments_on_discussion_id", using: :btree
 
   create_table "communities", force: :cascade do |t|
@@ -92,6 +100,7 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.integer  "follows_count"
   end
 
+  add_index "discussions", ["author_id"], name: "index_discussions_on_author_id", using: :btree
   add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
 
   create_table "events", force: :cascade do |t|
@@ -109,6 +118,9 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.boolean  "external",        default: false, null: false
   end
 
+  add_index "events", ["community_id"], name: "index_events_on_community_id", using: :btree
+  add_index "events", ["creator_id"], name: "index_events_on_creator_id", using: :btree
+
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id"
     t.string   "followable_type"
@@ -117,6 +129,7 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.datetime "updated_at",      null: false
   end
 
+  add_index "follows", ["followable_id", "followable_type"], name: "index_follows_on_followable_id_and_followable_type", using: :btree
   add_index "follows", ["member_id"], name: "index_follows_on_member_id", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -225,6 +238,9 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.datetime "updated_at",      null: false
   end
 
+  add_index "slots", ["availability_id"], name: "index_slots_on_availability_id", using: :btree
+  add_index "slots", ["member_id"], name: "index_slots_on_member_id", using: :btree
+
   create_table "social_media_links", force: :cascade do |t|
     t.string  "service"
     t.string  "url"
@@ -233,6 +249,7 @@ ActiveRecord::Schema.define(version: 20150622051929) do
     t.integer "community_id"
   end
 
+  add_index "social_media_links", ["attachable_id", "attachable_type"], name: "index_social_media_links_on_attachable_id_and_attachable_type", using: :btree
   add_index "social_media_links", ["community_id"], name: "index_social_media_links_on_community_id", using: :btree
   add_index "social_media_links", ["service", "url", "attachable_id", "attachable_type", "community_id"], name: "index_social_media_links_on_unique_keys", unique: true, using: :btree
 
@@ -245,6 +262,7 @@ ActiveRecord::Schema.define(version: 20150622051929) do
   end
 
   add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type"], name: "index_taggings_on_taggable_id_and_taggable_type", using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
@@ -256,6 +274,7 @@ ActiveRecord::Schema.define(version: 20150622051929) do
   end
 
   add_index "tags", ["community_id"], name: "index_tags_on_community_id", using: :btree
+  add_index "tags", ["id", "type"], name: "index_tags_on_id_and_type", using: :btree
 
   add_foreign_key "comments", "discussions"
   add_foreign_key "companies", "communities"
