@@ -3,6 +3,7 @@ class CompaniesController < ApplicationController
   load_and_authorize_resource through: :current_community, except: :index
 
   include FilterConcern
+  include CompanyParamsConcern
 
   def index
     @companies = companies.ordered.page params[:page]
@@ -29,17 +30,6 @@ class CompaniesController < ApplicationController
   end
 
   private
-
-  def company_params
-    params.require(:company).permit(
-      :name,
-      :website,
-      :description,
-      :logo,
-      :logo_cache,
-      social_media_links_attributes: [:id, :service, :url, :_destroy]
-    )
-  end
 
   def default_filter
     :portfolio

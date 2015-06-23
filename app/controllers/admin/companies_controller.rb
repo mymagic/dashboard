@@ -2,6 +2,8 @@ module Admin
   class CompaniesController < AdminController
     load_and_authorize_resource through: :current_community
 
+    include CompanyParamsConcern
+
     def index
       @companies = @companies.ordered
     end
@@ -40,17 +42,6 @@ module Admin
       redirect_to(
         community_admin_companies_path(current_community),
         notice: notice)
-    end
-
-    def company_params
-      params.require(:company).permit(
-        :name,
-        :website,
-        :description,
-        :logo,
-        :logo_cache,
-        social_media_links_attributes: [:id, :service, :url, :_destroy]
-      )
     end
   end
 end
