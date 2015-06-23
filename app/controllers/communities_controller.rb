@@ -9,10 +9,10 @@ class CommunitiesController < ApplicationController
     @activities = @activities.includes(:owner).ordered.limit(20)
     @events = @community.events.upcoming.ordered
     @availabilities = @community.
-                        availabilities.
-                        joins(:member).
-                        by_daterange(Date.today, 1.week.from_now.to_date).
-                        ordered
+                      availabilities.
+                      joins(:member).
+                      by_daterange(Date.today, 1.week.from_now.to_date).
+                      ordered
   end
 
   protected

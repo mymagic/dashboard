@@ -1,4 +1,4 @@
-<% if @events.any? %>
+<% if @events.present? %>
   <div class="community-sidebar__events">
     <h4>Upcoming Events</h4>
     <% @events.group_by { |event| event.starts_at.to_date }.each do |date, events| %>

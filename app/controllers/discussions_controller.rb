@@ -15,7 +15,10 @@ class DiscussionsController < ApplicationController
       render 'members/discussions'
     else
       @discussions = @discussions.tagged_with(tag) if tag
-      @discussions = @discussions.filter_by(filter).page params[:page]
+      @discussions = @discussions.
+                     includes(:author, :comments, :followers).
+                     filter_by(filter).
+                     page params[:page]
     end
   end
 

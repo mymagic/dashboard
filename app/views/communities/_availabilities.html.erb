@@ -1,4 +1,4 @@
-<% if @availabilities.any? %>
+<% if @availabilities.present? %>
   <div class="community-sidebar__availabilities">
     <h4>Upcoming Office Hours</h4>
     <% @availabilities.group_by(&:date).each do |date, availabilities| %>

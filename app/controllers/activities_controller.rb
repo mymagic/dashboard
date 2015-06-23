@@ -5,6 +5,7 @@ class ActivitiesController < ApplicationController
   load_and_authorize_resource through: :member
 
   def index
+    @activities = @activities.includes(:owner)
     render 'members/activities'
   end
 end
