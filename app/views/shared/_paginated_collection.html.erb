@@ -1,15 +1,17 @@
-<% if objects.any? %>
-  <div class="<%= class_name.underscore %>-group">
-    <%= render objects %>
-  </div>
-  <div class="row text-center">
-    <%= paginate objects %>
-  </div>
-  <div class="row text-center text-muted small filter-description">
-    <%= send(class_name.underscore + '_filter_description') %>
-  </div>
-<% else %>
-  <h3 class="text-center">
-    No <%= class_name.pluralize %> found.
-  </h3>
-<% end %>
+<div id="paginated_collection__content">
+  <% if objects.any? %>
+    <div class="<%= class_name.underscore %>-group">
+      <%= render objects %>
+    </div>
+    <div class="row text-center">
+      <%= paginate objects, remote: true %>
+    </div>
+    <div class="row text-center text-muted small filter-description">
+      <%= send(class_name.underscore + '_filter_description') %>
+    </div>
+  <% else %>
+    <h3 class="text-center">
+      No <%= class_name.pluralize %> found.
+    </h3>
+  <% end %>
+</div>

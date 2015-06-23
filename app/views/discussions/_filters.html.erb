@@ -1,9 +1,9 @@
 <% filters.each do |filter| %>
-  <%= content_tag 'li', role: 'presentation', class: (current_filter == filter ? 'active' : false) do %>
+  <%= content_tag 'li', role: 'presentation', class: (current_filter == filter ? 'active' : nil) do %>
     <% if tag %>
-      <%= link_to filter.to_s.humanize, community_discussion_tag_path(current_community, tag_id: tag, filter: filter) %>
+      <%= link_to filter.to_s.humanize, community_discussion_tag_path(current_community, tag_id: tag, filter: filter), remote: true %>
     <% else %>
-      <%= link_to filter.to_s.humanize, community_discussions_path(current_community, filter: filter) %>
+      <%= link_to filter.to_s.humanize, community_discussions_path(current_community, filter: filter), remote: true %>
     <% end %>
   <% end %>
 <% end %>
