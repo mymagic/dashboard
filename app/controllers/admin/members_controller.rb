@@ -15,35 +15,20 @@ module Admin
 
     def create
       @member = invite_member
-      member_invited = @member.errors.empty?
 
-      respond_to do |format|
-        if member_invited
-          format.html do
-            redirect_to(
-              community_admin_members_path(current_community),
-              notice: 'Member was successfully invited.')
-          end
-          format.json { render json: @member, status: :created }
-        else
-          @member.positions.build
-          format.html { render 'new', alert: 'Error inviting member.' }
-          format.json do
-            render json: @member.errors, status: :unprocessable_entity
-          end
-        end
+      if @member.errors.empty?
+        redirect_to(
+          community_admin_members_path(current_community),
+          notice: 'Member was successfully invited.')
+      else
+        @member.positions.build
+        render 'new', alert: 'Error inviting member.'
       end
+
     rescue Member::AlreadyExistsError => exception
-      respond_to do |format|
-        format.html do
-          redirect_to(
-            edit_community_admin_member_path(
-              current_community,
-              existing_member),
-            warning: exception.message)
-        end
-        format.json { render json: existing_member, status: :conflict }
-      end
+      redirect_to(
+        edit_community_admin_member_path(current_community, existing_member),
+        warning: exception.message)
     end
 
     def edit
@@ -52,20 +37,12 @@ module Admin
 
     def update
       @member.update(member_params)
-      respond_to do |format|
-        if @member.save
-          format.html do
-            redirect_to(
-              community_admin_members_path(current_community),
-              notice: 'Member was successfully updated.')
-          end
-          format.json { render json: @member, status: :created }
-        else
-          format.html { render 'edit', alert: 'Error updating member.' }
-          format.json do
-            render json: @member.errors, status: :unprocessable_entity
-          end
-        end
+      if @member.save
+        redirect_to(
+          community_admin_members_path(current_community),
+          notice: 'Member was successfully updated.')
+      else
+        render 'edit', alert: 'Error updating member.'
       end
     end
 
@@ -115,21 +92,8 @@ module Admin
         :avatar_cache,
         :description,
         notifications: NotificationMailer.action_methods.map(&:to_sym),
-        positions_attributes:
-          [
-            :company_id,
-            :role,
-            :founder,
-            :_destroy,
-            :id
-          ],
-        social_media_links_attributes:
-          [
-            :id,
-            :service,
-            :url,
-            :_destroy
-          ]
+        positions_attributes: [:company_id, :role, :founder, :_destroy, :id],
+        social_media_links_attributes: [:id, :service, :url, :_destroy]
       ).tap do |attrs|
         attrs[:community_id] = current_community.id
       end

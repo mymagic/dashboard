@@ -11,20 +11,19 @@ class Rsvp < ActiveRecord::Base
   belongs_to :event
   belongs_to :member
 
-  STATES.each do |state|
-    define_method("#{ state }?") { self.state == state }
-    define_method("#{ state }!") { self.update_attributes(state: state) }
-  end
-
   after_save :create_or_update_activity
   after_create :send_notification
+
+  def to_s
+    state.humanize(capitalize: false)
+  end
 
   private
 
   def create_or_update_activity
     Activity::Rsvping.
       find_or_create_by(owner: member, event: event).
-      update(data: { state: state })
+      update(data: { state: self.to_s })
   end
 
   def event_cannot_be_in_the_past
@@ -36,7 +35,7 @@ class Rsvp < ActiveRecord::Base
       :event_rsvp_notification,
       member,
       event: event,
-      state: state
+      rsvp: self
     )
   end
 end

@@ -151,11 +151,12 @@ class Member < ActiveRecord::Base
         end
       end
 
-      accepts_nested_attributes_for(:positions,
-                                    allow_destroy: true,
-                                    reject_if: proc do |attributes|
-                                      attributes[:company_id].blank?
-                                    end)
+      accepts_nested_attributes_for(
+        :positions,
+        allow_destroy: true,
+        reject_if: proc do |attributes|
+          attributes[:company_id].blank?
+        end)
 
       def positions_in_companies
         positions.group_by(&:company)

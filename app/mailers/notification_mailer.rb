@@ -105,13 +105,13 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def event_rsvp_notification(receiver, event:, state:)
+  def event_rsvp_notification(receiver, event:, rsvp:)
     @receiver = receiver
     @event = event
-    @state = state.humanize(capitalize: false)
+    @rsvp = rsvp
     mail(
       to: receiver.email,
-      subject: "You have RSVP'd to #{ @event.title } as #{ @state }"
+      subject: "You have RSVP'd to #{ @event.title } as #{ @rsvp }"
     )
 
   end

@@ -43,21 +43,21 @@ class Availability < ActiveRecord::Base
   scope :ordered, -> { order(date: :asc, time: :desc) }
   scope :by_date, -> (date) { where(date: date) }
   scope :by_daterange, -> (start_date, end_date) do
-    where("(date >= '#{start_date}') AND (date <= '#{end_date}')")
+    where(date: start_date..end_date)
   end
 
   def self.group_by_date_with_members(start_date, end_date)
-    joins(:member)
-    .by_daterange(start_date, end_date)
-    .group('date')
-    .select([
-      'date',
-      array_agg_sentence('availabilities.id'),
-      array_agg_sentence('member_id'),
-      array_agg_sentence('first_name'),
-      array_agg_sentence('last_name'),
-      array_agg_sentence('avatar')
-    ].join(','))
+    joins(:member).
+      by_daterange(start_date, end_date).
+      group('date').
+      select([
+        'date',
+        array_agg_sentence('availabilities.id'),
+        array_agg_sentence('member_id'),
+        array_agg_sentence('first_name'),
+        array_agg_sentence('last_name'),
+        array_agg_sentence('avatar')
+      ].join(','))
   end
 
   def self.array_agg_sentence(attr)
@@ -70,7 +70,9 @@ class Availability < ActiveRecord::Base
   end
 
   def slot_steps
-    0.step(duration, slot_duration).collect { |range| time + range.minute }.each_cons(2)
+    0.step(duration, slot_duration).
+      collect { |range| time + range.minute }.
+      each_cons(2)
   end
 
   def virtual_slots
@@ -105,18 +107,14 @@ class Availability < ActiveRecord::Base
 
   def start_time_must_be_less_than_end_time
     return unless start_time && end_time
-
-    if start_time >= end_time
-      errors.add(:end_time, "and start time must less than end time")
-    end
+    return if start_time <= end_time
+    errors.add(:end_time, "must be after start time")
   end
 
   def divisible_by_slot_duration
     return unless start_time && end_time && slot_duration
-
-    unless (end_time - start_time) % slot_duration == 0
-      errors.add(:end_time, "and start time must be divisible by slot duration")
-    end
+    return if (end_time - start_time) % slot_duration == 0
+    errors.add(:end_time, "and start time must be divisible by slot duration")
   end
 
   def create_activity
