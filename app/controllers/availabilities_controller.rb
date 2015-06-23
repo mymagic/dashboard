@@ -6,7 +6,8 @@ class AvailabilitiesController < ApplicationController
     through: [:member, :current_community], except: [:calendar, :slots])
 
   def index
-    render 'members/availabilities'
+    @partial = 'members/availabilities'
+    render 'members/show'
   end
 
   def calendar
@@ -16,7 +17,7 @@ class AvailabilitiesController < ApplicationController
 
   def slots
     @availabilities = @member.availabilities.by_date(date)
-    render 'members/availability'
+    render 'members/slots'
   end
 
   def new

@@ -61,7 +61,8 @@ class DiscussionsController < ApplicationController
                    includes(:author, :comments, :followers, :tags).
                    filter_by(:recent).
                    limit(10)
-    render 'members/discussions'
+    @partial = 'members/discussions'
+    render 'members/show'
   end
 
   def default_filter

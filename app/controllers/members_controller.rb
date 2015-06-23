@@ -17,12 +17,13 @@ class MembersController < ApplicationController
   end
 
   def show
-    @member = Member.includes(:social_media_links, :followed_members, :followers, { positions: :company }).find(params[:id])
+    @member = Member.includes(
+      :social_media_links,
+      :followed_members,
+      :followers,
+      positions: :company).find(params[:id])
     authorize! :show, @member
-  end
-
-  def activities
-    @activities = @member.activities.ordered.limit(20)
+    @partial = 'members/details'
   end
 
   def new

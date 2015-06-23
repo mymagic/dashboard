@@ -6,6 +6,7 @@ class ActivitiesController < ApplicationController
 
   def index
     @activities = @activities.includes(:owner)
-    render 'members/activities'
+    @partial = 'members/activities'
+    render 'members/show'
   end
 end

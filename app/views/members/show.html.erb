@@ -1,9 +1,11 @@
 <% title @member.full_name %>
 
 <div class="row member">
-  <%= render partial: 'sidebar' %>
+  <%= render partial: 'members/sidebar' %>
   <div class="col-lg-9">
-    <%= render partial: 'header' %>
-    <%= render partial: 'details' %>
+    <%= render partial: 'members/header' %>
+    <div id="member__content">
+      <%= render partial: @partial %>
+    </div>
   </div>
 </div>

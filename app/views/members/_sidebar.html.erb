@@ -1,16 +1,16 @@
-<div class="col-lg-3 member__sidebar">
+<div id="member__sidebar" class="col-lg-3 member__sidebar">
   <div class="member__sidebar__avatar">
     <%= image_tag(@member.avatar.url(:thumb)) %>
   </div>
   <ul class="nav nav-pills navbar-member nav-stacked">
-    <%= nav_link 'Details', community_member_path(current_community, @member) %>
-    <%= nav_link 'Activities', community_member_activities_path(current_community, @member) %>
+    <%= nav_link 'Details', community_member_path(current_community, @member), remote: true %>
+    <%= nav_link 'Activities', community_member_activities_path(current_community, @member), remote: true %>
     <% if @member.discussions.size > 0 %>
-      <%= nav_link 'Discussions', community_member_discussions_path(current_community, @member) %>
+      <%= nav_link 'Discussions', community_member_discussions_path(current_community, @member), remote: true %>
     <% end %>
     <% if @member.availabilities.any? %>
       <%= content_tag 'li', class: (viewing_availabilities? ? 'active' : nil) do  %>
-        <%= link_to 'Office Hours', community_member_availabilities_path(current_community, @member) %>
+        <%= link_to 'Office Hours', community_member_availabilities_path(current_community, @member), remote: true %>
       <% end %>
     <% end %>
   </ul>

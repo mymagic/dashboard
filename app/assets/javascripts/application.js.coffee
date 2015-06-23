@@ -9,11 +9,13 @@
 #= require bootstrap-tagsinput
 #= require fullcalendar
 #= require nprogress
+#= require nprogress-ajax
 #= require typeahead.bundle
 
 #= require bootstrap-setup
 #= require elements
 #= require availabilities
+#= require members
 #= require calendar
 #= require messages
 #= require admin/positions
@@ -21,7 +23,6 @@
 
 # Turn off loading spinner
 NProgress.configure(showSpinner: false)
-
 
 $ ->
   $(document)
