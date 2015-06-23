@@ -18,53 +18,31 @@ class Slot < ActiveRecord::Base
   validates :start_time, :end_time, :availability, presence: true
   validate :participant_must_not_be_mentor, if: :availability
 
-  after_create :send_reserve_notifications
+  after_create -> { send_notifications(:reserve) }
   after_create :create_activity
-  before_destroy :send_cancel_notifications
+  before_destroy -> { send_notifications(:cancel) }
+
+  alias_method :participant, :member
 
   def mentor
     availability.member
   end
 
-  def participant
-    member
-  end
-
   protected
 
   def participant_must_not_be_mentor
-    if mentor == participant
-      errors.add(:member, "and participant must not be a mentor")
-    end
+    return unless mentor == participant
+    errors.add(:member, "cannot book his own slot")
   end
 
-  def send_cancel_notifications
+  def send_notifications(type)
     Notifier.deliver(
-      :mentor_slot_cancel_notification,
-      mentor,
-      slot: self,
-      participant: member
+      "mentor_slot_#{ type }_notification".to_sym,
+      mentor, slot: self, participant: participant
     )
     Notifier.deliver(
-      :participant_slot_cancel_notification,
-      participant,
-      slot: self,
-      mentor: mentor
-    )
-  end
-
-  def send_reserve_notifications
-    Notifier.deliver(
-      :mentor_slot_reserve_notification,
-      mentor,
-      slot: self,
-      participant: member
-    )
-    Notifier.deliver(
-      :participant_slot_reserve_notification,
-      participant,
-      slot: self,
-      mentor: mentor
+      "participant_slot_#{ type }_notification".to_sym,
+      participant, slot: self, mentor: mentor
     )
   end
 
