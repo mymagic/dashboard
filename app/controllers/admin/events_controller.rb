@@ -3,19 +3,12 @@ module Admin
     load_and_authorize_resource through: :current_community
 
     def create
-      respond_to do |format|
-        if @event.update_attributes(event_params)
-          format.html do
-            redirect_to(community_admin_events_path(current_community),
-                        notice: 'Event was successfully created.')
-          end
-          format.json { render json: @event, status: :created }
-        else
-          format.html { render 'new', alert: 'Error creating event.' }
-          format.json do
-            render json: @event.errors, status: :unprocessable_entity
-          end
-        end
+      if @event.update_attributes(event_params)
+        redirect_to(
+          community_admin_events_path(current_community),
+          notice: 'Event was successfully created.')
+      else
+        render 'new', alert: 'Error creating event.'
       end
     end
 
@@ -30,19 +23,11 @@ module Admin
 
     def update
       @event.update(event_params)
-      respond_to do |format|
-        if @event.save
-          format.html do
-            redirect_to(community_admin_events_path(current_community),
-                        notice: 'Event was successfully updated.')
-          end
-          format.json { render json: @event, status: :created }
-        else
-          format.html { render 'edit', alert: 'Error updating event.' }
-          format.json do
-            render json: @event.errors, status: :unprocessable_entity
-          end
-        end
+      if @event.save
+        redirect_to(community_admin_events_path(current_community),
+                    notice: 'Event was successfully updated.')
+      else
+        render 'edit', alert: 'Error updating event.'
       end
     end
 
@@ -51,13 +36,9 @@ module Admin
 
     def destroy
       @event.destroy
-      respond_to do |format|
-        format.html do
-          redirect_to(community_admin_events_path(current_community),
-                      notice: 'Event was successfully deleted.')
-        end
-        format.json { head :no_content }
-      end
+      redirect_to(
+        community_admin_events_path(current_community),
+        notice: 'Event was successfully deleted.')
     end
 
     private

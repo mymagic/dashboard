@@ -48,26 +48,16 @@ module Admin
 
     def resend_invitation
       Member.invite!({ email: @member.email }, current_member)
-      respond_to do |format|
-        format.html do
-          redirect_to(
-            community_admin_members_path(current_community),
-            notice: 'Member invitation was resend.')
-        end
-        format.json { render json: @member, status: :created }
-      end
+      redirect_to(
+        community_admin_members_path(current_community),
+        notice: 'Member invitation was resend.')
     end
 
     def destroy
       @member.destroy
-      respond_to do |format|
-        format.html do
-          redirect_to(
-            community_admin_members_path(current_community),
-            notice: 'Member was successfully deleted.')
-        end
-        format.json { head :no_content }
-      end
+      redirect_to(
+        community_admin_members_path(current_community),
+        notice: 'Member was successfully deleted.')
     end
 
     private

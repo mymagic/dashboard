@@ -10,14 +10,12 @@ module Admin
     end
 
     def create
-      respond_to do |format|
-        if @company.update_attributes(company_params)
-          format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully created.' }
-          format.json { render json: @company, status: :created }
-        else
-          format.html { render 'new', alert: 'Error creating company.' }
-          format.json { render json: @company.errors, status: :unprocessable_entity }
-        end
+      if @company.update_attributes(company_params)
+        redirect_to(
+          community_admin_companies_path(current_community),
+          notice: 'Company was successfully created.')
+      else
+        render 'new', alert: 'Error creating company.'
       end
     end
 
@@ -26,23 +24,20 @@ module Admin
 
     def update
       @company.update(company_params)
-      respond_to do |format|
-        if @company.save
-          format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully updated.' }
-          format.json { render json: @company, status: :created }
-        else
-          format.html { render 'edit', alert: 'Error updating company.' }
-          format.json { render json: @company.errors, status: :unprocessable_entity }
-        end
+      if @company.save
+        redirect_to(
+          community_admin_companies_path(current_community),
+          notice: 'Company was successfully updated.')
+      else
+        render 'edit', alert: 'Error updating company.'
       end
     end
 
     def destroy
       @company.destroy
-      respond_to do |format|
-        format.html { redirect_to community_admin_companies_path(current_community), notice: 'Company was successfully deleted.' }
-        format.json { head :no_content }
-      end
+      redirect_to(
+        community_admin_companies_path(current_community),
+        notice: 'Company was successfully deleted.')
     end
 
     private
