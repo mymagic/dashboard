@@ -58,6 +58,7 @@ class DiscussionsController < ApplicationController
     @member = Member.find(params[:member_id])
     @discussions = @discussions.
                    where(author: @member).
+                   includes(:author, :comments, :followers, :tags).
                    filter_by(:recent).
                    limit(10)
     render 'members/discussions'
