@@ -4,7 +4,7 @@ module Taggable
   included do
     attr_writer :new_tags
     has_many :taggings, as: :taggable
-    has_many :tags, through: :taggings, class_name: "#{ name }Tag"
+    has_many :tags, through: :taggings
 
     scope :tagged_with, ->(tag) { joins(:tags).where(tags: { id: tag }) }
 

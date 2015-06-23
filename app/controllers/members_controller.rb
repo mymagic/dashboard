@@ -17,7 +17,7 @@ class MembersController < ApplicationController
   end
 
   def show
-    @member = Member.includes(positions: :company).find(params[:id])
+    @member = Member.includes(:social_media_links, :followed_members, :followers, { positions: :company }).find(params[:id])
     authorize! :show, @member
   end
 
