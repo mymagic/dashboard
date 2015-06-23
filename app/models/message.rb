@@ -50,6 +50,19 @@ class Message < ActiveRecord::Base
     )
   end
 
+  def self.chat_participants_with_member(member)
+    # It is equal to ..
+    # self.class.find(
+    #   messages.pluck(:sender_id, :receiver_id).flatten.uniq - [id])
+    Member.
+      joins("JOIN messages ON (messages.sender_id = members.id OR "\
+            "messages.receiver_id = members.id)").
+      where("messages.sender_id = :member OR "\
+            "messages.receiver_id = :member", member: member).
+      order("messages.created_at DESC").
+      where.not(id: member.id)
+  end
+
   private
 
   def send_notifications
