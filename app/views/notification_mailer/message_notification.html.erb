@@ -7,5 +7,5 @@
   </p>
 </div>
 <p>
-  <%= link_to("Click here to continue the conversation.", [@receiver.community, @sender, Message]) %>
+  <%= link_to("Click here to continue the conversation.", community_member_messages_path(@receiver.community, @sender)) %>
 </p>
