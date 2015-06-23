@@ -17,8 +17,7 @@ module Admin
       @member = invite_member
 
       if @member.errors.empty?
-        redirect_to(
-          community_admin_members_path(current_community),
+        redirect_to_admin_members_path(
           notice: 'Member was successfully invited.')
       else
         @member.positions.build
@@ -38,8 +37,7 @@ module Admin
     def update
       @member.update(member_params)
       if @member.save
-        redirect_to(
-          community_admin_members_path(current_community),
+        redirect_to_admin_members_path(
           notice: 'Member was successfully updated.')
       else
         render 'edit', alert: 'Error updating member.'
@@ -48,19 +46,19 @@ module Admin
 
     def resend_invitation
       Member.invite!({ email: @member.email }, current_member)
-      redirect_to(
-        community_admin_members_path(current_community),
-        notice: 'Member invitation was resend.')
+      redirect_to_admin_members_path(notice: 'Member invitation was resend.')
     end
 
     def destroy
       @member.destroy
-      redirect_to(
-        community_admin_members_path(current_community),
-        notice: 'Member was successfully deleted.')
+      redirect_to_admin_members_path(notice: 'Member was successfully deleted.')
     end
 
     private
+
+    def redirect_to_admin_members_path(**kwargs)
+      redirect_to(community_admin_members_path(current_community), **kwargs)
+    end
 
     def allow_without_password
       return unless params[:member][:password].blank? &&
