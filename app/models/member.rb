@@ -158,7 +158,7 @@ class Member < ActiveRecord::Base
                                     end)
 
       def positions_in_companies
-        positions.includes(:company).group_by(&:company)
+        positions.group_by(&:company)
       end
     end
 

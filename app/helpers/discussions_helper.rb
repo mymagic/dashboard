@@ -21,11 +21,11 @@ module DiscussionsHelper
     o = [
       "Posted by #{ discussion.author.full_name },",
       time_tag(discussion.created_at) + '.',
-      pluralize(discussion.followers.size, 'follower')
+      pluralize(discussion.follows_count, 'follower')
     ]
 
-    if discussion.comments.size > 0
-      o << "and #{ pluralize(discussion.comments.size, 'reply') }, "\
+    if discussion.comments_count.to_i > 0
+      o << "and #{ pluralize(discussion.comments_count, 'reply') }, "\
            "latest from #{ discussion.comments.first.author.full_name }"
     end
 

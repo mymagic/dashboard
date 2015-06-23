@@ -2,7 +2,7 @@ class MembersController < ApplicationController
   before_action :authenticate_member!
   load_resource :company
   load_resource through: :current_community
-  skip_authorize_resource only: [:new, :create]
+  skip_authorize_resource only: [:show, :new, :create]
 
   include FilterConcern
 
@@ -10,12 +10,15 @@ class MembersController < ApplicationController
     @members = @members.
                active.
                filter_by(filter).
+               includes(positions: :company).
                uniq.
                ordered.
                page params[:page]
   end
 
   def show
+    @member = Member.includes(positions: :company).find(params[:id])
+    authorize! :show, @member
   end
 
   def activities

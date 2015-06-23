@@ -100,6 +100,9 @@ group :development, :test do
 
   # guard livereload
   gem 'guard-livereload'
+
+  gem 'rack-mini-profiler'
+  gem 'bullet'
 end
 
 group :test do
