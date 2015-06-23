@@ -2,7 +2,7 @@
   title 'Messages'
 %>
 
-<div class="page-header">
+<div class="page-header" data-no-transition-cache>
   <h1>
     <%= render partial: 'search_form' if @receiver.present? %>
     <span>Messages</span>

@@ -4,7 +4,9 @@
   <%= render partial: 'members/sidebar' %>
   <div class="col-lg-9">
     <%= render partial: 'members/header' %>
-    <h2 class='availability-date'><%= @date.strftime('%B %d, %Y') %></h2>
-    <%= render @availabilities %>
+    <div id="member__content">
+      <h2 class='availability-date'><%= @date.strftime('%B %d, %Y') %></h2>
+      <%= render @availabilities %>
+    </div>
   </div>
 </div>

@@ -15,8 +15,6 @@
 #= require bootstrap-setup
 #= require elements
 #= require availabilities
-#= require members
-#= require filters
 #= require calendar
 #= require messages
 #= require admin/positions
@@ -25,18 +23,15 @@
 # Turn off loading spinner
 NProgress.configure(showSpinner: false)
 
+# Turbolinks TransitionCache
+Turbolinks.enableTransitionCache();
+
 $ ->
+  document._supports_history_api = !!(window.history && history.pushState)
   $(document)
-    # Trigger ujs after page load
-    .on 'page:load', ->
-      $(@).trigger('ujs')
-
-    # Trigger ujs after ajax success
-    .on 'ajax:success', ->
-      $(@).trigger('ujs')
-
+    .on 'ready', -> $(@).trigger('ujs')
+    .on 'ajaxStop', -> $(@).trigger('ujs')
+    .on 'page:load', -> $(@).trigger('ujs')
     .on 'page:fetch', -> NProgress.start()
     .on 'page:change', -> NProgress.done()
     .on 'page:restore', -> NProgress.remove()
-    .trigger('page:change')
-    .trigger('page:load')

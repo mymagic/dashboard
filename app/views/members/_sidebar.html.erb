@@ -2,7 +2,7 @@
   <div class="member__sidebar__avatar">
     <%= image_tag(@member.avatar.url(:thumb)) %>
   </div>
-  <ul class="nav nav-pills navbar-member nav-stacked">
+  <ul class="nav nav-pills navbar-member nav-stacked nav-remote">
     <%= nav_link 'Details', community_member_path(current_community, @member), remote: true %>
     <%= nav_link 'Activities', community_member_activities_path(current_community, @member), remote: true %>
     <% if @member.discussions.size > 0 %>
