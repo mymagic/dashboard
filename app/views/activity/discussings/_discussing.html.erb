@@ -1,3 +1,3 @@
 <%= render layout: 'shared/activity', locals: { activity: discussing } do %>
-  started discussion <%= discussion_link discussing.discussion %>
+  started discussion <%= link_to discussing.discussion_title, community_discussion_path(current_community, discussing.resource_id) %>
 <% end %>

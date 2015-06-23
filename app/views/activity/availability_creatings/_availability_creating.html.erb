@@ -1,12 +1,12 @@
 <%= render layout: 'shared/activity', locals: { activity: availability_creating } do %>
   setup office hours on <%=
   link_to(
-    availability_creating.availability.date.strftime('%B %d, %Y'),
+    availability_creating.date.strftime('%B %d, %Y'),
     community_member_availability_slots_url(
       current_community,
-      availability_creating.availability.member,
-      year: availability_creating.availability.date.year,
-      month: availability_creating.availability.date.month,
-      day: availability_creating.availability.date.day)
+      availability_creating.mentor,
+      year: availability_creating.date.year,
+      month: availability_creating.date.month,
+      day: availability_creating.date.day)
   ) %>
 <% end %>
