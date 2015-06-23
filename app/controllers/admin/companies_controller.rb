@@ -11,9 +11,7 @@ module Admin
 
     def create
       if @company.update_attributes(company_params)
-        redirect_to(
-          community_admin_companies_path(current_community),
-          notice: 'Company was successfully created.')
+        redirect_to_admin_companies_path('Company was successfully created.')
       else
         render 'new', alert: 'Error creating company.'
       end
@@ -25,9 +23,7 @@ module Admin
     def update
       @company.update(company_params)
       if @company.save
-        redirect_to(
-          community_admin_companies_path(current_community),
-          notice: 'Company was successfully updated.')
+        redirect_to_admin_companies_path('Company was successfully updated.')
       else
         render 'edit', alert: 'Error updating company.'
       end
@@ -35,12 +31,16 @@ module Admin
 
     def destroy
       @company.destroy
-      redirect_to(
-        community_admin_companies_path(current_community),
-        notice: 'Company was successfully deleted.')
+      redirect_to_admin_companies_path('Company was successfully deleted.')
     end
 
     private
+
+    def redirect_to_admin_companies_path(notice)
+      redirect_to(
+        community_admin_companies_path(current_community),
+        notice: notice)
+    end
 
     def company_params
       params.require(:company).permit(
@@ -49,13 +49,7 @@ module Admin
         :description,
         :logo,
         :logo_cache,
-        social_media_links_attributes:
-          [
-            :id,
-            :service,
-            :url,
-            :_destroy
-          ]
+        social_media_links_attributes: [:id, :service, :url, :_destroy]
       )
     end
   end

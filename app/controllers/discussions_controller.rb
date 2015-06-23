@@ -22,33 +22,20 @@ class DiscussionsController < ApplicationController
   end
 
   def create
-    respond_to do |format|
-      if @discussion.
-         update_attributes(discussion_params.merge(author: current_member))
-        format.html do
-          redirect_to([@discussion.community, @discussion],
-                      notice: 'Discussion was successfully created.')
-        end
-        format.json { render json: @discussion, status: :created }
-      else
-        format.html { render 'new', alert: 'Error creating discussion.' }
-        format.json do
-          render json: @discussion.errors, status: :unprocessable_entity
-        end
-      end
+    if @discussion.
+       update_attributes(discussion_params.merge(author: current_member))
+      redirect_to([@discussion.community, @discussion],
+                  notice: 'Discussion was successfully created.')
+    else
+      render 'new', alert: 'Error creating discussion.'
     end
   end
 
   def destroy
     @discussion.destroy
-    respond_to do |format|
-      format.html do
-        redirect_to(
-          community_discussions_path(current_community),
-          notice: 'Discussion was successfully deleted.')
-      end
-      format.json { head :no_content }
-    end
+    redirect_to(
+      community_discussions_path(current_community),
+      notice: 'Discussion was successfully deleted.')
   end
 
   def follow

@@ -1,12 +1,11 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_member!
   load_and_authorize_resource through: :current_community, except: :index
-  before_action :load_companies, only: :index
 
   include FilterConcern
 
   def index
-    @companies = @companies.ordered.page params[:page]
+    @companies = companies.ordered.page params[:page]
   end
 
   def show
@@ -20,20 +19,12 @@ class CompaniesController < ApplicationController
 
   def update
     @company.update(company_params)
-    respond_to do |format|
-      if @company.save
-        format.html do
-          redirect_to(
-            community_company_path(current_community, @company),
-            notice: 'Company was successfully updated.')
-        end
-        format.json { render json: @company, status: :created }
-      else
-        format.html { render 'edit', alert: 'Error updating company.' }
-        format.json do
-          render json: @company.errors, status: :unprocessable_entity
-        end
-      end
+    if @company.save
+      redirect_to(
+        community_company_path(current_community, @company),
+        notice: 'Company was successfully updated.')
+    else
+      render 'edit', alert: 'Error updating company.'
     end
   end
 
@@ -46,13 +37,7 @@ class CompaniesController < ApplicationController
       :description,
       :logo,
       :logo_cache,
-      social_media_links_attributes:
-        [
-          :id,
-          :service,
-          :url,
-          :_destroy
-        ]
+      social_media_links_attributes: [:id, :service, :url, :_destroy]
     )
   end
 
@@ -60,11 +45,9 @@ class CompaniesController < ApplicationController
     :portfolio
   end
 
-  def load_companies
-    @companies = if filter == :portfolio
-                   current_community.companies
-                 else
-                   current_member.companies
-                 end
+  def companies
+    @companies ||= begin
+      ((filter == :portfolio) ? current_community : current_member).companies
+    end
   end
 end
