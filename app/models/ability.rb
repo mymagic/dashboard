@@ -7,12 +7,6 @@ class Ability
     end
   end
 
-  def create_positions(member)
-    cannot :create, Position
-    can :have, Position
-    can :create, Position, member_id: member.id
-  end
-
   def manage_social_media_links(member)
     can(:manage,
         SocialMediaLink,
@@ -52,155 +46,79 @@ class Ability
     member ||= Member.new # guest user (not logged in)
 
     # everyone
-    cannot :manage, :all
-    cannot :read, :all
+    cannot [:manage, :read], :all
     cannot :administrate, :application
     cannot :invite_employee, Company
     cannot :manage_company, Company
     cannot :invite_company_member, Company
-    cannot :have, Position
 
-    can :read, Activity
+    can :read, [Activity, Community]
+    can :read, [:calendar, Company, Member, Availability, Slot, Event]
 
-    can :read, Community
+    manage_slots(member)
+    reserve_slots(member)
+
+    can :search, Message
+    create_messages(member)
+    read_messages(member)
+
+    cannot :unfollow, Discussion, author_id: member.id
+
+    can :rsvp, Event
+    cannot :rsvp, Event do |event|
+      event.ended?
+    end
+
+    can [:follow, :unfollow], Member do |other_member|
+      other_member.id != member.id
+    end
+
+    manage_social_media_links(member)
+
+    can :manage, Availability, member_id: member.id
+
+    can :create, Comment do |comment|
+      comment.discussion.community_id == member.community_id
+    end
+
+    can([:create, :read, :follow, :unfollow, :tags],
+        Discussion,
+        community_id: member.community_id)
 
     case member.role
     when 'administrator'
-      can :administrate, :application
+      can :administrate, [:application, Member, Event]
 
+      can :manage, [:calendar, Position, Event, Company, SocialMediaLink]
       can :manage, Community, id: member.community_id
-
-      can :manage, :calendar
-
-      can :manage, Position
-
-      can :read, Availability
-      can :manage, Availability, member_id: member.id
-
-      can :read, Slot
-      manage_slots(member)
-      reserve_slots(member)
-
-      can :manage, SocialMediaLink
-
-      can :manage, Company
-      can :manage_company, Company
-      can :invite_company_member, Company
-      can :manage_members_positions, Company
-
-      can :administrate, Member
-      can [:create, :read], Member
-      can_invite :administrator, :staff, :mentor, :regular_member
-      can :resend_invitation, Member
-      can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
-      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
-      can [:follow, :unfollow], Member do |other_member|
-        other_member.id != member.id
-      end
-
-      can :search, Message
-      create_messages(member)
-      read_messages(member)
-
       can :manage, Discussion, community_id: member.community_id
-      cannot :unfollow, Discussion, author_id: member.id
       can :manage, Comment do |comment|
         comment.discussion.community_id == member.community_id
       end
 
-      can [:manage, :administrate], Event
-      cannot :rsvp, Event do |event|
-        event.ended?
-      end
+      can([:manage_company, :invite_company_member, :manage_members_positions],
+          Company)
+
+      can :create, Member
+      can_invite :administrator, :staff, :mentor, :regular_member
+      can :resend_invitation, Member
+      can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
+      can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
     when 'staff'
-      can :administrate, :application
-      can :administrate, [Member, Company]
+      can :administrate, [:application, Member, Company, Event]
 
-      can [:create, :read, :update], Company
+      can :manage, [Position, Event]
+
+      can([:create, :update, :manage_company, :invite_company_member, :manage_members_positions], Company)
       cannot :destroy, Company
-      can :manage_company, Company
-      can :invite_company_member, Company
-      can :manage_members_positions, Company
 
-      create_positions(member)
-      can :manage, Position
-
-      can :read, :calendar
-
-      can [:create, :read], Member
+      can :create, Member
       can_invite :mentor, :regular_member
       can :resend_invitation, Member
       can :update, Member, role: ['mentor', '', nil]
       can :destroy, Member, role: ['mentor', '', nil]
-      can [:follow, :unfollow], Member do |other_member|
-        other_member.id != member.id
-      end
-
-      can :read, Availability
-      can :manage, Availability, member_id: member.id
-
-      can :read, Slot
-      manage_slots(member)
-      reserve_slots(member)
-
-      manage_social_media_links(member)
-
-      can :search, Message
-      create_messages(member)
-      read_messages(member)
-
-      can([:create, :read, :follow, :unfollow, :tags],
-          Discussion,
-          community_id: member.community_id)
-      cannot :unfollow, Discussion, author_id: member.id
-      can :create, Comment do |comment|
-        comment.discussion.community_id == member.community_id
-      end
-
-      can [:manage, :administrate], Event
-      cannot :rsvp, Event do |event|
-        event.ended?
-      end
     when 'mentor'
-      can :read, Member
-      can [:follow, :unfollow], Member do |other_member|
-        other_member.id != member.id
-      end
-
-      can :read, Company
-
-      can :read, :calendar
-
-      can :read, Availability
-      can :manage, Availability, member_id: member.id
-
-      can :read, Slot
-      manage_slots(member)
-      reserve_slots(member)
-
-      manage_social_media_links(member)
-
-      can :search, Message
-      create_messages(member)
-      read_messages(member)
-
-      can([:create, :read, :follow, :unfollow, :tags],
-          Discussion,
-          community_id: member.community_id)
-
-      cannot :unfollow, Discussion, author_id: member.id
-      can :create, Comment do |comment|
-        comment.discussion.community_id == member.community_id
-      end
-
-      can :read, Event
-      can :rsvp, Event do |event|
-        !event.ended?
-      end
     else # a regular Member
-      can :read, :calendar
-
-      can :read, Company
       can([:manage_company,
            :invite_company_member,
            :manage_members_positions,
@@ -208,45 +126,10 @@ class Ability
         member.companies.founded.include?(company)
       end
 
-      create_positions(member)
-
-      can [:approve, :reject, :update], Position do |cmp|
-        member.companies.founded.include? cmp.company
-      end
-
-      can :read, Member
       can :create, Member do |new_member|
         new_member.positions.map(&:company).uniq.any? &&
           (new_member.positions.map(&:company).uniq -
             member.companies.founded).empty?
-      end
-      can [:follow, :unfollow], Member do |other_member|
-        other_member.id != member.id
-      end
-
-      can :read, Availability
-      can :manage, Availability, member_id: member.id
-
-      can :read, Slot
-      manage_slots(member)
-      reserve_slots(member)
-
-      manage_social_media_links(member)
-
-      can :search, Message
-      create_messages(member)
-      read_messages(member)
-
-      can([:create, :read, :follow, :unfollow, :tags],
-          Discussion,
-          community_id: member.community_id)
-      cannot :unfollow, Discussion, author_id: member.id
-      can :create, Comment do |comment|
-        comment.discussion.community_id == member.community_id
-      end
-      can :read, Event
-      can :rsvp, Event do |event|
-        !event.ended?
       end
     end
   end

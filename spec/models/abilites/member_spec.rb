@@ -58,8 +58,6 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:manage, :calendar) }
 
       # Position
-      it { is_expected.to be_able_to(:have, Position) }
-      it { is_expected.to be_able_to(:read, Position) }
       it { is_expected.to be_able_to(:manage_members_positions, company) }
       it { is_expected.to be_able_to(:manage_members_positions, other_company) }
     end
@@ -122,8 +120,6 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:read, :calendar) }
 
       # Position
-      it { is_expected.to be_able_to(:have, Position) }
-      it { is_expected.to be_able_to(:read, Position) }
       it { is_expected.to be_able_to(:manage_members_positions, company) }
       it { is_expected.to be_able_to(:manage_members_positions, other_company) }
     end
@@ -182,8 +178,6 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:read, :calendar) }
 
       # Position
-      it { is_expected.to_not be_able_to(:have, Position) }
-      it { is_expected.to_not be_able_to(:read, Position) }
       it { is_expected.to_not be_able_to(:manage_members_positions, company) }
       it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
@@ -245,8 +239,6 @@ RSpec.describe Member, type: :model do
       it { is_expected.to be_able_to(:read, :calendar) }
 
       # Position
-      it { is_expected.to be_able_to(:have, Position) }
-      it { is_expected.to_not be_able_to(:read, Position) }
       it { is_expected.to_not be_able_to(:manage_members_positions, company) }
       it { is_expected.to_not be_able_to(:manage_members_positions, other_company) }
     end
