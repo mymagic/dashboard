@@ -77,5 +77,6 @@ Rails.application.routes.draw do
   end
 
   root 'welcome#index'
+  get 's3_callback/:model', to: 'uploads#s3_callback', as: "s3_callback"
   get '*missing' => redirect('/')
 end

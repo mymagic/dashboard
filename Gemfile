@@ -17,6 +17,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # Brings Rails named routes to javascript
 gem 'js-routes'
 
+# Rails variables in JS
+gem 'gon'
+
 # Bootstrap for views
 gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', tag: 'v3.3.4'
 
@@ -54,8 +57,12 @@ gem 'mini_magick'
 # Use Carrierwave for uploaders
 gem 'carrierwave'
 
+# Direct upload S3
+gem 'aws-sdk'
+gem 'jquery-fileupload-rails'
+
 # Fog for cloud storage
-gem "fog", require: 'fog/aws'
+gem "fog", require: 'fog/aws/storage'
 
 # Figaro for Twelve-Factor approved configurations
 gem "figaro"

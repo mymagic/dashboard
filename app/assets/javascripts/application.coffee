@@ -12,11 +12,15 @@
 #= require nprogress-ajax
 #= require typeahead.bundle
 
+#= require uploader
+#= require jquery-fileupload/basic
+
 #= require bootstrap-setup
 #= require elements
 #= require availabilities
 #= require calendar
 #= require messages
+#= require members
 #= require admin/positions
 #= require admin/events
 

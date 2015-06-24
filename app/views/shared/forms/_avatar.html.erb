@@ -1,1 +1,16 @@
-<%= form.input :avatar, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
+<h4>Avatar</h4>
+<div class="uploader member-avatar">
+  <div class="thumbnail">
+    <%= image_tag form.object.avatar.url(:thumb), class: "member-avatar" %>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <span class="help-block">Failed to upload image please try again</span>
+
+    <div class="caption text-center">
+      <span class="btn btn-default btn-file">
+        Upload <%= "new " if form.object.avatar.present? %>picture <input id="avatar-uploader" type="file" name="file" />
+      </span>
+    </div>
+  </div>
+</div>
