@@ -1,7 +1,6 @@
 module Admin
   class MembersController < AdminController
     load_and_authorize_resource through: :current_community
-
     before_action :allow_without_password, only: :update
     before_action :set_javascript_variables, only: [:edit, :update]
 

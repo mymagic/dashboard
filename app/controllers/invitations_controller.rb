@@ -3,6 +3,9 @@ class InvitationsController < DeviseController
   prepend_before_filter :has_invitations_left?, :only => [:create]
   prepend_before_filter :require_no_authentication, :only => [:edit, :update, :destroy]
   prepend_before_filter :resource_from_invitation_token, :only => [:edit, :destroy]
+
+  before_action :set_javascript_variables, only: [:edit]
+
   helper_method :after_sign_in_path_for
 
   # GET /resource/invitation/new
@@ -35,7 +38,10 @@ class InvitationsController < DeviseController
       resource.create_signup_activity if resource.is_a? Member
       respond_with resource, :location => after_accept_path_for(resource)
     else
-      respond_with_navigational(resource){ render :edit }
+      respond_with_navigational(resource) do
+        set_javascript_variables
+        render :edit
+      end
     end
   end
 
@@ -47,6 +53,14 @@ class InvitationsController < DeviseController
   end
 
   protected
+
+  def set_javascript_variables
+    s3_direct_upload_data = resource.avatar.s3_direct_upload_data
+    gon.directUploadUrl = s3_direct_upload_data.url
+    gon.directUploadFormData = s3_direct_upload_data.fields
+    gon.model = "member"
+    gon.invitation_token = resource.invitation_token
+  end
 
   def accept_resource
     resource_class.accept_invitation!(update_resource_params)

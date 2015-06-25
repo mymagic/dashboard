@@ -4,6 +4,7 @@ $.fn.uploader = (options) ->
     progressBar:             null
     model:                   null
     id:                      null
+    invitation_token:        null
     success:                 ->
     directUploadUrl:         null
     directUploadFormData:    null
@@ -48,7 +49,9 @@ $.fn.uploader = (options) ->
     s3key          = $(data.jqXHR.responseXML).find("Key").text()
     processingUrl  = Routes.s3_callback_path(options.model) + '?key=' + s3key
     if options.id
-      processingUrl  = processingUrl + '&id=' + options.id
+      processingUrl  += '&id=' + options.id
+    if options.invitation_token
+      processingUrl  += '&invitation_token=' + options.invitation_token
     $.ajax
       url: processingUrl,
       success: (data) ->

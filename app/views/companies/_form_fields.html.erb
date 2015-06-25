@@ -7,8 +7,8 @@
         <%= f.input :website, placeholder: 'https://www.example.com' %>
         <%= f.input :description, placeholder: 'Describe your company…', input_html: { rows: 12 } %>
       </div>
-      <div class="col-lg-6">
-        <%= f.input :logo, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
+      <div class="col-lg-3 col-lg-offset-2">
+        <%= render partial: 'shared/forms/company_logo', locals: { form: f } %>
       </div>
     </div>
   </div>

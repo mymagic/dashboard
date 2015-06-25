@@ -1,6 +1,7 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_member!
   load_and_authorize_resource through: :current_community, except: :index
+  before_action :set_javascript_variables, only: [:edit, :update]
 
   include FilterConcern
   include CompanyParamsConcern
@@ -31,6 +32,14 @@ class CompaniesController < ApplicationController
   end
 
   private
+
+  def set_javascript_variables
+    s3_direct_upload_data = @company.logo.s3_direct_upload_data
+    gon.directUploadUrl = s3_direct_upload_data.url
+    gon.directUploadFormData = s3_direct_upload_data.fields
+    gon.model = "company"
+    gon.id = @company.id
+  end
 
   def default_filter
     :portfolio
