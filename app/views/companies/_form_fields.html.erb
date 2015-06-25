@@ -1,16 +1,27 @@
-<%= panel 'General Info', columns: 6 do %>
-  <%= f.input :name, autofocus: true, placeholder: 'ACME Corporation' %>
-  <%= f.input :logo, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
-  <%= f.input :website, placeholder: 'https://www.example.com' %>
-  <%= f.input :description, placeholder: 'Describe your company…', input_html: { rows: 12 } %>
-<% end %>
-
-<%= panel 'Social Media Links', columns: 6 do %>
-  <%= render partial: 'shared/forms/social_media_link', locals: { form: f } %>
-<% end %>
-
+<%= f.error_notification %>
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="general">
+    <div class="row">
+      <div class="col-lg-6">
+        <%= f.input :name, autofocus: true, placeholder: 'ACME Corporation' %>
+        <%= f.input :website, placeholder: 'https://www.example.com' %>
+        <%= f.input :description, placeholder: 'Describe your company…', input_html: { rows: 12 } %>
+      </div>
+      <div class="col-lg-6">
+        <%= f.input :logo, as: :image_preview, hint: 'PNG, JPG or GIF. Images 200x200 work best.', input_html: { preview_version: :thumb } %>
+      </div>
+    </div>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="social-media-services">
+    <div class="row">
+      <div class="col-lg-6">
+        <%= render partial: 'shared/forms/social_media_link', locals: { form: f } %>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
-  <div class="col-sm-6">
-    <%= f.button :submit, "Save" %>
+  <div class="col-lg-12 text-left">
+    <%= f.button :submit, f.object.new_record? ? "Save" : "Update" %>
   </div>
 </div>

@@ -64,7 +64,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
         # Social Media Links
         fill_in social_media_link.service, with: 'https://facebook.com/handle'
 
-        click_button 'Save'
+        click_button 'Update'
 
         expect(page).to have_content("Company was successfully updated.")
 
@@ -106,12 +106,6 @@ RSpec.describe 'Companies', type: :feature, js: false do
         expect(page).to have_content("Manage Company")
       end
 
-      scenario 'viewing company edit page' do
-        visit community_company_path(company.community, company)
-        click_link "Edit company info"
-        expect(page).to have_content("Edit Company")
-      end
-
       it_behaves_like 'editing a company'
     end
 
@@ -123,12 +117,6 @@ RSpec.describe 'Companies', type: :feature, js: false do
       scenario 'viewing company page' do
         visit community_company_path(company.community, company)
         expect(page).to have_content("Manage Company")
-      end
-
-      scenario 'viewing company edit page' do
-        visit community_company_path(company.community, company)
-        click_link "Edit company info"
-        expect(page).to have_content("Edit Company")
       end
 
       it_behaves_like 'editing a company'

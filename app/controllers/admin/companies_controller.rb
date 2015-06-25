@@ -9,17 +9,19 @@ module Admin
     end
 
     def new
+      render 'companies/form'
     end
 
     def create
       if @company.update_attributes(company_params)
         redirect_to_admin_companies_path('Company was successfully created.')
       else
-        render 'new', alert: 'Error creating company.'
+        render 'companies/form', alert: 'Error creating company.'
       end
     end
 
     def edit
+      render 'companies/form'
     end
 
     def update
@@ -27,7 +29,7 @@ module Admin
       if @company.save
         redirect_to_admin_companies_path('Company was successfully updated.')
       else
-        render 'edit', alert: 'Error updating company.'
+        render 'companies/form', alert: 'Error updating company.'
       end
     end
 

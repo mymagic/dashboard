@@ -16,6 +16,7 @@ class CompaniesController < ApplicationController
   end
 
   def edit
+    render 'form'
   end
 
   def update
@@ -25,7 +26,7 @@ class CompaniesController < ApplicationController
         community_company_path(current_community, @company),
         notice: 'Company was successfully updated.')
     else
-      render 'edit', alert: 'Error updating company.'
+      render 'form', alert: 'Error updating company.'
     end
   end
 

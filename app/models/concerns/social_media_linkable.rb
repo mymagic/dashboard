@@ -2,7 +2,11 @@ module SocialMediaLinkable
   extend ActiveSupport::Concern
 
   included do
-    has_many :social_media_links, as: :attachable, autosave: true
+    has_many(
+      :social_media_links,
+      as: :attachable,
+      autosave: true,
+      dependent: :destroy)
     before_save :mark_empty_social_media_links_for_destruction
 
     accepts_nested_attributes_for(

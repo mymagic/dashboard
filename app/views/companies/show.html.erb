@@ -6,29 +6,31 @@
     </div>
   </div>
   <div class="col-lg-9">
-    <%= render partial: 'header' %>
-    <div class="company__members col-lg-12">
-      <% if @founders.any? %>
-        <div class="row">
-          <div class="col-lg-12">
-            <h4 class='company__members-h4'><%= 'Founder'.pluralize(@founders.size) %></h4>
-            <% @founders.keys.sort_by(&:last_name).each do |member| %>
-              <%= render partial: 'member', object: member, locals: { positions: @founders[member] } %>
-            <% end %>
+    <div class="row">
+      <%= render partial: 'header' %>
+      <div class="company__members col-lg-12">
+        <% if @founders.any? %>
+          <div class="row">
+            <div class="col-lg-12">
+              <h4 class='company__members-h4'><%= 'Founder'.pluralize(@founders.size) %></h4>
+              <% @founders.keys.sort_by(&:last_name).each do |member| %>
+                <%= render partial: 'member', object: member, locals: { positions: @founders[member] } %>
+              <% end %>
+            </div>
           </div>
-        </div>
-        <%= tag('hr') if @team_members.any? %>
-      <% end %>
-      <% if @team_members.any? %>
-        <div class="row">
-          <div class="col-lg-12">
-            <h4 class='company__members-h4'><%= 'Team Member'.pluralize(@team_members.size) %></h4>
-            <% @team_members.keys.sort_by(&:last_name).each do |member| %>
-              <%= render partial: 'member', object: member, locals: { positions: @team_members[member] } %>
-            <% end %>
+          <%= tag('hr') if @team_members.any? %>
+        <% end %>
+        <% if @team_members.any? %>
+          <div class="row">
+            <div class="col-lg-12">
+              <h4 class='company__members-h4'><%= 'Team Member'.pluralize(@team_members.size) %></h4>
+              <% @team_members.keys.sort_by(&:last_name).each do |member| %>
+                <%= render partial: 'member', object: member, locals: { positions: @team_members[member] } %>
+              <% end %>
+            </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
