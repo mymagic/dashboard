@@ -18,10 +18,10 @@ module EventsHelper
 
   def event_static_map(event)
     query = {
-      center: event.location_detail,
+      center: event.location_coordinates,
       size: '300x300',
-      zoom: 16,
-      markers: "color:blue|#{ event.location_detail }"
+      zoom: event.location_zoom,
+      markers: "color:blue|#{ event.location_coordinates }"
     }
     url = URI.parse("https://maps.googleapis.com/maps/api/staticmap")
     url.query = query.to_query

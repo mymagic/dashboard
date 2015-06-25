@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150623032008) do
+ActiveRecord::Schema.define(version: 20150625050031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,18 +104,21 @@ ActiveRecord::Schema.define(version: 20150623032008) do
   add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.string   "location_detail",                 null: false
-    t.string   "location_type",                   null: false
-    t.datetime "starts_at",                       null: false
-    t.datetime "ends_at",                         null: false
-    t.string   "title",                           null: false
-    t.string   "time_zone",                       null: false
+    t.string   "location_detail",                                                  null: false
+    t.string   "location_type",                                                    null: false
+    t.datetime "starts_at",                                                        null: false
+    t.datetime "ends_at",                                                          null: false
+    t.string   "title",                                                            null: false
+    t.string   "time_zone",                                                        null: false
     t.text     "description"
-    t.integer  "creator_id",                      null: false
+    t.integer  "creator_id",                                                       null: false
     t.integer  "community_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.boolean  "external",        default: false, null: false
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
+    t.boolean  "external",                                    default: false,      null: false
+    t.decimal  "location_latitude",  precision: 10, scale: 6, default: 2.909047,   null: false
+    t.decimal  "location_longitude", precision: 10, scale: 6, default: 101.654669, null: false
+    t.integer  "location_zoom",                               default: 15,         null: false
   end
 
   add_index "events", ["community_id"], name: "index_events_on_community_id", using: :btree

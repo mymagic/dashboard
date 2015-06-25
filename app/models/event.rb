@@ -1,5 +1,10 @@
 class Event < ActiveRecord::Base
-  LOCATION_TYPES = %w( Address Skype Phone Other )
+  LOCATION_TYPES = {
+    address: 'Address',
+    skype: 'Name',
+    phone: 'Number',
+    other: 'Info'
+  }.freeze
 
   # Behaviors
   include TimeInZone
@@ -37,7 +42,7 @@ class Event < ActiveRecord::Base
             :time_zone,
             :creator,
             presence: true
-  validates :location_type, inclusion: { in: LOCATION_TYPES }
+  validates :location_type, inclusion: { in: LOCATION_TYPES.keys.map(&:to_s) }
   validate :ends_at_cannot_precede_starts_at,
            if: -> { ends_at.present? && starts_at.present? }
 
@@ -52,8 +57,12 @@ class Event < ActiveRecord::Base
     "#{ id }-#{ title.parameterize }"
   end
 
+  def location_coordinates
+    "#{ location_latitude },#{ location_longitude }"
+  end
+
   def at_address?
-    location_type == 'Address'
+    location_type == 'address'
   end
 
   def ended?

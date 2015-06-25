@@ -18,8 +18,8 @@ RSpec.describe 'Admin/Events', type: :feature, js: false do
         fill_in 'Description', with: 'Come to our great Event!'
 
         # Location and time
-        select 'Address', from: 'Location type'
-        fill_in 'Location detail', with: 'Private Island'
+        select 'Address', from: 'event_location_type'
+        fill_in 'Detail', with: 'Private Island'
         %i(starts_at ends_at).each do |datetime|
           select send(datetime).strftime('%Y'), from: "event_#{ datetime }_1i"
           select send(datetime).strftime('%B'), from: "event_#{ datetime }_2i"
