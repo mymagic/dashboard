@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  before_action :set_javascript_variables, only: [:edit, :update]
+  include UploadConcern
 
   def new
     head :forbidden
@@ -14,11 +14,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  def set_javascript_variables
-    s3_direct_upload_data = current_member.avatar.s3_direct_upload_data
-    gon.directUploadUrl = s3_direct_upload_data.url
-    gon.directUploadFormData = s3_direct_upload_data.fields
-    gon.model = "member"
+  def resource_to_upload
+    current_member.avatar
   end
 
   def update_resource(resource, params)

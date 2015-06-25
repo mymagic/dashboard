@@ -1,8 +1,8 @@
 module Admin
   class CompaniesController < AdminController
     load_and_authorize_resource through: :current_community
-    before_action :set_javascript_variables, only: [:edit, :update]
 
+    include UploadConcern
     include CompanyParamsConcern
 
     def index
@@ -41,12 +41,9 @@ module Admin
 
     private
 
-    def set_javascript_variables
-      s3_direct_upload_data = @company.logo.s3_direct_upload_data
-      gon.directUploadUrl = s3_direct_upload_data.url
-      gon.directUploadFormData = s3_direct_upload_data.fields
-      gon.model = "company"
+    def resource_to_upload
       gon.id = @company.id
+      @company.logo
     end
 
     def redirect_to_admin_companies_path(notice)

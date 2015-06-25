@@ -1,10 +1,10 @@
 class InvitationsController < DeviseController
-  prepend_before_filter :authenticate_inviter!, :only => [:new, :create]
-  prepend_before_filter :has_invitations_left?, :only => [:create]
-  prepend_before_filter :require_no_authentication, :only => [:edit, :update, :destroy]
-  prepend_before_filter :resource_from_invitation_token, :only => [:edit, :destroy]
+  prepend_before_filter :authenticate_inviter!, only: [:new, :create]
+  prepend_before_filter :has_invitations_left?, only: [:create]
+  prepend_before_filter :require_no_authentication, only: [:edit, :update, :destroy]
+  prepend_before_filter :resource_from_invitation_token, only: [:edit, :destroy]
 
-  before_action :set_javascript_variables, only: [:edit]
+  include UploadConcern
 
   helper_method :after_sign_in_path_for
 
@@ -36,10 +36,10 @@ class InvitationsController < DeviseController
       set_flash_message :notice, flash_message if is_flashing_format?
       sign_in(resource_name, resource)
       resource.create_signup_activity if resource.is_a? Member
-      respond_with resource, :location => after_accept_path_for(resource)
+      respond_with resource, location: after_accept_path_for(resource)
     else
       respond_with_navigational(resource) do
-        set_javascript_variables
+        set_upload_settings
         render :edit
       end
     end
@@ -54,12 +54,9 @@ class InvitationsController < DeviseController
 
   protected
 
-  def set_javascript_variables
-    s3_direct_upload_data = resource.avatar.s3_direct_upload_data
-    gon.directUploadUrl = s3_direct_upload_data.url
-    gon.directUploadFormData = s3_direct_upload_data.fields
-    gon.model = "member"
+  def resource_to_upload
     gon.invitation_token = resource.invitation_token
+    resource.avatar
   end
 
   def accept_resource

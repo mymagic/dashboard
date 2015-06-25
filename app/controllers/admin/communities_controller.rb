@@ -1,7 +1,8 @@
 module Admin
   class CommunitiesController < AdminController
     before_action :authorize_manage_community!
-    before_action :set_javascript_variables, only: [:edit, :update]
+
+    include UploadConcern
 
     def edit
     end
@@ -18,12 +19,9 @@ module Admin
 
     protected
 
-    def set_javascript_variables
-      s3_direct_upload_data = @current_community.logo.s3_direct_upload_data
-      gon.directUploadUrl = s3_direct_upload_data.url
-      gon.directUploadFormData = s3_direct_upload_data.fields
-      gon.model = "community"
+    def resource_to_upload
       gon.id = @current_community.id
+      @current_community.logo
     end
 
     def authorize_manage_community!
