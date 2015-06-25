@@ -33,7 +33,7 @@
           <li class="dropdown">
             <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">
               <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
-              <%= image_tag(current_member.avatar.url(:icon), class: 'img-rounded') %>
+              <%= image_tag(current_member.avatar.url(:icon), class: 'navbar-avatar img-rounded') %>
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">

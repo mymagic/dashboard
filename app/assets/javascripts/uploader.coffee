@@ -3,6 +3,7 @@ $.fn.uploader = (options) ->
     root:                    @
     progressBar:             null
     model:                   null
+    id:                      null
     success:                 ->
     directUploadUrl:         null
     directUploadFormData:    null
@@ -45,7 +46,9 @@ $.fn.uploader = (options) ->
 
   requestPostProcessing = (data) ->
     s3key          = $(data.jqXHR.responseXML).find("Key").text()
-    processingUrl  = Routes.s3CallbackPath(options.model) + '?key=' + s3key
+    processingUrl  = Routes.s3_callback_path(options.model) + '?key=' + s3key
+    if options.id
+      processingUrl  = processingUrl + '&id=' + options.id
     $.ajax
       url: processingUrl,
       success: (data) ->
@@ -79,7 +82,7 @@ $.fn.uploader = (options) ->
       options.success(imageUrl)
       disableUploadButton(false)
     , 1000
-    delayedProgressUpdate('100%', 1000);
+    delayedProgressUpdate('100%', 1000)
     setTimeout ->
       progressBarContainer.hide()
     , 2500

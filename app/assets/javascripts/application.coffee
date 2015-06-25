@@ -20,7 +20,7 @@
 #= require availabilities
 #= require calendar
 #= require messages
-#= require members
+#= require uploaders
 #= require admin/positions
 #= require admin/events
 

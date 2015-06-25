@@ -1,7 +1,9 @@
 module Admin
   class MembersController < AdminController
     load_and_authorize_resource through: :current_community
+
     before_action :allow_without_password, only: :update
+    before_action :set_javascript_variables, only: [:edit, :update]
 
     def index
       @invited_members    = @members.invited.ordered
@@ -100,6 +102,14 @@ module Admin
       raise Member::AlreadyExistsError if existing_member
 
       Member.invite!(member_params, current_member, &block)
+    end
+
+    def set_javascript_variables
+      s3_direct_upload_data = @member.avatar.s3_direct_upload_data
+      gon.directUploadUrl = s3_direct_upload_data.url
+      gon.directUploadFormData = s3_direct_upload_data.fields
+      gon.model = "member"
+      gon.id = @member.id
     end
   end
 end

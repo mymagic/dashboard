@@ -5,22 +5,24 @@ class ApplicationUploader < CarrierWave::Uploader::Base
   def initialize(*)
     super
 
-    @aws_access_key_id        = ENV['aws_access_key_id']     || 'no_access_key_provided'
-    @aws_secret_access_key    = ENV['aws_secret_access_key'] || 'no_secret_access_key_provided'
-    self.fog_directory        = ENV['aws_bucket']            || 'no_bucket_name_provided'
+    @aws_access_key_id     = ENV['aws_access_key'] || 'no_access_key_provided'
+    @aws_secret_access_key = ENV['aws_secret_access_key'] || 'no_sak_provided'
+    @aws_region            = ENV['aws_region'] || 'no_aws_region_provided'
+    self.fog_directory     = ENV['aws_bucket'] || 'no_bucket_name_provided'
 
-    Aws.config.update({
+    Aws.config.update(
       credentials: Aws::Credentials.new(
         @aws_access_key_id,
         @aws_secret_access_key
       ),
-      region: 'us-east-1'
-    })
+      region: @aws_region
+    )
 
     self.fog_credentials = {
       provider:              'AWS',
       aws_access_key_id:     @aws_access_key_id,
-      aws_secret_access_key: @aws_secret_access_key
+      aws_secret_access_key: @aws_secret_access_key,
+      region: @aws_region
     }
   end
 
@@ -39,8 +41,8 @@ class ApplicationUploader < CarrierWave::Uploader::Base
     )
   end
 
-  # Updates model with original file location inside S3 and creates required image
-  # versions in background process.
+  # Updates model with original file location inside S3 and creates
+  # required image versions in background process.
   #
   # @param String s3_key S3 Presigned Post URL with path of an uploaded image.
   # Consists of: "#{store_dir}/#{uuid}/#{original_filename}"
@@ -55,9 +57,13 @@ class ApplicationUploader < CarrierWave::Uploader::Base
     model.update_column(mounted_as, s3_path)
     # Recreate all versions
     CarrierwaveProcessingJob.perform_later(model, mounted_as.to_s)
-    # Can't use `url(promise_display_style)` because images are not processed yet,
-    # so have to built from parts.
-    "#{s3_bucket.url}/#{store_dir}/#{version_path(path: s3_path, style: promise_display_style)}"
+    # Can't use `url(promise_display_style)` because images are not
+    # processed yet, so have to built from parts.
+    [
+      s3_bucket.url,
+      store_dir,
+      version_path(path: s3_path, style: promise_display_style)
+    ].join('/')
   end
 
   def store_dir
@@ -66,7 +72,8 @@ class ApplicationUploader < CarrierWave::Uploader::Base
 
   def version_path(path:, style:)
     original_filename = File.basename(path)
-    hashed_name = "#{Digest::MD5.hexdigest(path)[0..7]}#{File.extname(original_filename)}"
+    hashed_name = "#{Digest::MD5.hexdigest(path)[0..7]}"\
+                  "#{File.extname(original_filename)}"
     path.gsub(original_filename, "#{style}_#{hashed_name}")
   end
 end

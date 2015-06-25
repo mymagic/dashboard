@@ -8,11 +8,11 @@ Rails.application.routes.draw do
   end
 
   resources :communities, path: '', except: :index do
-    resource  :calendar, only: :show
+    resource :calendar, only: :show
     get 'availabilities/:year/:month/:day',
-      to: 'availabilities#calendar',
-      as: 'availability_calendar',
-      constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+        to: 'availabilities#calendar',
+        as: 'availability_calendar',
+        constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
 
     resources :messages, only: :index do
       get 'search', on: :collection
@@ -31,21 +31,24 @@ Rails.application.routes.draw do
       resources :discussions, only: :index
 
       get 'availabilities/:year/:month/:day',
-        to: 'availabilities#slots',
-        as: 'availability_slots',
-        constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+          to: 'availabilities#slots',
+          as: 'availability_slots',
+          constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
       resources :availabilities, except: [:show] do
-        resource :slots, path: 'slots/:hour/:minute',
-          constraints: { hour: /\d{1,2}/, minute: /\d{1,2}/ } do
-          collection do
-            post :reserve, to: 'slots#create'
-            delete :release, to: 'slots#destroy'
-          end
-        end
+        resource :slots,
+                 path: 'slots/:hour/:minute',
+                 constraints: { hour: /\d{1,2}/, minute: /\d{1,2}/ } do
+                   collection do
+                     post :reserve, to: 'slots#create'
+                     delete :release, to: 'slots#destroy'
+                   end
+                 end
       end
     end
 
-    get 'discussions/tagged/:tag_id', to: 'discussions#index', as: 'discussion_tag'
+    get 'discussions/tagged/:tag_id',
+        to: 'discussions#index',
+        as: 'discussion_tag'
     resources :discussions, except: [:edit, :update] do
       resources :comments, only: [:create, :destroy]
       member do

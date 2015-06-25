@@ -20,7 +20,7 @@
             <%= f.input :description, input_html: { rows: 10 }, placeholder: "Add a description to your profile" %>
             <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-3 col-lg-offset-2">
             <%= render partial: 'shared/forms/avatar', locals: { form: f } %>
           </div>
         </div>
@@ -33,23 +33,27 @@
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="notifications">
-        <div class="col-lg-6">
-          <p>
-            You decide when you should be notified:
-          </p>
-          <%= render partial: 'shared/forms/notifications', locals: { form: f } %>
+        <div class="row">
+          <div class="col-lg-6">
+            <p>
+              You decide when you should be notified:
+            </p>
+            <%= render partial: 'shared/forms/notifications', locals: { form: f } %>
+          </div>
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="security">
-        <div class="col-lg-6">
-          <p>
-            Change your password:
-          </p>
-          <%= f.input :current_password, autocomplete: "off", required: false %>
-          <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
-          <%= f.input :password_confirmation, required: false %>
-          <div class="text-right small">
-            You want to leave <%= current_community.name %>? <%= link_to "Cancel your account", registration_path(resource_name, current_community), data: { confirm: "Are you sure?" }, method: :delete %>
+        <div class="row">
+          <div class="col-lg-6">
+            <p>
+              Change your password:
+            </p>
+            <%= f.input :current_password, autocomplete: "off", required: false %>
+            <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
+            <%= f.input :password_confirmation, required: false %>
+            <div class="text-right small">
+              You want to leave <%= current_community.name %>? <%= link_to "Cancel your account", registration_path(resource_name, current_community), data: { confirm: "Are you sure?" }, method: :delete %>
+            </div>
           </div>
         </div>
       </div>
