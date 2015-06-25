@@ -9,6 +9,7 @@ RSpec.describe 'community', type: :task do
   end
 
   def run_task(name, slug, email)
+    allow(ENV).to receive(:[])
     allow(ENV).to receive(:[]).with("COMMUNITY_NAME").and_return(name)
     allow(ENV).to receive(:[]).with("COMMUNITY_SLUG").and_return(slug)
     allow(ENV).to receive(:[]).with("ADMIN_EMAIL").and_return(email)

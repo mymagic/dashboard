@@ -104,7 +104,7 @@ $.fn.uploader = (options) ->
     autoUpload:       true,
     paramName:        'file',
     dataType:         'XML',
-    replaceFileInput: false,
+    replaceFileInput: true,
 
     add: (e, data) ->
       formData = options.directUploadFormData

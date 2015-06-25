@@ -139,7 +139,7 @@ RSpec.describe 'Members', type: :feature, js: false do
 
           fill_in 'member[password]', with: 'password0'
           fill_in 'member[password_confirmation]', with: 'password0'
-          click_button 'Set my password'
+          click_button 'Join'
           expect(page).
             to have_content("Your password was set successfully. "\
                             "You are now signed in.")

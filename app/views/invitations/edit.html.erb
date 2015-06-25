@@ -5,7 +5,7 @@
   <p>
     You have been invited to join <%= current_community.name %>. Please complete your profile to join.
   </p>
-  <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name, resource.community), html: { method: :put, class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+  <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name, resource.community), html: { multipart: true, method: :put, class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
     <%= f.error_notification %>
     <div class="col-lg-6">
       <%= f.hidden_field :invitation_token %>

@@ -57,7 +57,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
         fill_in 'Description', with: 'This is a company description'
         fill_in 'Website', with: 'http://example.com'
         attach_file(
-          'Logo',
+          'company_logo',
           File.join(
             Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
 

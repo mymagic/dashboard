@@ -5,6 +5,7 @@ class InvitationsController < DeviseController
   prepend_before_filter :resource_from_invitation_token, only: [:edit, :destroy]
 
   include UploadConcern
+  skip_before_action :set_upload_settings, only: :update
 
   helper_method :after_sign_in_path_for
 

@@ -1,1 +1,15 @@
-<%= render partial: 'form', locals: { community: @current_community } %>
+<div class='row'>
+  <%= simple_form_for(@current_community, url: community_admin_community_path(@current_community), html: { multipart: true, class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+    <div class='col-lg-6 col-lg-offset-2'>
+      <%= f.input :name, autofocus: true, placeholder: 'Name' %>
+      <%= f.input :email, hint: "The from and reply-to address used for notifications."  %>
+      <%= f.input :social_media_services, placeholder: 'google, facebook…', input_html: { value: @current_community.social_media_services.join(', '), rows: 5 }, hint: 'Please separate by comma.' %>
+      <div class='text-right'>
+        <%= f.button :submit, class: 'btn-success', value: 'Update Settings' %>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <%= render partial: 'shared/forms/community_logo', locals: { form: f } %>
+    </div>
+  <% end %>
+</div>
