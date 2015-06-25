@@ -13,7 +13,7 @@ module Admin
     end
 
     def create
-      if @company.update_attributes(company_params)
+      if @company.save
         redirect_to_admin_companies_path('Company was successfully created.')
       else
         render 'companies/form', alert: 'Error creating company.'

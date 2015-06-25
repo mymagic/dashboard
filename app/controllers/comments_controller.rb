@@ -4,20 +4,12 @@ class CommentsController < ApplicationController
   load_and_authorize_resource :comment, through: :discussion
 
   def create
-    respond_to do |format|
-      if @comment.update_attributes(
-        comment_params.merge(author: current_member, discussion: @discussion))
-        format.html do
-          redirect_to([@discussion.community, @discussion],
-                      notice: 'Comment was successfully created.')
-        end
-        format.json { render json: @comment, status: :created }
-      else
-        format.html { redirect_to :back, alert: 'Error creating comment.' }
-        format.json do
-          render json: @comment.errors, status: :unprocessable_entity
-        end
-      end
+    @comment.author = current_member
+    if @comment.save
+      redirect_to([@discussion.community, @discussion],
+                  notice: 'Comment was successfully created.')
+    else
+      redirect_to :back, alert: 'Error creating comment.'
     end
   end
 

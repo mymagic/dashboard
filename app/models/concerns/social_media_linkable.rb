@@ -5,7 +5,7 @@ module SocialMediaLinkable
     has_many(
       :social_media_links,
       as: :attachable,
-      autosave: true,
+      inverse_of: :attachable,
       dependent: :destroy)
     before_save :mark_empty_social_media_links_for_destruction
 

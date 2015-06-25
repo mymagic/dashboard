@@ -21,7 +21,7 @@ class SocialMediaLink < ActiveRecord::Base
   ).freeze
 
   # Associations
-  belongs_to :attachable, polymorphic: true
+  belongs_to :attachable, polymorphic: true, inverse_of: :social_media_links
   belongs_to :community
 
   # Validations

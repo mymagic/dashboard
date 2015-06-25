@@ -22,8 +22,8 @@ class DiscussionsController < ApplicationController
   end
 
   def create
-    if @discussion.
-       update_attributes(discussion_params.merge(author: current_member))
+    @discussion.author = current_member
+    if @discussion.save
       redirect_to([@discussion.community, @discussion],
                   notice: 'Discussion was successfully created.')
     else

@@ -3,7 +3,7 @@ module Admin
     load_and_authorize_resource through: :current_community
 
     def create
-      if @event.update_attributes(event_params)
+      if @event.save
         redirect_to_admin_events_path('Event was successfully created.')
       else
         render 'new', alert: 'Error creating event.'

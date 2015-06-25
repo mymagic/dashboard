@@ -4,13 +4,11 @@
   <td><%= link_to truncate(company.website, length: 30), company.website %></td>
   <td><%= truncate(company.description, length: 30) %></td>
   <td>
-    <div class="btn-group" role="group">
-      <% if can? :destroy, company %>
-        <%= link_to('Delete', community_admin_company_path(current_community, company), method: :delete, data: { confirm: "Are you sure you want to remove this Company?"}, class: 'btn btn-default btn-xs') %>
-      <% end %>
-      <% if can? :update, company %>
-        <%= link_to('Edit', edit_community_admin_company_path(current_community, company), class: 'btn btn-default btn-xs') %>
-      <% end %>
-    </div>
+    <% if can? :destroy, company %>
+      <%= link_to('Delete', community_admin_company_path(current_community, company), method: :delete, data: { confirm: "Are you sure you want to remove this Company?"}, class: 'btn btn-default btn-xs') %>
+    <% end %>
+    <% if can? :update, company %>
+      <%= link_to('Edit', edit_community_admin_company_path(current_community, company), class: 'btn btn-default btn-xs') %>
+    <% end %>
   </td>
 </tr>
