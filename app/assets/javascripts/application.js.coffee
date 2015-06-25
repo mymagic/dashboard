@@ -25,7 +25,7 @@
 NProgress.configure(showSpinner: false)
 
 # Turbolinks TransitionCache
-Turbolinks.enableTransitionCache();
+Turbolinks.enableTransitionCache()
 
 $ ->
   document._supports_history_api = !!(window.history && history.pushState)

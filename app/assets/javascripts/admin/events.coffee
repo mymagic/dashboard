@@ -16,7 +16,7 @@ $ ->
     setMarkerPosition(latLng)
 
     $('#event_location_detail').focusout ->
-      if $('#event_location_type').find('option:selected').val() == 'address'
+      if addressSelected()
         address = $('#event_location_detail').val()
         geocoder.geocode
           'address': address,
@@ -26,6 +26,8 @@ $ ->
       setZoomLevel(document._map.getZoom())
     google.maps.event.addListener document._marker, 'dragend', ->
       setMarkerPosition(document._marker.getPosition())
+
+    watchLocationType()
 
   document._geocodeResult = (results, status) ->
     if (status == 'OK' and results.length > 0)
@@ -45,24 +47,30 @@ $ ->
       $('#event_location_latitude').val(),
       $('#event_location_longitude').val())
 
+  hideMap = -> $('#map_canvas').hide()
+  showMap = -> $('#map_canvas').show()
+  addressSelected = ->
+    $('#event_location_type').find('option:selected').val() == 'address'
+
   setLocationDetailLabel = ->
     label = $('#event_location_type').
       find('option:selected').
       data('detail-label')
     $('label[for=event_location_detail]').html(label)
-    if $('#event_location_type').find('option:selected').val() == 'address'
-      $('#map_canvas').show()
-      google.maps.event.trigger(document._map, 'resize')
-      document._map.setCenter(getLatLng())
-    else
-      $('#map_canvas').hide()
 
   watchLocationType = ->
-    setLocationDetailLabel()
-    $('#event_location_type').change -> setLocationDetailLabel()
+    $('#event_location_type').change ->
+      setLocationDetailLabel()
+      if addressSelected()
+        showMap()
+        google.maps.event.trigger(document._map, 'resize')
+        document._map.setCenter(getLatLng())
+      else
+        hideMap()
 
   setupMap = ->
-    watchLocationType()
+    setLocationDetailLabel()
+    hideMap() unless addressSelected()
     script = document.createElement('script')
     script.type = 'text/javascript'
     script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' +
