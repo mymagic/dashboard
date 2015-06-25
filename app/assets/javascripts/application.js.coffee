@@ -18,6 +18,7 @@
 #= require calendar
 #= require messages
 #= require admin/positions
+#= require admin/events
 
 
 # Turn off loading spinner

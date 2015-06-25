@@ -18,7 +18,7 @@ RSpec.describe 'Events', type: :feature, js: false do
             creator: administrator,
             title: 'Great Event',
             description: 'Come visit!',
-            location_type: 'Skype',
+            location_type: 'skype',
             location_detail: 'great.event'
           )
         end
@@ -50,7 +50,7 @@ RSpec.describe 'Events', type: :feature, js: false do
             creator: administrator,
             title: 'Great Event',
             description: 'Come visit!',
-            location_type: 'Skype',
+            location_type: 'skype',
             location_detail: 'great.event'
           )
         end
@@ -72,8 +72,8 @@ RSpec.describe 'Events', type: :feature, js: false do
         fill_in 'Title', with: 'Boston Teaparty'
         fill_in 'Description', with: 'Free tea!'
 
-        select 'Address', from: 'Location type'
-        fill_in 'Location detail', with: 'Bangkok'
+        select 'Address', from: 'event_location_type'
+        fill_in 'Detail', with: 'Bangkok'
 
         select '10', from: 'event_starts_at_4i'
         select '20', from: 'event_ends_at_4i'

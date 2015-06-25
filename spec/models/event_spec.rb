@@ -12,7 +12,8 @@ RSpec.describe Event, type: :model do
     it { is_expected.to validate_presence_of(:title) }
     it do
       is_expected.
-        to validate_inclusion_of(:location_type).in_array(Event::LOCATION_TYPES)
+        to validate_inclusion_of(:location_type).
+        in_array(Event::LOCATION_TYPES.keys.map(&:to_s))
     end
   end
 end

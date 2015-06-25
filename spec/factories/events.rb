@@ -4,7 +4,7 @@ FactoryGirl.define do
     community
     creator { create(:administrator, :confirmed, community: community) }
     location_detail 'Block 3730 APEC, 63000 Cyberjaya, Malaysia'
-    location_type 'Address'
+    location_type 'address'
     time_zone 'Bangkok'
     starts_at { 1.week.from_now }
     ends_at { starts_at + 3.hours }
