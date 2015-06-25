@@ -3,7 +3,7 @@
   page_header @discussion.title do
     render partial: 'shared/follow_button', locals: { object: @discussion }
 end  %>
-<div class="row discussion-wrapper">
+<div class="discussion-wrapper row">
   <div class="col-lg-8">
     <div class="discussion-list">
       <div class="discussion-starter">
@@ -18,32 +18,30 @@ end  %>
       <%= render partial: 'comments/forms/new', locals: { comment: @comment } %>
     </div>
   </div>
-  <div class="col-lg-4">
-    <%= panel "Followers", columns: 12 do %>
-      <%- @discussion.followers.each do |follower| %>
-      <%= link_to(image_tag(follower.avatar.url(:icon), class: 'img-rounded'),
-                  community_member_path(follower.community, follower)) %>
+  <%= panel "Followers", columns: 4 do %>
+    <%- @discussion.followers.each do |follower| %>
+    <%= link_to(image_tag(follower.avatar.url(:icon), class: 'img-rounded'),
+                community_member_path(follower.community, follower)) %>
+    <% end %>
+  <% end %>
+  <% if @discussion.tags.any? %>
+    <%= panel "Tags", columns: 4 do %>
+      <%- @discussion.tags.each do |tag| %>
+        <%= link_to_tag tag %>
       <% end %>
     <% end %>
-    <% if @discussion.tags.any? %>
-      <%= panel "Tags", columns: 12 do %>
-        <%- @discussion.tags.each do |tag| %>
-          <%= link_to_tag tag %>
-        <% end %>
-      <% end %>
-    <% end %>
+  <% end %>
 
-    <% if can? :destroy, @discussion %>
-      <div class="text-right col-lg-12">
-        <%=
-          link_to('Remove this Discussion',
-                  community_discussion_path(@discussion.community, @discussion),
-                  class: 'btn btn-xs btn-hover btn-hover-danger',
-                  method: :delete,
-                  data: {
-                    confirm: "Are you sure you want to remove this Discussion?"
-                  }) %>
-      </div>
-    <% end %>
-  </div>
+  <% if can? :destroy, @discussion %>
+    <div class="text-right col-lg-4">
+      <%=
+        link_to('Remove this Discussion',
+                community_discussion_path(@discussion.community, @discussion),
+                class: 'btn btn-xs btn-hover btn-hover-danger',
+                method: :delete,
+                data: {
+                  confirm: "Are you sure you want to remove this Discussion?"
+                }) %>
+    </div>
+  <% end %>
 </div>
