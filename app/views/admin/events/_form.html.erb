@@ -1,30 +1,25 @@
 <%= simple_form_for([current_community, :admin, event], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
   <%= f.error_notification %>
   <div class="row">
-    <div class="col-lg-5">
-      <div class="row">
-        <%= panel 'General Info', columns: 12 do %>
-          <%= f.input :title, autofocus: true %>
-          <%= f.input :description, input_html: { rows: 7 } %>
-          <%= f.input :external, collection: [[true, 'External Event'], [false, 'Internal Community Event']], label_method: :last, value_method: :first, as: :radio_buttons, item_wrapper_class: 'inline', label: 'Type' %>
-        <% end %>
-      </div>
-    </div>
-    <div class="col-lg-7">
-      <%= panel 'Location and Time', columns: 12 do %>
-        <%= f.input :location, required: true do %>
-          <%= f.select :location_type, Event::LOCATION_TYPES.map { |k, v| [k.to_s.humanize, k, { 'data-detail-label': v }] }, {}, class: 'select required form-control' %>
-        <% end %>
-        <%= f.input :location_detail, label: 'Detail' %>
-        <%= f.input :location_latitude, as: :hidden %>
-        <%= f.input :location_longitude, as: :hidden %>
-        <%= f.input :location_zoom, as: :hidden %>
-        <div id="map_canvas"></div>
-        <%= f.input :starts_at, label: 'Starts', as: :date_time_with_steps, wrapper_html: { class: 'datetime-inline' } %>
-        <%= f.input :ends_at, label: 'Ends', as: :date_time_with_steps, wrapper_html: { class: 'datetime-inline' } %>
-        <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
+    <%= panel 'General Info', columns: 5 do %>
+      <%= f.input :title, autofocus: true %>
+      <%= f.input :description, input_html: { rows: 7 } %>
+      <%= f.input :external, collection: [[true, 'External Event'], [false, 'Internal Community Event']], label_method: :last, value_method: :first, as: :radio_buttons, item_wrapper_class: 'inline', label: 'Type' %>
+    <% end %>
+
+    <%= panel 'Location and Time', columns: 7 do %>
+      <%= f.input :location, required: true do %>
+        <%= f.select :location_type, Event::LOCATION_TYPES.map { |k, v| [k.to_s.humanize, k, { 'data-detail-label': v }] }, {}, class: 'select required form-control' %>
       <% end %>
-    </div>
+      <%= f.input :location_detail, label: 'Detail' %>
+      <%= f.input :location_latitude, as: :hidden %>
+      <%= f.input :location_longitude, as: :hidden %>
+      <%= f.input :location_zoom, as: :hidden %>
+      <div id="map_canvas"></div>
+      <%= f.input :starts_at, label: 'Starts', as: :date_time_with_steps, wrapper_html: { class: 'datetime-inline' } %>
+      <%= f.input :ends_at, label: 'Ends', as: :date_time_with_steps, wrapper_html: { class: 'datetime-inline' } %>
+      <%= render partial: 'shared/forms/time_zone', locals: { form: f } %>
+    <% end %>
   </div>
   <div class="row">
     <div class="col-lg-6">
