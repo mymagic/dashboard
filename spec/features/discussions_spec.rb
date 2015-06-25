@@ -36,7 +36,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       visit community_discussions_path(community)
       click_link 'To be or not to be?'
       within '#new_comment' do
-        fill_in 'Body', with: 'Definitely to be.'
+        fill_in 'comment_body', with: 'Definitely to be.'
         click_button 'Post'
       end
       expect(page).to have_content 'Comment was successfully created.'

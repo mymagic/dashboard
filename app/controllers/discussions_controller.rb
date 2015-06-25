@@ -15,7 +15,7 @@ class DiscussionsController < ApplicationController
   end
 
   def show
-    @comment = @discussion.comments.build
+    @comment = @discussion.comments.build(author: current_member)
   end
 
   def new
