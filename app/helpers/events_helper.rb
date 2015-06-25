@@ -19,7 +19,7 @@ module EventsHelper
   def event_static_map(event)
     query = {
       center: event.location_coordinates,
-      size: '300x300',
+      size: '230x230',
       zoom: event.location_zoom,
       markers: "color:blue|#{ event.location_coordinates }"
     }
