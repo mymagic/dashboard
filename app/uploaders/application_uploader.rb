@@ -1,6 +1,7 @@
 class ApplicationUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
-  storage :fog
+
+  storage Rails.configuration.x.uploader_storage
 
   def initialize(*)
     super
@@ -75,6 +76,17 @@ class ApplicationUploader < CarrierWave::Uploader::Base
     hashed_name = "#{Digest::MD5.hexdigest(path)[0..7]}"\
                   "#{File.extname(original_filename)}"
     path.gsub(original_filename, "#{style}_#{hashed_name}")
+  end
+
+  def default_url
+    ActionController::Base.helpers.
+      image_path(
+        "missing/#{ model.class.to_s.underscore }/" +
+        [version_name, "default.png"].compact.join('_'))
+  end
+
+  def extension_white_list
+    %w(jpg jpeg png)
   end
 
   private

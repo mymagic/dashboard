@@ -1,6 +1,4 @@
-# encoding: utf-8
-
-class LogoUploader < BaseUploader
+class LogoUploader < ApplicationUploader
   version :thumb do
     process resize_to_fit: [200, 200]
     process convert: :png

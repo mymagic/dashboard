@@ -1,6 +1,4 @@
-# encoding: utf-8
-
-class AvatarUploader < BaseUploader
+class AvatarUploader < ApplicationUploader
   version :thumb do
     process resize_to_fill: [200, 200]
   end
