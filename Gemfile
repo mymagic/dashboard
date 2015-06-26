@@ -62,7 +62,7 @@ gem 'aws-sdk'
 gem 'jquery-fileupload-rails'
 
 # Fog for cloud storage
-gem "fog", require: 'fog/aws/storage'
+gem "fog", require: 'fog/aws'
 
 # Figaro for Twelve-Factor approved configurations
 gem "figaro"
