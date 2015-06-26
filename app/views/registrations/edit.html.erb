@@ -8,7 +8,7 @@
     <li role="presentation"><a href="#security" aria-controls="settings" role="tab" data-toggle="tab">Security</a></li>
   </ul>
 
-  <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name, current_community), html: { method: :put, class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+  <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name, current_community), html: { multipart: true, method: :put, class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
     <%= f.error_notification %>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="general">

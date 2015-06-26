@@ -37,7 +37,7 @@ form {
 div.uploader {
   width: 200px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   .progress {
     max-width: 600px;
@@ -82,4 +82,9 @@ div.uploader {
     cursor: inherit;
     display: block;
   }
+}
+
+div.uploader-error {
+  width: 200px;
+  text-align: center;
 }
