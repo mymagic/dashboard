@@ -30,4 +30,4 @@ deployment:
           timeout: 300
       - heroku run rake db:migrate --app mymagic-production:
           timeout: 300
-      - heroku restart --app mymagic
+      - heroku restart --app mymagic-production
