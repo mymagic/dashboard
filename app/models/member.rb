@@ -58,8 +58,8 @@ class Member < ActiveRecord::Base
     source: :followable,
     source_type: Discussion)
 
-  has_many :discussions, foreign_key: :author_id
-  has_many :comments, foreign_key: :author_id
+  has_many :discussions, foreign_key: :author_id, dependent: :destroy
+  has_many :comments, foreign_key: :author_id, dependent: :destroy
 
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
