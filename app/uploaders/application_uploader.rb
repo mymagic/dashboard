@@ -76,4 +76,11 @@ class ApplicationUploader < CarrierWave::Uploader::Base
                   "#{File.extname(original_filename)}"
     path.gsub(original_filename, "#{style}_#{hashed_name}")
   end
+
+  private
+
+  def full_filename(for_file)
+    return super(for_file) unless version_name.present?
+    version_path(path: model[mounted_as], style: version_name)
+  end
 end
