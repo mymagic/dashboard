@@ -1,5 +1,5 @@
 <tr>
-  <td><%= image_tag(company.logo.url(:icon)) %></td>
+  <td><%= link_to image_tag(company.logo.url(:icon)), community_company_path(current_community, company) %></td>
   <td><%= company.name %></td>
   <td><%= link_to truncate(company.website, length: 30), company.website %></td>
   <td><%= truncate(company.description, length: 30) %></td>

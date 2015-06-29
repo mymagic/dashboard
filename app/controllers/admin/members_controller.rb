@@ -7,7 +7,7 @@ module Admin
 
     def index
       @invited_members    = @members.invited.ordered
-      @active_members     = @members.active.ordered
+      @active_members     = @members.active.ordered.page params[:page]
     end
 
     def new

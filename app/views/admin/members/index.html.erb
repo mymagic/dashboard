@@ -11,7 +11,7 @@
       <li class="active" role="presentation">
         <a aria-controls="active-members" data-toggle="tab" href="#active-members" role="tab">
           Active Members
-          <span class="label label-info"><%= @active_members.size %></span>
+          <span class="label label-info"><%= @active_members.total_count %></span>
         </a>
       </li>
       <% if @invited_members.any? %>
@@ -39,6 +39,9 @@
             <%= render collection: @active_members, partial: 'member_active', as: :member %>
           </tbody>
         </table>
+        <div class="text-center">
+          <%= paginate @active_members %>
+        </div>
       </div>
       <div class="tab-pane fade" id="invited-members" role="tabpanel">
         <table class="table table-striped">
