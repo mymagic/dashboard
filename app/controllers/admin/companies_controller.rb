@@ -6,7 +6,7 @@ module Admin
     include CompanyParamsConcern
 
     def index
-      @companies = @companies.ordered
+      @companies = @companies.ordered.page params[:page]
     end
 
     def new
