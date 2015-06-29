@@ -189,8 +189,14 @@ class Member < ActiveRecord::Base
     included do
       has_many :slots, dependent: :destroy
       has_many(
-        :slot_bookings,
-        as: :mentor,
+        :slot_bookings_as_mentor,
+        foreign_key: :resource_id,
+        dependent: :destroy,
+        class_name: 'Activity::SlotBooking'
+      )
+      has_many(
+        :slot_bookings_as_participant,
+        foreign_key: :owner_id,
         dependent: :destroy,
         class_name: 'Activity::SlotBooking'
       )
