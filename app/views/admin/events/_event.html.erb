@@ -5,7 +5,6 @@
   <td><%= event.ends_at.strftime('%A, %B %d, %Y at %l:%M%P') %></td>
   <td><%= event.time_zone.truncate(15) %></td>
   <td><%= event.location_detail.truncate(15) %></td>
-  <td><%= link_to image_tag(event.creator.avatar.url(:icon), class: 'img-rounded'), [current_community, event.creator] %></td>
   <td>
     <% if can? :update, event %>
       <%= link_to('Edit', edit_community_admin_event_path(current_community, event), class: 'btn btn-default btn-xs') %>

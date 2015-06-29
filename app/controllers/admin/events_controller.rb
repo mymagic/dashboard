@@ -15,8 +15,8 @@ module Admin
     end
 
     def index
-      @upcoming_events = @events.upcoming
-      @past_events     = @events.past
+      @upcoming_events = @events.upcoming.ordered.page params[:page]
+      @past_events     = @events.past.ordered
     end
 
     def update
