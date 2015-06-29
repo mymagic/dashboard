@@ -188,11 +188,30 @@ class Member < ActiveRecord::Base
   concerning :Slots do
     included do
       has_many :slots, dependent: :destroy
+      has_many(
+        :slot_bookings,
+        as: :mentor,
+        dependent: :destroy,
+        class_name: 'Activity::SlotBooking'
+      )
     end
   end
 
   concerning :Messages do
     included do
+      has_many(
+        :sent_messages,
+        foreign_key: :sender_id,
+        class_name: 'Message',
+        dependent: :destroy
+      )
+      has_many(
+        :received_messages,
+        foreign_key: :receiver_id,
+        class_name: 'Message',
+        dependent: :destroy
+      )
+
       def messages
         Message.with(self)
       end
