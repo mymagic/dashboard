@@ -98,6 +98,36 @@ class Member < ActiveRecord::Base
   delegate :can?, :cannot?, to: :ability
 
   concerning :Registrations do
+    included do
+      # This is a monkey patch to Devise Invitable to accept the encrypted
+      # token for find_by_invitation_token;
+      def self.find_by_invitation_token(original_token, only_valid)
+        invitation_token = if original_token.length == 64
+                             original_token
+                           else
+                             Devise.token_generator.digest(
+                               self,
+                               :invitation_token,
+                               original_token)
+                           end
+
+        invitable = find_or_initialize_with_error_by(
+          :invitation_token,
+          invitation_token)
+        if invitable.invitation_token &&
+           invitable.persisted? &&
+           !invitable.valid_invitation?
+          invitable.errors.add(:invitation_token, :invalid)
+        end
+        invitable unless only_valid && invitable.errors.present?
+      end
+    end
+
+    def update_magic_connect_id!(magic_connect_id)
+      return if self.magic_connect_id == magic_connect_id
+      self.update_column(:magic_connect_id, magic_connect_id)
+    end
+
     def create_signup_activity
       Activity::Registering.create(owner: self, invited_by: invited_by)
     end

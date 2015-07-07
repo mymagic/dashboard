@@ -9,9 +9,7 @@ module FeatureHelper
   def sign_out
     find('#navbar > ul.nav.navbar-nav.navbar-right').click
     click_on 'Sign out'
-
-    # Verify that user was successfully logged out back to the landing page
-    expect(page).to have_content 'Signed out successfully.'
+    expect(page).to_not have_content 'Sign out'
   end
 
   def expect_to_be_signed_out
@@ -22,6 +20,9 @@ module FeatureHelper
     expect(page).to have_content 'You need to sign in before continuing.'
   end
 
+  def magic_connect_cookie(email)
+    create_cookie('magic_cookie', Base64.encode64("x|||#{ email }"))
+  end
 
   def expect_to_be_signed_in
     within(:css, 'nav.navbar-standard') do
@@ -30,40 +31,8 @@ module FeatureHelper
   end
 
   def log_in(community, email, password = 'password0')
-    visit new_member_session_path(community)
-
-    fill_in 'Email',  with: email
-    fill_in 'Password', with: password
-
-    click_button 'Log in'
-  end
-
-  def expect_successful_password_reset(member)
-    reset_password(member)
-    expect(page).to have_content 'Your password has been changed '\
-                            'successfully. You are now signed in.'
-  end
-
-  def reset_password(member, new_password = 'newpassword0')
-    visit new_member_session_path(member.community)
-    click_link "Forgot your password?"
-
-    expect(page).to have_content 'Forgot your password?'
-
-    fill_in 'Email', with: member.email
-
-    click_button 'Send me reset password instructions'
-
-    open_email(member.email)
-
-    current_email.click_link 'Change my password'
-
-    expect(page).to have_content 'Change your password'
-
-    fill_in 'New password', with: new_password
-    fill_in 'Confirm your new password', with: new_password
-
-    click_button 'Change my password'
+    magic_connect_cookie(email)
+    visit community_path(community)
   end
 
   def invite_new_member(email:, community:, attributes: {})
@@ -105,13 +74,6 @@ module FeatureHelper
 
     fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name] if attributes[:last_name]
-    fill_in 'Password',  with: attributes[:password] if attributes[:password]
-
-    fill_in 'Current password',  with: attributes[:current_password] if attributes[:current_password]
-
-    if attributes[:password_confirmation] || attributes[:password]
-      fill_in 'Password confirmation',  with: attributes[:password_confirmation] || attributes[:password]
-    end
 
     attributes[:notifications].each do |notification|
       uncheck notification

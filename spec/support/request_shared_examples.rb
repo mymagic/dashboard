@@ -39,8 +39,6 @@ end
 
 shared_examples "logging in" do
   it "logs the user in" do
-    visit community_path(community)
-    expect_to_require_signing_in
     log_in community, user.email
     expect_to_be_signed_in
   end

@@ -13,12 +13,10 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
       expect(page.find_field('Last name').value).to eq 'Faust'
       expect(page).to_not have_field('Email')
 
-      fill_in 'member[password]', with: 'password0'
-      fill_in 'member[password_confirmation]', with: 'password0'
       click_button 'Join'
       expect(page).
         to have_content(
-          "Your password was set successfully. You are now signed in.")
+          "Thank you for updating your profile! You are now signed in.")
 
       if [:administrator, :staff].include?(opts[:role])
         expect(page).to have_css('nav.navbar-admin')

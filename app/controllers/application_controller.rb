@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :current_community
+  before_action :authorize_through_magic_connect!
   before_action :authorize_community!
 
   rescue_from CanCan::AccessDenied, with: :access_denied
@@ -17,6 +18,50 @@ class ApplicationController < ActionController::Base
   layout :application_unless_xhr
 
   protected
+
+  def magic_connect_logout_path
+    "http://connect.mymagic.my/logout"
+  end
+
+  def magic_connect_path(redirect_to = nil)
+    magic_connect_login = URI.parse("http://connect.mymagic.my/login")
+    return magic_connect_login.to_s unless redirect_to
+    magic_connect_login.query = "redirect_uri=#{ redirect_to }"
+    magic_connect_login.to_s
+  end
+
+  def magic_connect_email
+    return unless cookies["magic_cookie"]
+    Base64.decode64(cookies["magic_cookie"]).split('|').try(:last)
+  end
+
+  def magic_connect_id
+    return unless cookies["magic_cookie"]
+    Base64.decode64(cookies["magic_cookie"]).split('|').try(:first).try(:to_i)
+  end
+
+  def magic_connect_member
+    current_community.members.find_by_email(magic_connect_email)
+  end
+
+  def authenticate_magic_connect!
+    return if magic_connect_member.present?
+    redirect_to magic_connect_path(request.url)
+  end
+
+  def authorize_through_magic_connect!
+    return if member_signed_in?
+    return unless current_community && magic_connect_member
+    magic_connect_member.update_magic_connect_id!(magic_connect_id)
+    if magic_connect_member.confirmed?
+      sign_in magic_connect_member
+    else
+      redirect_to accept_invitation_url(
+        magic_connect_member,
+        magic_connect_member.community,
+        invitation_token: magic_connect_member.invitation_token)
+    end
+  end
 
   def application_unless_xhr
     request.xhr? ? false : 'application'
@@ -43,8 +88,6 @@ class ApplicationController < ActionController::Base
       :avatar,
       :avatar_cache,
       :time_zone,
-      :password,
-      :password_confirmation,
       :description,
       notifications: NotificationMailer.action_methods.map(&:to_sym),
       social_media_links_attributes: [:id, :_destroy, :url, :service]
@@ -52,7 +95,7 @@ class ApplicationController < ActionController::Base
 
     case params[:controller]
     when 'registrations'
-      member_params.push(:current_password, :email)
+      member_params.push(:email)
       devise_parameter_sanitizer.for(:account_update) do |u|
         u.permit(member_params)
       end

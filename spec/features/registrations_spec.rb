@@ -23,19 +23,6 @@ RSpec.describe 'Registrations', type: :feature, js: false do
     end
   end
 
-  shared_examples "changing my password" do
-    it 'allows me to change my password' do
-      visit root_path
-      update_my_account(
-        community: community,
-        password: 'newpassword',
-        current_password: 'password0')
-      sign_out
-      log_in user.community, user.email, 'newpassword'
-      expect_to_be_signed_in
-    end
-  end
-
   shared_examples "changing my notification settings" do
     it 'allows me to disable notifications' do
       expect(user.receive?(:follower_notification)).to be_truthy
@@ -60,7 +47,6 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
-      it_behaves_like 'changing my password'
       it_behaves_like 'changing my notification settings'
     end
 
@@ -69,7 +55,6 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
-      it_behaves_like 'changing my password'
       it_behaves_like 'changing my notification settings'
     end
 
@@ -78,7 +63,6 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
-      it_behaves_like 'changing my password'
       it_behaves_like 'changing my notification settings'
     end
 
@@ -87,7 +71,6 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
-      it_behaves_like 'changing my password'
       it_behaves_like 'changing my notification settings'
     end
   end

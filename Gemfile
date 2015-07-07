@@ -127,6 +127,9 @@ group :test do
   # Email spec
   gem 'capybara-email'
 
+  # Cookies in Capybara
+  gem "show_me_the_cookies"
+
   # Headless browser
   gem 'poltergeist'
 
