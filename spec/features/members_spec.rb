@@ -137,11 +137,9 @@ RSpec.describe 'Members', type: :feature, js: false do
           expect(page.find_field('Last name').value).to eq 'Faust'
           expect(page).to_not have_field('Email')
 
-          fill_in 'member[password]', with: 'password0'
-          fill_in 'member[password_confirmation]', with: 'password0'
           click_button 'Join'
           expect(page).
-            to have_content("Your password was set successfully. "\
+            to have_content("Thank you for updating your profile! "\
                             "You are now signed in.")
           visit community_company_path(community, company)
           within ".company__members" do

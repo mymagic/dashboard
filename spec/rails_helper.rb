@@ -60,6 +60,7 @@ RSpec.configure do |config|
   config.include ControllerHelper, type: :controller
   config.include ControllerMacros, type: :controller
   config.include FeatureHelper, type: :feature
+  config.include ShowMeTheCookies, type: :feature
   config.include TaskHelper, type: :task
 
   Capybara.javascript_driver = :poltergeist

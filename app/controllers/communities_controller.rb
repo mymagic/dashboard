@@ -1,4 +1,5 @@
 class CommunitiesController < ApplicationController
+  before_action :authorize_through_magic_connect!
   before_action :redirect_if_not_authenticated!
   load_and_authorize_resource find_by: :slug
   before_action :activities

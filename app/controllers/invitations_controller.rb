@@ -1,4 +1,5 @@
 class InvitationsController < DeviseController
+  skip_before_action :authorize_through_magic_connect!, only: [:edit, :update]
   prepend_before_filter :authenticate_inviter!, only: [:new, :create]
   prepend_before_filter :has_invitations_left?, only: [:create]
   prepend_before_filter :require_no_authentication, only: [:edit, :update, :destroy]

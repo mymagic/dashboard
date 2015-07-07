@@ -409,6 +409,8 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
+    show_me_the_cookies (2.6.0)
+      capybara (~> 2.0)
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
@@ -504,6 +506,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   sentry-raven
   shoulda-matchers
+  show_me_the_cookies
   simple_form
   spring
   turbolinks

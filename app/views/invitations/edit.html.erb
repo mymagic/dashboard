@@ -13,8 +13,6 @@
       <%= f.input :first_name, autofocus: true %>
       <%= f.input :last_name %>
       <%= f.input :time_zone, include_blank: 'Please select a time zone…' %>
-      <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @validatable) %>
-      <%= f.input :password_confirmation, required: true %>
       <div class="text-right">
         <%= f.button :submit, t("devise.invitations.edit.submit_button") %>
       </div>
