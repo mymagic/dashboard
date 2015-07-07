@@ -53,6 +53,7 @@ class ApplicationController < ActionController::Base
     return if member_signed_in?
     return unless current_community && magic_connect_member
     magic_connect_member.update_magic_connect_id!(magic_connect_id)
+    flash.delete(:alert) # remove the alert messages (eg "you need to sign in")
     if magic_connect_member.confirmed?
       sign_in magic_connect_member
     else
