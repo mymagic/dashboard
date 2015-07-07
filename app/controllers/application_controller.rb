@@ -23,6 +23,10 @@ class ApplicationController < ActionController::Base
     "http://connect.mymagic.my/logout"
   end
 
+  def magic_connect?
+    cookies["magic_cookie"].present?
+  end
+
   def magic_connect_path(redirect_to = nil)
     magic_connect_login = URI.parse("http://connect.mymagic.my/login")
     return magic_connect_login.to_s unless redirect_to
@@ -31,12 +35,12 @@ class ApplicationController < ActionController::Base
   end
 
   def magic_connect_email
-    return unless cookies["magic_cookie"]
+    return unless magic_connect?
     Base64.decode64(cookies["magic_cookie"]).split('|').try(:last)
   end
 
   def magic_connect_id
-    return unless cookies["magic_cookie"]
+    return unless magic_connect?
     Base64.decode64(cookies["magic_cookie"]).split('|').try(:first).try(:to_i)
   end
 
@@ -50,8 +54,9 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_through_magic_connect!
-    return if member_signed_in?
-    return unless current_community && magic_connect_member
+    return if member_signed_in? || current_community.blank? || !magic_connect?
+    return not_authorized unless magic_connect_member
+
     magic_connect_member.update_magic_connect_id!(magic_connect_id)
     flash.delete(:alert) # remove the alert messages (eg "you need to sign in")
     if magic_connect_member.confirmed?
@@ -131,6 +136,10 @@ class ApplicationController < ActionController::Base
       session[:next] = request.fullpath
     end
     redirect_to url, alert: msg
+  end
+
+  def not_authorized
+    redirect_to root_path, alert: 'You are not authorized to access this page.'
   end
 
   def community_not_found
