@@ -36,21 +36,16 @@ class ApplicationController < ActionController::Base
 
   def magic_connect_email
     return unless magic_connect?
-    Base64.decode64(cookies["magic_cookie"]).split('|').try(:last)
+    Base64.decode64(cookies["magic_cookie"]).split('|||').try(:second)
   end
 
   def magic_connect_id
     return unless magic_connect?
-    Base64.decode64(cookies["magic_cookie"]).split('|').try(:first).try(:to_i)
+    Base64.decode64(cookies["magic_cookie"]).split('|||').try(:first).try(:to_i)
   end
 
   def magic_connect_member
     current_community.members.find_by_email(magic_connect_email)
-  end
-
-  def authenticate_magic_connect!
-    return if magic_connect_member.present?
-    redirect_to magic_connect_path(request.url)
   end
 
   def authorize_through_magic_connect!

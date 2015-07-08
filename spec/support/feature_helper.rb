@@ -21,7 +21,9 @@ module FeatureHelper
   end
 
   def magic_connect_cookie(email)
-    create_cookie('magic_cookie', Base64.encode64("x|||#{ email }"))
+    create_cookie(
+      'magic_cookie',
+      Base64.encode64("123|||#{ email }|||secret"))
   end
 
   def expect_to_be_signed_in
