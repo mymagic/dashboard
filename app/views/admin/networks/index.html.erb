@@ -1,0 +1,22 @@
+<%
+  title 'Networks'
+  page_header 'Networks' do
+    link_to 'New Network', new_community_admin_network_path(current_community), class: 'btn btn-success'
+  end
+%>
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table table-striped">
+      <thead>
+        <th>Name</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <%= render @networks %>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <%= paginate @networks %>
+    </div>
+  </div>
+</div>

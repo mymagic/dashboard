@@ -87,8 +87,12 @@ class Ability
 
     case member.role
     when 'administrator'
-      can :administrate, [:application, Member, Event]
+      can :administrate, [:application, Member, Company, Event, Network]
 
+      can :manage, Network
+      cannot :destroy, Network do |network|
+        network.last_in_community?
+      end
       can :manage, [:calendar, Position, Event, Company, SocialMediaLink]
       can :manage, Community, id: member.community_id
       can :manage, Discussion, community_id: member.community_id
@@ -105,8 +109,12 @@ class Ability
       can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
     when 'staff'
-      can :administrate, [:application, Member, Company, Event]
+      can :administrate, [:application, Member, Company, Event, Network]
 
+      can :manage, Network
+      cannot :destroy, Network do |network|
+        network.last_in_community?
+      end
       can :manage, [Position, Event]
 
       can([:create, :update, :manage_company, :invite_company_member, :manage_members_positions], Company)

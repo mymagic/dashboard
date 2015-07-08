@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707065810) do
+ActiveRecord::Schema.define(version: 20150708052026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,6 +207,17 @@ ActiveRecord::Schema.define(version: 20150707065810) do
   add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
+  create_table "networks", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "community_id"
+    t.string   "slug"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "networks", ["community_id"], name: "index_networks_on_community_id", using: :btree
+  add_index "networks", ["slug"], name: "index_networks_on_slug", unique: true, using: :btree
+
   create_table "positions", force: :cascade do |t|
     t.integer  "member_id",                    null: false
     t.integer  "community_id",                 null: false
@@ -285,6 +296,7 @@ ActiveRecord::Schema.define(version: 20150707065810) do
   add_foreign_key "discussions", "communities"
   add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
+  add_foreign_key "networks", "communities"
   add_foreign_key "rsvps", "events"
   add_foreign_key "rsvps", "members"
   add_foreign_key "taggings", "tags"

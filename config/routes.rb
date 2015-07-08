@@ -72,6 +72,7 @@ Rails.application.routes.draw do
     namespace :admin do
       resource :community, only: [:edit, :update]
       resources :events, except: [:show]
+      resources :networks
       resources :companies
       resources :members do
         patch 'resend_invitation', on: :member
