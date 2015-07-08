@@ -15,8 +15,11 @@
       </div>
     </div>
     <div class="col-lg-6">
+      <%= panel 'Networks', columns: 12 do %>
+        <%= render partial: 'admin/members/forms/networks', locals: { form: f } %>
+      <% end %>
+
       <%= panel 'Positions', columns: 12 do %>
-        <%= f.error :positions %>
         <%= render partial: 'admin/members/forms/positions', locals: { form: f } %>
       <% end %>
     </div>

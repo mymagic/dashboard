@@ -82,6 +82,7 @@ class MembersController < ApplicationController
         ]
     ).tap do |attrs|
       attrs[:community_id] = current_community.id
+      attrs[:network_ids] = [current_network.id]
       attrs[:positions_attributes].map do |key, value|
         param = key.is_a?(Hash) ? key : value
         param[:company_id]  = @company.id

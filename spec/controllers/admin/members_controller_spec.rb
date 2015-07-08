@@ -101,7 +101,12 @@ RSpec.describe Admin::MembersController, type: :controller do
 
   describe "PUT #create" do
     let(:community) { create(:community) }
-    let(:member_required_attributes) { { email: 'email@example.com' } }
+    let(:member_required_attributes) do
+      {
+        email: 'email@example.com',
+        network_ids: [community.networks.first.id]
+      }
+    end
 
     def invite_new_member(attributes = {})
       put(

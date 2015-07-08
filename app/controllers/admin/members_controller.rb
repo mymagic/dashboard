@@ -81,6 +81,7 @@ module Admin
         :avatar,
         :avatar_cache,
         :description,
+        network_ids: [],
         notifications: NotificationMailer.action_methods.map(&:to_sym),
         positions_attributes: [:company_id, :role, :founder, :_destroy, :id],
         social_media_links_attributes: [:id, :service, :url, :_destroy]

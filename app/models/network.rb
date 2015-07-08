@@ -4,8 +4,9 @@ class Network < ActiveRecord::Base
 
   belongs_to :community
 
-  validates :name, :slug, presence: true
-  validates :name, :slug, uniqueness: true
+  validates :name, :slug, presence: true, uniqueness: true
+
+  has_many :members, through: :networks
 
   scope :ordered, -> { order(name: :desc) }
 

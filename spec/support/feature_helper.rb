@@ -47,6 +47,9 @@ module FeatureHelper
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name]
+
+    check community.networks.first.name
+
     select attributes[:role], from: 'Role'
 
     select attributes[:company], from: 'Company' if attributes[:company]

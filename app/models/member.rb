@@ -46,6 +46,9 @@ class Member < ActiveRecord::Base
   # Associations
   belongs_to :community
 
+  has_many :memberships, dependent: :destroy
+  has_many :networks, through: :memberships
+
   has_many :follows, dependent: :destroy
   has_many(
     :followed_members,
@@ -130,6 +133,19 @@ class Member < ActiveRecord::Base
 
     def create_signup_activity
       Activity::Registering.create(owner: self, invited_by: invited_by)
+    end
+  end
+
+  concerning :Memberships do
+    included do
+      validate :must_have_at_least_one_network_membership
+    end
+
+    private
+
+    def must_have_at_least_one_network_membership
+      return if memberships.present?
+      errors.add :memberships, :must_have_at_least_one_network_membership
     end
   end
 

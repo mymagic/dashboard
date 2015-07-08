@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, with: :access_denied
   rescue_from Community::CommunityNotFound, with: :community_not_found
 
-  helper_method :current_community
+  helper_method :current_community, :current_network
 
   add_flash_types :warning
 
@@ -66,6 +66,11 @@ class ApplicationController < ActionController::Base
 
   def application_unless_xhr
     request.xhr? ? false : 'application'
+  end
+
+  def current_network
+    # TODO replace with real network based on path
+    current_community.networks.first
   end
 
   def current_community
