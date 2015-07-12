@@ -1,11 +1,11 @@
 <% title @company.name %>
-<div class="col-lg-3 company__sidebar">
-  <div class="company__sidebar__logo">
-    <%= image_tag(@company.logo.url(:thumb)) %>
+<div class="company row">
+  <div class="col-lg-3 company__sidebar">
+    <div class="company__sidebar__logo">
+      <%= image_tag(@company.logo.url(:thumb)) %>
+    </div>
   </div>
-</div>
-<div class="col-lg-9">
-  <div class="row">
+  <div class="col-lg-9">
     <%= render partial: 'header' %>
     <div class="company__members col-lg-12">
       <% if @founders.any? %>

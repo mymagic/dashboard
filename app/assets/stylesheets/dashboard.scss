@@ -1,0 +1,32 @@
+.dashboard {
+  h3 {
+    margin-top: 5px;
+    margin-bottom: 20px;
+  }
+  &__intro {
+    p {
+      text-align: justify;
+      line-height: 20px;
+    }
+  }
+  img.hero {
+    border: 1px solid #CCCCCC;
+  }
+  &__magic_connect_login {
+    margin-top: 30px;
+  }
+  &__key_feature {
+    text-align: center;
+    height: 195px;
+    &_icon {
+      height: 60px;
+    }
+    &_description {
+      text-align: justify;
+    }
+    &_name {
+      font-weight: bold;
+      margin: 10px 0;
+    }
+  }
+}

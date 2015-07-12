@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, with: :access_denied
   rescue_from Community::CommunityNotFound, with: :community_not_found
 
-  helper_method :current_community, :current_network
+  helper_method :current_community, :current_network, :magic_connect_path
 
   add_flash_types :warning
 
