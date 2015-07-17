@@ -39,7 +39,7 @@ class NetworksController < ApplicationController
   def set_current_network
     @current_network ||= Network.friendly.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    raise Network::NetworkNotFound
+    @current_network = current_community.networks.first
   end
 
 end

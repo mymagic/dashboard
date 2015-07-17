@@ -37,7 +37,7 @@ class MembersController < ApplicationController
     @member = invite_member
     if @member.errors.empty?
       redirect_to(
-        community_company_path(@company.community, @company),
+        [@company.community, current_network, @company],
         notice: 'Member was successfully invited.')
     else
       @member.positions.build unless @member.positions.any?
