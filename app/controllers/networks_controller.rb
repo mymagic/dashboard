@@ -29,9 +29,9 @@ class NetworksController < ApplicationController
   def set_activities
     @activities = begin
       if filter == :personal
-        community.activities.for(current_member)
+        @current_network.activities.for(current_member)
       else
-        community.activities
+        @current_network.activities
       end
     end
   end
