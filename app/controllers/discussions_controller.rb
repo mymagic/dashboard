@@ -34,7 +34,7 @@ class DiscussionsController < ApplicationController
   def destroy
     @discussion.destroy
     redirect_to(
-      community_network_discussions_path(current_community, current_network),
+      [current_community, current_network, Discussion],
       notice: 'Discussion was successfully deleted.')
   end
 

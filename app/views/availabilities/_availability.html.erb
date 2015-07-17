@@ -8,7 +8,10 @@
     <% end %>
     <% if can? :manage, availability %>
       <div class='pull-right'>
-        <%= link_to 'Edit', edit_community_network_member_availability_path(current_community, current_network, availability.member, availability), class: 'btn btn-default btn-xs' %>
+        <%= link_to 'Edit', edit_community_network_member_availability_path(
+                              current_community, current_network,
+                              availability.member, availability),
+                            class: 'btn btn-default btn-xs' %>
       </div>
     <% end %>
   </h3>

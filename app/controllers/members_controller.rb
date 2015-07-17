@@ -45,7 +45,7 @@ class MembersController < ApplicationController
     end
   rescue Position::AlreadyExistsError => exception
     redirect_to(
-      new_community_company_member_path(@company.community, @company),
+      new_community_network_company_member_path(@company.community, current_network, @company),
       warning: exception.message
     )
   end

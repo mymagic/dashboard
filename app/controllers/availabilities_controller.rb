@@ -68,7 +68,7 @@ class AvailabilitiesController < ApplicationController
   def date
     if params[:year].nil? || params[:month].nil? || params[:day].nil?
       redirect_to(
-        community_member_path(current_community, @member),
+        [current_community, current_network, @member],
         alert: 'Invalid date.')
     else
       @date = Date.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
