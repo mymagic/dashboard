@@ -19,11 +19,11 @@ module CompaniesHelper
   def company_logo_link(company)
     link_to(
       image_tag(company.logo.url(:icon), class: 'img-rounded'),
-      community_company_path(current_community, company)
+      [current_community, current_network, company]
     )
   end
 
   def company_name_link(company)
-    link_to(company.name, community_company_path(current_community, company))
+    link_to(company.name, [current_community, current_network, company])
   end
 end
