@@ -24,7 +24,7 @@ class DiscussionsController < ApplicationController
   def create
     @discussion.author = current_member
     if @discussion.save
-      redirect_to([@discussion.community, @discussion],
+      redirect_to([@discussion.community, current_network, @discussion],
                   notice: 'Discussion was successfully created.')
     else
       render 'new', alert: 'Error creating discussion.'
@@ -34,7 +34,7 @@ class DiscussionsController < ApplicationController
   def destroy
     @discussion.destroy
     redirect_to(
-      community_discussions_path(current_community),
+      community_network_discussions_path(current_community, current_network),
       notice: 'Discussion was successfully deleted.')
   end
 

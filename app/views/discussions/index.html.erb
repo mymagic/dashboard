@@ -1,7 +1,7 @@
 <%
   title 'Discussions'
   page_header tagged_with_header('Discussions', tag: @tag) do
-    link_to 'Start a new Discussion', new_community_discussion_path(current_community), class: 'btn btn-success'
+    link_to 'Start a new Discussion', new_community_network_discussion_path(current_community, current_network), class: 'btn btn-success'
   end
 %>
 

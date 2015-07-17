@@ -24,12 +24,13 @@ module MembersHelper
   def member_avatar_link(member)
     link_to(
       image_tag(member.avatar.url(:icon), class: 'img-rounded'),
-      community_member_path(current_community, member)
+      community_network_member_path(current_community, current_network, member)
     )
   end
 
   def member_name_link(member)
-    link_to(member.full_name, community_member_path(current_community, member))
+    link_to(member.full_name, community_network_member_path(
+                                current_community, current_network, member))
   end
 
   def member_positions(member, with_spacing: false)

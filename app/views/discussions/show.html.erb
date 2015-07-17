@@ -20,7 +20,7 @@ end  %>
   <%= panel "Followers", columns: 4 do %>
     <%- @discussion.followers.each do |follower| %>
     <%= link_to(image_tag(follower.avatar.url(:icon), class: 'img-rounded'),
-                community_member_path(follower.community, follower)) %>
+                [follower.community, current_network, follower]) %>
     <% end %>
   <% end %>
   <% if @discussion.tags.any? %>
@@ -35,7 +35,7 @@ end  %>
     <div class="text-right col-lg-4">
       <%=
         link_to('Remove this Discussion',
-                community_discussion_path(@discussion.community, @discussion),
+                [@discussion.community, current_network, @discussion],
                 class: 'btn btn-xs btn-hover btn-hover-danger',
                 method: :delete,
                 data: {
