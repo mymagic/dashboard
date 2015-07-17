@@ -9,7 +9,8 @@ $ ->
 
     .on 'click', '.calendar .fc-event-container.event', ->
       communitySlug = $('body').data('community-slug')
-      window.location.href = Routes.community_event_path(communitySlug, $(@).data('id'))
+      networkSlug = $('body').data('network-slug')
+      window.location.href = Routes.community_network_event_path(communitySlug, networkSlug, $(@).data('id'))
 
     .on 'click', '.calendar .fc-event-container.availability', ->
       self = $(@)
@@ -27,12 +28,13 @@ $ ->
 
       index = self.index()
       communitySlug = $('body').data('community-slug')
+      networkSlug = $('body').data('network-slug')
       date = moment(self.closest('table')
                         .find("thead td:nth-child(#{index + 1})")
                         .data('date'))
 
       $.ajax
-        url: Routes.community_availability_calendar_path(communitySlug, date.year(), date.month() + 1, date.date())
+        url: Routes.community_network_availability_calendar_path(communitySlug, networkSlug , date.year(), date.month() + 1, date.date())
         data: { member_id: memberId } if memberId
         success: (data) ->
           self.popover

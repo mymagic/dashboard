@@ -4,8 +4,9 @@
   <div class='pull-right'>
     <%=
     link_to(member == current_member ? 'View' : 'Reserve',
-            community_member_availability_slots_path(
+            community_network_member_availability_slots_path(
               current_community,
+              current_network,
               member,
               year: date.year,
               month: date.month,
