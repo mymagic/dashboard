@@ -8,6 +8,21 @@ Rails.application.routes.draw do
   end
 
   resources :communities, path: '', except: :index do
+    get 'admin/dashboard'
+
+    namespace :admin do
+      resource :community, only: [:edit, :update]
+      resources :events, except: [:show]
+      resources :networks
+      resources :companies
+      resources :members do
+        patch 'resend_invitation', on: :member
+      end
+    end
+
+    resources :networks, path: '', only: :show
+
+
     resource :calendar, only: :show
     get 'availabilities/:year/:month/:day',
         to: 'availabilities#calendar',
@@ -67,17 +82,6 @@ Rails.application.routes.draw do
       resources :members, only: [:new, :create, :edit, :update]
     end
 
-    get 'admin/dashboard'
-
-    namespace :admin do
-      resource :community, only: [:edit, :update]
-      resources :events, except: [:show]
-      resources :networks
-      resources :companies
-      resources :members do
-        patch 'resend_invitation', on: :member
-      end
-    end
   end
 
   root 'welcome#index'

@@ -1,7 +1,7 @@
 class WelcomeController < ApplicationController
   def index
-    @current_community = current_member.try(:community)
-    redirect_to community_path(@current_community) if @current_community
-    @communities = Community.all
+    @current_network = current_member.networks.try(:first)
+    redirect_to community_network_path(@current_network.community, @current_network) if @current_community
+    @network = Network.all
   end
 end
