@@ -31,13 +31,13 @@ class AvailabilitiesController < ApplicationController
     update_availability
     @availability.slots.destroy_all
 
-    redirect_to community_member_availabilities_path(current_community, @member),
+    redirect_to [current_community, current_network, @member, Availability],
                 notice: 'Availability was successfully updated.'
   end
 
   def create
     if update_availability
-      redirect_to community_member_availabilities_path(current_community, @member),
+      redirect_to [current_community, current_network, @member, Availability],
                   notice: 'Availability was successfully created.'
     else
       render 'new', alert: 'Error creating availability.'
@@ -47,7 +47,7 @@ class AvailabilitiesController < ApplicationController
   def destroy
     @availability.destroy
 
-    redirect_to community_member_availabilities_path(current_community, @member),
+    redirect_to [current_community, current_network, @member, Availability],
                 notice: 'Availability was successfully deleted.'
   end
 
