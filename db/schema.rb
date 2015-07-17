@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150708080022) do
+ActiveRecord::Schema.define(version: 20150717060220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20150708080022) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "owner_id",                null: false
-    t.integer  "community_id",            null: false
     t.integer  "resource_id",             null: false
     t.string   "resource_type",           null: false
     t.integer  "secondary_resource_id"
@@ -28,9 +27,9 @@ ActiveRecord::Schema.define(version: 20150708080022) do
     t.string   "type",                    null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "network_id"
   end
 
-  add_index "activities", ["community_id"], name: "index_activities_on_community_id", using: :btree
   add_index "activities", ["id", "type"], name: "index_activities_on_id_and_type", using: :btree
   add_index "activities", ["owner_id"], name: "index_activities_on_owner_id", using: :btree
   add_index "activities", ["resource_id", "resource_type"], name: "index_activities_on_resource_id_and_resource_type", using: :btree

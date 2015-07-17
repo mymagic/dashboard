@@ -7,6 +7,7 @@ class Network < ActiveRecord::Base
   validates :name, :slug, presence: true, uniqueness: true
 
   has_many :members, through: :networks
+  has_many :activities
 
   scope :ordered, -> { order(name: :desc) }
 
