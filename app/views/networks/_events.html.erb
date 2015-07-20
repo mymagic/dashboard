@@ -5,7 +5,7 @@
       <h5><%= date.strftime('%a, %B %d') %></h5>
       <ul class='list-unstyled'>
         <% events.each do |event| %>
-          <li><%= link_to(event.title, community_event_path(current_community, event)) %></li>
+          <li><%= link_to(event.title, [current_community, current_network, event]) %></li>
         <% end %>
       </ul>
     <% end %>

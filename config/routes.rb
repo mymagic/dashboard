@@ -18,6 +18,9 @@ Rails.application.routes.draw do
       resources :members do
         patch 'resend_invitation', on: :member
       end
+      resources :companies, only: [:index, :show, :edit, :update] do
+        resources :members, only: [:new, :create, :edit, :update]
+      end
     end
 
     resources :networks, path: '', only: :show do

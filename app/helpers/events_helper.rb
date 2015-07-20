@@ -12,7 +12,7 @@ module EventsHelper
   def rsvp_link(event, state, name = nil, html_options = {})
     link_to(
       name,
-      rsvp_community_event_path(event.community, event, rsvp: { state: state }),
+      rsvp_community_network_event_path(event.community, current_network, event, rsvp: { state: state }),
       html_options.merge(method: :patch))
   end
 
@@ -57,6 +57,6 @@ module EventsHelper
   end
 
   def event_link(event)
-    link_to event.title, community_event_path(current_community, event)
+    link_to event.title, [current_community, current_network, event]
   end
 end
