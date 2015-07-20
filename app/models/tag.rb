@@ -4,8 +4,8 @@ class Tag < ActiveRecord::Base
   has_many :taggings, dependent: :destroy
 
   # Validations
-  validates :name, :type, :community, presence: true
-  validates :name, uniqueness: { scope: [:type, :community_id] }
+  validates :name, :type, :network, presence: true
+  validates :name, uniqueness: { scope: [:type, :network_id] }
 
   def to_param
     "#{ id }-#{ name.parameterize }"

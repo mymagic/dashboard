@@ -17,10 +17,9 @@ class Discussion < ActiveRecord::Base
            as: :resource,
            dependent: :destroy
 
-  before_validation :set_community, if: :author
   before_validation :set_author_as_follower, on: :create, if: :author
 
-  validates :title, :body, :author, :community, presence: true
+  validates :title, :body, :author, :network, presence: true
   validate :ensure_author_follows, on: :create
 
   after_create :create_activity
@@ -43,10 +42,6 @@ class Discussion < ActiveRecord::Base
 
   def create_activity
     Activity::Discussing.create(owner: author, discussion: self)
-  end
-
-  def set_community
-    self.community = author.community
   end
 
   def set_author_as_follower
