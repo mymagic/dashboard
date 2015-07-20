@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150717060220) do
+ActiveRecord::Schema.define(version: 20150720100107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,21 +86,19 @@ ActiveRecord::Schema.define(version: 20150717060220) do
     t.integer  "community_id"
   end
 
-  add_index "companies", ["community_id"], name: "index_companies_on_community_id", using: :btree
-
   create_table "discussions", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-    t.integer  "community_id"
     t.integer  "author_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "comments_count"
     t.integer  "follows_count"
+    t.integer  "network_id"
   end
 
   add_index "discussions", ["author_id"], name: "index_discussions_on_author_id", using: :btree
-  add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
+  add_index "discussions", ["network_id"], name: "index_discussions_on_network_id", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "location_detail",                                                  null: false
@@ -301,8 +299,6 @@ ActiveRecord::Schema.define(version: 20150717060220) do
   add_index "tags", ["id", "type"], name: "index_tags_on_id_and_type", using: :btree
 
   add_foreign_key "comments", "discussions"
-  add_foreign_key "companies", "communities"
-  add_foreign_key "discussions", "communities"
   add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
   add_foreign_key "memberships", "members"

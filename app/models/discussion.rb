@@ -5,7 +5,7 @@ class Discussion < ActiveRecord::Base
   paginates_per 25
 
   # Associations
-  belongs_to :community
+  belongs_to :network
   belongs_to :author, class_name: 'Member', counter_cache: true
 
   has_many :comments, dependent: :destroy
