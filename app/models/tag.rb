@@ -1,6 +1,6 @@
 class Tag < ActiveRecord::Base
   # Associations
-  belongs_to :community
+  belongs_to :network
   has_many :taggings, dependent: :destroy
 
   # Validations

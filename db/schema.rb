@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720100107) do
+ActiveRecord::Schema.define(version: 20150720105714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -289,14 +289,14 @@ ActiveRecord::Schema.define(version: 20150720100107) do
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "type"
-    t.integer  "community_id"
     t.integer  "taggings_count"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "network_id"
   end
 
-  add_index "tags", ["community_id"], name: "index_tags_on_community_id", using: :btree
   add_index "tags", ["id", "type"], name: "index_tags_on_id_and_type", using: :btree
+  add_index "tags", ["network_id"], name: "index_tags_on_network_id", using: :btree
 
   add_foreign_key "comments", "discussions"
   add_foreign_key "follows", "members"
@@ -307,5 +307,4 @@ ActiveRecord::Schema.define(version: 20150720100107) do
   add_foreign_key "rsvps", "events"
   add_foreign_key "rsvps", "members"
   add_foreign_key "taggings", "tags"
-  add_foreign_key "tags", "communities"
 end
