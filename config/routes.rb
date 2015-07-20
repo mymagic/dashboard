@@ -34,10 +34,6 @@ Rails.application.routes.draw do
         get 'search', on: :collection
       end
 
-      resources :messages, only: :index do
-        get 'search', on: :collection
-      end
-
       resources :members, only: [:index, :show] do
         member do
           patch :follow

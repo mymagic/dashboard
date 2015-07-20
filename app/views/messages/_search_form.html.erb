@@ -1,4 +1,4 @@
-<%= simple_form_for(:search, url: search_community_messages_path, method: :get, html: { class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(:search, url: search_community_network_messages_path, method: :get, html: { class: 'form-horizontal' }) do |f| %>
   <div class="pull-right search-message-group">
     <div class="input-group">
       <%= f.input :term, as: :string, placeholder: 'Search', label: false, input_html: { value: params[:term], name: 'term' }, wrapper: false %>

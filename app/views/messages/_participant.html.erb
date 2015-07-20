@@ -1,5 +1,5 @@
 <div class="chat-participant <%= 'active' if participant == receiver %>">
-  <%= link_to community_member_messages_path(current_community, participant), class: 'chat-participant__link' do %>
+  <%= link_to [current_community, current_network, participant, Message], class: 'chat-participant__link' do %>
     <div class="media">
       <div class="media-left">
         <%= image_tag participant.avatar.small_thumb.url, class: 'media-object' %>
