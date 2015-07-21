@@ -1,7 +1,7 @@
 class MembersController < ApplicationController
   before_action :authenticate_member!
   load_resource :company
-  load_resource through: :current_community
+  load_resource through: :current_network
   skip_authorize_resource only: [:show, :new, :create]
 
   include FilterConcern

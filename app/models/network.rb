@@ -6,7 +6,8 @@ class Network < ActiveRecord::Base
 
   validates :name, :slug, presence: true, uniqueness: true
 
-  has_many :members, through: :networks
+  has_many :memberships, dependent: :destroy
+  has_many :members, through: :memberships
   has_many :activities
   has_many :discussions, dependent: :destroy
   has_many :tags, dependent: :destroy
