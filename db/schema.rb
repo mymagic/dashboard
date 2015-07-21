@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720105714) do
+ActiveRecord::Schema.define(version: 20150721081231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,14 @@ ActiveRecord::Schema.define(version: 20150720105714) do
     t.string   "logo"
     t.integer  "community_id"
   end
+
+  create_table "companies_networks", force: :cascade do |t|
+    t.integer "network_id"
+    t.integer "company_id"
+  end
+
+  add_index "companies_networks", ["company_id"], name: "index_companies_networks_on_company_id", using: :btree
+  add_index "companies_networks", ["network_id"], name: "index_companies_networks_on_network_id", using: :btree
 
   create_table "discussions", force: :cascade do |t|
     t.string   "title"

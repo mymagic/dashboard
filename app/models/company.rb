@@ -24,6 +24,7 @@ class Company < ActiveRecord::Base
 
   # Associations
   belongs_to :community
+  has_and_belongs_to_many :networks
 
   scope :ordered, -> { order(name: :desc) }
 
