@@ -6,6 +6,8 @@ class Activity < ActiveRecord::Base
 
   validates :network, :owner, :resource, presence: true
 
+  before_validation :set_network
+
   FILTERS = %i(public personal).freeze
 
   scope :ordered, -> { order(updated_at: :desc) }
@@ -21,5 +23,7 @@ class Activity < ActiveRecord::Base
 
   protected
 
-  # TODO Set default network for an activity
+  def set_network
+    self.network = resource.network
+  end
 end

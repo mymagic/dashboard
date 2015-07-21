@@ -9,7 +9,7 @@ class NetworksController < ApplicationController
   def show
     @activities = @activities.includes(:owner).ordered.limit(20)
     @events = community.events.upcoming.ordered
-    @availabilities = community.
+    @availabilities = current_network.
                       availabilities.
                       joins(:member).
                       by_daterange(Date.today, 1.week.from_now.to_date).
