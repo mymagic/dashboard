@@ -15,7 +15,7 @@ class CalendarsController < ApplicationController
     start_date = Date.parse(params[:start])
     end_date = Date.parse(params[:end])
 
-    @availabilities = @member.present? ? @member.availabilities : current_community.availabilities
+    @availabilities = @member.present? ? @member.availabilities : current_network.availabilities
     @availabilities = @availabilities.group_by_date_with_members(start_date, end_date)
   end
 

@@ -93,7 +93,8 @@ class AvailabilitiesController < ApplicationController
     @availability.update(
       start_time: parse_time('start_time'),
       end_time: parse_time('end_time'),
-      date: "#{availability_params['date(1i)']}-#{availability_params['date(2i)']}-#{availability_params['date(3i)']}"
+      date: "#{availability_params['date(1i)']}-#{availability_params['date(2i)']}-#{availability_params['date(3i)']}",
+      network: current_network
     )
   end
 end

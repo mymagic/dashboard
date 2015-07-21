@@ -15,7 +15,7 @@ class Availability < ActiveRecord::Base
 
   # Associations
   belongs_to :member, counter_cache: true
-  belongs_to :community
+  belongs_to :network
   has_many :slots
   has_many :availability_creating_activities,
            class_name: 'Activity::AvailabilityCreating',
@@ -36,7 +36,6 @@ class Availability < ActiveRecord::Base
   # Callbacks
   before_validation :set_duration, if: -> { start_time && end_time }
   before_validation :set_wday, if: :date
-  before_save :set_community
   after_create :create_activity
 
   # Scopes
@@ -99,10 +98,6 @@ class Availability < ActiveRecord::Base
 
   def set_wday
     self.wday = date.wday
-  end
-
-  def set_community
-    self.community = member.community
   end
 
   def start_time_must_be_less_than_end_time

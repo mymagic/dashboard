@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721081231) do
+ActiveRecord::Schema.define(version: 20150721082759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,11 +49,11 @@ ActiveRecord::Schema.define(version: 20150721081231) do
     t.text     "details"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "community_id"
+    t.integer  "network_id"
   end
 
-  add_index "availabilities", ["community_id"], name: "index_availabilities_on_community_id", using: :btree
   add_index "availabilities", ["member_id"], name: "index_availabilities_on_member_id", using: :btree
+  add_index "availabilities", ["network_id"], name: "index_availabilities_on_network_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "author_id"
