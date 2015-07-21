@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to root_path, class: 'navbar-brand' do %>
+      <%= link_to [current_community, current_network], class: 'navbar-brand' do %>
         <% if current_community.present? %>
           <span class='community-brand'><%= current_community.name %></span>
         <% else %>
