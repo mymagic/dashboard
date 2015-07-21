@@ -78,12 +78,12 @@ class Ability
     can :manage, Availability, member_id: member.id
 
     can :create, Comment do |comment|
-      comment.discussion.community_id == member.community_id
+      comment.discussion.network.community_id == member.community_id
     end
-
-    can([:create, :read, :follow, :unfollow, :tags],
-        Discussion,
-        community_id: member.community_id)
+    # TODO authorize admin in community to manage discussion
+    can [:create, :read, :follow, :unfollow, :tags], Discussion # do |discussion|
+    #   discussion.network.community_id == member.community_id
+    # end
 
     case member.role
     when 'administrator'
@@ -95,9 +95,10 @@ class Ability
       end
       can :manage, [:calendar, Position, Event, Company, SocialMediaLink]
       can :manage, Community, id: member.community_id
-      can :manage, Discussion, community_id: member.community_id
+      # TODO authorize admin in community to manage discussion
+      can :manage, Discussion#, community_id: member.community_id
       can :manage, Comment do |comment|
-        comment.discussion.community_id == member.community_id
+        comment.discussion.network.community_id == member.community_id
       end
 
       can([:manage_company, :invite_company_member, :manage_members_positions],

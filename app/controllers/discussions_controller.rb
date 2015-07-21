@@ -1,6 +1,6 @@
 class DiscussionsController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource through: :current_community
+  load_and_authorize_resource through: :current_network
 
   include TagsConcern
   include FilterConcern
@@ -24,7 +24,7 @@ class DiscussionsController < ApplicationController
   def create
     @discussion.author = current_member
     if @discussion.save
-      redirect_to([@discussion.community, current_network, @discussion],
+      redirect_to([@discussion.network.community, @discussion.network, @discussion],
                   notice: 'Discussion was successfully created.')
     else
       render 'new', alert: 'Error creating discussion.'
@@ -53,6 +53,12 @@ class DiscussionsController < ApplicationController
   end
 
   private
+
+  def discussions
+    @discussions = current_network.
+                   discussions.
+                   includes(:author, :comments, :followers, :tags)
+  end
 
   def member_discussions
     @member = Member.find(params[:member_id])

@@ -2,5 +2,5 @@
 <%= @author.full_name %> has commented on the discussion you are following:
 </p>
 <p>
-  <%= link_to(@discussion.title, community_discussion_url(@discussion.community, @discussion)) %>
+  <%= link_to(@discussion.title, [@discussion.network.community, @discussion.network, @discussion]) %>
 </p>

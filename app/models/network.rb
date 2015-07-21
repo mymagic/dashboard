@@ -8,6 +8,9 @@ class Network < ActiveRecord::Base
 
   has_many :members, through: :networks
   has_many :activities
+  has_many :discussions, dependent: :destroy
+  has_many :tags, dependent: :destroy
+  has_many :discussion_tags
 
   scope :ordered, -> { order(name: :desc) }
 
