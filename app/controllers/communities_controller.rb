@@ -28,5 +28,4 @@ class CommunitiesController < ApplicationController
   def default_filter
     :public
   end
-
 end

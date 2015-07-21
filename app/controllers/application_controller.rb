@@ -69,8 +69,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_network
-    # TODO replace with real network based on path
-    current_community.networks.first
+    @current_network ||= Network.friendly.find(params[:network_id])
   end
 
   def current_community
