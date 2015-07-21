@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_network
-    @current_network ||= Network.friendly.find(params[:network_id])
+    @current_network ||= params[:network_id] ? Network.friendly.find(params[:network_id]) : nil
   end
 
   def current_community
