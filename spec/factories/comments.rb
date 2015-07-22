@@ -4,7 +4,8 @@ FactoryGirl.define do
     author
     discussion do
       create(:discussion,
-             author: create(:member, :confirmed, community: author.community))
+             author: create(:member, :confirmed, community: author.community),
+             network: author.community.networks.first )
     end
   end
 end

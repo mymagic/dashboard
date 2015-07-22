@@ -3,9 +3,11 @@ require 'rails_helper'
 RSpec.describe CommentsController, type: :controller do
   authorized_members = %i(administrator mentor staff regular_member)
   let(:community) { create(:community) }
+  let(:network) { community.networks.first }
   let(:discussion) do
     create(:discussion,
-           author: create(:author, :confirmed, community: community))
+           author: create(:author, :confirmed, community: community),
+           network: network)
   end
 
   describe 'POST #create' do
@@ -16,6 +18,7 @@ RSpec.describe CommentsController, type: :controller do
       post(
         :create,
         community_id: community,
+        network_id: network,
         discussion_id: discussion,
         comment: (comment_required_attributes).merge(attributes)
       )
@@ -33,6 +36,7 @@ RSpec.describe CommentsController, type: :controller do
       let(:response) do
         delete(:destroy,
                community_id: community,
+               network_id: network,
                discussion_id: comment.discussion,
                id: comment)
       end
