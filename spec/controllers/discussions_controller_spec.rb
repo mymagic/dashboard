@@ -3,36 +3,44 @@ require 'rails_helper'
 RSpec.describe DiscussionsController, type: :controller do
   authorized_members = %i(administrator mentor staff regular_member)
   let(:community) { create(:community) }
+  let(:network) { community.networks.first }
 
   describe "GET #index" do
     it_behaves_like 'accessible by', *authorized_members do
-      let(:response) { get(:index, community_id: community) }
+      let(:response) { get(:index, community_id: community, network_id: network) }
     end
 
     describe 'retrieving discussions' do
       let!(:member) { create(:member, :confirmed, community: community) }
       let!(:discussion_one) do
-        create(:discussion, author: create(:member, community: community))
+        create(:discussion,
+               author: create(:member, community: community),
+               network: network)
       end
       let!(:discussion_two) do
-        create(:discussion, author: create(:member, community: community))
+        create(:discussion,
+               author: create(:member, community: community),
+               network: network)
       end
       let!(:discussion_other_community) do
-        create(:discussion, author: create(:member))
+        other_network = create(:network)
+        create(:discussion, author: create(:member), network: other_network)
       end
       let!(:discussion_tag) do
         discussion_one.add_tag('tagging')
       end
       before { login(member) }
       context 'without tags' do
-        before { get :index, community_id: community }
+        before { get :index, community_id: community, network_id: network }
         it 'retrieves the correct discussions' do
           expect(assigns(:discussions)).
             to contain_exactly(discussion_one, discussion_two)
         end
       end
       context 'with tags' do
-        before { get :index, community_id: community, tag_id: discussion_tag }
+        before do
+          get :index, community_id: community, network_id: network, tag_id: discussion_tag
+        end
         it 'retrieves the correct discussions' do
           expect(assigns(:discussions)).
             to contain_exactly(discussion_one)
@@ -49,6 +57,7 @@ RSpec.describe DiscussionsController, type: :controller do
       post(
         :create,
         community_id: community,
+        network_id: network,
         discussion: (discussion_required_attributes).merge(attributes)
       )
     end
@@ -59,11 +68,13 @@ RSpec.describe DiscussionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     let!(:discussion) do
-      create(:discussion, author: create(:member, community: community))
+      create(:discussion,
+             author: create(:member, community: community),
+             network: network)
     end
     it_behaves_like "accessible by", :administrator do
       let(:response) do
-        delete(:destroy, community_id: community, id: discussion)
+        delete(:destroy, community_id: community, network_id: network, id: discussion)
       end
     end
   end
