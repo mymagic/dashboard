@@ -24,6 +24,6 @@ class Activity < ActiveRecord::Base
   protected
 
   def set_network
-    self.network = resource.try(:network)
+    self.network ||= resource.try(:network)
   end
 end
