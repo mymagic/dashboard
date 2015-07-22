@@ -4,7 +4,8 @@
     <%= panel 'General Info', columns: 5 do %>
       <%= f.input :title, autofocus: true %>
       <%= f.input :description, input_html: { rows: 7 } %>
-      <%= f.input :external, collection: [[true, 'External Event'], [false, 'Internal Community Event']], label_method: :last, value_method: :first, as: :radio_buttons, item_wrapper_class: 'inline', label: 'Type' %>
+      <%= f.input :external, collection: [[true, 'External Event'], [false, 'Internal Network Event']], label_method: :last, value_method: :first, as: :radio_buttons, item_wrapper_class: 'inline', label: 'Type' %>
+      <%= f.association :network, include_blank: false %>
     <% end %>
 
     <%= panel 'Location and Time', columns: 7 do %>

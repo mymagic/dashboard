@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721082759) do
+ActiveRecord::Schema.define(version: 20150721105609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,17 +117,17 @@ ActiveRecord::Schema.define(version: 20150721082759) do
     t.string   "time_zone",                                                        null: false
     t.text     "description"
     t.integer  "creator_id",                                                       null: false
-    t.integer  "community_id"
     t.datetime "created_at",                                                       null: false
     t.datetime "updated_at",                                                       null: false
     t.boolean  "external",                                    default: false,      null: false
     t.decimal  "location_latitude",  precision: 10, scale: 6, default: 2.909047,   null: false
     t.decimal  "location_longitude", precision: 10, scale: 6, default: 101.654669, null: false
     t.integer  "location_zoom",                               default: 15,         null: false
+    t.integer  "network_id"
   end
 
-  add_index "events", ["community_id"], name: "index_events_on_community_id", using: :btree
   add_index "events", ["creator_id"], name: "index_events_on_creator_id", using: :btree
+  add_index "events", ["network_id"], name: "index_events_on_network_id", using: :btree
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id"

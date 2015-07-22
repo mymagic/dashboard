@@ -21,6 +21,6 @@ class CalendarsController < ApplicationController
 
   def find_events
     return unless request.xhr? && @member.nil?
-    @events = current_community.events
+    @events = current_network.events
   end
 end

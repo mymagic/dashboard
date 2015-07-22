@@ -8,7 +8,7 @@ class NetworksController < ApplicationController
 
   def show
     @activities = @activities.includes(:owner).ordered.limit(20)
-    @events = community.events.upcoming.ordered
+    @events = current_network.events.upcoming.ordered
     @availabilities = current_network.
                       availabilities.
                       joins(:member).

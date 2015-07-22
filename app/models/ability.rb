@@ -51,7 +51,7 @@ class Ability
     cannot :invite_employee, Company
     cannot :manage_company, Company
     cannot :invite_company_member, Company
-
+    
     can :read, [Activity, Community]
     can :read, [:calendar, Company, Member, Availability, Slot, Event]
 

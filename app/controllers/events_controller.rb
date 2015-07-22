@@ -10,11 +10,11 @@ class EventsController < ApplicationController
     @rsvp = @event.rsvps.find_or_initialize_by(member: current_member)
     if @rsvp.update_attributes(rsvp_params)
       redirect_to(
-        community_event_path(current_community, @event),
+        [@event.network.community, @event.network, @event],
         notice: "You RSVP'd to the event as #{ @rsvp }.")
     else
       redirect_to(
-        community_event_path(current_community, @event),
+        [@event.network.community, @event.network, @event],
         alert: 'Error creating your RSVP.')
     end
   end

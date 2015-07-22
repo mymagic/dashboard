@@ -12,7 +12,7 @@ class Event < ActiveRecord::Base
 
   # Associations
   belongs_to :creator, class_name: 'Member'
-  belongs_to :community
+  belongs_to :network
 
   has_many :rsvps
   has_many :members, through: :rsvps do
@@ -34,7 +34,6 @@ class Event < ActiveRecord::Base
            dependent: :destroy
 
   # Validations
-  before_validation :set_community, if: -> { creator.present? }
   validates :location_detail,
             :starts_at,
             :ends_at,
@@ -73,10 +72,6 @@ class Event < ActiveRecord::Base
 
   def create_activity
     Activity::EventCreating.create(owner: creator, event: self)
-  end
-
-  def set_community
-    self.community = creator.community
   end
 
   def ends_at_cannot_precede_starts_at

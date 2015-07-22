@@ -54,6 +54,7 @@ module Admin
         :description,
         :time_zone,
         :external,
+        :network_id,
         :"starts_at(1i)",
         :"starts_at(2i)",
         :"starts_at(3i)",
