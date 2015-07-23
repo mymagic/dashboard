@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :event do
     title { generate(:title) }
-    network
+    network { create(:community).networks.first }
     creator { create(:administrator, :confirmed, community: network.community) }
     location_detail 'Block 3730 APEC, 63000 Cyberjaya, Malaysia'
     location_type 'address'
