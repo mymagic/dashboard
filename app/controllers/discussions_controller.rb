@@ -7,6 +7,7 @@ class DiscussionsController < ApplicationController
 
   def index
     return member_discussions if params[:member_id]
+    @discussions = current_network.discussions
     @discussions = @discussions.tagged_with(tag) if tag
     @discussions = @discussions.
                    includes(:author, :comments, :followers, :tags).
