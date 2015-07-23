@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Rsvp, type: :model do
+  let(:network) { create(:community).networks.first }
   context 'validations' do
     subject { build(:rsvp) }
     it { is_expected.to validate_presence_of(:member) }
@@ -9,11 +10,11 @@ RSpec.describe Rsvp, type: :model do
     it { is_expected.to validate_inclusion_of(:state).in_array(Rsvp::STATES) }
 
     context 'with an event in the past' do
-      let(:event) { create(:event, :in_the_past) }
+      let(:event) { create(:event, :in_the_past, network: network) }
       subject do
         build(:rsvp,
               event: event,
-              member: create(:member, community: event.community))
+              member: create(:member, community: event.network.community))
       end
       it 'adds an error that the event cannot be in the past' do
         is_expected.to be_invalid
