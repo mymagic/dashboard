@@ -2,11 +2,12 @@ require 'rails_helper'
 
 RSpec.describe 'Availabilities', type: :feature, js: false do
   let(:community) { create(:community) }
+  let(:network) { community.networks.first }
   let(:mentor) { create(:member, :confirmed, community: community) }
   let(:participant) { create(:member, :confirmed, community: community) }
   let!(:availability) do
     create(:availability,
-           community: community,
+           network: network,
            member: mentor,
            slot_duration: 30)
   end
@@ -50,8 +51,9 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
 
     it 'allow to edit an availability' do
       visit(
-        community_member_availability_slots_path(
+        community_network_member_availability_slots_path(
           community,
+          network,
           member,
           year: availability.date.year,
           month: availability.date.month,
@@ -69,7 +71,7 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
 
     it 'allows me to destroy my availability' do
       visit(
-        edit_community_member_availability_path(community, member, availability)
+        edit_community_network_member_availability_path(community, network, member, availability)
       )
 
       click_on 'Delete'
@@ -79,8 +81,9 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
 
     it 'generated slots by slot duration' do
       visit(
-        community_member_availability_slots_path(
+        community_network_member_availability_slots_path(
           community,
+          network,
           availability.member,
           year: availability.date.year,
           month: availability.date.month,
@@ -91,8 +94,9 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
 
     it 'does not allow to reserve own slots' do
       visit(
-        community_member_availability_slots_path(
+        community_network_member_availability_slots_path(
           community,
+          network,
           availability.member,
           year: availability.date.year,
           month: availability.date.month,
@@ -109,7 +113,7 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
     it_behaves_like 'creating an availability'
 
     it 'allows me to reserve a slot', js: true do
-      visit community_member_availabilities_path(community, availability.member)
+      visit community_network_member_availabilities_path(community, network, availability.member)
 
       find('.fc-title').click
       within('.availability-mentor') { click_on 'Reserve' }

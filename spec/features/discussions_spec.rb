@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Discussion', type: :feature, js: false do
   shared_examples "browsing the discussions page" do
     it "lists all discussions and a link to a new discussion" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       expect(page).to have_content 'Discussions'
       expect(page).to have_link 'Start a new Discussion'
       expect(page).to have_content 'To be or not to be?'
@@ -13,7 +13,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   shared_examples "removing a discussion" do
     it "removes the discussion" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       click_link 'To be or not to be?'
       click_link 'Remove this Discussion'
       expect(page).to have_content 'Discussion was successfully deleted.'
@@ -23,7 +23,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   shared_examples "removing a comment" do
     it "removes a comment" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       click_link 'To be or not to be?'
       click_link 'Remove this Comment'
       expect(page).to have_content 'Comment was successfully deleted.'
@@ -33,7 +33,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   shared_examples "adding a comment" do
     it "adds a new comment to a discussion" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       click_link 'To be or not to be?'
       within '#new_comment' do
         fill_in 'comment_body', with: 'Definitely to be.'
@@ -50,7 +50,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   shared_examples "following and unfollowing a discussion" do
     it "follows and unfollows a discussion" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       expect(page).
         to have_content '1 follower and 1 reply, '\
                         'latest from William Shakespeare.'
@@ -65,7 +65,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       end
       expect(page).to have_content 'You are now following the discussion.'
 
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       expect(page).to_not have_content '1 follower and 1 reply, '\
                       'latest from William Shakespeare.'
       expect(page).to have_content '2 followers and 1 reply, '\
@@ -75,7 +75,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   shared_examples "creating a new discussion" do
     it "creates a new discussion" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       click_link 'Start a new Discussion'
       fill_in 'Title',  with: 'What is beauty?'
       fill_in 'Body',  with: 'By means of beauty all beautiful '\
@@ -91,12 +91,12 @@ RSpec.describe 'Discussion', type: :feature, js: false do
       expect(page).to have_content 'By means of beauty all beautiful '\
                                    'things become beautiful.'
 
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       expect(page).to have_link 'wonderful_tag', count: 1
       expect(page).to have_link 'great_tag', count: 1
       expect(page).to have_content '1 follower'
 
-      visit community_member_path(community, member)
+      visit community_network_member_path(community, network, member)
 
       within '.navbar-member' do
         click_link 'Discussions'
@@ -107,7 +107,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   shared_examples "filtered by tags" do
     it "filters discussions by tags" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       click_link 'To be or not to be?'
       click_link 'Best Tag'
       expect(page).to have_content 'Discussions tagged with Best Tag'
@@ -117,7 +117,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   shared_examples "unsanswered filter" do
     it "filters unanswered discussions" do
-      visit community_discussions_path(community)
+      visit community_network_discussions_path(community, network)
       expect(page).to have_content 'No Answer For Me'
       expect(page).to have_content 'To be or not to be?'
       click_link 'Unanswered'
@@ -129,6 +129,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
 
   feature "Company Member Invitation" do
     given!(:community) { create(:community) }
+    given!(:network) { community.networks.first }
     given(:administrator) do
       create(:administrator, :confirmed, community: community)
     end
@@ -136,7 +137,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     given(:mentor) { create(:mentor, :confirmed, community: community) }
     given(:regular_member) { create(:member, :confirmed, community: community) }
     given!(:unanswered_discussion) do
-      create(:discussion, author: member, title: 'No Answer For Me')
+      create(:discussion, author: member, title: 'No Answer For Me', network: network)
     end
     given!(:discussion) do
       create(
@@ -149,7 +150,8 @@ RSpec.describe 'Discussion', type: :feature, js: false do
           last_name: 'Shakespeare',
           community: community),
         title: 'To be or not to be?',
-        body: 'That is the question'
+        body: 'That is the question',
+        network: network
       )
     end
     given!(:comment) do
