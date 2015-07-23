@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Companies', type: :feature, js: false do
   feature "Browsing the companies pages" do
     given!(:community) { create(:community) }
+    given!(:network) { community.networks.first }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
     end
@@ -11,12 +12,12 @@ RSpec.describe 'Companies', type: :feature, js: false do
     before { as_user administrator }
 
     scenario 'viewing companies' do
-      visit community_companies_path(community)
+      visit community_network_companies_path(community, network)
       expect(page).to have_content(company.name)
     end
 
     scenario 'viewing the company' do
-      visit community_companies_path(community)
+      visit community_network_companies_path(community, network)
       click_on company.name
       expect(page).to have_content(company.name)
       expect(page).to have_content(company.website)
@@ -25,6 +26,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
   feature "Manage Company" do
     given(:community) { create(:community) }
+    given(:network) { community.networks.first }
 
     given(:staff) { create(:staff, :confirmed, community: community) }
     given(:manager) { create(:member, :confirmed, community: community) }
@@ -47,7 +49,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
     shared_examples "editing a company" do
       scenario 'editing a company' do
-        visit community_company_path(company.community, company)
+        visit community_network_company_path(community, network, company)
         click_link "Edit company info"
 
         expect(page.find_field('Name').value).to eq 'ACME'
@@ -68,7 +70,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
         expect(page).to have_content("Company was successfully updated.")
 
-        visit community_company_path(company.community, company)
+        visit community_network_company_path(community, network, company)
         expect(page).to have_content("New Company Name")
         expect(page).to have_content("This is a company description")
         expect(page).to have_link("example.com", href: 'http://example.com')
@@ -86,7 +88,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
           create(:company, name: "piedpiper", community: community)
         end
         scenario 'viewing and filtering companies' do
-          visit community_companies_path(company.community)
+          visit community_network_companies_path(community, network)
           within '.company-group' do
             expect(page).to have_content("piedpiper")
             expect(page).to have_content("ACME")
@@ -102,7 +104,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
       end
 
       scenario 'viewing company page' do
-        visit community_company_path(company.community, company)
+        visit community_network_company_path(community, network, company)
         expect(page).to have_content("Manage Company")
       end
 
@@ -115,7 +117,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
       end
 
       scenario 'viewing company page' do
-        visit community_company_path(company.community, company)
+        visit community_network_company_path(network.community, network, company)
         expect(page).to have_content("Manage Company")
       end
 

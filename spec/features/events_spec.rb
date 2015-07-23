@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Events', type: :feature, js: false do
   feature "Administration" do
     given!(:community) { create(:community) }
+    given!(:network) { community.networks.first }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
     end
@@ -19,11 +20,12 @@ RSpec.describe 'Events', type: :feature, js: false do
             title: 'Great Event',
             description: 'Come visit!',
             location_type: 'skype',
-            location_detail: 'great.event'
+            location_detail: 'great.event',
+            network: network
           )
         end
         it 'shows the event data' do
-          visit community_event_path(community, event)
+          visit community_network_event_path(community, network, event)
 
           within '.page-header > h1' do
             expect(page).to have_content('Great Event')
@@ -33,7 +35,7 @@ RSpec.describe 'Events', type: :feature, js: false do
           expect(page).to have_content('Skype')
           expect(page).to have_content('great.event')
 
-          visit community_path(community)
+          visit community_network_path(community, network)
           within '.community-sidebar' do
             expect(page).to have_content('Upcoming Events')
             expect(page).to have_content('Great Event')
@@ -51,11 +53,12 @@ RSpec.describe 'Events', type: :feature, js: false do
             title: 'Great Event',
             description: 'Come visit!',
             location_type: 'skype',
-            location_detail: 'great.event'
+            location_detail: 'great.event',
+            network: network
           )
         end
         it 'lets me rsvp' do
-          visit community_event_path(community, event)
+          visit community_network_event_path(community, network, event)
           within '.page-header' do
             click_link 'Join'
           end

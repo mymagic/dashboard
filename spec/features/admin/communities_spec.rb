@@ -22,9 +22,6 @@ RSpec.describe 'Admin/Communities', type: :feature, js: false do
 
         expect(page).to have_content('Settings were successfully updated.')
 
-        within '.navbar-standard .navbar-brand' do
-          expect(page).to have_content 'GreatCommunity'
-        end
       end
     end
 
