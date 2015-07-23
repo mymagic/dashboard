@@ -16,6 +16,14 @@
         <%= nav_link "Companies", community_admin_companies_path(current_community) if can? :administrate, Company  %>
         <%= nav_link "Members", community_admin_members_path(current_community) if can? :administrate, Member %>
         <%= nav_link "Events", community_admin_events_path(current_community) if can? :administrate, Event %>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Go to a network<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <% current_community.networks.each do |network| %>
+              <li><%= link_to network.name, [network.community, network] %></li>
+            <% end %>
+          </ul>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <%= nav_link "Invite new Member", new_community_admin_member_path(current_community) if can? :create, Member %>

@@ -29,7 +29,6 @@
       }
     }
     &.dropdown {
-      border: 0;
       img {
         vertical-align: top;
       }
@@ -57,6 +56,9 @@
           background-color: $nav-background-color;
           color: $nav-link-color;
         }
+      }
+      &.member {
+        border: 0;
       }
       &.open {
         a.dropdown-toggle {
@@ -92,6 +94,7 @@
 }
 
 .navbar-admin {
+  z-index: 2000;
   .navbar-brand {
     border: none;
   }
