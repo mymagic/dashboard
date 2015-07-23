@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Messages', type: :feature, js: false do
   shared_examples "sending a new message" do
     it 'allows to send a new message' do
-      visit community_member_messages_path(community, bob)
+      visit community_network_member_messages_path(community, network, bob)
 
       fill_in 'message_body', with: 'Lorem ipsum'
       click_button 'Send'
@@ -21,6 +21,7 @@ RSpec.describe 'Messages', type: :feature, js: false do
   end
 
   let(:community) { create(:community) }
+  let(:network) { community.networks.first }
   let(:alice) { create(:member, :confirmed, community: community) }
   let(:bob) { create(:member, :confirmed, community: community) }
 
@@ -31,28 +32,31 @@ RSpec.describe 'Messages', type: :feature, js: false do
         :message,
         sender: alice,
         receiver: bob,
-        body: 'Send Message')
+        body: 'Send Message',
+        network: network)
     end
     let!(:received_message) do
       create(
         :message,
         sender: bob,
         receiver: alice,
-        body: 'Received Message')
+        body: 'Received Message',
+        network: network)
     end
     let!(:last_message) do
       create(
         :message,
         sender: alice,
         receiver: bob,
-        body: 'Last Message')
+        body: 'Last Message',
+        network: network)
     end
-    let!(:other_message) { create(:message) }
+    let!(:other_message) { create(:message, network: network) }
 
     it_behaves_like 'sending a new message'
 
     it 'show all participant messages' do
-      visit community_member_messages_path(community, bob)
+      visit community_network_member_messages_path(community, network, bob)
 
       within '.messages-panel__conversations .message-box:nth-child(1)' do
         expect(page).to have_content send_message.body
@@ -71,20 +75,20 @@ RSpec.describe 'Messages', type: :feature, js: false do
               "//h4[contains(text(), '#{ bob.full_name }')]/"\
               "span[contains(@class, 'badge')]"
 
-      visit community_member_messages_path(community, bob)
+      visit community_network_member_messages_path(community, network, bob)
 
       within(:xpath, xpath) do
         expect(page).to have_content '1'
       end
 
-      visit community_member_messages_path(community, bob)
+      visit community_network_member_messages_path(community, network, bob)
 
       expect(page).to_not have_selector('.badge')
     end
 
     it 'allows to search related messages', elasticsearch: Message do
       elasticsearch.wait!
-      visit community_member_messages_path(community, bob)
+      visit community_network_member_messages_path(community, network, bob)
 
       fill_in 'Search', with: 'Message'
       click_button 'search-message-btn'
@@ -104,7 +108,7 @@ RSpec.describe 'Messages', type: :feature, js: false do
     it_behaves_like 'sending a new message'
 
     it 'shows a note that there are no conversations yet' do
-      visit community_messages_path(community)
+      visit community_network_messages_path(community, network)
 
       expect(page).
         to have_content "You've not participated in any conversations yet"

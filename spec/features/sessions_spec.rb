@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Session', type: :feature, js: false do
   feature "Log in and Log out" do
     given(:community) { create(:community) }
+    given(:network) { community.networks.first }
     given(:administrator) { create(:administrator, :confirmed, community: community) }
     given(:staff) { create(:staff, :confirmed, community: community) }
     given(:member) { create(:member, :confirmed, community: community) }
