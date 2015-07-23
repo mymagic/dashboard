@@ -139,16 +139,17 @@ RSpec.describe Member, type: :model do
 
   context 'Messages' do
     let(:community) { create(:community) }
+    let(:network) { community.networks.first }
     let(:member1) { create(:member, community: community) }
     let(:member2) { create(:member, community: community) }
     let(:participant) { create(:member, community: community) }
     let!(:send_message) do
-      create(:message, sender: member1, receiver: participant)
+      create(:message, sender: member1, receiver: participant, network: network)
     end
     let!(:received_message) do
-      create(:message, sender: participant, receiver: member1)
+      create(:message, sender: participant, receiver: member1, network: network)
     end
-    let!(:other_message) { create(:message) }
+    let!(:other_message) { create(:message, network: community.networks.last) }
 
     describe '#messages_with' do
       subject { member1.messages_with(participant) }

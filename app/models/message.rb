@@ -1,6 +1,7 @@
 class Message < ActiveRecord::Base
   # Behaviors
   include Searchable
+  attr_accessor :network
 
   # Associations
   belongs_to :sender, class_name: 'Member'
@@ -69,6 +70,7 @@ class Message < ActiveRecord::Base
     Notifier.deliver(
       :message_notification,
       receiver,
-      message: self)
+      message: self,
+      network: network)
   end
 end
