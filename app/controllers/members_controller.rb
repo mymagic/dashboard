@@ -55,7 +55,7 @@ class MembersController < ApplicationController
       redirect_to(
         :back, warning: "You are already following #{ @member.full_name }.")
     else
-      @member.followers << current_member
+      Follow.create(member: current_member, followable: @member, network: current_network)
       redirect_to :back, notice: "You are now following #{ @member.full_name }."
     end
   end

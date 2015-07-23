@@ -12,9 +12,10 @@ class NotificationMailer < ApplicationMailer
     event_rsvp_notification
   )
 
-  def follower_notification(receiver, follower:)
+  def follower_notification(receiver, follower:, network:)
     @receiver = receiver
     @follower = follower
+    @network  = network
     mail(
       to: receiver.email,
       subject: "#{ follower.full_name } has started following you"
