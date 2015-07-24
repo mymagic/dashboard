@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  before_filter :force_ssl_connection, :unless => 'request.ssl?'
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :current_community
   before_action :authorize_through_magic_connect!
@@ -139,5 +140,12 @@ class ApplicationController < ActionController::Base
 
   def community_not_found
     redirect_to root_url, alert: 'Community does not exist.'
+  end
+
+  def force_ssl_connection
+    return if ENV['FORCE_SSL'] == 'false'
+    if ENV['FORCE_SSL'] == 'true' || Rails.env.production? || Rails.env.staging?
+      redirect_to :protocol => 'https', :params => request.GET
+    end
   end
 end
