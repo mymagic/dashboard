@@ -15,7 +15,7 @@ class EventsController < ApplicationController
     else
       redirect_to(
         community_event_path(current_community, @event),
-        alert: 'Error creating your RSVP.')
+        alert: "Error creating your RSVP : #{@rsvp.errors.first.second}")
     end
   end
 

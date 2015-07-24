@@ -6,11 +6,17 @@
     <div class="col-lg-7 dashboard__intro">
       <h1>MaGIC Community Dashboard</h1>
       <p>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+        Great things will come out of a collective space and this is THE space.
+      </p>
+      <p>
+        MaGIC Dashboard is a platform only accessible via invitation to the participants from the MaGIC Accelerator Program (MAP), Global Regional Program and MaGIC Co-Working Space. TIA/ Echelon / knowledge management system
+      </p>
+      <p>  
+        It is a tool to encourage knowledge sharing, crowdsourcing and connector amongst the communities from each respective cohort and ultimately this space will a dynamic community aggregator.  
       </p>
     </div>
     <div class="col-lg-4 col-lg-offset-1 dashboard__magic_connect_login">
-      <h4>MaGIC Connect</h4>
+      <h4>Enter Community</h4>
       <% @communities.each do |community| %>
         <p>
           <%= link_to(community.name, magic_connect_path(community_url(community))) %>
@@ -28,32 +34,32 @@
     </div>
     <div class="col-lg-3">
       <div class="row">
-        <%= render partial: 'key_feature', locals: { name: 'Office Hours', icon: 'dashboard/office_hours.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>
-        <%= render partial: 'key_feature', locals: { name: 'Events', icon: 'dashboard/events.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>
+        <%= render partial: 'key_feature', locals: { name: 'Office Hours', icon: 'dashboard/office_hours.png', description: 'With just a click of a button, book office hours with mentors or subject experts.' }%>
+        <%= render partial: 'key_feature', locals: { name: 'Events', icon: 'dashboard/events.png', description: 'See what’s going on within the community and other exciting happenings' }%>
       </div>
     </div>
     <div class="col-lg-3">
       <div class="row">
-        <%= render partial: 'key_feature', locals: { name: 'Discussion', icon: 'dashboard/dicussions.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>
-        <%= render partial: 'key_feature', locals: { name: 'Perks', icon: 'dashboard/perks.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>
+        <%= render partial: 'key_feature', locals: { name: 'Discussion Board', icon: 'dashboard/dicussions.png', description: 'A safe space to discuss anything startup related in a format that makes it easy to follow conversations and refer to previous discussions.
+' }%>
+        <!--<%#= render partial: 'key_feature', locals: { name: 'Perks', icon: 'dashboard/perks.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>-->
       </div>
     </div>
   </div>
-  <hr>
-  <div class="row dashboard__section">
-    <div class="col-lg-12">
-      <h3>Community Network</h3>
-    </div>
-    <div class="row">
-      <div class="col-lg-4">
-        <%= render partial: 'key_feature', locals: { name: 'MAP Asean', icon: 'dashboard/dicussions.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>
-      </div>
-      <div class="col-lg-4">
-        <%= render partial: 'key_feature', locals: { name: 'MAP S.E', icon: 'dashboard/office_hours.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>
-      </div>
-      <div class="col-lg-4">
-        <%= render partial: 'key_feature', locals: { name: 'CWS & GRP', icon: 'dashboard/events.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>
-      </div>
-    </div>
-  </div>
+  <!--<div class="row dashboard__section">-->
+  <!--  <div class="col-lg-12">-->
+  <!--    <h3>Community Network</h3>-->
+  <!--  </div>-->
+  <!--  <div class="row">-->
+  <!--    <div class="col-lg-4">-->
+  <!--      <%#= render partial: 'key_feature', locals: { name: 'MAP Asean', icon: 'dashboard/dicussions.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>-->
+  <!--    </div>-->
+  <!--    <div class="col-lg-4">-->
+  <!--      <%#= render partial: 'key_feature', locals: { name: 'MAP S.E', icon: 'dashboard/office_hours.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>-->
+  <!--    </div>-->
+  <!--    <div class="col-lg-4">-->
+  <!--      <%#= render partial: 'key_feature', locals: { name: 'CWS & GRP', icon: 'dashboard/events.png', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.' }%>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--</div>-->
 </div>
