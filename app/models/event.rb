@@ -51,6 +51,7 @@ class Event < ActiveRecord::Base
   scope :past, -> { where('ends_at < ?', Time.zone.now) }
   scope :ordered, -> { order(starts_at: :asc) }
 
+  before_save :override_timezone
   after_create :create_activity
 
   def to_param
@@ -82,5 +83,13 @@ class Event < ActiveRecord::Base
   def ends_at_cannot_precede_starts_at
     return if ends_at > starts_at
     errors.add(:ends_at, :cannot_precede_starts_at)
+  end
+
+  def override_timezone
+    %w(starts_at ends_at).each do |attr|
+      datetime = ActiveSupport::TimeZone.new(time_zone)
+                                        .parse(attributes[attr].strftime('%F %T'))
+      self.send(:"#{attr}=", datetime)
+    end
   end
 end
