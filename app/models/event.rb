@@ -86,10 +86,14 @@ class Event < ActiveRecord::Base
   end
 
   def override_timezone
-    %w(starts_at ends_at).each do |attr|
-      datetime = ActiveSupport::TimeZone.new(time_zone)
-                                        .parse(attributes[attr].strftime('%F %T'))
-      self.send(:"#{attr}=", datetime)
+    # TODO These conditions is temporary added to pass rspec Shoulda-matcher's method
+    # `validate_presence_of` since it drops the attributes and breaks this callback
+    if time_zone && starts_at && ends_at
+      %w(starts_at ends_at).each do |attr|
+        datetime = ActiveSupport::TimeZone.new(time_zone)
+                                          .parse(attributes[attr].strftime('%F %T'))
+        self.send(:"#{attr}=", datetime)
+      end
     end
   end
 end
