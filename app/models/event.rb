@@ -51,7 +51,7 @@ class Event < ActiveRecord::Base
   scope :past, -> { where('ends_at < ?', Time.zone.now) }
   scope :ordered, -> { order(starts_at: :asc) }
 
-  before_save :override_timezone
+  before_validation :override_timezone
   after_create :create_activity
 
   def to_param
