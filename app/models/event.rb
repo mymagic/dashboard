@@ -51,6 +51,7 @@ class Event < ActiveRecord::Base
   scope :past, -> { where('ends_at < ?', Time.zone.now) }
   scope :ordered, -> { order(starts_at: :asc) }
 
+  before_validation :override_timezone
   after_create :create_activity
 
   def to_param
@@ -82,5 +83,17 @@ class Event < ActiveRecord::Base
   def ends_at_cannot_precede_starts_at
     return if ends_at > starts_at
     errors.add(:ends_at, :cannot_precede_starts_at)
+  end
+
+  def override_timezone
+    # TODO These conditions is temporary added to pass rspec Shoulda-matcher's method
+    # `validate_presence_of` since it drops the attributes and breaks this callback
+    if time_zone && starts_at && ends_at
+      %w(starts_at ends_at).each do |attr|
+        datetime = ActiveSupport::TimeZone.new(time_zone)
+                                          .parse(attributes[attr].strftime('%F %T'))
+        self.send(:"#{attr}=", datetime)
+      end
+    end
   end
 end
