@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
   belongs_to :creator, class_name: 'Member'
   belongs_to :community
 
-  has_many :rsvps
+  has_many :rsvps, dependent: :destroy
   has_many :members, through: :rsvps do
     def attending
       where(rsvps: { state: 'attending' })
