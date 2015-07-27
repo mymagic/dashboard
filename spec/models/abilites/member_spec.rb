@@ -47,7 +47,7 @@ RSpec.describe Member, type: :model do
       # Availability
       it { is_expected.to be_able_to(:read, FactoryGirl.build(:availability)) }
       it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability, member: member)) }
-      it { is_expected.to_not be_able_to(:manage, FactoryGirl.build(:availability)) }
+      it { is_expected.to be_able_to(:manage, FactoryGirl.build(:availability)) }
 
       # Slot
       it { is_expected.to be_able_to(:read, Slot) }
