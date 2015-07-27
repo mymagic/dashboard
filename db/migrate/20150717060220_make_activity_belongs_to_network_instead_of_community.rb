@@ -1,6 +1,6 @@
 class MakeActivityBelongsToNetworkInsteadOfCommunity < ActiveRecord::Migration
   def change
-    remove_column :activities, :community_id
+    remove_reference :activities, :community
     add_reference :activities, :network
   end
 end
