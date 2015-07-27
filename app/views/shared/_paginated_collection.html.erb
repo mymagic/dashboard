@@ -2,6 +2,9 @@
   <% if objects.any? %>
     <div class="<%= class_name.underscore %>-group">
       <%= render objects %>
+      <% %w(lg md sm xs).each do |size| %>
+        <div class="clearfix visible-<%= size %>-block"></div>
+      <% end %>
     </div>
     <div class="row text-center">
       <%= paginate objects, remote: true %>
