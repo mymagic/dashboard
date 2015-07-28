@@ -22,10 +22,11 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def comment_notification(receiver, author:, discussion:)
+  def comment_notification(receiver, comment:)
     @receiver   = receiver
-    @author     = author
-    @discussion = discussion
+    @author     = comment.author
+    @discussion = comment.discussion
+    @comment    = comment
     mail(
       to: receiver.email,
       subject: "#{ @author.full_name } commented on #{ @discussion.title }"

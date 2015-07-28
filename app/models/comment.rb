@@ -26,8 +26,7 @@ class Comment < ActiveRecord::Base
       Notifier.deliver(
         :comment_notification,
         receiver,
-        author: author,
-        discussion: discussion)
+        comment: self)
     end
   end
 
