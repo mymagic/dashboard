@@ -9,6 +9,7 @@ en:
       participant_slot_reserve_notification: when I reserve an office hour with someone
       participant_slot_cancel_notification: when my reserved office hour gets cancelled
       event_rsvp_notification: when I RSVP to an event
+      discussion_notification: when someone create a new discussion
   activerecord:
     errors:
       models:
