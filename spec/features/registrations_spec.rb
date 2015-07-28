@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Registrations', type: :feature, js: false do
-
   shared_examples "canceling account" do
     it "cancels the members account" do
       cancel_my_account(community)
-      expect(page).to have_content('Your account has been successfully cancelled')
+      expect(page).
+        to have_content('Your account has been successfully cancelled')
     end
   end
 
@@ -34,10 +34,23 @@ RSpec.describe 'Registrations', type: :feature, js: false do
     end
   end
 
+  shared_examples "seeing a change password link" do
+    it 'displays a link to change my password on MaGIC connect' do
+      visit root_path
+      within(:css, 'nav.navbar-standard ul.dropdown-menu') do
+        expect(page).
+          to have_link(
+            'Change Password',
+            href: 'http://connect.mymagic.my/profile')
+      end
+    end
+  end
 
   feature "Managing User account" do
     given(:community) { create(:community) }
-    given(:administrator) { create(:administrator, :confirmed, community: community) }
+    given(:administrator) do
+      create(:administrator, :confirmed, community: community)
+    end
     given(:staff) { create(:staff, :confirmed, community: community) }
     given(:member) { create(:member, :confirmed, community: community) }
     given(:mentor) { create(:mentor, :confirmed, community: community) }
@@ -48,6 +61,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
       it_behaves_like 'changing my notification settings'
+      it_behaves_like 'seeing a change password link'
     end
 
     context 'as staff' do
@@ -56,6 +70,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
       it_behaves_like 'changing my notification settings'
+      it_behaves_like 'seeing a change password link'
     end
 
     context 'as regular member' do
@@ -64,6 +79,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
       it_behaves_like 'changing my notification settings'
+      it_behaves_like 'seeing a change password link'
     end
 
     context 'as mentor' do
@@ -72,6 +88,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
       it_behaves_like 'changing my notification settings'
+      it_behaves_like 'seeing a change password link'
     end
   end
 end

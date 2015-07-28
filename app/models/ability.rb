@@ -89,7 +89,7 @@ class Ability
     when 'administrator'
       can :administrate, [:application, Member, Event]
 
-      can :manage, [:calendar, Position, Event, Company, SocialMediaLink]
+      can :manage, [:calendar, Position, Event, Company, SocialMediaLink, Availability]
       can :manage, Community, id: member.community_id
       can :manage, Discussion, community_id: member.community_id
       can :manage, Comment do |comment|
