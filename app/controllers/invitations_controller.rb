@@ -23,6 +23,7 @@ class InvitationsController < DeviseController
   # GET /resource/invitation/accept?invitation_token=abcdef
   def edit
     resource.invitation_token = params[:invitation_token]
+    resource.has_magic_connect_account = MagicConnect.user_exists?(resource.email)
     render :edit
   end
 
@@ -34,6 +35,9 @@ class InvitationsController < DeviseController
     yield resource if block_given?
 
     if invitation_accepted
+      if resource.has_magic_connect_account == "false"
+        resource.create_magic_connect_account!
+      end
       flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
       set_flash_message :notice, flash_message if is_flashing_format?
       sign_in(resource_name, resource)

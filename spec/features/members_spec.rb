@@ -121,6 +121,7 @@ RSpec.describe 'Members', type: :feature, js: false do
 
       context 'with an invited member' do
         background do
+          allow(MagicConnect).to receive(:user_exists?).and_return(true)
           invite_new_company_member(
             company,
             'new_member@example.com',
