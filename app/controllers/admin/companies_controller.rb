@@ -15,7 +15,9 @@ module Admin
 
     def create
       if @company.save
-        redirect_to_admin_companies_path('Company was successfully created.')
+        redirect_to(
+          edit_community_admin_company_path(current_community, @company),
+          notice: 'Company was successfully created.')
       else
         render 'companies/form', alert: 'Error creating company.'
       end
