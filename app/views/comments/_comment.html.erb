@@ -15,7 +15,7 @@
   </div>
   <div class="comment-body-wrapper row">
     <div class="col-lg-10 col-lg-offset-1">
-      <%= comment.body %>
+      <%= markdown(comment.body) %>
       <% if comment.is_a?(Comment) && can?(:destroy, comment) %>
         <div class="text-right">
           <%= link_to 'Remove this Comment', community_discussion_comment_path(current_community, comment.discussion, comment), class: 'btn btn-xs btn-hover btn-hover-danger', method: :delete, data: { confirm: "Are you sure you want to remove this Comment?"} %>
