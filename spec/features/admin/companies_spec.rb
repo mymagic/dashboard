@@ -24,10 +24,6 @@ RSpec.describe 'Companies', type: :feature, js: false do
       fill_in 'Name', with: 'New Company Name'
       fill_in 'Description', with: 'This is a company description'
       fill_in 'Website', with: 'http://example.com'
-      attach_file(
-        'company_logo',
-        File.join(
-          Rails.root, 'spec', 'support', 'companies', 'logos', 'logo.png'))
 
       # Social Media Links
       fill_in social_media_link.service, with: 'https://facebook.com/handle'
