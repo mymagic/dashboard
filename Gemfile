@@ -88,7 +88,7 @@ gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  gem 'pry-byebug'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
@@ -135,6 +135,9 @@ group :test do
 
   # Code climate reporter
   gem 'codeclimate-test-reporter', require: false
+
+  # Mock web requests
+  gem 'webmock'
 end
 
 group :development do

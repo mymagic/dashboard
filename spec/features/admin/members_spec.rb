@@ -148,6 +148,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     feature 'inviting a Member who is already member of another community' do
       given(:email) { member_of_other_community.email }
       background do
+        allow(MagicConnect).to receive(:user_exists?).and_return(true)
         as_user administrator
         invite_new_member(
           email: email,
@@ -168,6 +169,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     feature 'inviting a Staff Member' do
       given!(:email) { 'new_member@example.com' }
       background do
+        allow(MagicConnect).to receive(:user_exists?).and_return(true)
         as_user administrator
         invite_new_member(
           email: email,
@@ -188,6 +190,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     feature 'inviting a Regular Member' do
       given!(:email) { 'new_member@example.com' }
       background do
+        allow(MagicConnect).to receive(:user_exists?).and_return(true)
         as_user administrator
         invite_new_member(
           email: email,
@@ -208,6 +211,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
     feature 'inviting an Administrator' do
       given!(:email) { 'new_member@example.com' }
       background do
+        allow(MagicConnect).to receive(:user_exists?).and_return(true)
         as_user administrator
         invite_new_member(
           email: email,
