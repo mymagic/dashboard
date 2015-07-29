@@ -10,6 +10,7 @@ class NotificationMailer < ApplicationMailer
     participant_slot_reserve_notification
     participant_slot_cancel_notification
     event_rsvp_notification
+    discussion_notification
   )
 
   def follower_notification(receiver, follower:)
@@ -21,10 +22,11 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def comment_notification(receiver, author:, discussion:)
+  def comment_notification(receiver, comment:)
     @receiver   = receiver
-    @author     = author
-    @discussion = discussion
+    @author     = comment.author
+    @discussion = comment.discussion
+    @comment    = comment
     mail(
       to: receiver.email,
       subject: "#{ @author.full_name } commented on #{ @discussion.title }"
@@ -112,6 +114,17 @@ class NotificationMailer < ApplicationMailer
     mail(
       to: receiver.email,
       subject: "You have RSVP'd to #{ @event.title } as #{ @rsvp }"
+    )
+
+  end
+
+  def discussion_notification(receiver, author:, discussion:)
+    @receiver = receiver
+    @author = author
+    @discussion = discussion
+    mail(
+      to: receiver.email,
+      subject: "#{author.full_name} has created new discussion: #{discussion.title}"
     )
 
   end
