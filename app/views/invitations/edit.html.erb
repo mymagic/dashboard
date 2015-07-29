@@ -3,13 +3,13 @@
 </div>
 <div class="row">
   <p>
-    You have been invited to join <%= current_community.name %>. Please complete your profile to join.
-  </p>
-  <p>
+    You have been invited to join the <%= current_community.name %> community. Please verify your profile information before proceeding.
     <% if resource.has_magic_connect_account %>
-      Use your MaGIC Connect credentials to log in in the future.
+      <br<Use your MaGIC Connect credentials to log in in the future.
     <% else %>
-      For future logins, we will send you your MaGIC Connect credentials to <%= resource.email %>.
+      <br><span style='color: #f0584a'>MaGIC Connect will auto-generate your password and have it send to your inbox.</span>
+      <br>Please use this password to login into MaGIC Dashboard.
+      <br>You can change the password after your first login.
     <% end %>
   </p>
   <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name, resource.community), html: { multipart: true, method: :put, class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
