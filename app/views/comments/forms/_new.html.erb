@@ -3,7 +3,10 @@
   <div class="col-lg-1 col-lg-offset-1">
     <%= image_tag(f.object.author.avatar.url(:small_thumb), class: 'author-thumb img-rounded') %>
   </div>
-  <%= f.input :body, label: false, input_html: { rows: 6 }, placeholder: 'Join the conversation…' %>
+  <%= f.input :body,
+              label: false,
+              input_html: { rows: 6 }, placeholder: 'Join the conversation…',
+              hint: markdown_hint %>
 
   <div class="col-lg-2 col-lg-offset-9">
     <div class="text-right">

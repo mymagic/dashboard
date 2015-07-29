@@ -381,6 +381,7 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
+    redcarpet (3.3.2)
     redis (3.2.1)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
@@ -527,6 +528,7 @@ DEPENDENCIES
   rails (= 4.2.1)
   rails_12factor
   ranked-model
+  redcarpet
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

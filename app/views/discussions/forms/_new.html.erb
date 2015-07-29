@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-lg-12">
       <%= f.input :title, autofocus: true %>
-      <%= f.input :body %>
+      <%= f.input :body, hint: markdown_hint %>
       <%= f.input :tag_list, label: 'Tags', as: :string, input_html: { value: f.object.tag_list, data: { role: 'tags', 'typeahead-prefetch' => current_community.discussion_tags.pluck(:name) } } %>
     </div>
   </div>

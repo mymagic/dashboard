@@ -7,7 +7,7 @@
 
   <% if @member.description.present? %>
     <div class="member__details__description">
-      <%= @member.description %>
+      <%= markdown(@member.description) %>
     </div>
   <% end %>
 
