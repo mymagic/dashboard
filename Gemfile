@@ -83,6 +83,9 @@ gem 'elasticsearch-rails'
 # Pagination in Rails
 gem 'kaminari'
 
+# Background processing in Rails
+gem 'sidekiq'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
