@@ -36,7 +36,7 @@ class InvitationsController < DeviseController
 
     if invitation_accepted
       if resource.has_magic_connect_account == "false"
-        resource.create_magic_connect_account!
+        MagicConnectAccountCreationJob.perform_later(resource)
       end
       flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
       set_flash_message :notice, flash_message if is_flashing_format?
