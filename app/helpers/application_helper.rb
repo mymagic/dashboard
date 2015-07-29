@@ -19,4 +19,14 @@ module ApplicationHelper
 
     markdown.render(text).html_safe
   end
+
+  def markdown_cheat_sheet_url
+    "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
+  end
+
+  def markdown_hint
+    link_to_markdown = link_to('Markdown', markdown_cheat_sheet_url)
+    "This field accepts #{link_to_markdown}".html_safe
+  end
+
 end
