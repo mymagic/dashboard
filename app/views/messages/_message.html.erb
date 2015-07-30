@@ -1,7 +1,7 @@
 <% if message.sender == current_member %>
   <div class="media message-box mine">
     <div class="media-body message-box__body mine">
-      <%= message_body(message) %>
+      <%= markdown(message_body(message)) %>
     </div>
     <div class="media-right">
       <%= small_avatar_for(message) %>
@@ -13,7 +13,7 @@
       <%= small_avatar_for(message) %>
     </div>
     <div class="media-body message-box__body participant">
-      <%= message_body(message) %>
+      <%= markdown(message_body(message)) %>
     </div>
   </div>
 <% end %>

@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
         u.permit(member_params)
       end
     when 'invitations'
-      member_params.push(:invitation_token)
+      member_params.push(:invitation_token, :has_magic_connect_account)
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
         u.permit(member_params)
       end

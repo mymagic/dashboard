@@ -1,0 +1,12 @@
+<p>
+<%= @author.full_name %> has created new discussion
+</p>
+
+<div style="background-color: #EEE; padding: 15px;">
+  <p><b><%= @discussion.title %></b></p>
+  <p><%= @discussion.body %></p>
+</div>
+
+<p>
+  <%= link_to("Click here to continue the conversation.", [@receiver.community, @discussion]) %>
+</p>

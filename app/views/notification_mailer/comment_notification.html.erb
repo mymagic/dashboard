@@ -1,6 +1,14 @@
 <p>
 <%= @author.full_name %> has commented on the discussion you are following:
+<%= link_to(@discussion.title, community_discussion_url(@discussion.community, @discussion)) %>
 </p>
+
+<div style="background-color: #EEE; padding: 15px;">
+  <p>
+    <%= @comment.body %>
+  </p>
+</div>
+
 <p>
-  <%= link_to(@discussion.title, community_discussion_url(@discussion.community, @discussion)) %>
+  <%= link_to("Click here to continue the discussion.", community_discussion_url(@discussion.community, @discussion)) %>
 </p>

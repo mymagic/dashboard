@@ -9,6 +9,7 @@ require "cancan/matchers"
 require 'capybara/rspec'
 require 'capybara/email/rspec'
 require 'capybara/poltergeist'
+require 'webmock/rspec'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
