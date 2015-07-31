@@ -60,7 +60,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def send_notifications
-    community.members.where.not(id: author).find_each do |receiver|
+    community.members.active.where.not(id: author).find_each do |receiver|
       Notifier.deliver(
         :discussion_notification,
         receiver,
