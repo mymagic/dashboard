@@ -57,6 +57,7 @@ class ApplicationController < ActionController::Base
     flash.delete(:alert) # remove the alert messages (eg "you need to sign in")
     if magic_connect_member.confirmed?
       sign_in magic_connect_member
+      reset_current_ability
     else
       redirect_to accept_invitation_url(
         magic_connect_member,
@@ -148,4 +149,10 @@ class ApplicationController < ActionController::Base
       redirect_to :protocol => 'https', :params => request.GET
     end
   end
+
+  def reset_current_ability
+    @current_ability = nil
+    @current_user = nil
+  end
+
 end

@@ -54,3 +54,6 @@ Procfile.dev
 
 # Ignore application configuration
 /config/application.yml
+
+# Ignore redis database file
+dump.rdb

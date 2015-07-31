@@ -25,8 +25,11 @@ module ApplicationHelper
   end
 
   def markdown_hint
-    link_to_markdown = link_to('Markdown', markdown_cheat_sheet_url)
-    "This field accepts #{link_to_markdown}".html_safe
+    link_to_markdown = link_to(
+      'Markdown',
+      markdown_cheat_sheet_url,
+      target: '_blank')
+    "This field accepts #{link_to_markdown}.".html_safe
   end
 
 end
