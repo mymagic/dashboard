@@ -1,5 +1,7 @@
 <div class="row">
-  <%= panel "Start a new Discussion", columns: 12 do %>
+  <div class="col-lg-2">
+  </div>
+  <%= panel "Start a new Discussion", columns: 8 do %>
     <%= render partial: 'discussions/forms/new', locals: { discussion: @discussion } %>
   <% end %>
 </div>

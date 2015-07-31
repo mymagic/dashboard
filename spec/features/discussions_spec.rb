@@ -77,10 +77,14 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     it "creates a new discussion" do
       visit community_discussions_path(community)
       click_link 'Start a new Discussion'
-      fill_in 'Title',  with: 'What is beauty?'
-      fill_in 'Body',  with: 'By means of beauty all beautiful '\
-                             'things become beautiful.'
-      fill_in 'Tags', with: 'wonderful_tag, great_tag, wonderful_tag'
+      within '#new_discussion' do
+        fill_in 'discussion_title',  with: 'What is beauty?'
+        fill_in 'discussion_body',  with: 'By means of beauty all beautiful '\
+                               'things become beautiful.'
+        fill_in(
+          'discussion_tag_list',
+          with: 'wonderful_tag, great_tag, wonderful_tag')
+      end
       click_button 'Post'
       expect(page).to have_content 'Discussion was successfully created.'
       within '.page-header' do
