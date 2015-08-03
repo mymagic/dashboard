@@ -27,9 +27,8 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
   end
 
   feature "Administration" do
-    given!(:community) do
-      create(:community)
-    end
+    given!(:community) { create(:community) }
+    given!(:network) { community.networks.first }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
     end
@@ -75,7 +74,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
         expect(page).to have_content("Member was successfully updated.")
 
-        visit community_member_path(community, member)
+        visit community_network_member_path(community, network, member)
 
         expect(page).to have_content('New First Name')
         expect(page).to have_content('New Last Name')
