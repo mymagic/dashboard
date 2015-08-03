@@ -5,7 +5,7 @@
     <% if slot.available && can?(:reserve, slot) %>
       <%= link_to 'Reserve', reserve_community_member_availability_slots_path(current_community, @member, availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-default btn-sm pull-right', method: :post %>
     <% elsif !slot.available && can?(:destroy, slot) %>
-      <%= link_to 'Release', release_community_member_availability_slots_path(current_community, @member, availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-warning btn-sm pull-right', method: :delete, data: { confirm: "Are you sure you want to release this slot?" } %>
+      <%= link_to 'Release', release_community_network_member_availability_slots_path(current_community, current_network, @member, availability, slot.start_time.hour, slot.start_time.min), class: 'btn btn-warning btn-sm pull-right', method: :delete, data: { confirm: "Are you sure you want to release this slot?" } %>
     <% end %>
   </td>
 </tr>
