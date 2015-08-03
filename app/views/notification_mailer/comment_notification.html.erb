@@ -1,6 +1,6 @@
 <p>
 <%= @author.full_name %> has commented on the discussion you are following:
-<%= link_to(@discussion.title, community_discussion_url(@discussion.community, @discussion)) %>
+<%= link_to(@discussion.title, [@discussion.network.community, @discussion.network, @discussion]) %>
 </p>
 
 <div style="background-color: #EEE; padding: 15px;">
