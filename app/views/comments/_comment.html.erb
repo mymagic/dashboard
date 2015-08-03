@@ -15,7 +15,7 @@
   </div>
   <div class="comment-body-wrapper row">
     <div class="col-lg-10 col-lg-offset-1">
-      <%= comment.body %>
+      <%= markdown(comment.body) %>
       <% if comment.is_a?(Comment) && can?(:destroy, comment) %>
         <div class="text-right">
           <%= link_to 'Remove this Comment',

@@ -20,8 +20,7 @@ module Admin
     end
 
     def update
-      @event.update(event_params)
-      if @event.save
+      if @event.update(event_params)
         redirect_to_admin_events_path('Event was successfully updated.')
       else
         render 'edit', alert: 'Error updating event.'
@@ -55,16 +54,8 @@ module Admin
         :time_zone,
         :external,
         :network_id,
-        :"starts_at(1i)",
-        :"starts_at(2i)",
-        :"starts_at(3i)",
-        :"starts_at(4i)",
-        :"starts_at(5i)",
-        :"ends_at(1i)",
-        :"ends_at(2i)",
-        :"ends_at(3i)",
-        :"ends_at(4i)",
-        :"ends_at(5i)").merge(creator: current_member)
+        :starts_at,
+        :ends_at).merge(creator: current_member)
     end
   end
 end

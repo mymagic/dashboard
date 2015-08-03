@@ -67,6 +67,8 @@ class Member < ActiveRecord::Base
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
 
+  attr_accessor :has_magic_connect_account
+
   FILTERS = %i(everyone founders members mentors staff).freeze
   scope :filter_by, ->(filter) do
     case filter.try(:to_sym)
@@ -124,6 +126,10 @@ class Member < ActiveRecord::Base
         end
         invitable unless only_valid && invitable.errors.present?
       end
+    end
+
+    def create_magic_connect_account!
+      MagicConnect.create_user!(first_name, last_name, email)
     end
 
     def update_magic_connect_id!(magic_connect_id)

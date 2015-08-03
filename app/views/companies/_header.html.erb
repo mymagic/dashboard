@@ -17,7 +17,7 @@
   <% end %>
   <% if @company.description.present? %>
     <div class="company__header__description">
-      <%= @company.description %>
+      <%= markdown(@company.description) %>
     </div>
   <% end %>
 </div>

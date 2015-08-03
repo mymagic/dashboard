@@ -5,7 +5,6 @@
   }
   &__intro {
     p {
-      text-align: justify;
       line-height: 20px;
     }
   }
@@ -22,7 +21,7 @@
       height: 60px;
     }
     &_description {
-      text-align: justify;
+      text-align: left;
     }
     &_name {
       font-weight: bold;

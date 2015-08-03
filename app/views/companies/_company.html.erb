@@ -8,3 +8,16 @@
     <h4><%= link_to company.name, [current_community, current_network, company] %></h4>
   </div>
 </div>
+
+<% if (company_counter + 1) % 6 == 0 %>
+  <div class="clearfix visible-lg-block"></div>
+<% end %>
+
+<% if (company_counter + 1) % 3 == 0 %>
+  <div class="clearfix visible-md-block"></div>
+  <div class="clearfix visible-sm-block"></div>
+<% end %>
+
+<% if (company_counter + 1) % 2 == 0 %>
+  <div class="clearfix visible-xs-block"></div>
+<% end %>

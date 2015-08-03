@@ -5,11 +5,14 @@
       <div class="col-lg-6">
         <%= f.input :name, autofocus: true, placeholder: 'ACME Corporation' %>
         <%= f.input :website, placeholder: 'https://www.example.com' %>
-        <%= f.input :description, placeholder: 'Describe your company…', input_html: { rows: 12 } %>
+        <%= f.input :description, placeholder: 'Describe your company…',
+                    input_html: { rows: 12 }, hint: markdown_hint %>
       </div>
-      <div class="col-lg-3 col-lg-offset-2">
-        <%= render partial: 'shared/forms/company_logo', locals: { form: f } %>
-      </div>
+      <% if f.object.persisted? %>
+        <div class="col-lg-3 col-lg-offset-2">
+          <%= render partial: 'shared/forms/company_logo', locals: { form: f } %>
+        </div>
+      <% end %>
     </div>
   </div>
   <div role="tabpanel" class="tab-pane" id="social-media-services">

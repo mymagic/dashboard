@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(version: 20150721105609) do
     t.integer  "community_id"
   end
 
+  add_index "companies", ["community_id"], name: "index_companies_on_community_id", using: :btree
+
   create_table "companies_networks", force: :cascade do |t|
     t.integer "network_id"
     t.integer "company_id"
@@ -307,6 +309,7 @@ ActiveRecord::Schema.define(version: 20150721105609) do
   add_index "tags", ["network_id"], name: "index_tags_on_network_id", using: :btree
 
   add_foreign_key "comments", "discussions"
+  add_foreign_key "companies", "communities"
   add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
   add_foreign_key "memberships", "members"

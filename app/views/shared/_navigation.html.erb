@@ -53,6 +53,7 @@
                   <li class="divider"></li>
                 <% end %>
                 <%= nav_link "#{ current_member.full_name }'s Profile", [current_community, current_network, current_member] %>
+                <%= nav_link "Change Password", "http://connect.mymagic.my/profile", target: '_blank' %>
                 <%= nav_link "Preferences", edit_member_registration_path(current_community) %>
                 <% if can? :read, Message %>
                   <%= nav_link [current_community, current_network, current_member.last_chat_participant, Message] do %>

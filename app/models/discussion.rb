@@ -23,6 +23,7 @@ class Discussion < ActiveRecord::Base
   validate :ensure_author_follows, on: :create
 
   after_create :create_activity
+  after_create :send_notifications
 
   FILTERS = %i(recent hot popular unanswered).freeze
   scope :filter_by, ->(filter) do
@@ -51,5 +52,15 @@ class Discussion < ActiveRecord::Base
   def ensure_author_follows
     return if followers.include? author
     errors.add(:author, 'should be following the discussion.')
+  end
+
+  def send_notifications
+    community.members.active.where.not(id: author).find_each do |receiver|
+      Notifier.deliver(
+        :discussion_notification,
+        receiver,
+        author: author,
+        discussion: self)
+    end
   end
 end

@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  before_filter :force_ssl_connection, :unless => 'request.ssl?'
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :current_community
   before_action :authorize_through_magic_connect!
@@ -56,6 +57,7 @@ class ApplicationController < ActionController::Base
     flash.delete(:alert) # remove the alert messages (eg "you need to sign in")
     if magic_connect_member.confirmed?
       sign_in magic_connect_member
+      reset_current_ability
     else
       redirect_to accept_invitation_url(
         magic_connect_member,
@@ -105,7 +107,7 @@ class ApplicationController < ActionController::Base
         u.permit(member_params)
       end
     when 'invitations'
-      member_params.push(:invitation_token)
+      member_params.push(:invitation_token, :has_magic_connect_account)
       devise_parameter_sanitizer.for(:accept_invitation) do |u|
         u.permit(member_params)
       end
@@ -144,4 +146,17 @@ class ApplicationController < ActionController::Base
   def community_not_found
     redirect_to root_url, alert: 'Community does not exist.'
   end
+
+  def force_ssl_connection
+    return if ENV['FORCE_SSL'] == 'false'
+    if ENV['FORCE_SSL'] == 'true' || Rails.env.production? || Rails.env.staging?
+      redirect_to :protocol => 'https', :params => request.GET
+    end
+  end
+
+  def reset_current_ability
+    @current_ability = nil
+    @current_user = nil
+  end
+
 end

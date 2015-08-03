@@ -94,7 +94,7 @@ class Ability
       cannot :destroy, Network do |network|
         network.last_in_community?
       end
-      can :manage, [:calendar, Position, Event, Company, SocialMediaLink]
+      can :manage, [:calendar, Position, Event, Company, SocialMediaLink, Availability]
       can :manage, Community, id: member.community_id
       can :manage, Discussion do |discussion|
         discussion.network.community_id == member.community_id

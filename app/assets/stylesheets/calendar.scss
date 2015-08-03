@@ -4,7 +4,7 @@
 
   &.availability {
     .fc-content {
-      background: $brand-info;
+      background: $office-hour-color;
       border-radius: 10px;
     }
   }
@@ -54,7 +54,7 @@
 
     &.office-hours {
       &:before {
-        background: $brand-info;
+        background: $office-hour-color;
       }
     }
   }
