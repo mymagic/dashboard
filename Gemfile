@@ -132,6 +132,8 @@ group :test do
   # Capybara
   gem 'capybara'
 
+  gem 'launchy'
+
   # Email spec
   gem 'capybara-email'
 
