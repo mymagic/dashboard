@@ -124,7 +124,8 @@ class NotificationMailer < ApplicationMailer
     @discussion = discussion
     mail(
       to: receiver.email,
-      subject: "#{author.full_name} has created new discussion: #{discussion.title}"
+      subject: "#{author.full_name} has created a new "\
+               "discussion: #{discussion.title}"
     )
 
   end
