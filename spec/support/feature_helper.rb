@@ -7,7 +7,6 @@ module FeatureHelper
   end
 
   def sign_out
-    find('#navbar > ul.nav.navbar-nav.navbar-right').click
     click_on 'Sign out'
     expect(page).to_not have_content 'Sign out'
   end
