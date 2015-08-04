@@ -6,8 +6,8 @@ class DiscussionsController < ApplicationController
   include FilterConcern
 
   def index
-    return member_discussions if params[:member_id]
     @discussions = current_network.discussions
+    return member_discussions if params[:member_id]
     @discussions = @discussions.tagged_with(tag) if tag
     @discussions = @discussions.
                    includes(:author, :comments, :followers, :tags).
