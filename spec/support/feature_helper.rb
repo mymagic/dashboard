@@ -7,7 +7,7 @@ module FeatureHelper
   end
 
   def sign_out
-    click_on 'Sign out'
+    click_on 'Sign out', match: :first
     expect(page).to_not have_content 'Sign out'
   end
 
@@ -57,8 +57,10 @@ module FeatureHelper
     expect(page).to have_content("Member was successfully invited.")
   end
 
-  def invite_new_company_member(company, email, attributes = {})
-    visit new_community_company_member_path(company.community, company)
+  def invite_new_company_member(company:, network:, email:, attributes: {})
+    visit new_community_network_company_member_path(network.community,
+                                                    network,
+                                                    company)
 
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
