@@ -37,7 +37,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
   shared_examples "seeing a change password link" do
     it 'displays a link to change my password on MaGIC connect' do
       visit root_path
-      within(:css, 'nav.navbar-standard ul.dropdown-menu') do
+      within(:css, 'li.member ul.dropdown-menu') do
         expect(page).
           to have_link(
             'Change Password',

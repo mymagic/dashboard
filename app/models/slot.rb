@@ -49,7 +49,8 @@ class Slot < ActiveRecord::Base
   def create_activity
     Activity::SlotBooking.create(
       owner: participant,
-      mentor: mentor
+      mentor: mentor,
+      network: availability.network
     )
   end
 end

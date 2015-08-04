@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'Slots', type: :feature, js: false do
   let(:community) { create(:community) }
+  let(:network) { community.networks.first }
   let(:other_member) { create(:member, :confirmed, community: community) }
-  let!(:other_availability) { create(:availability, member: other_member) }
+  let!(:other_availability) { create(:availability, network: network, member: other_member) }
 
   let(:administrator) do
     create(:administrator, :confirmed, community: community)
@@ -21,8 +22,9 @@ RSpec.describe 'Slots', type: :feature, js: false do
       let!(:availability) { create(:availability, member: member) }
       it 'does not allow me to reserve a slot' do
         visit(
-          community_member_availability_slots_path(
+          community_network_member_availability_slots_path(
             community,
+            network,
             member,
             year: availability.date.year,
             month: availability.date.month,
@@ -37,8 +39,9 @@ RSpec.describe 'Slots', type: :feature, js: false do
     context 'as participant' do
       it 'allows me to reserve a slot' do
         visit(
-          community_member_availability_slots_path(
+          community_network_member_availability_slots_path(
             community,
+            network,
             other_member,
             year: other_availability.date.year,
             month: other_availability.date.month,
@@ -50,7 +53,7 @@ RSpec.describe 'Slots', type: :feature, js: false do
 
         expect(page).to have_content 'You have successfully reserved the slot.'
 
-        visit community_path(community)
+        visit community_network_path(community, network)
         within '.activity-group' do
           expect(page).
             to have_content "#{ member.full_name } booked office hours with "\
