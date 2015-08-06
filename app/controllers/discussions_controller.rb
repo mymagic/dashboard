@@ -1,12 +1,12 @@
 class DiscussionsController < ApplicationController
   before_action :authenticate_member!
+  before_action :discussions, only: [:index]
   load_and_authorize_resource through: :current_network
 
   include TagsConcern
   include FilterConcern
 
   def index
-    @discussions = current_network.discussions
     return member_discussions if params[:member_id]
     @discussions = @discussions.tagged_with(tag) if tag
     @discussions = @discussions.
