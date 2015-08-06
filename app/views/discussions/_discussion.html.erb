@@ -1,7 +1,7 @@
 <div class="discussion-group-item">
   <div class="col-lg-9">
     <h3>
-      <%= link_to discussion.title, [discussion.network.community, current_network, discussion] %>
+      <%= link_to discussion.title, [discussion.community, current_network, discussion] %>
     </h3>
     <p class='small text-muted'>
       <%= discussion_meta(discussion) %>

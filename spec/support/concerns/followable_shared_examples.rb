@@ -1,5 +1,5 @@
 shared_examples "followable" do
-  let(:follower) { create(:member, community: followable.try(:community) || followable.network.community) }
+  let(:follower) { create(:member, community: followable.try(:community) || followable.community) }
   let(:adding_a_follower) { Follow.create(member: follower, followable: followable, network: follower.default_network) }
   describe 'adding a follower' do
     it 'adds a new follower' do

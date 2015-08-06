@@ -13,6 +13,7 @@ class Event < ActiveRecord::Base
   # Associations
   belongs_to :creator, class_name: 'Member'
   belongs_to :network
+  delegate :community, to: :network
 
   has_many :rsvps, dependent: :destroy
   has_many :members, through: :rsvps do

@@ -7,6 +7,7 @@ class Discussion < ActiveRecord::Base
   # Associations
   belongs_to :network
   belongs_to :author, class_name: 'Member', counter_cache: true
+  delegate :community, to: :network
 
   has_many :comments, dependent: :destroy
 

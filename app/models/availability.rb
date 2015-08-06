@@ -16,6 +16,7 @@ class Availability < ActiveRecord::Base
   # Associations
   belongs_to :member, counter_cache: true
   belongs_to :network
+  delegate :community, to: :network
   has_many :slots
   has_many :availability_creating_activities,
            class_name: 'Activity::AvailabilityCreating',

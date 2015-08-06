@@ -14,7 +14,7 @@ RSpec.describe Rsvp, type: :model do
       subject do
         build(:rsvp,
               event: event,
-              member: create(:member, community: event.network.community))
+              member: create(:member, community: event.community))
       end
       it 'adds an error that the event cannot be in the past' do
         is_expected.to be_invalid

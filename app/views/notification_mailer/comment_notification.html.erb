@@ -1,6 +1,6 @@
 <p>
 <%= @author.full_name %> has commented on the discussion you are following:
-<%= link_to(@discussion.title, [@discussion.network.community, @discussion.network, @discussion]) %>
+<%= link_to(@discussion.title, [@discussion.community, @discussion.network, @discussion]) %>
 </p>
 
 <div style="background-color: #EEE; padding: 15px;">
@@ -10,5 +10,5 @@
 </div>
 
 <p>
-  <%= link_to("Click here to continue the discussion.", [@discussion.network.community, @discussion.network, @discussion]) %>
+  <%= link_to("Click here to continue the discussion.", [@discussion.community, @discussion.network, @discussion]) %>
 </p>

@@ -12,7 +12,7 @@ module EventsHelper
   def rsvp_link(event, state, name = nil, html_options = {})
     link_to(
       name,
-      rsvp_community_network_event_path(event.network.community, event.network, event, rsvp: { state: state }),
+      rsvp_community_network_event_path(event.community, event.network, event, rsvp: { state: state }),
       html_options.merge(method: :patch))
   end
 

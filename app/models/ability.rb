@@ -78,12 +78,12 @@ class Ability
     can :manage, Availability, member_id: member.id
 
     can :create, Comment do |comment|
-      comment.discussion.network.community_id == member.community_id
+      comment.discussion.community.id == member.community.id
     end
 
     # TODO authorize only member in a network to see its discussions
     can [:create, :read, :follow, :unfollow, :tags], Discussion do |discussion|
-      discussion.network.community_id == member.community_id
+      discussion.community.id == member.community.id
     end
 
     case member.role
@@ -95,13 +95,13 @@ class Ability
         network.last_in_community?
       end
       can :manage, [:calendar, Position, Event, Company, SocialMediaLink, Availability]
-      can :manage, Community, id: member.community_id
+      can :manage, Community, id: member.community.id
       can :manage, Discussion do |discussion|
-        discussion.network.community_id == member.community_id
+        discussion.community.id == member.community.id
       end
 
       can :manage, Comment do |comment|
-        comment.discussion.network.community_id == member.community_id
+        comment.discussion.community.id == member.community.id
       end
 
       can([:manage_company, :invite_company_member, :manage_members_positions],

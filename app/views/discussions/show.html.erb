@@ -35,7 +35,7 @@ end  %>
     <div class="text-right col-lg-4">
       <%=
         link_to('Remove this Discussion',
-                [@discussion.network.community, @discussion.network , @discussion],
+                [@discussion.community, @discussion.network , @discussion],
                 class: 'btn btn-xs btn-hover btn-hover-danger',
                 method: :delete,
                 data: {

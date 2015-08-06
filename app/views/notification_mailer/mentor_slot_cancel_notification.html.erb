@@ -10,7 +10,7 @@ The office hour with <%= link_to(@participant.full_name, [@participant.community
 <p>
   <%= link_to("Click here to manage your availabilities for this date.",
   community_network_member_availability_slots_url(
-    @availability.network.community,
+    @availability.community,
     @availability.network,
     @availability.member,
     year: @availability.date.year,

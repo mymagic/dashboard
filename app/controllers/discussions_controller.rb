@@ -25,7 +25,7 @@ class DiscussionsController < ApplicationController
   def create
     @discussion.author = current_member
     if @discussion.save
-      redirect_to([@discussion.network.community, @discussion.network, @discussion],
+      redirect_to([@discussion.community, @discussion.network, @discussion],
                   notice: 'Discussion was successfully created.')
     else
       render 'new', alert: 'Error creating discussion.'

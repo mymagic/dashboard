@@ -3,6 +3,7 @@ class Activity < ActiveRecord::Base
   belongs_to :owner, class_name: 'Member'
   belongs_to :resource, polymorphic: true
   belongs_to :secondary_resource, polymorphic: true
+  delegate :community, to: :network
 
   validates :network, :owner, :resource, presence: true
 
