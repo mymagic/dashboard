@@ -82,6 +82,7 @@
     border-bottom: 2px solid $nav-link-color;
     padding-bottom: 2px;
     color: $nav-link-color;
+    text-decoration: none;
   }
   &:hover {
     background-color: $nav-background-color-hover;
@@ -89,6 +90,11 @@
     .community-brand {
       color: $nav-link-color-hover;
       border-color: $nav-link-color-hover;
+    }
+  }
+  &-dropdown{
+    li {
+      border-right: 0;
     }
   }
 }
