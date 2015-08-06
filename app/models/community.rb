@@ -26,6 +26,8 @@ class Community < ActiveRecord::Base
   before_validation :set_default_email, on: :create
   before_validation :populate_with_default_social_media_services, on: :create
 
+  include NetworksConcern
+  
   # Exception classes
   class CommunityNotFound < StandardError
   end

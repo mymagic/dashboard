@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe MembersController, type: :controller do
   let(:community) { create(:community) }
-  let(:network) { community.networks.first }
+  let(:network) { community.default_network }
 
   describe "GET #index" do
     let(:response) { get(:index, community_id: community, network_id: network) }
@@ -48,7 +48,7 @@ RSpec.describe MembersController, type: :controller do
       post(
         :create,
         community_id: company.community,
-        network_id: company.networks.first,
+        network_id: company.default_network,
         company_id: company,
         member: (member_required_attributes).merge(attributes)
       )

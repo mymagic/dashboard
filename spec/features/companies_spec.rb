@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Companies', type: :feature, js: false do
   feature "Browsing the companies pages" do
     given!(:community) { create(:community) }
-    given!(:network) { community.networks.first }
+    given!(:network) { community.default_network }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
     end
@@ -26,7 +26,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
   feature "Manage Company" do
     given(:community) { create(:community) }
-    given(:network) { community.networks.first }
+    given(:network) { community.default_network }
 
     given(:staff) { create(:staff, :confirmed, community: community) }
     given(:manager) { create(:member, :confirmed, community: community) }

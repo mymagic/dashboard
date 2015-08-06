@@ -35,7 +35,7 @@ RSpec.describe 'Network', type: :feature, js: false do
   feature "Managing networks" do
     given!(:community) { create(:community) }
     given!(:existing_network) do
-      network = community.networks.first
+      network = community.default_network
       network.name = 'Existing Network'
       network.save
       network

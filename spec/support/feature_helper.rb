@@ -47,7 +47,7 @@ module FeatureHelper
     fill_in 'First name',  with: attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name]
 
-    check community.networks.first.name
+    check community.default_network.name
 
     select attributes[:role], from: 'Role'
 

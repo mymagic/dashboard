@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Member, type: :model do
   let(:community) { create(:community) }
-  let(:network) { community.networks.first }
+  let(:network) { community.default_network }
   let(:other_community) { create(:community) }
   let(:other_member) { create(:member, :confirmed, community: community) }
   let(:received_message) { create(:message, receiver: member, network: network) }

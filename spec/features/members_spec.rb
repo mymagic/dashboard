@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Members', type: :feature, js: false do
   feature 'Community Members' do
     given!(:community) { create(:community) }
-    given!(:network) { community.networks.first }
+    given!(:network) { community.default_network }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:regular_member) do
       create(:member, :confirmed, community: community)

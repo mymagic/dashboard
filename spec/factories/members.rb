@@ -18,7 +18,7 @@ FactoryGirl.define do
   factory :member, parent: :bare_member, aliases: [:participant, :author] do
     role ''
     before(:create) do |member|
-      member.networks << member.community.networks.first
+      member.networks << member.community.default_network
       member.positions << build(:position, member: member)
     end
   end
@@ -26,21 +26,21 @@ FactoryGirl.define do
   factory :administrator, parent: :bare_member do
     role 'administrator'
     before(:create) do |member|
-      member.networks << member.community.networks.first
+      member.networks << member.community.default_network
     end
   end
 
   factory :mentor, parent: :bare_member do
     role 'mentor'
     before(:create) do |member|
-      member.networks << member.community.networks.first
+      member.networks << member.community.default_network
     end
   end
 
   factory :staff, parent: :bare_member do
     role 'staff'
     before(:create) do |member|
-      member.networks << member.community.networks.first
+      member.networks << member.community.default_network
     end
   end
 end

@@ -23,6 +23,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def after_update_path_for(member)
-    [member.community, member.networks.first , member]
+    [member.community, member.default_network , member]
   end
 end

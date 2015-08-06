@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Discussion, type: :model do
-  let(:network) { create(:community).networks.first }
+  let(:network) { create(:community).default_network }
   context 'validations' do
     subject { build(:discussion) }
 

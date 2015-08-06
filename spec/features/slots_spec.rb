@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Slots', type: :feature, js: false do
   let(:community) { create(:community) }
-  let(:network) { community.networks.first }
+  let(:network) { community.default_network }
   let(:other_member) { create(:member, :confirmed, community: community) }
   let!(:other_availability) { create(:availability, network: network, member: other_member) }
 

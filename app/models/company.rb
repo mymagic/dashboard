@@ -1,5 +1,6 @@
 class Company < ActiveRecord::Base
   include SocialMediaLinkable
+  include NetworksConcern
 
   FILTERS = %i(portfolio mine).freeze
 

@@ -65,7 +65,7 @@ RSpec.describe 'Activities', type: :feature, js: false do
 
   feature "Activities Stream" do
     given(:community) { create(:community) }
-    given(:network) { community.networks.first }
+    given(:network) { community.default_network }
     given(:member) { create(:member, :confirmed, community: community) }
 
     given(:alice) { create_member('Alice Allison') }
@@ -130,7 +130,7 @@ RSpec.describe 'Activities', type: :feature, js: false do
       end
 
       given!(:activity_in_other_community) do
-        network_in_other_community = create(:community).networks.first
+        network_in_other_community = create(:community).default_network
         create(
           :discussion,
           network: network_in_other_community,

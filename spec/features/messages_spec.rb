@@ -21,7 +21,7 @@ RSpec.describe 'Messages', type: :feature, js: false do
   end
 
   let(:community) { create(:community) }
-  let(:network) { community.networks.first }
+  let(:network) { community.default_network }
   let(:alice) { create(:member, :confirmed, community: community) }
   let(:bob) { create(:member, :confirmed, community: community) }
 

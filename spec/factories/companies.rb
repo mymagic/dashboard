@@ -3,7 +3,7 @@ FactoryGirl.define do
     name { generate(:name) }
     community
     before(:create) do |company|
-      company.networks << company.community.networks.first
+      company.networks << company.community.default_network
     end
   end
 end

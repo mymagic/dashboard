@@ -139,7 +139,7 @@ RSpec.describe Member, type: :model do
 
   context 'Messages' do
     let(:community) { create(:community) }
-    let(:network) { community.networks.first }
+    let(:network) { community.default_network }
     let(:member1) { create(:member, community: community) }
     let(:member2) { create(:member, community: community) }
     let(:participant) { create(:member, community: community) }

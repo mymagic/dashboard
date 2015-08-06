@@ -28,7 +28,7 @@ RSpec.describe 'Admin/Members', type: :feature, js: false do
 
   feature "Administration" do
     given!(:community) { create(:community) }
-    given!(:network) { community.networks.first }
+    given!(:network) { community.default_network }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
     end

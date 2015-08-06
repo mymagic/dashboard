@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CommentsController, type: :controller do
   authorized_members = %i(administrator mentor staff regular_member)
   let(:community) { create(:community) }
-  let(:network) { community.networks.first }
+  let(:network) { community.default_network }
   let(:discussion) do
     create(:discussion,
            author: create(:author, :confirmed, community: community),

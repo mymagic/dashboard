@@ -66,7 +66,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
   feature "Managing companies" do
     given!(:community) { create(:community) }
-    given!(:network) { community.networks.first }
+    given!(:network) { community.default_network }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
     end

@@ -4,7 +4,7 @@ FactoryGirl.define do
     discussion {
       create(:discussion,
              author: create(:member, community: owner.community),
-             network: owner.community.networks.first)
+             network: owner.community.default_network)
     }
     comment { create(:comment, discussion: discussion, author: owner) }
   end

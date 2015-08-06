@@ -104,7 +104,7 @@ RSpec.describe Admin::MembersController, type: :controller do
     let(:member_required_attributes) do
       {
         email: 'email@example.com',
-        network_ids: [community.networks.first.id]
+        network_ids: [community.default_network.id]
       }
     end
 

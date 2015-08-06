@@ -9,6 +9,7 @@ class Member < ActiveRecord::Base
 
   include SocialMediaLinkable
   include Followable
+  include NetworksConcern
 
   paginates_per 60
 

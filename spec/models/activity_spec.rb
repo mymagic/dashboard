@@ -11,7 +11,7 @@ RSpec.describe Activity, type: :model do
 
   describe '.for' do
     let(:community) { create(:community) }
-    let(:network) { community.networks.first }
+    let(:network) { community.default_network }
     let(:member) { create(:member, community: community) }
     let(:alice) { create(:member, community: community) }
     let(:bob) { create(:member, community: community) }

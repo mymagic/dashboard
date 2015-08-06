@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Rsvp, type: :model do
-  let(:network) { create(:community).networks.first }
+  let(:network) { create(:community).default_network }
   context 'validations' do
     subject { build(:rsvp) }
     it { is_expected.to validate_presence_of(:member) }

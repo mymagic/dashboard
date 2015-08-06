@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Discussion, type: :model do
   let!(:community) { create(:community) }
-  let!(:network) { community.networks.first }
+  let!(:network) { community.default_network }
   let!(:other_community) { create(:community) }
   let!(:network_in_other_community) { other_community.networks.last }
   let!(:discussion_in_community) do

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Availabilities', type: :feature, js: false do
   let(:community) { create(:community) }
-  let(:network) { community.networks.first }
+  let(:network) { community.default_network }
   let(:mentor) { create(:member, :confirmed, community: community) }
   let(:participant) { create(:member, :confirmed, community: community) }
   let!(:availability) do
