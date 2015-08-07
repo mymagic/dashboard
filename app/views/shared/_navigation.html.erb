@@ -1,81 +1,79 @@
-<%= render partial: 'shared/navigations/administration' if can?(:administrate, :application) && current_community %>
-<% if current_network %>
-  <nav class="navbar navbar-magic navbar-static-top navbar-standard">
-    <div class="container">
-      <div class="navbar-header">
-        <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <% if current_community.present? %>
-          <div class="navbar-brand-dropdown">
-            <a href="#" class="dropdown-toggle community-brand navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <span class="community-brand"><%= current_network.name %></span>
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <% current_member.networks.each do |network| %>
-                <li><%= link_to network.name, [network.community, network] %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% else %>
-          <strong>MaGIC</strong> Communities
-        <% end %>
-      </div>
-      <% if member_signed_in? %>
-        <div class="navbar-collapse collapse" id="navbar">
-          <ul class="nav navbar-nav">
-            <% if current_community %>
-              <%= nav_link "Activities", [current_community, current_network] %>
-              <%= nav_link "Discussions", [current_community, current_network, Discussion] if can? :read, Discussion %>
-              <%= nav_link "Members", [current_community, current_network, Member] if can? :read, Member %>
-              <%= nav_link "Companies", [current_community, current_network, Company] if can? :read, Company %>
-              <%= nav_link "Events", community_network_calendar_path(current_community, current_network) if can? :read, :calendar %>
-              <%= nav_link 'Setup Office Hours', new_community_network_member_availability_path(current_community, current_network, current_member) if can? :create, Availability %>
-            <% else %>
-              <%= nav_link "Welcome", root_path %>
+<nav class="navbar navbar-magic navbar-static-top navbar-standard">
+  <div class="container">
+    <div class="navbar-header">
+      <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <% if current_community.present? %>
+        <div class="navbar-brand-dropdown">
+          <a href="#" class="dropdown-toggle community-brand navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="community-brand"><%= current_network.name %></span>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <% current_member.networks.each do |network| %>
+              <li><%= link_to network.name, [network.community, network] %></li>
             <% end %>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown member">
-              <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-                <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
-                <%= image_tag(current_member.avatar.url(:icon), class: 'navbar-avatar img-rounded') %>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu">
-                <% if current_member.companies.any? %>
-                  <% current_member.companies.each do |company| %>
-                    <%= nav_link company.name, [current_community, current_network, company] %>
-                  <% end %>
-                  <li class="divider"></li>
-                <% end %>
-                <%= nav_link "#{ current_member.full_name }'s Profile", [current_community, current_network, current_member] %>
-                <%= nav_link "Change Password", "http://connect.mymagic.my/profile", target: '_blank' %>
-                <%= nav_link "Preferences", edit_member_registration_path(current_community) %>
-                <% if can? :read, Message %>
-                  <%= nav_link [current_community, current_network, current_member.last_chat_participant, Message] do %>
-                      Messages
-                      <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
-                  <% end %>
-                <% end %>
-                <%= nav_link "Sign out", destroy_member_session_path(current_community), method: :delete %>
-              </ul>
-            </li>
           </ul>
         </div>
       <% else %>
-        <div class="navbar-collapse collapse" id="navbar">
-          <ul class="nav navbar-nav navbar-right">
-            <% if current_community %>
-              <%= nav_link "Log in", new_member_session_path(current_community) %>
-            <% end %>
-          </ul>
-        </div>
+        <strong>MaGIC</strong> Communities
       <% end %>
     </div>
-  </nav>
-<% end %>
+    <% if member_signed_in? %>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <% if current_community %>
+            <%= nav_link "Activities", [current_community, current_network] %>
+            <%= nav_link "Discussions", [current_community, current_network, Discussion] if can? :read, Discussion %>
+            <%= nav_link "Members", [current_community, current_network, Member] if can? :read, Member %>
+            <%= nav_link "Companies", [current_community, current_network, Company] if can? :read, Company %>
+            <%= nav_link "Events", community_network_calendar_path(current_community, current_network) if can? :read, :calendar %>
+            <%= nav_link 'Setup Office Hours', new_community_network_member_availability_path(current_community, current_network, current_member) if can? :create, Availability %>
+          <% else %>
+            <%= nav_link "Welcome", root_path %>
+          <% end %>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown member">
+            <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+              <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
+              <%= image_tag(current_member.avatar.url(:icon), class: 'navbar-avatar img-rounded') %>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <% if current_member.companies.any? %>
+                <% current_member.companies.each do |company| %>
+                  <%= nav_link company.name, [current_community, current_network, company] %>
+                <% end %>
+                <li class="divider"></li>
+              <% end %>
+              <%= nav_link "Administration", edit_community_admin_community_path(current_community) if can? :administrate, current_community %>
+              <%= nav_link "#{ current_member.full_name }'s Profile", [current_community, current_network, current_member] %>
+              <%= nav_link "Change Password", "http://connect.mymagic.my/profile", target: '_blank' %>
+              <%= nav_link "Preferences", edit_member_registration_path(current_community) %>
+              <% if can? :read, Message %>
+                <%= nav_link [current_community, current_network, current_member.last_chat_participant, Message] do %>
+                    Messages
+                    <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
+                <% end %>
+              <% end %>
+              <%= nav_link "Sign out", destroy_member_session_path(current_community), method: :delete %>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    <% else %>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav navbar-right">
+          <% if current_community %>
+            <%= nav_link "Log in", new_member_session_path(current_community) %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</nav>
