@@ -24,7 +24,9 @@ RSpec.describe 'Companies', type: :feature, js: false do
       fill_in 'Name', with: 'New Company Name'
       fill_in 'Description', with: 'This is a company description'
       fill_in 'Website', with: 'http://example.com'
-
+      within '.company_networks' do
+        check community.default_network.name
+      end
       # Social Media Links
       fill_in social_media_link.service, with: 'https://facebook.com/handle'
       click_button 'Save'

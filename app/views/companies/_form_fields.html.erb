@@ -7,6 +7,9 @@
         <%= f.input :website, placeholder: 'https://www.example.com' %>
         <%= f.input :description, placeholder: 'Describe your company…',
                     input_html: { rows: 12 }, hint: markdown_hint %>
+        <%= f.association :networks,
+                          as: :check_boxes, label_method: :name,
+                          value_method: :id, label: 'Networks' %>
       </div>
       <% if f.object.persisted? %>
         <div class="col-lg-3 col-lg-offset-2">

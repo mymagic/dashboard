@@ -31,3 +31,7 @@ en:
           attributes:
             member:
               cannot_follow_yourself: cannot follow yourself
+        company:
+          attributes:
+            networks:
+              must_have_at_least_one_network_membership: must be a member of at least one network

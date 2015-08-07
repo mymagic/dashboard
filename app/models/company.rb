@@ -15,6 +15,7 @@ class Company < ActiveRecord::Base
     on: :update
   )
   validates :description, length: { minimum: 5 }, allow_blank: true
+  validate :must_have_at_least_one_network_membership
   validates(
     :website,
     format: {
@@ -62,5 +63,12 @@ class Company < ActiveRecord::Base
 
   def to_param
     "#{ id }-#{ name.parameterize }"
+  end
+
+  private
+
+  def must_have_at_least_one_network_membership
+    return if networks.present?
+    errors.add :networks, :must_have_at_least_one_network_membership
   end
 end

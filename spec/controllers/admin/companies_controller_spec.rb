@@ -1,21 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Admin::CompaniesController, type: :controller do
+  let(:community) { create(:community) }
+  let(:network) { community.default_network }  
+
   describe "GET #index" do
-    let(:community) { create(:community) }
     let(:response) { get(:index, community_id: community) }
     it_behaves_like "accessible by", :administrator, :staff
   end
 
   describe "GET #edit" do
-    let(:community) { create(:community) }
     let(:company) { create(:company, community: community) }
     let(:response) { get(:edit, id: company, community_id: community) }
     it_behaves_like "accessible by", :administrator, :staff
   end
 
   describe 'PATCH #update' do
-    let(:community) { create(:community) }
     let(:company) { create(:company, community: community) }
     let(:response) do
       get(
@@ -28,14 +28,12 @@ RSpec.describe Admin::CompaniesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:community) { create(:community) }
     let(:company) { create(:company, community: community) }
     let(:response) { delete(:destroy, id: company, community_id: community) }
     it_behaves_like "accessible by", :administrator
   end
 
   describe "PUT #create" do
-    let(:community) { create(:community) }
     let(:company_required_attributes) { { name: 'New Company' } }
 
     def create_new_company(attributes = {})

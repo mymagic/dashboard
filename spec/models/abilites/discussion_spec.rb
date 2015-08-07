@@ -16,7 +16,7 @@ RSpec.describe Discussion, type: :model do
            network: network_in_other_community)
   end
   context 'as an adminstrator' do
-    let(:member) { build(:administrator, community: community) }
+    let(:member) { create(:administrator, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 
@@ -43,7 +43,7 @@ RSpec.describe Discussion, type: :model do
   end
 
   context 'as a staff member' do
-    let(:member) { build(:staff, community: community) }
+    let(:member) { create(:staff, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 
@@ -70,7 +70,7 @@ RSpec.describe Discussion, type: :model do
   end
 
   context 'as a mentor member' do
-    let(:member) { build(:mentor, community: community) }
+    let(:member) { create(:mentor, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 
@@ -97,7 +97,7 @@ RSpec.describe Discussion, type: :model do
   end
 
   context 'as a regular member' do
-    let(:member) { build(:member, community: community) }
+    let(:member) { create(:member, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 
