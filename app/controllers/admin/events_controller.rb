@@ -15,6 +15,7 @@ module Admin
     end
 
     def index
+      @events = current_network.events if current_network
       @upcoming_events = @events.upcoming.ordered.page params[:page]
       @past_events     = @events.past.ordered
     end

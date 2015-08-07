@@ -16,8 +16,8 @@
         data-network-slug='<%= current_network.try(:slug) %>'>
     <header class='page-row'>
       <div id="color-bar"></div>
-      <%= render partial: 'shared/navigations/administration' if @admin_navigation %>
-      <%= render partial: 'shared/navigation' if current_network %>
+      <%= render partial: 'shared/navigations/administration' if can?(:administrate, :application) %>
+      <%= render partial: 'shared/navigation' if current_network && !@admin_navigation %>
     </header>
     <main class='page-row page-row-expanded'>
       <div class="container">

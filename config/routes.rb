@@ -12,8 +12,8 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resource :community, only: [:edit, :update]
-      resources :events, except: [:show]
       resources :networks
+      resources :events, except: [:show]
       resources :companies
       resources :members do
         patch 'resend_invitation', on: :member
@@ -24,6 +24,13 @@ Rails.application.routes.draw do
     end
 
     resources :networks, path: '', only: :show do
+      namespace :admin do
+        resources :events, except: [:show]
+        resources :companies
+        resources :members do
+          patch 'resend_invitation', on: :member
+        end
+      end
       resource :calendar, only: :show
       get 'availabilities/:year/:month/:day',
           to: 'availabilities#calendar',

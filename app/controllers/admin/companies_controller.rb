@@ -6,6 +6,7 @@ module Admin
     include CompanyParamsConcern
 
     def index
+      @companies = current_network.companies if current_network
       @companies = @companies.ordered.page params[:page]
     end
 

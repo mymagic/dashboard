@@ -1,7 +1,10 @@
 <%
   title 'Events'
   page_header 'Events' do
-    link_to 'Create new Event', new_community_admin_event_path(current_community), class: 'btn btn-success'  if can? :create, Event
+    safe_join([
+      network_filter_dropdown(resource: 'Event'),
+      link_to('Create new Event', new_community_admin_event_path(current_community), class: 'btn btn-success')
+    ], ' ')
   end
 %>
 
