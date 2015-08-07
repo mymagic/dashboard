@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
       url = if request.env["HTTP_REFERER"].present?
               :back
             else
-              community_path(current_member.community)
+              community_network_path(current_member.community, current_member.default_network)
             end
     else
       msg = "You have to log in to continue."

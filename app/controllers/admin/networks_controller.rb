@@ -3,6 +3,7 @@ module Admin
     load_and_authorize_resource through: :current_community, find_by: :slug
 
     def index
+      @networks = current_community.networks
       @networks = @networks.ordered.page params[:page]
     end
 

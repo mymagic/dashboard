@@ -54,6 +54,9 @@ class Ability
 
     can :read, [Activity, Community]
     can :read, [:calendar, Company, Member, Availability, Slot, Event]
+    can :read, Network do |network|
+      member.networks.include?(network)
+    end
 
     manage_slots(member)
     reserve_slots(member)
@@ -81,9 +84,8 @@ class Ability
       comment.discussion.community.id == member.community.id
     end
 
-    # TODO authorize only member in a network to see its discussions
     can [:create, :read, :follow, :unfollow, :tags], Discussion do |discussion|
-      discussion.community.id == member.community.id
+      member.networks.include?(discussion.network)
     end
 
     case member.role

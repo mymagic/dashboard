@@ -7,6 +7,7 @@ class NetworksController < ApplicationController
   include FilterConcern
 
   def show
+    authorize! :read, current_network
     @activities = @activities.includes(:owner).ordered.limit(20)
     @events = current_network.events.upcoming.ordered
     @availabilities = current_network.
