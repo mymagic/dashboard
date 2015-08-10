@@ -44,10 +44,10 @@ class Company < ActiveRecord::Base
       end
     end
 
-    def founders_and_team_members
+    def founders_and_team_members(network: nil)
       positions.
-        joins(:member).
-        where(members: { invitation_token: nil }).
+        joins(member: :networks).
+        where(members: { invitation_token: nil }, networks: { id: network.id }).
         where.not(members: { confirmed_at: nil }).
         includes(:member).
         group_by(&:founder).

@@ -211,8 +211,11 @@ class Member < ActiveRecord::Base
           attributes[:company_id].blank?
         end)
 
-      def positions_in_companies
-        positions.group_by(&:company)
+      def positions_in_companies(network: nil)
+        return positions.group_by(&:company) if network.nil?
+        positions.group_by(&:company).select do |company, _|
+          company.networks.include? network
+        end
       end
     end
 

@@ -11,7 +11,7 @@ class CompaniesController < ApplicationController
   end
 
   def show
-    founders_and_team_members = @company.founders_and_team_members
+    founders_and_team_members = @company.founders_and_team_members(network: current_network)
     @founders = founders_and_team_members[:founders]
     @team_members = founders_and_team_members[:team_members]
   end
