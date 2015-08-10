@@ -52,16 +52,19 @@ module BootstrapHelper
                   id: 'network_filter_dropdown',
                   'data-toggle' => 'dropdown') do
         safe_join([
-          current_network.try(:name) || 'Network Name',
+          current_network.try(:name) || '- All Networks -',
           content_tag(:span, '', class: 'caret')
         ], ' ')
       end,
       content_tag('ul',
                   class: 'dropdown-menu',
                   'alria-labelledby' => 'network_filter_dropdown') do
-        safe_join(current_community.networks.map do |network|
-          content_tag 'li', link_to(network.name, [current_community, network, :admin, resource.constantize])
-        end)
+        safe_join([
+          content_tag('li', link_to('- All Networks -', [current_community, :admin, resource.constantize])),
+          *current_community.networks.map do |network|
+            content_tag 'li', link_to(network.name, [current_community, network, :admin, resource.constantize])
+          end
+        ])
       end
     ])
   end
