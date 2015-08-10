@@ -6,7 +6,7 @@ class CommunitiesController < ApplicationController
   include FilterConcern
 
   def show
-    redirect_to [@community, @community.default_network]
+    redirect_to [@community, current_member.default_network]
   end
 
   protected
