@@ -89,6 +89,10 @@ class Member < ActiveRecord::Base
   scope :active, -> {
     where(invitation_token: nil).where.not(confirmed_at: nil)
   }
+  scope :in_network, -> (network) {
+    joins(:networks).where(networks: { id: network.id })
+  }
+
 
   def full_name
     "#{ first_name } #{ last_name }"
