@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20150721105609) do
   end
 
   add_index "activities", ["id", "type"], name: "index_activities_on_id_and_type", using: :btree
+  add_index "activities", ["network_id"], name: "index_activities_on_network_id", using: :btree
   add_index "activities", ["owner_id"], name: "index_activities_on_owner_id", using: :btree
   add_index "activities", ["resource_id", "resource_type"], name: "index_activities_on_resource_id_and_resource_type", using: :btree
   add_index "activities", ["secondary_resource_id", "secondary_resource_type"], name: "activities_secondary_resource_index", using: :btree

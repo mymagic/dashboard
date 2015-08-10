@@ -6,5 +6,16 @@ class CreateMemberships < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    reversible do |dir|
+      dir.up do
+        Community.find_each do |community|
+          community.members.find_each do |member|
+            member.networks << community.default_network
+          end
+        end
+      end
+    end
+
   end
 end

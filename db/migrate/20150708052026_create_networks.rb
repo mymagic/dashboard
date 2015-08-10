@@ -8,5 +8,9 @@ class CreateNetworks < ActiveRecord::Migration
       t.timestamps null: false
     end
     add_index :networks, :slug, unique: true
+
+    Community.find_each do |community|
+      community.networks.create(name: 'network')
+    end
   end
 end
