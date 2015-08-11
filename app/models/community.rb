@@ -22,12 +22,12 @@ class Community < ActiveRecord::Base
   # Callbacks
   after_save :destroy_social_media_services,
              if: -> { social_media_services_changed? }
-  after_save :create_default_network, on: :create
+  after_save :create_default_network!, on: :create
   before_validation :set_default_email, on: :create
   before_validation :populate_with_default_social_media_services, on: :create
 
   include NetworksConcern
-  
+
   # Exception classes
   class CommunityNotFound < StandardError
   end
@@ -39,11 +39,11 @@ class Community < ActiveRecord::Base
     super(values)
   end
 
-  protected
-
-  def create_default_network
+  def create_default_network!
     self.networks.create(name: "#{ name }-network")
   end
+
+  protected
 
   def destroy_social_media_services
     social_media_services_change.inject(:-).each do |service|

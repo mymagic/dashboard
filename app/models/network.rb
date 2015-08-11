@@ -4,7 +4,7 @@ class Network < ActiveRecord::Base
 
   belongs_to :community
 
-  validates :name, :slug, presence: true, uniqueness: true
+  validates :name, :slug, presence: true, uniqueness: { scope: :community }
 
   has_many :memberships, dependent: :destroy
   has_many :members, through: :memberships

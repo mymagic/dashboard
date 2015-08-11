@@ -9,8 +9,12 @@ class CreateNetworks < ActiveRecord::Migration
     end
     add_index :networks, :slug, unique: true
 
-    Community.find_each do |community|
-      community.networks.create(name: 'network')
+    reversible do |dir|
+      dir.up do
+        Community.find_each do |community|
+          community.create_default_network!
+        end
+      end
     end
   end
 end
