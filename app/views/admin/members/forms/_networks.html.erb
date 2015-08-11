@@ -1,5 +1,6 @@
 <%= form.error :memberships %>
 <%= form.association :networks,
+                  collection: current_community.networks,
                   as: :check_boxes,
                   label_method: :name,
                   value_method: :id,
