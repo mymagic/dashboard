@@ -10,9 +10,13 @@ threads threads_count, threads_count
 
 preload_app!
 
+rails_env = ENV['RAILS_ENV'] || "development"
+
 rackup      DefaultRackup
 port        ENV['PORT']     || 3000
-environment ENV['RACK_ENV'] || 'development'
+environment rails_env
+
+bind 'tcp://dashboard-development.mymagic.my:3000' if rails_env == 'development'
 
 on_worker_boot do
   # In Rails 4.1+ you can use database.yml to set your connection pool size.
