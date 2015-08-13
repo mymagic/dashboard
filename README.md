@@ -20,10 +20,10 @@ To use MaGIC connect, you have to add the following line to your `/etc/hosts`:
 127.0.0.1   community-localhost.mymagic.my
 ```
 
-and access the site through `http://community-localhost.mymagic.my:3000`.
+and access the site through `http://dashboard-development.mymagic.my:3000`.
 
 When you've created a new community, you can access the community through:
-`http://community-localhost.mymagic.my:3000/$community-slug$`
+`http://dashboard-development.mymagic.my:3000/$community-slug$`
 
 You will be redirected to MaGIC connect. Sign in with your MaGIC connect account and you should be redirected (and signed in) back to your local community.
 
