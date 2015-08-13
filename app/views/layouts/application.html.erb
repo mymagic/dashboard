@@ -18,6 +18,7 @@
       <div id="color-bar"></div>
       <%= render partial: 'shared/navigations/administration' if can?(:administrate, :application) %>
       <%= render partial: 'shared/navigation' unless @admin_navigation %>
+      <div id="header-spacer"></div>
     </header>
     <main class='page-row page-row-expanded'>
       <div class="container">
