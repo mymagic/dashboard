@@ -40,6 +40,7 @@ class Community < ActiveRecord::Base
   end
 
   def create_default_network!
+    return if self.networks.any?
     self.networks.create(name: "#{ name }-network")
   end
 
