@@ -24,7 +24,7 @@ module MembersHelper
   def member_avatar_link(member)
     link_to(
       image_tag(member.avatar.url(:icon), class: 'img-rounded'),
-      [member.community, (current_network || member.default_network) , member]
+      [member.community, (current_network || member.default_network), member]
     )
   end
 
