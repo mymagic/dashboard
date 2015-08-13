@@ -74,7 +74,7 @@ module FeatureHelper
   end
 
   def update_my_account(attributes = {})
-    visit edit_member_registration_path(attributes[:community])
+    visit edit_member_registration_path(attributes[:community], attributes[:network])
 
     attributes[:notifications] ||= []
 
@@ -90,8 +90,8 @@ module FeatureHelper
     expect(page).to have_content("Your account has been updated successfully.")
   end
 
-  def cancel_my_account(community)
-    visit edit_member_registration_path(community)
+  def cancel_my_account(community, network)
+    visit edit_member_registration_path(community, network)
 
     click_link 'Cancel your account'
 

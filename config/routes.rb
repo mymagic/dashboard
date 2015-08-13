@@ -1,12 +1,4 @@
 Rails.application.routes.draw do
-  scope ':community_id' do
-    devise_for :members, controllers: {
-      registrations: 'registrations',
-      invitations: 'invitations',
-      sessions: 'sessions'
-    }
-  end
-
   resources :communities, path: '', except: :index do
     get 'admin/dashboard'
 
@@ -31,6 +23,7 @@ Rails.application.routes.draw do
           patch 'resend_invitation', on: :member
         end
       end
+
       resource :calendar, only: :show
       get 'availabilities/:year/:month/:day',
           to: 'availabilities#calendar',
@@ -90,7 +83,28 @@ Rails.application.routes.draw do
       resources :companies, only: [:index, :show, :edit, :update] do
         resources :members, only: [:new, :create, :edit, :update]
       end
+    end
+  end
 
+  scope ':community_id' do
+    devise_for(
+      :members,
+      skip: [:registrations],
+      controllers: {
+        invitations: 'invitations',
+        sessions: 'sessions'
+      })
+    as :member do
+      delete '/leave', to: 'registrations#destroy', as: 'destroy_member_registration'
+    end
+    scope ':network_id' do
+      as :member do
+        scope 'account' do
+          # settings & cancellation
+          get '/', to: 'registrations#edit', as: 'edit_member_registration'
+          put '/', to: 'registrations#update'
+        end
+      end
     end
   end
 
