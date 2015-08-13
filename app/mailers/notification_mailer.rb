@@ -49,10 +49,7 @@ class NotificationMailer < ApplicationMailer
     @receiver = receiver
     @availability = slot.availability
     @participant = participant
-    @date_and_time = "#{ slot.date.strftime('%B %d, %Y') } between "\
-                    "#{ slot.start_time.strftime('%H:%M') }-"\
-                    "#{ slot.end_time.strftime('%H:%M') } "\
-                    "(#{ slot.time_zone })"
+    @date_and_time = slot_datetime_string(slot)
 
     mail(
       to: receiver.email,
@@ -65,10 +62,7 @@ class NotificationMailer < ApplicationMailer
     @receiver = receiver
     @availability = slot.availability
     @mentor = mentor
-    @date_and_time = "#{ slot.date.strftime('%B %d, %Y') } between "\
-                    "#{ slot.start_time.strftime('%H:%M') }-"\
-                    "#{ slot.end_time.strftime('%H:%M') } "\
-                    "(#{ slot.time_zone })"
+    @date_and_time = slot_datetime_string(slot)
 
     mail(
       to: receiver.email,
@@ -81,10 +75,7 @@ class NotificationMailer < ApplicationMailer
     @receiver = receiver
     @availability = slot.availability
     @mentor = mentor
-    @date_and_time = "#{ slot.date.strftime('%B %d, %Y') } between "\
-                    "#{ slot.start_time.strftime('%H:%M') }-"\
-                    "#{ slot.end_time.strftime('%H:%M') } "\
-                    "(#{ slot.time_zone })"
+    @date_and_time = slot_datetime_string(slot)
 
     mail(
       to: receiver.email,
@@ -97,10 +88,7 @@ class NotificationMailer < ApplicationMailer
     @receiver = receiver
     @availability = slot.availability
     @participant = participant
-    @date_and_time = "#{ slot.date.strftime('%B %d, %Y') } between "\
-                    "#{ slot.start_time.strftime('%H:%M') }-"\
-                    "#{ slot.end_time.strftime('%H:%M') } "\
-                    "(#{ slot.time_zone })"
+    @date_and_time = slot_datetime_string(slot)
 
     mail(
       to: receiver.email,
@@ -126,8 +114,19 @@ class NotificationMailer < ApplicationMailer
     @discussion = discussion
     mail(
       to: receiver.email,
-      subject: "#{author.full_name} has created new discussion: #{discussion.title}"
+      subject: "#{author.full_name} has created a new "\
+               "discussion: #{discussion.title}"
     )
 
   end
+
+  private
+
+  def slot_datetime_string(slot)
+    "#{ slot.date.strftime('%B %d, %Y') } between "\
+    "#{ slot.start_time.in_time_zone(slot.time_zone).strftime('%H:%M') }-"\
+    "#{ slot.end_time.in_time_zone(slot.time_zone).strftime('%H:%M') } "\
+    "(#{ slot.time_zone })"
+  end
+
 end
