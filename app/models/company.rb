@@ -1,5 +1,6 @@
 class Company < ActiveRecord::Base
   include SocialMediaLinkable
+  include NetworksConcern
 
   FILTERS = %i(portfolio mine).freeze
 
@@ -14,6 +15,7 @@ class Company < ActiveRecord::Base
     on: :update
   )
   validates :description, length: { minimum: 5 }, allow_blank: true
+  validate :must_have_at_least_one_network_membership
   validates(
     :website,
     format: {
@@ -24,6 +26,7 @@ class Company < ActiveRecord::Base
 
   # Associations
   belongs_to :community
+  has_and_belongs_to_many :networks
 
   scope :ordered, -> { order(name: :desc) }
 
@@ -41,10 +44,10 @@ class Company < ActiveRecord::Base
       end
     end
 
-    def founders_and_team_members
+    def founders_and_team_members(network: nil)
       positions.
-        joins(:member).
-        where(members: { invitation_token: nil }).
+        joins(member: :networks).
+        where(members: { invitation_token: nil }, networks: { id: network.id }).
         where.not(members: { confirmed_at: nil }).
         includes(:member).
         group_by(&:founder).
@@ -60,5 +63,12 @@ class Company < ActiveRecord::Base
 
   def to_param
     "#{ id }-#{ name.parameterize }"
+  end
+
+  private
+
+  def must_have_at_least_one_network_membership
+    return if networks.present?
+    errors.add :networks, :must_have_at_least_one_network_membership
   end
 end

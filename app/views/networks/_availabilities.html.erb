@@ -1,0 +1,13 @@
+<% if @availabilities.present? %>
+  <div class="community-sidebar__availabilities">
+    <h4>Upcoming Office Hours</h4>
+    <% @availabilities.group_by(&:date).each do |date, availabilities| %>
+      <h5><%= date.strftime('%a, %B %d') %></h5>
+      <ul class='list-unstyled'>
+        <% availabilities.map(&:member).flatten.uniq.each do |member| %>
+          <li><%= member_availability_link(member, date) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>

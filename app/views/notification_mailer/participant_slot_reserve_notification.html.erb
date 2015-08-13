@@ -1,13 +1,14 @@
 <p>
-You have reserved an office hour with <%= link_to(@mentor.full_name, community_member_url(@mentor.community, @mentor)) %>:
+You have reserved an office hour with <%= link_to(@mentor.full_name, [@mentor.community, @availability.network, @mentor]) %>:
 </p>
 <p>
   <%= @date_and_time %>
 </p>
 <p>
   <%= link_to("Click here to manage your booking with #{ @mentor.full_name } for this date.",
-  community_member_availability_slots_url(
+  community_network_member_availability_slots_url(
     @availability.community,
+    @availability.network,
     @availability.member,
     year: @availability.date.year,
     month: @availability.date.month,

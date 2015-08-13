@@ -22,8 +22,9 @@ module AvailabilitiesHelper
   end
 
   def member_availability_link(member, date)
-    path = community_member_availability_slots_path(
+    path = community_network_member_availability_slots_path(
              current_community,
+             current_network,
              member,
              year: date.year,
              month: date.month,

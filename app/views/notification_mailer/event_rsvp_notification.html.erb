@@ -2,7 +2,7 @@
 you have RSVP'd as <%= @rsvp %> for
 </p>
 <p>
-  <%= link_to(@event.title, community_event_url(@event.community, @event)) %>
+  <%= link_to(@event.title, community_network_event_url(@event.community, @event.network, @event)) %>
 </p>
 <p>
   The event starts <%= @event.starts_at.strftime('%B %d, %Y %H:%M') %>.<br>

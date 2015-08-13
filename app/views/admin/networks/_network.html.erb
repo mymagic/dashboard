@@ -1,0 +1,8 @@
+<tr>
+  <td><%= network.name %></td>
+  <td>
+    <% if can? :update, network %>
+      <%= link_to('Edit', edit_community_admin_network_path(current_community, network), class: 'btn btn-default btn-xs') %>
+    <% end %>
+  </td>
+</tr>

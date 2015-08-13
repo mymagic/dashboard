@@ -30,7 +30,7 @@
         <% end %>
       </div>
       <div class='messages-panel__form'>
-        <%= simple_form_for([current_community, @receiver, Message.new]) do |f| %>
+        <%= simple_form_for([current_community, current_network, @receiver, Message.new]) do |f| %>
           <%= f.input :body, label: false %>
           <%= f.submit 'Send', class: 'btn btn-default' %>
         <% end %>

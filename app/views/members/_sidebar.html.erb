@@ -3,14 +3,14 @@
     <%= image_tag(@member.avatar.url(:thumb)) %>
   </div>
   <ul class="nav nav-pills navbar-member nav-stacked nav-remote">
-    <%= nav_link 'Details', community_member_path(current_community, @member), remote: true %>
-    <%= nav_link 'Activities', community_member_activities_path(current_community, @member), remote: true %>
+    <%= nav_link 'Details', [current_community, current_network, @member], remote: true %>
+    <%= nav_link 'Activities', [current_community, current_network, @member, Activity], remote: true %>
     <% if @member.discussions.size > 0 %>
-      <%= nav_link 'Discussions', community_member_discussions_path(current_community, @member), remote: true %>
+      <%= nav_link 'Discussions', [current_community, current_network, @member, Discussion], remote: true %>
     <% end %>
     <% if @member.availabilities.any? %>
       <%= content_tag 'li', class: (viewing_availabilities? ? 'active' : nil) do  %>
-        <%= link_to 'Office Hours', community_member_availabilities_path(current_community, @member), remote: true %>
+        <%= link_to 'Office Hours', [current_community, current_network, @member, Availability], remote: true %>
       <% end %>
     <% end %>
   </ul>

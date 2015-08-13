@@ -2,9 +2,9 @@
   <div class="member">
     <%= link_to(
           image_tag(member.avatar.url(:thumb), class: 'img-responsive thumbnail member__avatar'),
-          [current_community, member]) %>
+          [current_community, current_network, member]) %>
     <div class="member__caption">
-      <h4><%= link_to member.full_name, [current_community, member] %></h4>
+      <h4><%= link_to member.full_name, [current_community, current_network, member] %></h4>
       <%= member_role(member) %>
       <p><%= member_positions(member) %></p>
     </div>

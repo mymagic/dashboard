@@ -19,6 +19,7 @@ namespace :community do
         Member.invite!(
           email: ENV['ADMIN_EMAIL'],
           community_id: community.id,
+          network_ids: [community.default_network.id],
           role: 'administrator',
           time_zone: Time.zone.name
         ).valid_invitation? || raise(ActiveRecord::RecordInvalid)

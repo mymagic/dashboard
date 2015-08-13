@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707065810) do
+ActiveRecord::Schema.define(version: 20150721105609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20150707065810) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "owner_id",                null: false
-    t.integer  "community_id",            null: false
     t.integer  "resource_id",             null: false
     t.string   "resource_type",           null: false
     t.integer  "secondary_resource_id"
@@ -28,10 +27,11 @@ ActiveRecord::Schema.define(version: 20150707065810) do
     t.string   "type",                    null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "network_id"
   end
 
-  add_index "activities", ["community_id"], name: "index_activities_on_community_id", using: :btree
   add_index "activities", ["id", "type"], name: "index_activities_on_id_and_type", using: :btree
+  add_index "activities", ["network_id"], name: "index_activities_on_network_id", using: :btree
   add_index "activities", ["owner_id"], name: "index_activities_on_owner_id", using: :btree
   add_index "activities", ["resource_id", "resource_type"], name: "index_activities_on_resource_id_and_resource_type", using: :btree
   add_index "activities", ["secondary_resource_id", "secondary_resource_type"], name: "activities_secondary_resource_index", using: :btree
@@ -50,11 +50,11 @@ ActiveRecord::Schema.define(version: 20150707065810) do
     t.text     "details"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "community_id"
+    t.integer  "network_id"
   end
 
-  add_index "availabilities", ["community_id"], name: "index_availabilities_on_community_id", using: :btree
   add_index "availabilities", ["member_id"], name: "index_availabilities_on_member_id", using: :btree
+  add_index "availabilities", ["network_id"], name: "index_availabilities_on_network_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "author_id"
@@ -89,19 +89,27 @@ ActiveRecord::Schema.define(version: 20150707065810) do
 
   add_index "companies", ["community_id"], name: "index_companies_on_community_id", using: :btree
 
+  create_table "companies_networks", force: :cascade do |t|
+    t.integer "network_id"
+    t.integer "company_id"
+  end
+
+  add_index "companies_networks", ["company_id"], name: "index_companies_networks_on_company_id", using: :btree
+  add_index "companies_networks", ["network_id"], name: "index_companies_networks_on_network_id", using: :btree
+
   create_table "discussions", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-    t.integer  "community_id"
     t.integer  "author_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "comments_count"
     t.integer  "follows_count"
+    t.integer  "network_id"
   end
 
   add_index "discussions", ["author_id"], name: "index_discussions_on_author_id", using: :btree
-  add_index "discussions", ["community_id"], name: "index_discussions_on_community_id", using: :btree
+  add_index "discussions", ["network_id"], name: "index_discussions_on_network_id", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "location_detail",                                                  null: false
@@ -112,17 +120,17 @@ ActiveRecord::Schema.define(version: 20150707065810) do
     t.string   "time_zone",                                                        null: false
     t.text     "description"
     t.integer  "creator_id",                                                       null: false
-    t.integer  "community_id"
     t.datetime "created_at",                                                       null: false
     t.datetime "updated_at",                                                       null: false
     t.boolean  "external",                                    default: false,      null: false
     t.decimal  "location_latitude",  precision: 10, scale: 6, default: 2.909047,   null: false
     t.decimal  "location_longitude", precision: 10, scale: 6, default: 101.654669, null: false
     t.integer  "location_zoom",                               default: 15,         null: false
+    t.integer  "network_id"
   end
 
-  add_index "events", ["community_id"], name: "index_events_on_community_id", using: :btree
   add_index "events", ["creator_id"], name: "index_events_on_creator_id", using: :btree
+  add_index "events", ["network_id"], name: "index_events_on_network_id", using: :btree
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id"
@@ -195,6 +203,16 @@ ActiveRecord::Schema.define(version: 20150707065810) do
   add_index "members", ["invited_by_id"], name: "index_members_on_invited_by_id", using: :btree
   add_index "members", ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true, using: :btree
 
+  create_table "memberships", force: :cascade do |t|
+    t.integer  "member_id"
+    t.integer  "network_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "memberships", ["member_id"], name: "index_memberships_on_member_id", using: :btree
+  add_index "memberships", ["network_id"], name: "index_memberships_on_network_id", using: :btree
+
   create_table "messages", force: :cascade do |t|
     t.integer  "sender_id",                  null: false
     t.integer  "receiver_id",                null: false
@@ -206,6 +224,17 @@ ActiveRecord::Schema.define(version: 20150707065810) do
 
   add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
+
+  create_table "networks", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "community_id"
+    t.string   "slug"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "networks", ["community_id"], name: "index_networks_on_community_id", using: :btree
+  add_index "networks", ["slug"], name: "index_networks_on_slug", unique: true, using: :btree
 
   create_table "positions", force: :cascade do |t|
     t.integer  "member_id",                    null: false
@@ -271,22 +300,23 @@ ActiveRecord::Schema.define(version: 20150707065810) do
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "type"
-    t.integer  "community_id"
     t.integer  "taggings_count"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "network_id"
   end
 
-  add_index "tags", ["community_id"], name: "index_tags_on_community_id", using: :btree
   add_index "tags", ["id", "type"], name: "index_tags_on_id_and_type", using: :btree
+  add_index "tags", ["network_id"], name: "index_tags_on_network_id", using: :btree
 
   add_foreign_key "comments", "discussions"
   add_foreign_key "companies", "communities"
-  add_foreign_key "discussions", "communities"
   add_foreign_key "follows", "members"
   add_foreign_key "members", "communities"
+  add_foreign_key "memberships", "members"
+  add_foreign_key "memberships", "networks"
+  add_foreign_key "networks", "communities"
   add_foreign_key "rsvps", "events"
   add_foreign_key "rsvps", "members"
   add_foreign_key "taggings", "tags"
-  add_foreign_key "tags", "communities"
 end

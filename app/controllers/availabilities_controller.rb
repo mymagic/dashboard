@@ -31,13 +31,13 @@ class AvailabilitiesController < ApplicationController
     update_availability
     @availability.slots.destroy_all
 
-    redirect_to community_member_availabilities_path(current_community, @member),
+    redirect_to [current_community, current_network, @member, Availability],
                 notice: 'Availability was successfully updated.'
   end
 
   def create
     if update_availability
-      redirect_to community_member_availabilities_path(current_community, @member),
+      redirect_to [current_community, current_network, @member, Availability],
                   notice: 'Availability was successfully created.'
     else
       render 'new', alert: 'Error creating availability.'
@@ -47,7 +47,7 @@ class AvailabilitiesController < ApplicationController
   def destroy
     @availability.destroy
 
-    redirect_to community_member_availabilities_path(current_community, @member),
+    redirect_to [current_community, current_network, @member, Availability],
                 notice: 'Availability was successfully deleted.'
   end
 
@@ -68,7 +68,7 @@ class AvailabilitiesController < ApplicationController
   def date
     if params[:year].nil? || params[:month].nil? || params[:day].nil?
       redirect_to(
-        community_member_path(current_community, @member),
+        [current_community, current_network, @member],
         alert: 'Invalid date.')
     else
       @date = Date.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
@@ -93,7 +93,8 @@ class AvailabilitiesController < ApplicationController
     @availability.update(
       start_time: parse_time('start_time'),
       end_time: parse_time('end_time'),
-      date: "#{availability_params['date(1i)']}-#{availability_params['date(2i)']}-#{availability_params['date(3i)']}"
+      date: "#{availability_params['date(1i)']}-#{availability_params['date(2i)']}-#{availability_params['date(3i)']}",
+      network: current_network
     )
   end
 end

@@ -1,0 +1,13 @@
+<%= render(partial: 'filters',
+           layout:  'layouts/filter_navigation',
+           locals: { current_filter: @filter, filters: Activity::FILTERS }) %>
+
+<table class="table table-striped activity-group">
+  <tbody>
+    <%= render(@activities) || "<tr><td>Sorry, there is nothing to see yet.</td></tr>".html_safe %>
+  </tbody>
+</table>
+
+<div class="row text-center text-muted small filter-description">
+  <%= activity_filter_description %>
+</div>

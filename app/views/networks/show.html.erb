@@ -1,0 +1,13 @@
+<%
+  title 'Dashboard'
+  page_header "Activity feed for #{ current_network.name }"
+%>
+<div class="row">
+  <div class="col-sm-8">
+    <%= render partial: 'activities' %>
+  </div>
+  <div class="col-sm-4 community-sidebar">
+    <%= render partial: 'events' %>
+    <%= render partial: 'availabilities' %>
+  </div>
+</div>

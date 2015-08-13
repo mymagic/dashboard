@@ -2,6 +2,8 @@ class Follow < ActiveRecord::Base
   belongs_to :member
   belongs_to :followable, polymorphic: true, counter_cache: true
 
+  attr_accessor :network
+
   validates :member, :followable, presence: true
   validates(
     :followable_id,
@@ -16,7 +18,7 @@ class Follow < ActiveRecord::Base
   private
 
   def create_activity
-    Activity::Following.find_or_create_by(owner: member, followable: followable)
+    Activity::Following.find_or_create_by(owner: member, followable: followable, network: network)
   end
 
   def send_notifications
@@ -24,7 +26,8 @@ class Follow < ActiveRecord::Base
     Notifier.deliver(
       :follower_notification,
       followable,
-      follower: member)
+      follower: member,
+      network: network)
   end
 
   def cannot_follow_yourself

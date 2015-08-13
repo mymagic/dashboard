@@ -2,19 +2,21 @@ require 'rails_helper'
 
 RSpec.describe Discussion, type: :model do
   let!(:community) { create(:community) }
+  let!(:network) { community.default_network }
   let!(:other_community) { create(:community) }
+  let!(:network_in_other_community) { other_community.networks.last }
   let!(:discussion_in_community) do
     create(:discussion,
            author: create(:member, community: community),
-           community: community)
+           network: network)
   end
   let!(:discussion_in_other_community) do
     create(:discussion,
            author: create(:member, community: other_community),
-           community: other_community)
+           network: network_in_other_community)
   end
   context 'as an adminstrator' do
-    let(:member) { build(:administrator, community: community) }
+    let(:member) { create(:administrator, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 
@@ -41,7 +43,7 @@ RSpec.describe Discussion, type: :model do
   end
 
   context 'as a staff member' do
-    let(:member) { build(:staff, community: community) }
+    let(:member) { create(:staff, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 
@@ -68,7 +70,7 @@ RSpec.describe Discussion, type: :model do
   end
 
   context 'as a mentor member' do
-    let(:member) { build(:mentor, community: community) }
+    let(:member) { create(:mentor, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 
@@ -95,7 +97,7 @@ RSpec.describe Discussion, type: :model do
   end
 
   context 'as a regular member' do
-    let(:member) { build(:member, community: community) }
+    let(:member) { create(:member, community: community) }
     describe 'abilities' do
       subject { Ability.new(member) }
 

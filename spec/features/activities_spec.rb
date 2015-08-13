@@ -14,6 +14,7 @@ RSpec.describe 'Activities', type: :feature, js: false do
     create(
       :discussion,
       author: author || create(:member, :confirmed, community: community),
+      network: network,
       title: title
     )
   end
@@ -64,6 +65,7 @@ RSpec.describe 'Activities', type: :feature, js: false do
 
   feature "Activities Stream" do
     given(:community) { create(:community) }
+    given(:network) { community.default_network }
     given(:member) { create(:member, :confirmed, community: community) }
 
     given(:alice) { create_member('Alice Allison') }
@@ -94,12 +96,13 @@ RSpec.describe 'Activities', type: :feature, js: false do
 
     context 'with some activities' do
       # FollowActivities
-      given!(:alice_following_dan) { alice.followed_members << dan }
+      # given!(:alice_following_dan) { alice.followed_members << dan }
+      given!(:alice_following_dan) { Follow.create(member: alice, followable: dan, network: network)}
       given!(:alice_following_a_discussion) do
         alice.followed_discussions << create_discussion('all about singularity')
       end
       given!(:bob_following_a_member) do
-        bob.followed_members << create_member('Eddy Edward')
+        Follow.create(member: bob, followable: create_member('Eddy Edward'), network: network)
       end
 
       # DiscussionActivities
@@ -118,7 +121,7 @@ RSpec.describe 'Activities', type: :feature, js: false do
       end
 
       # RsvpActivities
-      given!(:event) { create(:event, community: community, title: 'Hackweek') }
+      given!(:event) { create(:event, network: network, title: 'Hackweek') }
       given!(:alice_rsvping_to_an_event) do
         alice.rsvps.create(event: event, state: 'not_attending')
       end
@@ -127,22 +130,22 @@ RSpec.describe 'Activities', type: :feature, js: false do
       end
 
       given!(:activity_in_other_community) do
-        other_community = create(:community)
+        network_in_other_community = create(:community).default_network
         create(
           :discussion,
-          community: other_community,
+          network: network_in_other_community,
           title: 'Other Community')
       end
 
       context 'as a member, following some people and discussions' do
         background do
-          member.followed_members << alice
+          Follow.create(member: member, followable: alice, network: network)
           member.followed_discussions << followed_discussion
           as_user member
         end
         feature "viewing the public stream" do
           background do
-            visit community_path(community)
+            visit community_network_path(community, network)
           end
           it_behaves_like(
             "stream with followed members and discussions")
@@ -150,7 +153,7 @@ RSpec.describe 'Activities', type: :feature, js: false do
             "stream with other members and discussions")
         end
         feature "viewing the personal stream" do
-          background { visit community_path(community, filter: 'personal') }
+          background { visit community_network_path(community, network, filter: 'personal') }
           it_behaves_like(
             "stream with followed members and discussions")
           it_behaves_like(

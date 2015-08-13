@@ -5,7 +5,7 @@ FactoryGirl.define do
     end
 
     name { generate(:tag_name) }
-    community
+    network
     trait :discussion_tag do
       type { 'DiscussionTag' }
     end

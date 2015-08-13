@@ -1,4 +1,4 @@
-<%= simple_form_for([current_community, comment.discussion, comment], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+<%= simple_form_for([current_community, current_network, comment.discussion, comment], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
   <%= f.error_notification %>
   <div class="col-lg-1 col-lg-offset-1">
     <%= image_tag(f.object.author.avatar.url(:small_thumb), class: 'author-thumb img-rounded') %>

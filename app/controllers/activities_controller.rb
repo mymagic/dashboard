@@ -5,6 +5,7 @@ class ActivitiesController < ApplicationController
   load_and_authorize_resource through: :member
 
   def index
+    @activities = @activities.where(network: current_network) if current_network
     @activities = @activities.includes(:owner)
     @partial = 'members/activities'
     render 'members/show'

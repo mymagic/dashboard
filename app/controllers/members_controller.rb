@@ -1,7 +1,7 @@
 class MembersController < ApplicationController
   before_action :authenticate_member!
   load_resource :company
-  load_resource through: :current_community
+  load_resource through: :current_network
   skip_authorize_resource only: [:show, :new, :create]
 
   include FilterConcern
@@ -37,7 +37,7 @@ class MembersController < ApplicationController
     @member = invite_member
     if @member.errors.empty?
       redirect_to(
-        community_company_path(@company.community, @company),
+        [@company.community, current_network, @company],
         notice: 'Member was successfully invited.')
     else
       @member.positions.build unless @member.positions.any?
@@ -45,7 +45,7 @@ class MembersController < ApplicationController
     end
   rescue Position::AlreadyExistsError => exception
     redirect_to(
-      new_community_company_member_path(@company.community, @company),
+      new_community_network_company_member_path(@company.community, current_network, @company),
       warning: exception.message
     )
   end
@@ -55,7 +55,7 @@ class MembersController < ApplicationController
       redirect_to(
         :back, warning: "You are already following #{ @member.full_name }.")
     else
-      @member.followers << current_member
+      Follow.create(member: current_member, followable: @member, network: current_network)
       redirect_to :back, notice: "You are now following #{ @member.full_name }."
     end
   end
@@ -82,6 +82,7 @@ class MembersController < ApplicationController
         ]
     ).tap do |attrs|
       attrs[:community_id] = current_community.id
+      attrs[:network_ids] = [current_network.id]
       attrs[:positions_attributes].map do |key, value|
         param = key.is_a?(Hash) ? key : value
         param[:company_id]  = @company.id

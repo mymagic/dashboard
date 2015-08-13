@@ -18,13 +18,13 @@ class MessagesController < ApplicationController
 
   def create
     authorize! :send_message_to, @receiver
-    if @message.update(sender: current_member, receiver: @receiver)
+    if @message.update(sender: current_member, receiver: @receiver, network: current_network)
       flash[:notice] = 'Message has been sent.'
     else
       flash[:alert] = 'Error sending message.'
     end
 
-    redirect_to community_member_messages_path(current_community, @receiver)
+    redirect_to community_network_member_messages_path(current_community, current_network, @receiver)
   end
 
   def search

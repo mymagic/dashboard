@@ -24,7 +24,9 @@ RSpec.describe 'Companies', type: :feature, js: false do
       fill_in 'Name', with: 'New Company Name'
       fill_in 'Description', with: 'This is a company description'
       fill_in 'Website', with: 'http://example.com'
-
+      within '.company_networks' do
+        check community.default_network.name
+      end
       # Social Media Links
       fill_in social_media_link.service, with: 'https://facebook.com/handle'
       click_button 'Save'
@@ -54,7 +56,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
       expect(page).to have_content("Company was successfully updated.")
 
-      visit community_company_path(community, existing_company)
+      visit community_network_company_path(community, network, existing_company)
       expect(page).to have_content("New Company Name")
       expect(page).to have_content("This is a company description")
       expect(page).to have_link("example.com", href: 'http://example.com')
@@ -66,6 +68,7 @@ RSpec.describe 'Companies', type: :feature, js: false do
 
   feature "Managing companies" do
     given!(:community) { create(:community) }
+    given!(:network) { community.default_network }
     given!(:administrator) do
       create(:administrator, :confirmed, community: community)
     end

@@ -1,0 +1,20 @@
+<%
+  title 'Networks'
+  page_header @network.new_record? ? "New Network" : "Edit #{ @network.name }"
+%>
+
+<div class='row'>
+  <%= simple_form_for([current_community, :admin, @network], html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f| %>
+    <div class='col-lg-6'>
+      <%= f.input :name, autofocus: true, placeholder: 'Name' %>
+      <% if @network.persisted? && can?(:destroy, @network) %>
+        <div class="text-right">
+          <%= link_to('Remove this network', community_admin_network_path(current_community, @network), method: :delete, data: { confirm: "Are you sure you want to remove this Network?"}, class: 'btn btn-xs btn-hover btn-hover-danger') %>
+        </div>
+      <% end %>
+    </div>
+    <div class='text-left col-lg-3'>
+      <%= f.button :submit, f.object.new_record? ? "Save" : "Update" %>
+    </div>
+  <% end %>
+</div>

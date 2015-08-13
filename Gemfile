@@ -89,6 +89,8 @@ gem 'sidekiq'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'font-awesome-rails'
+
 # Redcarpet for markdown support
 gem 'redcarpet'
 
@@ -130,6 +132,8 @@ group :test do
   # Capybara
   gem 'capybara'
 
+  gem 'launchy'
+
   # Email spec
   gem 'capybara-email'
 
@@ -149,6 +153,8 @@ end
 group :development do
   gem 'better_errors'
   gem "binding_of_caller"
+  gem 'foreman'
+  gem 'mailcatcher'
 end
 
 group :production, :staging do

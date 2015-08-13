@@ -5,17 +5,18 @@ RSpec.describe Activity, type: :model do
     subject { Activity.new }
 
     it { is_expected.to validate_presence_of(:owner) }
-    it { is_expected.to validate_presence_of(:community) }
+    it { is_expected.to validate_presence_of(:network) }
     it { is_expected.to validate_presence_of(:resource) }
   end
 
   describe '.for' do
     let(:community) { create(:community) }
+    let(:network) { community.default_network }
     let(:member) { create(:member, community: community) }
     let(:alice) { create(:member, community: community) }
     let(:bob) { create(:member, community: community) }
-    let(:followed_discussion) { create(:discussion, community: community) }
-    let(:other_discussion) { create(:discussion, community: community) }
+    let(:followed_discussion) { create(:discussion, network: network) }
+    let(:other_discussion) { create(:discussion, network: network) }
 
     # FollowActivities
     let(:alice_following_a_member) do
@@ -33,7 +34,7 @@ RSpec.describe Activity, type: :model do
 
     # DiscussionActivities
     let(:alice_creating_a_discussion) do
-      create(:discussion_activity, owner: alice)
+      create(:discussion_activity, owner: alice, network: network)
     end
     let(:bob_creating_a_discussion) { create(:discussion_activity, owner: bob) }
 
@@ -73,8 +74,8 @@ RSpec.describe Activity, type: :model do
     end
 
     before do
-      member.followed_members << alice
-      member.followed_discussions << followed_discussion
+      Follow.create(member: member, followable: alice, network: network)
+      Follow.create(member: member, followable: followed_discussion, network: network)
     end
     subject { Activity.for(member) }
 

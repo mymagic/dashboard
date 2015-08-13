@@ -1,3 +1,3 @@
 <%= render layout: 'shared/activity', locals: { activity: event_creating } do %>
-  setup <%= link_to event_creating.event_title, community_event_path(current_community, event_creating.event_id) %> on <%= event_creating.event_starts_at.strftime('%B %d, %Y') %>
+  setup <%= link_to event_creating.event_title, community_network_event_path(current_community, current_network, event_creating.event_id) %> on <%= event_creating.event_starts_at.strftime('%B %d, %Y') %>
 <% end %>

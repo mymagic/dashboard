@@ -44,7 +44,7 @@ Rails.application.configure do
 
   # Set a default URL (required for Devise)
   config.action_mailer.default_url_options = {
-    host: 'community-localhost.mymagic.my',
+    host: 'dashboard-development.mymagic.my',
     port: 3000
   }
   # See http://mailcatcher.me

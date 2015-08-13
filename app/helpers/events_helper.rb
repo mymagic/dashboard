@@ -12,7 +12,7 @@ module EventsHelper
   def rsvp_link(event, state, name = nil, html_options = {})
     link_to(
       name,
-      rsvp_community_event_path(event.community, event, rsvp: { state: state }),
+      rsvp_community_network_event_path(event.community, event.network, event, rsvp: { state: state }),
       html_options.merge(method: :patch))
   end
 
@@ -41,7 +41,7 @@ module EventsHelper
 
   def event_type_label(event, with_event: false)
     wording = []
-    wording << (event.external? ? 'External' : 'Community')
+    wording << (event.external? ? 'External' : 'Network')
     wording << 'Event' if with_event
     style = event.external? ? 'external-event' : 'community-event'
     content_tag('span', wording.join(' '), class: "label #{ style }")
@@ -57,6 +57,6 @@ module EventsHelper
   end
 
   def event_link(event)
-    link_to event.title, community_event_path(current_community, event)
+    link_to event.title, [current_community, current_network, event]
   end
 end

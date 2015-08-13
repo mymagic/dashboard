@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource through: :current_community, except: :index
+  load_and_authorize_resource through: :current_network, except: :index
 
   include UploadConcern
   include FilterConcern
@@ -11,7 +11,7 @@ class CompaniesController < ApplicationController
   end
 
   def show
-    founders_and_team_members = @company.founders_and_team_members
+    founders_and_team_members = @company.founders_and_team_members(network: current_network)
     @founders = founders_and_team_members[:founders]
     @team_members = founders_and_team_members[:team_members]
   end
@@ -44,7 +44,7 @@ class CompaniesController < ApplicationController
 
   def companies
     @companies ||= begin
-      ((filter == :portfolio) ? current_community : current_member).companies
+      ((filter == :portfolio) ? current_network : current_member).companies
     end
   end
 end

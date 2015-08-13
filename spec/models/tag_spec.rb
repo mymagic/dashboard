@@ -6,13 +6,13 @@ RSpec.describe Tag, type: :model do
 
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:type) }
-    it { is_expected.to validate_presence_of(:community) }
+    it { is_expected.to validate_presence_of(:network) }
     it do
       is_expected.
-        to validate_uniqueness_of(:name).scoped_to(:type, :community_id)
+        to validate_uniqueness_of(:name).scoped_to(:type, :network_id)
     end
     it { is_expected.to have_many(:taggings).dependent(:destroy) }
-    it { is_expected.to belong_to(:community) }
+    it { is_expected.to belong_to(:network) }
   end
 
   describe '#destroy_if_orphaned!' do

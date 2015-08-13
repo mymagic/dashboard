@@ -1,6 +1,7 @@
 class DiscussionsController < ApplicationController
   before_action :authenticate_member!
-  load_and_authorize_resource through: :current_community
+  before_action :discussions, only: [:index]
+  load_and_authorize_resource through: :current_network
 
   include TagsConcern
   include FilterConcern
@@ -24,7 +25,7 @@ class DiscussionsController < ApplicationController
   def create
     @discussion.author = current_member
     if @discussion.save
-      redirect_to([@discussion.community, @discussion],
+      redirect_to([@discussion.community, @discussion.network, @discussion],
                   notice: 'Discussion was successfully created.')
     else
       render 'new', alert: 'Error creating discussion.'
@@ -34,7 +35,7 @@ class DiscussionsController < ApplicationController
   def destroy
     @discussion.destroy
     redirect_to(
-      community_discussions_path(current_community),
+      [current_community, current_network, Discussion],
       notice: 'Discussion was successfully deleted.')
   end
 
@@ -53,6 +54,12 @@ class DiscussionsController < ApplicationController
   end
 
   private
+
+  def discussions
+    @discussions = current_network.
+                   discussions.
+                   includes(:author, :comments, :followers, :tags)
+  end
 
   def member_discussions
     @member = Member.find(params[:member_id])

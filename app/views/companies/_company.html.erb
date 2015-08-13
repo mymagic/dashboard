@@ -3,9 +3,9 @@
     <div class="logo-wrapper">
       <%= link_to(
             image_tag(company.logo.url(:thumb), class: 'img-responsive'),
-            [current_community, company]) %>
+            [current_community, current_network, company]) %>
     </div>
-    <h4><%= link_to company.name, [current_community, company] %></h4>
+    <h4><%= link_to company.name, [current_community, current_network, company] %></h4>
   </div>
 </div>
 

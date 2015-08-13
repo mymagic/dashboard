@@ -7,8 +7,7 @@ module FeatureHelper
   end
 
   def sign_out
-    find('#navbar > ul.nav.navbar-nav.navbar-right').click
-    click_on 'Sign out'
+    click_on 'Sign out', match: :first
     expect(page).to_not have_content 'Sign out'
   end
 
@@ -47,6 +46,9 @@ module FeatureHelper
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name]
     fill_in 'Last name',  with: attributes[:last_name]
+
+    check community.default_network.name
+
     select attributes[:role], from: 'Role'
 
     select attributes[:company], from: 'Company' if attributes[:company]
@@ -55,8 +57,10 @@ module FeatureHelper
     expect(page).to have_content("Member was successfully invited.")
   end
 
-  def invite_new_company_member(company, email, attributes = {})
-    visit new_community_company_member_path(company.community, company)
+  def invite_new_company_member(company:, network:, email:, attributes: {})
+    visit new_community_network_company_member_path(network.community,
+                                                    network,
+                                                    company)
 
     fill_in 'Email',  with: email
     fill_in 'First name',  with: attributes[:first_name] if attributes[:first_name]
@@ -70,7 +74,7 @@ module FeatureHelper
   end
 
   def update_my_account(attributes = {})
-    visit edit_member_registration_path(attributes[:community])
+    visit edit_member_registration_path(attributes[:community], attributes[:network])
 
     attributes[:notifications] ||= []
 
@@ -86,8 +90,8 @@ module FeatureHelper
     expect(page).to have_content("Your account has been updated successfully.")
   end
 
-  def cancel_my_account(community)
-    visit edit_member_registration_path(community)
+  def cancel_my_account(community, network)
+    visit edit_member_registration_path(community, network)
 
     click_link 'Cancel your account'
 

@@ -1,6 +1,7 @@
 <tr>
   <td><%= member_icon member %></td>
   <td><%= image_tag(member.avatar.url(:icon), class: 'img-rounded') %></td>
+  <td><%= member.networks.map(&:name).join(', ') %></td>
   <td><%= member.first_name %></td>
   <td><%= member.last_name %></td>
   <td><%= member.email %></td>

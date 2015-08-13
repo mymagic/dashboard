@@ -2,18 +2,11 @@ class CommunitiesController < ApplicationController
   before_action :authorize_through_magic_connect!
   before_action :redirect_if_not_authenticated!
   load_and_authorize_resource find_by: :slug
-  before_action :activities
 
   include FilterConcern
 
   def show
-    @activities = @activities.includes(:owner).ordered.limit(20)
-    @events = @community.events.upcoming.ordered
-    @availabilities = @community.
-                      availabilities.
-                      joins(:member).
-                      by_daterange(Date.today, 1.week.from_now.to_date).
-                      ordered
+    redirect_to [@community, current_member.default_network]
   end
 
   protected
@@ -34,15 +27,5 @@ class CommunitiesController < ApplicationController
 
   def default_filter
     :public
-  end
-
-  def activities
-    @activities = begin
-      if filter == :personal
-        @community.activities.for(current_member)
-      else
-        @community.activities
-      end
-    end
   end
 end

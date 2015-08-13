@@ -14,7 +14,9 @@ module DiscussionsHelper
   def discussion_link(discussion)
     link_to(
       discussion.title,
-      community_discussion_path(current_community, discussion))
+      community_network_discussion_path(current_community,
+                                        current_network,
+                                        discussion))
   end
 
   def discussion_meta(discussion)

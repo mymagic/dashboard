@@ -15,7 +15,7 @@ module TagsHelper
   end
 
   def link_to_tag(tag)
-    link_to [current_community, tag], class: 'tag' do
+    link_to [current_community, current_network, tag], class: 'tag' do
       tag_element tag
     end
   end

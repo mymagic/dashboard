@@ -2,9 +2,9 @@
   <div class="company__member">
     <%= link_to(
           image_tag(member.avatar.url(:thumb), class: 'img-responsive'),
-          [current_community, member]) %>
+          [current_community, current_network, member]) %>
     <div class="company__member__caption">
-      <h4><%= link_to member.full_name, [current_community, member] %></h4>
+      <h4><%= link_to member.full_name, [current_community, current_network, member] %></h4>
     </div>
     <div class="company__member__positions">
       <%= positions.to_sentence %>
