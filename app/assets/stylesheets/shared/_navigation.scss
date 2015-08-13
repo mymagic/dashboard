@@ -74,6 +74,9 @@
 
 .navbar-brand {
   border-right: 1px solid $nav-border-color;
+  a {
+    text-decoration: none;
+  }
   img {
     display: inline-block;
   }
@@ -82,7 +85,6 @@
     border-bottom: 2px solid $nav-link-color;
     padding-bottom: 2px;
     color: $nav-link-color;
-    text-decoration: none;
   }
   &:hover {
     background-color: $nav-background-color-hover;
