@@ -44,11 +44,10 @@ module BootstrapHelper
     end
   end
 
-  def network_filter_dropdown(resource:)
+  def network_filter_dropdown(resource:, html_class: nil)
     safe_join([
-      'Filter by: ',
       content_tag('button',
-                  class: 'btn dropdown-toggle',
+                  class: "btn btn-default dropdown-toggle #{html_class}",
                   id: 'network_filter_dropdown',
                   'data-toggle' => 'dropdown') do
         safe_join([
