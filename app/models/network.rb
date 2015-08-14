@@ -32,7 +32,7 @@ class Network < ActiveRecord::Base
   end
 
   def activities_for_show
-    Rails.cache.fetch(cache_key_for_activites) do
+    Rails.cache.fetch(cache_key_for_activities) do
       activities.includes(:owner).ordered.limit(20)
     end
   end
@@ -43,21 +43,14 @@ class Network < ActiveRecord::Base
     "community/#{community_id}/networks/#{id}"
   end
 
-  def cache_key_for_availabilities
-    count          = availabilities.count
-    max_updated_at = availabilities.
-                     maximum(:updated_at).
-                     try(:utc).
-                     try(:to_s, :number)
-    "#{base_cache_key}/availabilities-#{count}-#{max_updated_at}"
-  end
-
-  def cache_key_for_activites
-    count          = activities.count
-    max_updated_at = activities.
-                     maximum(:updated_at).
-                     try(:utc).
-                     try(:to_s, :number)
-    "#{base_cache_key}/activities-#{count}-#{max_updated_at}"
+  [:availabilities, :activities].each do |relation|
+    define_method "cache_key_for_#{ relation }" do
+      count          = send(relation).count
+      max_updated_at = send(relation).
+                       maximum(:updated_at).
+                       try(:utc).
+                       try(:to_s, :number)
+      "#{base_cache_key}/#{relation}-#{count}-#{max_updated_at}"
+    end
   end
 end

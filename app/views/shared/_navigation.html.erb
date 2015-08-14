@@ -60,9 +60,11 @@
               <%= nav_link "Change Password", "http://connect.mymagic.my/profile", target: '_blank' %>
               <%= nav_link "Preferences", edit_member_registration_path(current_community, current_network) %>
               <% if can? :read, Message %>
-                <%= nav_link [current_community, current_network, current_member.last_chat_participant, Message] do %>
-                    Messages
-                    <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
+                <% cache(@current_member.cache_key_for_messages_navigation) do %>
+                  <%= nav_link [current_community, current_network, current_member.last_chat_participant, Message] do %>
+                      Messages
+                      <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
+                  <% end %>
                 <% end %>
               <% end %>
               <%= nav_link "Sign out", destroy_member_session_path(current_community), method: :delete %>

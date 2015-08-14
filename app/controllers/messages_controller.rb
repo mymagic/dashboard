@@ -18,7 +18,10 @@ class MessagesController < ApplicationController
 
   def create
     authorize! :send_message_to, @receiver
-    if @message.update(sender: current_member, receiver: @receiver, network: current_network)
+    if @message.
+       update(
+         sender: current_member, receiver: @receiver, network: current_network)
+      expire_fragments!
       flash[:notice] = 'Message has been sent.'
     else
       flash[:alert] = 'Error sending message.'
@@ -32,6 +35,12 @@ class MessagesController < ApplicationController
   end
 
   protected
+
+  def expire_fragments!
+    [@receiver, current_member].each do |member|
+      expire_fragment(member.cache_key_for_messages_navigation)
+    end
+  end
 
   def message_params
     params.require(:message).permit(:body)
