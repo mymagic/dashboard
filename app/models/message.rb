@@ -4,8 +4,8 @@ class Message < ActiveRecord::Base
   attr_accessor :network
 
   # Associations
-  belongs_to :sender, class_name: 'Member'
-  belongs_to :receiver, class_name: 'Member'
+  belongs_to :sender, class_name: 'Member', touch: true
+  belongs_to :receiver, class_name: 'Member', touch: true
 
   # Validations
   validates :sender, :receiver, :body, presence: true

@@ -278,10 +278,6 @@ class Member < ActiveRecord::Base
         dependent: :destroy
       )
 
-      def cache_key_for_messages_navigation
-        "community/#{ community_id  }/messages/member/#{ id }"
-      end
-
       def messages
         Message.with(self)
       end

@@ -21,13 +21,15 @@ class MessagesController < ApplicationController
     if @message.
        update(
          sender: current_member, receiver: @receiver, network: current_network)
-      expire_fragments!
       flash[:notice] = 'Message has been sent.'
     else
       flash[:alert] = 'Error sending message.'
     end
 
-    redirect_to community_network_member_messages_path(current_community, current_network, @receiver)
+    redirect_to community_network_member_messages_path(
+      current_community,
+      current_network,
+      @receiver)
   end
 
   def search
@@ -35,12 +37,6 @@ class MessagesController < ApplicationController
   end
 
   protected
-
-  def expire_fragments!
-    [@receiver, current_member].each do |member|
-      expire_fragment(member.cache_key_for_messages_navigation)
-    end
-  end
 
   def message_params
     params.require(:message).permit(:body)

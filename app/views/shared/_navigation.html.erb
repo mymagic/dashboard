@@ -44,7 +44,9 @@
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown member">
             <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-              <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
+              <% cache(["unread_messages_count", @current_member]) do %>
+                <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>
+              <% end %>
               <%= image_tag(current_member.avatar.url(:icon), class: 'navbar-avatar img-rounded') %>
               <span class="caret"></span>
             </a>
@@ -60,7 +62,7 @@
               <%= nav_link "Change Password", "http://connect.mymagic.my/profile", target: '_blank' %>
               <%= nav_link "Preferences", edit_member_registration_path(current_community, current_network) %>
               <% if can? :read, Message %>
-                <% cache(@current_member.cache_key_for_messages_navigation) do %>
+                <% cache(["messages_navigation", @current_member]) do %>
                   <%= nav_link [current_community, current_network, current_member.last_chat_participant, Message] do %>
                       Messages
                       <%= content_tag('span', unread_messages.size, class: 'badge unread-messages') if unread_messages.present? %>

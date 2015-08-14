@@ -40,17 +40,12 @@ class Network < ActiveRecord::Base
   private
 
   def base_cache_key
-    "community/#{community_id}/networks/#{id}"
+    "/networks/#{id}/#{updated_at.to_i}"
   end
 
   [:availabilities, :activities].each do |relation|
     define_method "cache_key_for_#{ relation }" do
-      count          = send(relation).count
-      max_updated_at = send(relation).
-                       maximum(:updated_at).
-                       try(:utc).
-                       try(:to_s, :number)
-      "#{base_cache_key}/#{relation}-#{count}-#{max_updated_at}"
+      "#{base_cache_key}/#{relation}"
     end
   end
 end

@@ -15,9 +15,9 @@ module MessagesHelper
   def unread_messages_count_for(participant)
     return 0 unless @unread_messages.present?
 
-    @unread_messages.select { |message| message.sender_id == participant.id }
-                    .first
-                    .try(:unread_count) || 0
+    @unread_messages.
+      find { |m| m.sender_id == participant.id }.
+      try(:unread_count) || 0
   end
 
   def unread_messages
