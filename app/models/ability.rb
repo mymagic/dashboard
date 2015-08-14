@@ -98,7 +98,9 @@ class Ability
           network.memberships.any? ||
           network.companies.any?
       end
-      can :manage, [:calendar, Position, Event, Company, SocialMediaLink, Availability]
+      can(
+        :manage,
+        [:calendar, Position, Event, Company, SocialMediaLink, Availability])
       can :manage, Community, id: member.community.id
       can :manage, Discussion do |discussion|
         discussion.community.id == member.community.id
@@ -125,7 +127,15 @@ class Ability
       end
       can :manage, [Position, Event]
 
-      can([:create, :update, :manage_company, :invite_company_member, :manage_members_positions], Company)
+      can(
+        [
+          :create,
+          :update,
+          :manage_company,
+          :invite_company_member,
+          :manage_members_positions],
+        Company
+      )
       cannot :destroy, Company
 
       can :create, Member
