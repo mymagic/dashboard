@@ -86,6 +86,10 @@ gem 'kaminari'
 # Background processing in Rails
 gem 'sidekiq'
 
+# Memcached
+gem 'dalli'
+gem 'memcachier'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

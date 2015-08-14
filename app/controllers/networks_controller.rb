@@ -8,13 +8,8 @@ class NetworksController < ApplicationController
 
   def show
     authorize! :read, current_network
-    @activities = @activities.includes(:owner).ordered.limit(20)
     @events = current_network.events.upcoming.ordered
-    @availabilities = current_network.
-                      availabilities.
-                      joins(:member).
-                      by_daterange(Date.today, 1.week.from_now.to_date).
-                      ordered
+    @availabilities = current_network.availabilities_for_show
   end
 
   protected
@@ -30,9 +25,10 @@ class NetworksController < ApplicationController
   def set_activities
     @activities = begin
       if filter == :personal
-        @current_network.activities.for(current_member)
+        activities = @current_network.activities
+        activities.for(current_member).includes(:owner).ordered.limit(20)
       else
-        @current_network.activities
+        @current_network.activities_for_show
       end
     end
   end
@@ -42,5 +38,4 @@ class NetworksController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     redirect_to member.default_network
   end
-
 end
