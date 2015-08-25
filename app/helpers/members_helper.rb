@@ -31,7 +31,7 @@ module MembersHelper
   def member_name_link(member)
     link_to(
       member.full_name,
-      [member.community, member.default_network, member])
+      [member.community, (current_network || member.default_network), member])
   end
 
   def member_positions(member, with_spacing: false)
