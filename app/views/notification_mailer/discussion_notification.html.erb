@@ -4,7 +4,7 @@
 
 <div style="background-color: #EEE; padding: 15px;">
   <p><b><%= @discussion.title %></b></p>
-  <p><%= @discussion.body %></p>
+  <p><%= markdown @discussion.body %></p>
 </div>
 
 <p>

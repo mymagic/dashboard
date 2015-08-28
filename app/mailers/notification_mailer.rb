@@ -1,5 +1,6 @@
 class NotificationMailer < ApplicationMailer
   layout 'notification'
+  helper ApplicationHelper
 
   NOTIFICATIONS = %w(
     follower_notification
