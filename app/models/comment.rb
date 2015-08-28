@@ -18,6 +18,7 @@ class Comment < ActiveRecord::Base
            class_name: 'Activity::Commenting',
            as: :resource,
            dependent: :destroy
+  has_one :network, through: :discussion
 
   protected
 

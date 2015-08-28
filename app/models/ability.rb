@@ -54,6 +54,9 @@ class Ability
 
     can :read, [Activity, Community]
     can :read, [:calendar, Company, Member, Availability, Slot, Event]
+    can :read, Network do |network|
+      member.networks.include?(network)
+    end
 
     manage_slots(member)
     reserve_slots(member)
@@ -78,22 +81,33 @@ class Ability
     can :manage, Availability, member_id: member.id
 
     can :create, Comment do |comment|
-      comment.discussion.community_id == member.community_id
+      comment.discussion.community.id == member.community.id
     end
 
-    can([:create, :read, :follow, :unfollow, :tags],
-        Discussion,
-        community_id: member.community_id)
+    can [:create, :read, :follow, :unfollow, :tags], Discussion do |discussion|
+      member.networks.include?(discussion.network)
+    end
 
     case member.role
     when 'administrator'
-      can :administrate, [:application, Member, Event]
+      can :administrate, [:application, Member, Company, Event, Network]
 
-      can :manage, [:calendar, Position, Event, Company, SocialMediaLink, Availability]
-      can :manage, Community, id: member.community_id
-      can :manage, Discussion, community_id: member.community_id
+      can :manage, Network
+      cannot :destroy, Network do |network|
+        network.last_in_community? ||
+          network.memberships.any? ||
+          network.companies.any?
+      end
+      can(
+        :manage,
+        [:calendar, Position, Event, Company, SocialMediaLink, Availability])
+      can :manage, Community, id: member.community.id
+      can :manage, Discussion do |discussion|
+        discussion.community.id == member.community.id
+      end
+
       can :manage, Comment do |comment|
-        comment.discussion.community_id == member.community_id
+        comment.discussion.community.id == member.community.id
       end
 
       can([:manage_company, :invite_company_member, :manage_members_positions],
@@ -105,11 +119,23 @@ class Ability
       can :update, Member, role: ['administrator', 'staff', 'mentor', '', nil]
       can :destroy, Member, role: ['administrator', 'staff', 'mentor', '', nil]
     when 'staff'
-      can :administrate, [:application, Member, Company, Event]
+      can :administrate, [:application, Member, Company, Event, Network]
 
+      can :manage, Network
+      cannot :destroy, Network do |network|
+        network.last_in_community?
+      end
       can :manage, [Position, Event]
 
-      can([:create, :update, :manage_company, :invite_company_member, :manage_members_positions], Company)
+      can(
+        [
+          :create,
+          :update,
+          :manage_company,
+          :invite_company_member,
+          :manage_members_positions],
+        Company
+      )
       cannot :destroy, Company
 
       can :create, Member

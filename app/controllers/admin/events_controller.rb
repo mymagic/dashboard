@@ -15,6 +15,7 @@ module Admin
     end
 
     def index
+      @events = current_network.events if current_network
       @upcoming_events = @events.upcoming.ordered.page params[:page]
       @past_events     = @events.past.ordered
     end
@@ -53,9 +54,9 @@ module Admin
         :description,
         :time_zone,
         :external,
+        :network_id,
         :starts_at,
         :ends_at).merge(creator: current_member)
     end
-
   end
 end

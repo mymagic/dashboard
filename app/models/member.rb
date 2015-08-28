@@ -9,6 +9,7 @@ class Member < ActiveRecord::Base
 
   include SocialMediaLinkable
   include Followable
+  include NetworksConcern
 
   paginates_per 60
 
@@ -45,6 +46,9 @@ class Member < ActiveRecord::Base
 
   # Associations
   belongs_to :community
+
+  has_many :memberships, dependent: :destroy
+  has_many :networks, through: :memberships
 
   has_many :follows, dependent: :destroy
   has_many(
@@ -85,6 +89,10 @@ class Member < ActiveRecord::Base
   scope :active, -> {
     where(invitation_token: nil).where.not(confirmed_at: nil)
   }
+  scope :in_network, -> (network) {
+    joins(:networks).where(networks: { id: network.id })
+  }
+
 
   def full_name
     "#{ first_name } #{ last_name }"
@@ -136,6 +144,19 @@ class Member < ActiveRecord::Base
 
     def create_signup_activity
       Activity::Registering.create(owner: self, invited_by: invited_by)
+    end
+  end
+
+  concerning :Memberships do
+    included do
+      validate :must_have_at_least_one_network_membership
+    end
+
+    private
+
+    def must_have_at_least_one_network_membership
+      return if memberships.present?
+      errors.add :memberships, :must_have_at_least_one_network_membership
     end
   end
 
@@ -194,8 +215,11 @@ class Member < ActiveRecord::Base
           attributes[:company_id].blank?
         end)
 
-      def positions_in_companies
-        positions.group_by(&:company)
+      def positions_in_companies(network: nil)
+        return positions.group_by(&:company) if network.nil?
+        positions.group_by(&:company).select do |company, _|
+          company.networks.include? network
+        end
       end
     end
 

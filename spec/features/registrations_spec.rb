@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Registrations', type: :feature, js: false do
   shared_examples "canceling account" do
     it "cancels the members account" do
-      cancel_my_account(community)
+      cancel_my_account(community, network)
       expect(page).
         to have_content('Your account has been successfully cancelled')
     end
@@ -16,7 +16,10 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       within(:css, 'nav.navbar-standard') do
         expect(page).to have_content(user.first_name)
       end
-      update_my_account(community: community, first_name: 'NewFirstName')
+      update_my_account(
+        community: community,
+        network: network,
+        first_name: 'NewFirstName')
       within(:css, 'nav.navbar-standard') do
         expect(page).to have_content('NewFirstName')
       end
@@ -29,6 +32,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
       visit root_path
       update_my_account(
         community: community,
+        network: network,
         notifications: ['when someone starts following me'])
       expect(user.reload.receive?(:follower_notification)).to be_falsey
     end
@@ -37,7 +41,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
   shared_examples "seeing a change password link" do
     it 'displays a link to change my password on MaGIC connect' do
       visit root_path
-      within(:css, 'nav.navbar-standard ul.dropdown-menu') do
+      within(:css, 'li.member ul.dropdown-menu') do
         expect(page).
           to have_link(
             'Change Password',
@@ -57,6 +61,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
 
     context 'as mentor' do
       given(:user) { administrator }
+      given(:network) { user.default_network }
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
@@ -66,6 +71,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
 
     context 'as staff' do
       given(:user) { staff }
+      given(:network) { user.default_network }
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
@@ -75,6 +81,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
 
     context 'as regular member' do
       given(:user) { member }
+      given(:network) { user.default_network }
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'
@@ -84,6 +91,7 @@ RSpec.describe 'Registrations', type: :feature, js: false do
 
     context 'as mentor' do
       given(:user) { mentor }
+      given(:network) { user.default_network }
       background { as_user user }
       it_behaves_like 'changing first name'
       it_behaves_like 'canceling account'

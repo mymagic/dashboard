@@ -31,6 +31,10 @@ FactoryGirl.define do
     "community-#{ n }"
   end
 
+  sequence :network_name do |n|
+    "network-#{ n }"
+  end
+
   sequence :url do |n|
     "http://website#{ n }.com"
   end

@@ -1,11 +1,11 @@
 class Tag < ActiveRecord::Base
   # Associations
-  belongs_to :community
+  belongs_to :network
   has_many :taggings, dependent: :destroy
 
   # Validations
-  validates :name, :type, :community, presence: true
-  validates :name, uniqueness: { scope: [:type, :community_id] }
+  validates :name, :type, :network, presence: true
+  validates :name, uniqueness: { scope: [:type, :network_id] }
 
   def to_param
     "#{ id }-#{ name.parameterize }"

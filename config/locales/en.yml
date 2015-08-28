@@ -15,6 +15,8 @@ en:
       models:
         member:
           attributes:
+            memberships:
+              must_have_at_least_one_network_membership: must be a member of at least one network
             positions:
               must_have_at_least_one_position: must have at least one position at a company
         event:
@@ -29,3 +31,7 @@ en:
           attributes:
             member:
               cannot_follow_yourself: cannot follow yourself
+        company:
+          attributes:
+            networks:
+              must_have_at_least_one_network_membership: must be a member of at least one network

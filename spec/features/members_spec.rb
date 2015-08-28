@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Members', type: :feature, js: false do
   feature 'Community Members' do
     given!(:community) { create(:community) }
+    given!(:network) { community.default_network }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:regular_member) do
       create(:member, :confirmed, community: community)
@@ -18,8 +19,8 @@ RSpec.describe 'Members', type: :feature, js: false do
     end
 
     shared_examples "filtering the directory" do
-      context 'on the community directory' do
-        background { visit community_members_path(community) }
+      context 'on the network directory' do
+        background { visit community_network_members_path(community, network) }
         scenario 'showing all members' do
           within '.member-group' do
             [administrator, staff, regular_member, mentor, founder].each do |m|
@@ -88,14 +89,14 @@ RSpec.describe 'Members', type: :feature, js: false do
         before { create(:position, member: other_member, company: company) }
 
         scenario 'see member info' do
-          visit community_member_path(community, other_member)
+          visit community_network_member_path(community, network, other_member)
           within '.member__details' do
             expect(page).to have_content('A happy member of this community.')
             expect(page).to have_content(company.name)
           end
         end
         scenario 'follow the other member' do
-          visit community_member_path(community, other_member)
+          visit community_network_member_path(community, network, other_member)
           click_link 'Follow'
           expect(page).
             to have_content("You are now following #{ other_member.full_name }")
@@ -109,12 +110,12 @@ RSpec.describe 'Members', type: :feature, js: false do
 
     shared_examples "managing the company" do
       scenario "view the manage company menu" do
-        visit community_company_path(community, company)
+        visit community_network_company_path(community, network, company)
         expect(page).to have_content("Manage Company")
       end
 
       scenario 'visiting the invitiation page' do
-        visit community_company_path(community, company)
+        visit community_network_company_path(community, network, company)
         click_link "Invite members to company"
         expect(page).to have_content("Invite New Member to ACME")
       end
@@ -123,10 +124,12 @@ RSpec.describe 'Members', type: :feature, js: false do
         background do
           allow(MagicConnect).to receive(:user_exists?).and_return(true)
           invite_new_company_member(
-            company,
-            'new_member@example.com',
-            first_name: "Johann",
-            last_name: "Faust")
+            company: company,
+            network: network,
+            email: 'new_member@example.com',
+            attributes: {
+              first_name: "Johann",
+              last_name: "Faust"})
           sign_out
         end
 
@@ -142,7 +145,7 @@ RSpec.describe 'Members', type: :feature, js: false do
           expect(page).
             to have_content("Thank you for updating your profile! "\
                             "You are now signed in.")
-          visit community_company_path(community, company)
+          visit community_network_company_path(community, network, company)
           within ".company__members" do
             expect(page).to have_content("Johann Faust")
           end
@@ -157,7 +160,7 @@ RSpec.describe 'Members', type: :feature, js: false do
       it_behaves_like 'filtering the directory'
 
       scenario 'viewing company page' do
-        visit community_company_path(community, company)
+        visit community_network_company_path(community, network, company)
         expect(page).to_not have_content("Manage Company")
       end
     end

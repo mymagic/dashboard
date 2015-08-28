@@ -1,3 +1,4 @@
+<%= form.error :positions %>
 <%= form.simple_fields_for :positions do |position| %>
   <%= position.input :role, hint: "Will be displayed below the member's name." %>
   <%= position.input :founder, as: :boolean, hint: 'Founders can manage a company.' %>

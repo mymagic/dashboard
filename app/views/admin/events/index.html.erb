@@ -1,7 +1,11 @@
 <%
   title 'Events'
   page_header 'Events' do
-    link_to 'Create new Event', new_community_admin_event_path(current_community), class: 'btn btn-success'  if can? :create, Event
+    safe_join([
+      "Filter by: ",
+      network_filter_dropdown(resource: 'Event'),
+      link_to('Create new Event', new_community_admin_event_path(current_community), class: 'btn btn-success')
+    ], ' ')
   end
 %>
 
@@ -28,6 +32,7 @@
         <table class="table table-striped">
           <thead>
             <th></th>
+            <th class="dropdown"><%= network_filter_dropdown(resource: 'Event', html_class: 'btn-xs') %></th>
             <th>Title</th>
             <th>Starts at</th>
             <th>Ends at</th>

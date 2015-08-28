@@ -21,5 +21,10 @@ RSpec.describe Community, type: :model do
       community.save
       expect(community.reload.email).to match(/noreply@/)
     end
+    it 'should have at least one network' do
+      expect(community.networks).to be_empty
+      community.save
+      expect(community.reload.networks).to_not be_empty
+    end
   end
 end

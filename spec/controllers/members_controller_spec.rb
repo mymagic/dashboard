@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe MembersController, type: :controller do
+  let(:community) { create(:community) }
+  let(:network) { community.default_network }
+
   describe "GET #index" do
-    let(:community) { create(:community) }
-    let(:response) { get(:index, community_id: community) }
+    let(:response) { get(:index, community_id: community, network_id: network) }
     let(:members) { Member }
     it_behaves_like(
       "accessible by", :administrator, :mentor, :staff, :regular_member
@@ -14,7 +16,7 @@ RSpec.describe MembersController, type: :controller do
       let!(:member) { create(:member, :confirmed, community: community) }
       before do
         login(member)
-        get :index, community_id: community
+        get :index, community_id: community, network_id: network
       end
       it 'assigns the correct active members' do
         expect(assigns(:members)).to contain_exactly(member, active_member)
@@ -23,9 +25,8 @@ RSpec.describe MembersController, type: :controller do
   end
 
   describe "GET #show" do
-    let(:community) { create(:community) }
     let(:member) { create(:member, community: community) }
-    let(:response) { get(:show, id: member, community_id: community) }
+    let(:response) { get(:show, id: member, community_id: community, network_id: network) }
     it_behaves_like(
       "accessible by", :administrator, :mentor, :staff, :regular_member
     )
@@ -41,13 +42,13 @@ RSpec.describe MembersController, type: :controller do
         ]
       }
     end
-    let(:community) { create(:community) }
     let(:company) { create(:company, community: community) }
 
     def invite_new_member(attributes = {})
       post(
         :create,
         community_id: company.community,
+        network_id: company.default_network,
         company_id: company,
         member: (member_required_attributes).merge(attributes)
       )
@@ -97,7 +98,7 @@ RSpec.describe MembersController, type: :controller do
           end
           it 'redirects to the community company path' do
             expect(subject).
-              to redirect_to(community_company_path(community, company))
+              to redirect_to([community, network, company])
           end
         end
         context 'with already having that position at that company' do
@@ -114,7 +115,7 @@ RSpec.describe MembersController, type: :controller do
           it 'redirects to the new community company member path' do
             expect(subject).
               to redirect_to(
-                new_community_company_member_path(community, company))
+                new_community_network_company_member_path(community, network, company))
           end
         end
       end

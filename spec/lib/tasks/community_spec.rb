@@ -19,11 +19,15 @@ RSpec.describe 'community', type: :task do
   end
 
   it 'creates new community' do
-    expect { run_task('Community Name', 'community-name', 'admin@magic.com') }.to change { Community.count }.by(1)
+    expect {
+      run_task('Community Name', 'community-name', 'admin@magic.com')
+    }.to change(Community, :count).from(0).to(1)
   end
 
   it 'auto generates community slug' do
-    expect { run_task('Community Name', nil, 'admin@magic.com') }.to change { Community.count }.by(1)
+    expect {
+      run_task('Community Name', nil, 'admin@magic.com')
+    }.to change(Community, :count).from(0).to(1)
     expect(Community.last.slug).to eq('community-name')
   end
 

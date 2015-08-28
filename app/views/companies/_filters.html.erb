@@ -1,5 +1,9 @@
 <% filters.each do |filter| %>
   <%= content_tag 'li', role: 'presentation', class: (current_filter == filter ? 'active' : nil) do %>
-    <%= link_to filter.to_s.humanize, community_companies_path(current_community, filter: filter), remote: true %>
+    <%= link_to filter.to_s.humanize,
+                community_network_companies_path(current_community,
+                                                 current_network,
+                                                 filter: filter),
+                remote: true %>
   <% end %>
 <% end %>

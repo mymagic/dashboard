@@ -2,7 +2,7 @@
   <div class="page-header-action">
     <%= render partial: 'shared/follow_button', locals: { object: @member } %>
     <% if can? :send_message_to, @member %>
-      <%= link_to 'Private Message', community_member_messages_path(current_community, @member), class: 'btn btn-default' %>
+      <%= link_to 'Private Message', [current_community, current_network, @member, Message], class: 'btn btn-default' %>
     <% end %>
   </div>
   <h1><%= @member.full_name %></h1>

@@ -39,8 +39,9 @@ class SlotsController < ApplicationController
 
   def redirect_to_availabilty_path(notice)
     redirect_to(
-      community_member_availability_slots_path(
+      community_network_member_availability_slots_path(
         current_community,
+        current_network,
         @member,
         year: @availability.date.year,
         month: @availability.date.month,

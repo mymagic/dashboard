@@ -5,8 +5,9 @@ class Discussion < ActiveRecord::Base
   paginates_per 25
 
   # Associations
-  belongs_to :community
+  belongs_to :network
   belongs_to :author, class_name: 'Member', counter_cache: true
+  delegate :community, to: :network
 
   has_many :comments, dependent: :destroy
 
@@ -17,10 +18,9 @@ class Discussion < ActiveRecord::Base
            as: :resource,
            dependent: :destroy
 
-  before_validation :set_community, if: :author
   before_validation :set_author_as_follower, on: :create, if: :author
 
-  validates :title, :body, :author, :community, presence: true
+  validates :title, :body, :author, :network, presence: true
   validate :ensure_author_follows, on: :create
 
   after_create :create_activity
@@ -46,10 +46,6 @@ class Discussion < ActiveRecord::Base
     Activity::Discussing.create(owner: author, discussion: self)
   end
 
-  def set_community
-    self.community = author.community
-  end
-
   def set_author_as_follower
     followers << author
   end
@@ -60,7 +56,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def send_notifications
-    community.members.active.where.not(id: author).find_each do |receiver|
+    network.members.active.where.not(id: author).find_each do |receiver|
       Notifier.deliver(
         :discussion_notification,
         receiver,

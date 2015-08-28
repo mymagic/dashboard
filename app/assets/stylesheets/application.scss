@@ -3,6 +3,7 @@
 @import "bootstrap-sprockets";
 @import "bootstrap/variables";
 @import "bootstrap";
+@import "font-awesome";
 
 @import "jquery-sortable";
 
@@ -46,6 +47,10 @@ body {
   width: 100%;
 }
 
+#header-spacer {
+  height: 20px;
+  display: block;
+}
 .page-row {
   display: table-row;
   height: 1px;

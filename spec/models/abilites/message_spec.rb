@@ -2,20 +2,21 @@ require 'rails_helper'
 
 RSpec.describe Member, type: :model do
   let(:community) { create(:community) }
+  let(:network) { community.default_network }
   let(:other_community) { create(:community) }
   let(:other_member) { create(:member, :confirmed, community: community) }
-  let(:received_message) { create(:message, receiver: member) }
-  let(:sent_message) { create(:message, sender: member) }
-  let(:other_message) { create(:message, sender: other_member) }
+  let(:received_message) { create(:message, receiver: member, network: network) }
+  let(:sent_message) { create(:message, sender: member, network: network) }
+  let(:other_message) { create(:message, sender: other_member, network: network) }
 
   shared_examples "messaging abilities" do
-    it { is_expected.to     be_able_to(:send_message_to, other_member) }
+    it { is_expected.to be_able_to(:send_message_to, other_member) }
     it { is_expected.to_not be_able_to(:send_message_to, member) }
 
-    it { is_expected.to     be_able_to(:create, Message) }
+    it { is_expected.to be_able_to(:create, Message) }
 
-    it { is_expected.to     be_able_to(:read, received_message) }
-    it { is_expected.to     be_able_to(:read, sent_message) }
+    it { is_expected.to be_able_to(:read, received_message) }
+    it { is_expected.to be_able_to(:read, sent_message) }
     it { is_expected.to_not be_able_to(:read, other_message) }
   end
 

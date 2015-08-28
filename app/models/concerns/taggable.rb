@@ -16,7 +16,7 @@ module Taggable
   end
 
   def add_tag(name)
-    params = { name: name, community: community }
+    params = { name: name, network: network }
     tags_class = self.class.tags_class
     tag = tags_class.find_by(params) || tags_class.create(params)
     tags << tag unless tags.include? tag

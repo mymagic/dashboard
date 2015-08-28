@@ -1,12 +1,13 @@
 class Activity < ActiveRecord::Base
-  belongs_to :community
+  belongs_to :network, touch: true
   belongs_to :owner, class_name: 'Member'
   belongs_to :resource, polymorphic: true
   belongs_to :secondary_resource, polymorphic: true
+  delegate :community, to: :network
 
-  validates :community, :owner, :resource, presence: true
+  validates :network, :owner, :resource, presence: true
 
-  before_validation :set_community, if: :owner
+  before_validation :set_network
 
   FILTERS = %i(public personal).freeze
 
@@ -23,7 +24,7 @@ class Activity < ActiveRecord::Base
 
   protected
 
-  def set_community
-    self.community = owner.community
+  def set_network
+    self.network ||= resource.try(:network)
   end
 end

@@ -23,7 +23,7 @@ class Rsvp < ActiveRecord::Base
   def create_or_update_activity
     Activity::Rsvping.
       find_or_create_by(owner: member, event: event).
-      update(data: { state: self.to_s })
+      update(data: { state: self.to_s }, network: event.network)
   end
 
   def event_cannot_be_in_the_past

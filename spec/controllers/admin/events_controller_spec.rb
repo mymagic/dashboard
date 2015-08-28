@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Admin::EventsController, type: :controller do
   let(:community) { create(:community) }
-  let(:event) { create(:event, community: community) }
+  let(:network) { community.default_network }
+  let(:event) { create(:event, network: network) }
 
   describe "GET #index" do
     let(:response) { get(:index, community_id: community) }

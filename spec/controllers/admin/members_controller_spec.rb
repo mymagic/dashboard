@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Admin::MembersController, type: :controller do
+  let(:community) { create(:community) }
+  let(:network) { community.default_network }
+
   describe "GET #index" do
-    let(:community) { create(:community) }
     let(:response) { get(:index, community_id: community) }
     it_behaves_like "accessible by", :administrator, :staff
     describe 'assigning members' do
@@ -30,7 +32,6 @@ RSpec.describe Admin::MembersController, type: :controller do
   end
 
   describe "GET #edit" do
-    let(:community) { create(:community) }
     let(:response) { get(:edit, id: member, community_id: community) }
     context 'an administrator' do
       let(:member) { create(:administrator, community: community) }
@@ -51,7 +52,6 @@ RSpec.describe Admin::MembersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:community) { create(:community) }
     let(:response) do
       patch(
         :update,
@@ -79,7 +79,6 @@ RSpec.describe Admin::MembersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:community) { create(:community) }
     let(:response) { delete(:destroy, id: member, community_id: community) }
     context 'an administrator' do
       let(:member) { create(:administrator, community: community) }
@@ -100,8 +99,12 @@ RSpec.describe Admin::MembersController, type: :controller do
   end
 
   describe "PUT #create" do
-    let(:community) { create(:community) }
-    let(:member_required_attributes) { { email: 'email@example.com' } }
+    let(:member_required_attributes) do
+      {
+        email: 'email@example.com',
+        network_ids: [community.default_network.id]
+      }
+    end
 
     def invite_new_member(attributes = {})
       put(

@@ -1,10 +1,11 @@
 class Message < ActiveRecord::Base
   # Behaviors
   include Searchable
+  attr_accessor :network
 
   # Associations
-  belongs_to :sender, class_name: 'Member'
-  belongs_to :receiver, class_name: 'Member'
+  belongs_to :sender, class_name: 'Member', touch: true
+  belongs_to :receiver, class_name: 'Member', touch: true
 
   # Validations
   validates :sender, :receiver, :body, presence: true
@@ -69,6 +70,7 @@ class Message < ActiveRecord::Base
     Notifier.deliver(
       :message_notification,
       receiver,
-      message: self)
+      message: self,
+      network: network)
   end
 end

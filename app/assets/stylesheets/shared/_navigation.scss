@@ -1,6 +1,7 @@
 .navbar-magic {
   background-color: $nav-background-color;
   border: 0;
+  margin: 0;
   .navbar-toggle {
     .icon-bar {
       background-color: $nav-link-color;
@@ -29,7 +30,6 @@
       }
     }
     &.dropdown {
-      border: 0;
       img {
         vertical-align: top;
       }
@@ -58,6 +58,9 @@
           color: $nav-link-color;
         }
       }
+      &.member {
+        border: 0;
+      }
       &.open {
         a.dropdown-toggle {
           &:focus {
@@ -72,6 +75,9 @@
 
 .navbar-brand {
   border-right: 1px solid $nav-border-color;
+  a {
+    text-decoration: none;
+  }
   img {
     display: inline-block;
   }
@@ -89,9 +95,15 @@
       border-color: $nav-link-color-hover;
     }
   }
+  &-dropdown{
+    li {
+      border-right: 0;
+    }
+  }
 }
 
 .navbar-admin {
+  z-index: 2000;
   .navbar-brand {
     border: none;
   }

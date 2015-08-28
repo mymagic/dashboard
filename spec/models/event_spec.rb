@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Event, type: :model do
   context 'validations' do
-    subject { build(:event) }
+    let(:network) { create(:community).default_network }
+    subject { build(:event, network: network) }
 
     it { is_expected.to validate_presence_of(:creator) }
     it { is_expected.to validate_presence_of(:time_zone) }

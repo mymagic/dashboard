@@ -43,4 +43,29 @@ module BootstrapHelper
       )
     end
   end
+
+  def network_filter_dropdown(resource:, html_class: nil)
+    safe_join([
+      content_tag('button',
+                  class: "btn btn-default dropdown-toggle #{html_class}",
+                  id: 'network_filter_dropdown',
+                  'data-toggle' => 'dropdown') do
+        safe_join([
+          current_network.try(:name) || 'All Networks',
+          content_tag(:span, '', class: 'caret')
+        ], ' ')
+      end,
+      content_tag('ul',
+                  class: 'dropdown-menu',
+                  'alria-labelledby' => 'network_filter_dropdown') do
+        safe_join([
+          content_tag('li', link_to('All Networks', [current_community, :admin, resource.constantize])),
+          *current_community.networks.map do |network|
+            content_tag 'li', link_to(network.name, [current_community, network, :admin, resource.constantize])
+          end
+        ])
+      end
+    ])
+  end
+
 end

@@ -10,7 +10,8 @@ module CompanyParamsConcern
       :description,
       :logo,
       :logo_cache,
-      social_media_links_attributes: [:id, :service, :url, :_destroy]
+      social_media_links_attributes: [:id, :service, :url, :_destroy],
+      network_ids: []
     )
   end
 end

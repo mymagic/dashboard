@@ -1,6 +1,6 @@
 shared_examples "followable" do
-  let(:follower) { create(:member, community: followable.community) }
-  let(:adding_a_follower) { followable.followers << follower }
+  let(:follower) { create(:member, community: followable.try(:community) || followable.community) }
+  let(:adding_a_follower) { Follow.create(member: follower, followable: followable, network: follower.default_network) }
   describe 'adding a follower' do
     it 'adds a new follower' do
       expect { adding_a_follower }.

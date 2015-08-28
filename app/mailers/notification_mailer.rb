@@ -13,9 +13,10 @@ class NotificationMailer < ApplicationMailer
     discussion_notification
   )
 
-  def follower_notification(receiver, follower:)
+  def follower_notification(receiver, follower:, network:)
     @receiver = receiver
     @follower = follower
+    @network  = network
     mail(
       to: receiver.email,
       subject: "#{ follower.full_name } has started following you"
@@ -33,10 +34,11 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def message_notification(receiver, message:)
+  def message_notification(receiver, message:, network:)
     @receiver = receiver
     @sender   = message.sender
     @body     = message.body
+    @network  = network
     mail(
       to: receiver.email,
       subject: "#{ @sender.full_name } has sent you a new message"

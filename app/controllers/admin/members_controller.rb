@@ -6,6 +6,7 @@ module Admin
     include UploadConcern
 
     def index
+      @members = current_network.members if current_network
       @invited_members    = @members.invited.ordered
       @active_members     = @members.active.ordered.page params[:page]
     end
@@ -81,6 +82,7 @@ module Admin
         :avatar,
         :avatar_cache,
         :description,
+        network_ids: [],
         notifications: NotificationMailer.action_methods.map(&:to_sym),
         positions_attributes: [:company_id, :role, :founder, :_destroy, :id],
         social_media_links_attributes: [:id, :service, :url, :_destroy]

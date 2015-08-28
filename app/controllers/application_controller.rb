@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, with: :access_denied
   rescue_from Community::CommunityNotFound, with: :community_not_found
 
-  helper_method :current_community, :magic_connect_path
+  helper_method :current_community, :current_network, :magic_connect_path
 
   add_flash_types :warning
 
@@ -70,6 +70,10 @@ class ApplicationController < ActionController::Base
     request.xhr? ? false : 'application'
   end
 
+  def current_network
+    @current_network ||= params[:network_id] ? Network.friendly.find(params[:network_id]) : nil
+  end
+
   def current_community
     return unless params[:community_id]
     @current_community ||= Community.friendly.find(params[:community_id])
@@ -121,7 +125,7 @@ class ApplicationController < ActionController::Base
       url = if request.env["HTTP_REFERER"].present?
               :back
             else
-              community_path(current_member.community)
+              community_network_path(current_member.community, current_member.default_network)
             end
     else
       msg = "You have to log in to continue."

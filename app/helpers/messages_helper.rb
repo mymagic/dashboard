@@ -4,7 +4,7 @@ module MessagesHelper
     if highlighted_body
       participant_id = message.sender_id == current_member.id ? message.receiver_id : message.sender_id
 
-      link_to community_member_messages_path(current_community, participant_id) do
+      link_to community_network_member_messages_path(current_community, current_network, participant_id) do
         raw(highlighted_body.join(''))
       end
     else
@@ -15,9 +15,9 @@ module MessagesHelper
   def unread_messages_count_for(participant)
     return 0 unless @unread_messages.present?
 
-    @unread_messages.select { |message| message.sender_id == participant.id }
-                    .first
-                    .try(:unread_count) || 0
+    @unread_messages.
+      find { |m| m.sender_id == participant.id }.
+      try(:unread_count) || 0
   end
 
   def unread_messages
