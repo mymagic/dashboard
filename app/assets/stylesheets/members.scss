@@ -39,6 +39,14 @@
   }
 }
 
+.member-tooltip {
+  margin: 5px;
+  * {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 
 .member {
   &__header {

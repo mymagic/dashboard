@@ -24,7 +24,12 @@ module MembersHelper
   def member_avatar_link(member)
     link_to(
       image_tag(member.avatar.url(:icon), class: 'img-rounded'),
-      [member.community, (current_network || member.default_network), member]
+      [member.community, (current_network || member.default_network), member],
+      class: 'has-member-tooltip',
+      'data-toggle' => 'tooltip',
+      'data-placement' => 'top',
+      'data-html' => true,
+      'data-title': member_tooltip(member)
     )
   end
 
@@ -39,5 +44,27 @@ module MembersHelper
       "#{ company.name } (#{ positions.to_sentence })"
     end
     with_spacing ? safe_join(comp_pos, tag('br')) : comp_pos.to_sentence
+  end
+
+  def member_tooltip_positions(member)
+    comp_pos = member.positions_in_companies.map do |company, positions|
+      "#{ positions.to_sentence } #{ company_name_link(company) }"
+    end
+    comp_pos.to_sentence.html_safe
+  end
+
+  def member_tooltip(member)
+    content_tag(
+      :div,
+      safe_join([
+        image_tag(member.avatar.url(:small_thumb),
+                  class: 'img-circle',
+                  height: '60px',
+                  width: '60px'),
+        member_name_link(member),
+        member_tooltip_positions(member),
+      ]),
+      class: 'member-tooltip'
+    ).gsub('"', '\'')
   end
 end
