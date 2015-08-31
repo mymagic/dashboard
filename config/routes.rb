@@ -66,7 +66,7 @@ Rails.application.routes.draw do
           to: 'discussions#index',
           as: 'discussion_tag'
 
-      resources :discussions, except: [:edit, :update] do
+      resources :discussions do
         resources :comments, only: [:create, :destroy]
         member do
           patch :follow

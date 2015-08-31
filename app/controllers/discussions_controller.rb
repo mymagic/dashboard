@@ -32,6 +32,18 @@ class DiscussionsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    if @discussion.update(discussion_params)
+      redirect_to([@discussion.community, @discussion.network, @discussion],
+                  notice: 'Discussion was successfully updated.')
+    else
+      render 'edit', alert: 'Error updating discussion.'
+    end
+  end
+
   def destroy
     @discussion.destroy
     redirect_to(
