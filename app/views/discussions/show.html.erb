@@ -31,6 +31,18 @@ end  %>
     <% end %>
   <% end %>
 
+  <% if can? :update, @discussion %>
+    <div class="text-right col-lg-4">
+      <%=
+        link_to('Edit this Discussion',
+                edit_community_network_discussion_path( @discussion.community,
+                                                        @discussion.network,
+                                                        @discussion),
+                class: 'btn btn-xs btn-hover btn-hover-danger',
+                ) %>
+    </div>
+  <% end %>
+
   <% if can? :destroy, @discussion %>
     <div class="text-right col-lg-4">
       <%=

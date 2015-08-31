@@ -65,8 +65,6 @@ class Ability
     create_messages(member)
     read_messages(member)
 
-    cannot :unfollow, Discussion, author_id: member.id
-
     can :rsvp, Event
     cannot :rsvp, Event do |event|
       event.ended?
@@ -80,13 +78,16 @@ class Ability
 
     can :manage, Availability, member_id: member.id
 
+    cannot :unfollow, Discussion, author_id: member.id
+    can [:update, :destroy], Discussion, author_id: member.id
+    can [:create, :read, :follow, :unfollow, :tags], Discussion do |discussion|
+      member.networks.include?(discussion.network)
+    end
+
     can :create, Comment do |comment|
       comment.discussion.community.id == member.community.id
     end
 
-    can [:create, :read, :follow, :unfollow, :tags], Discussion do |discussion|
-      member.networks.include?(discussion.network)
-    end
 
     case member.role
     when 'administrator'
