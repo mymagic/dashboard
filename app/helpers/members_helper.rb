@@ -50,7 +50,7 @@ module MembersHelper
     comp_pos = member.positions_in_companies.map do |company, positions|
       "#{ positions.to_sentence } #{ company_name_link(company) }"
     end
-    comp_pos.to_sentence.html_safe
+    comp_pos.join(' ').html_safe
   end
 
   def member_tooltip(member)
