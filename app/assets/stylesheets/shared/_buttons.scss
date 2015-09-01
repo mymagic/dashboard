@@ -1,8 +1,14 @@
 .btn-hover {
   border: 0;
   transition: all 0.3s ease 0s;
+  &.btn-hover-success:hover {
+    @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
+  }
   &.btn-hover-danger:hover {
     @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+  }
+  &.btn-hover-warning:hover {
+    @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
   }
 }
 

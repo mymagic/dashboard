@@ -67,7 +67,7 @@ Rails.application.routes.draw do
           as: 'discussion_tag'
 
       resources :discussions do
-        resources :comments, only: [:create, :destroy]
+        resources :comments, only: [:create, :update, :destroy]
         member do
           patch :follow
           delete :unfollow

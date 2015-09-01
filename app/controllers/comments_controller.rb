@@ -13,6 +13,21 @@ class CommentsController < ApplicationController
     end
   end
 
+  def update
+    respond_to do |format|
+      if @comment.update(comment_params)
+        format.html do
+          redirect_to([@discussion.community, @discussion.network, @discussion],
+                      notice: 'Comment was successfully created.')
+        end
+        format.json { respond_with_bip(@comment) }
+      else
+        format.html { redirect_to :back, alert: 'Error creating comment.' }
+        format.json { respond_with_bip(@comment) }
+      end
+    end
+  end
+
   def destroy
     @comment.destroy
     respond_to do |format|
