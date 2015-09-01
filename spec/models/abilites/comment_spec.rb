@@ -11,6 +11,7 @@ RSpec.describe Comment, type: :model do
     build(:comment,
           author: create(:author, :confirmed, community: other_community))
   end
+  let(:his_own_comment) { build(:comment, author: member) }
 
   context 'as an adminstrator' do
     let(:member) { build(:administrator, community: community) }
@@ -36,9 +37,13 @@ RSpec.describe Comment, type: :model do
       it { is_expected.to be_able_to(:create, comment_in_community) }
       it { is_expected.to_not be_able_to(:create, comment_in_other_community) }
 
-      it { is_expected.to_not be_able_to(:destroy, Comment) }
+      it { is_expected.to be_able_to(:destroy, his_own_comment) }
       it { is_expected.to_not be_able_to(:destroy, comment_in_community) }
       it { is_expected.to_not be_able_to(:destroy, comment_in_other_community) }
+
+      it { is_expected.to be_able_to(:update, his_own_comment) }
+      it { is_expected.to_not be_able_to(:update, comment_in_community) }
+      it { is_expected.to_not be_able_to(:update, comment_in_other_community) }
     end
   end
 
@@ -51,9 +56,13 @@ RSpec.describe Comment, type: :model do
       it { is_expected.to be_able_to(:create, comment_in_community) }
       it { is_expected.to_not be_able_to(:create, comment_in_other_community) }
 
-      it { is_expected.to_not be_able_to(:destroy, Comment) }
+      it { is_expected.to be_able_to(:destroy, his_own_comment) }
       it { is_expected.to_not be_able_to(:destroy, comment_in_community) }
       it { is_expected.to_not be_able_to(:destroy, comment_in_other_community) }
+
+      it { is_expected.to be_able_to(:update, his_own_comment) }
+      it { is_expected.to_not be_able_to(:update, comment_in_community) }
+      it { is_expected.to_not be_able_to(:update, comment_in_other_community) }
     end
   end
 
@@ -66,9 +75,13 @@ RSpec.describe Comment, type: :model do
       it { is_expected.to be_able_to(:create, comment_in_community) }
       it { is_expected.to_not be_able_to(:create, comment_in_other_community) }
 
-      it { is_expected.to_not be_able_to(:destroy, Comment) }
+      it { is_expected.to be_able_to(:destroy, his_own_comment) }
       it { is_expected.to_not be_able_to(:destroy, comment_in_community) }
       it { is_expected.to_not be_able_to(:destroy, comment_in_other_community) }
+
+      it { is_expected.to be_able_to(:update, his_own_comment) }
+      it { is_expected.to_not be_able_to(:update, comment_in_community) }
+      it { is_expected.to_not be_able_to(:update, comment_in_other_community) }
     end
   end
 end
