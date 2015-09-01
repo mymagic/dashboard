@@ -84,6 +84,7 @@ class Ability
       member.networks.include?(discussion.network)
     end
 
+    can [:update, :destroy], Comment, author_id: member.id
     can :create, Comment do |comment|
       comment.discussion.community.id == member.community.id
     end

@@ -11,6 +11,7 @@
 #= require nprogress
 #= require nprogress-ajax
 #= require typeahead.bundle
+#= require best_in_place
 
 #= require uploader
 #= require jquery-fileupload/basic
@@ -19,6 +20,7 @@
 #= require elements
 #= require availabilities
 #= require calendar
+#= require discussion
 #= require messages
 #= require uploaders
 #= require admin/positions
