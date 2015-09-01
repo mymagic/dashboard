@@ -18,11 +18,14 @@
       <%= best_in_place(
             [current_community, current_network, comment.try(:discussion), comment],
             :body,
+            as: 'textarea',
+            inner_class: 'text required form-control',
+            html_attrs: { rows: 6 },
             activator: "#comment-edit-link-#{comment.id}",
-            ok_button: 'save',
-            ok_button_class: 'btn btn-xs btn-default',
-            cancel_button: 'cancel',
-            cancel_button_class: 'btn btn-xs',
+            ok_button: 'Save',
+            ok_button_class: 'btn btn-default',
+            cancel_button: 'Cancel',
+            cancel_button_class: 'btn',
             display_with: -> (body) { markdown body } ) %>
       <% if comment.is_a?(Comment) %>
         <div class="text-right">
