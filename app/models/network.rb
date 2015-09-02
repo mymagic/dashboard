@@ -13,8 +13,8 @@ class Network < ActiveRecord::Base
   has_many :tags, dependent: :destroy
   has_many :discussion_tags
   has_many :availabilities, dependent: :destroy
-  has_many :events, dependent: :destroy
   has_and_belongs_to_many :companies
+  has_and_belongs_to_many :events
 
   scope :ordered, -> { order(name: :desc) }
 

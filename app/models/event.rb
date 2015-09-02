@@ -34,6 +34,8 @@ class Event < ActiveRecord::Base
            as: :resource,
            dependent: :destroy
 
+  has_and_belongs_to_many :networks
+
   # Validations
   validates :location_detail,
             :starts_at,
@@ -43,6 +45,7 @@ class Event < ActiveRecord::Base
             :creator,
             presence: true
   validates :location_type, inclusion: { in: LOCATION_TYPES.keys.map(&:to_s) }
+  validates :networks, presence: true
   validate :ends_at_cannot_precede_starts_at,
            if: -> { ends_at.present? && starts_at.present? }
 
