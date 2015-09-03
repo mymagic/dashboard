@@ -98,10 +98,11 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def event_rsvp_notification(receiver, event:, rsvp:)
+  def event_rsvp_notification(receiver, event:, rsvp:, network:)
     @receiver = receiver
     @event = event
     @rsvp = rsvp
+    @network = network
     mail(
       to: receiver.email,
       subject: "You have RSVP'd to #{ @event.title } as #{ @rsvp }"

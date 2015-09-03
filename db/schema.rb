@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721105609) do
+ActiveRecord::Schema.define(version: 20150902083447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,11 +126,17 @@ ActiveRecord::Schema.define(version: 20150721105609) do
     t.decimal  "location_latitude",  precision: 10, scale: 6, default: 2.909047,   null: false
     t.decimal  "location_longitude", precision: 10, scale: 6, default: 101.654669, null: false
     t.integer  "location_zoom",                               default: 15,         null: false
-    t.integer  "network_id"
   end
 
   add_index "events", ["creator_id"], name: "index_events_on_creator_id", using: :btree
-  add_index "events", ["network_id"], name: "index_events_on_network_id", using: :btree
+
+  create_table "events_networks", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "network_id"
+  end
+
+  add_index "events_networks", ["event_id"], name: "index_events_networks_on_event_id", using: :btree
+  add_index "events_networks", ["network_id"], name: "index_events_networks_on_network_id", using: :btree
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id"

@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
-  let(:community) { create(:community) }
-  let(:network) { community.default_network }
-  let(:event) do
-    create(:event, network: network)
-  end
+  let(:event) { create(:event) }
+  let(:network) { event.default_network }
+  let(:community) { network.community }
   describe "GET #show" do
     let(:response) do
       get(:show, id: event, community_id: community, network_id: network)

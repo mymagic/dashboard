@@ -77,7 +77,17 @@ $ ->
         '&signed_in=true&callback=document._initializeMap'
     document.body.appendChild(script)
 
+  setupNetworkCheckboxes = ->
+    $('input[name="event[external]"]').on 'change', ->
+      $('.network_checkboxes').prop('checked', false)
+
+    $('.network_checkboxes').on 'change', ->
+      if $('input[name="event[external]"]:checked').val() == 'false'
+        $('.network_checkboxes').prop('checked', false)
+        $(this).prop('checked', true)
+
   init = ->
     setupMap() if ($('#map_canvas').length > 0)
+    setupNetworkCheckboxes()
 
   $(document).on('ujs', init)

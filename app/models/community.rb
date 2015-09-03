@@ -12,7 +12,7 @@ class Community < ActiveRecord::Base
   has_many :positions,      dependent: :destroy
   has_many :social_media_links, dependent: :destroy
   has_many :networks, dependent: :destroy
-  has_many :events, through: :networks
+  has_many :events, -> { uniq }, through: :networks
 
   # Validations
   validates :name, :slug, presence: true

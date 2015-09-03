@@ -8,12 +8,12 @@ class Event < ActiveRecord::Base
 
   # Behaviors
   include TimeInZone
+  include NetworksConcern
   time_in_zone_for :starts_at, :ends_at
 
   # Associations
   belongs_to :creator, class_name: 'Member'
   belongs_to :network
-  delegate :community, to: :network
 
   has_many :rsvps, dependent: :destroy
   has_many :members, through: :rsvps do
@@ -34,6 +34,8 @@ class Event < ActiveRecord::Base
            as: :resource,
            dependent: :destroy
 
+  has_and_belongs_to_many :networks
+
   # Validations
   validates :location_detail,
             :starts_at,
@@ -43,6 +45,7 @@ class Event < ActiveRecord::Base
             :creator,
             presence: true
   validates :location_type, inclusion: { in: LOCATION_TYPES.keys.map(&:to_s) }
+  validates :networks, presence: true
   validate :ends_at_cannot_precede_starts_at,
            if: -> { ends_at.present? && starts_at.present? }
 
@@ -70,10 +73,16 @@ class Event < ActiveRecord::Base
     ends_at < Time.zone.now
   end
 
+  def community
+    networks.first.community
+  end
+
   private
 
   def create_activity
-    Activity::EventCreating.create(owner: creator, event: self)
+    networks.each do |network|
+      Activity::EventCreating.create(owner: creator, event: self, network: network)
+    end
   end
 
   def ends_at_cannot_precede_starts_at

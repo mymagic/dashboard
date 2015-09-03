@@ -1,8 +1,9 @@
 module Admin
   class EventsController < AdminController
-    load_and_authorize_resource through: :current_community
+    load_and_authorize_resource through: :current_community, except: [:new, :create]
 
     def create
+      @event = Event.new(event_params)
       if @event.save
         redirect_to_admin_events_path('Event was successfully created.')
       else
@@ -11,6 +12,7 @@ module Admin
     end
 
     def new
+      @event = Event.new
       @event.assign_attributes(time_zone: current_member.time_zone)
     end
 
@@ -54,9 +56,9 @@ module Admin
         :description,
         :time_zone,
         :external,
-        :network_id,
         :starts_at,
-        :ends_at).merge(creator: current_member)
+        :ends_at,
+        network_ids: []).merge(creator: current_member)
     end
   end
 end
