@@ -10,11 +10,11 @@ class EventsController < ApplicationController
     @rsvp = @event.rsvps.find_or_initialize_by(member: current_member)
     if @rsvp.update_attributes(rsvp_params)
       redirect_to(
-        [@event.community, @event.network, @event],
+        [current_community, current_network, @event],
         notice: "You RSVP'd to the event as #{ @rsvp }.")
     else
       redirect_to(
-        [@event.community, @event.network, @event],
+        [current_community, current_network, @event],
         alert: "Error creating your RSVP : #{@rsvp.errors.first.second}")
     end
   end
@@ -22,6 +22,6 @@ class EventsController < ApplicationController
   private
 
   def rsvp_params
-    params.require(:rsvp).permit(:state)
+    params.require(:rsvp).permit(:state).merge(network: current_network)
   end
 end

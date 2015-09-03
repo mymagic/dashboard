@@ -1,7 +1,7 @@
 <tr>
   <td><%= event_type_label(event) %></td>
-  <td><%= event.network.name %></td>
-  <td><%= link_to event.title.truncate(30), [event.community, event.network, event] %></td>
+  <td><%= event.networks.map(&:name).join(', ') %></td>
+  <td><%= link_to event.title.truncate(30), [event.community, event.default_network, event] %></td>
   <td><%= event.starts_at.strftime('%A, %B %d, %Y at %l:%M%P') %></td>
   <td><%= event.ends_at.strftime('%A, %B %d, %Y at %l:%M%P') %></td>
   <td><%= event.time_zone.truncate(15) %></td>

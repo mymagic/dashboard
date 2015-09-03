@@ -8,12 +8,12 @@ class Event < ActiveRecord::Base
 
   # Behaviors
   include TimeInZone
+  include NetworksConcern
   time_in_zone_for :starts_at, :ends_at
 
   # Associations
   belongs_to :creator, class_name: 'Member'
   belongs_to :network
-  delegate :community, to: :network
 
   has_many :rsvps, dependent: :destroy
   has_many :members, through: :rsvps do
@@ -71,6 +71,10 @@ class Event < ActiveRecord::Base
 
   def ended?
     ends_at < Time.zone.now
+  end
+
+  def community
+    networks.first.community
   end
 
   private
