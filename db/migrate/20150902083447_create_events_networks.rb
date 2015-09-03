@@ -13,7 +13,7 @@ class CreateEventsNetworks < ActiveRecord::Migration
       end
       dir.down do
         Event.find_each do |event|
-          events.update(network: event.networks.first)
+          event.update(network: event.networks.first)
         end
       end
     end
