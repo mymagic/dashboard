@@ -80,7 +80,9 @@ class Event < ActiveRecord::Base
   private
 
   def create_activity
-    Activity::EventCreating.create(owner: creator, event: self)
+    networks.each do |network|
+      Activity::EventCreating.create(owner: creator, event: self, network: network)
+    end
   end
 
   def ends_at_cannot_precede_starts_at
