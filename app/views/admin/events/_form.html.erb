@@ -8,8 +8,7 @@
       <%= f.association :networks,
                         input_html: { class: 'network_checkboxes' },
                         collection: current_community.networks,
-                        as: :check_boxes,
-                        include_blank: false %>
+                        as: :check_boxes %>
     <% end %>
 
     <%= panel 'Location and Time', columns: 7 do %>
