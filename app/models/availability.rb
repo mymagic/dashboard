@@ -22,6 +22,7 @@ class Availability < ActiveRecord::Base
            class_name: 'Activity::AvailabilityCreating',
            as: :resource,
            dependent: :destroy
+  has_and_belongs_to_many :networks
 
   # Validations
   validates :member_id, :date, :time,
@@ -30,6 +31,7 @@ class Availability < ActiveRecord::Base
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
+  validates :networks, presence: true
   validate :start_time_must_be_less_than_end_time
   validate :divisible_by_slot_duration
 
