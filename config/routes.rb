@@ -1,4 +1,8 @@
+require 'sidekiq/web'
 Rails.application.routes.draw do
+  authenticate :member, lambda { |u| u.administrator? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   resources :communities, path: '', except: :index do
     get 'admin/dashboard'
 
