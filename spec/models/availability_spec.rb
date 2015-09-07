@@ -12,7 +12,7 @@ RSpec.describe Availability, type: :model do
     it { is_expected.to validate_presence_of(:location_detail) }
 
     it { is_expected.to belong_to(:member) }
-    it { is_expected.to belong_to(:network) }
+    it { is_expected.to have_and_belong_to_many(:networks) }
     it { is_expected.to have_many(:slots) }
   end
 end

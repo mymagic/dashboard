@@ -1,6 +1,7 @@
 class Slot < ActiveRecord::Base
   # Accessors
   attr_accessor :available
+  attr_accessor :network
 
   # Behaviors
   include TimeInZone
@@ -38,11 +39,11 @@ class Slot < ActiveRecord::Base
   def send_notifications(type)
     Notifier.deliver(
       "mentor_slot_#{ type }_notification".to_sym,
-      mentor, slot: self, participant: participant
+      mentor, slot: self, participant: participant, network: network
     )
     Notifier.deliver(
       "participant_slot_#{ type }_notification".to_sym,
-      participant, slot: self, mentor: mentor
+      participant, slot: self, mentor: mentor, network: network
     )
   end
 
@@ -50,7 +51,7 @@ class Slot < ActiveRecord::Base
     Activity::SlotBooking.create(
       owner: participant,
       mentor: mentor,
-      network: availability.network
+      network: network
     )
   end
 end

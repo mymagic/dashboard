@@ -18,7 +18,7 @@ RSpec.describe 'Admin/Events', type: :feature, js: false do
         # General Information
         fill_in 'Title', with: 'Greatest Event of all time'
         fill_in 'Description', with: 'Come to our great Event!'
-        find('.network_checkboxes').set(true)
+        check network.name
 
         # Location and time
         select 'Address', from: 'event_location_type'

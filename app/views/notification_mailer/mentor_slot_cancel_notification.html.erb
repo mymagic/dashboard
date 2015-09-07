@@ -1,20 +1,9 @@
 <p>
-The office hour with <%= link_to(@participant.full_name, [@participant.community, @availability.network, @participant]) %> on
+The office hour with <%= @participant.full_name %> on
 </p>
 <p>
   <%= @date_and_time %>
 </p>
 <p>
   has been cancelled.
-</p>
-<p>
-  <%= link_to("Click here to manage your availabilities for this date.",
-  community_network_member_availability_slots_url(
-    @availability.community,
-    @availability.network,
-    @availability.member,
-    year: @availability.date.year,
-    month: @availability.date.month,
-    day: @availability.date.day)
-) %>
 </p>

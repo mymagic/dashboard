@@ -1,6 +1,7 @@
 class Availability < ActiveRecord::Base
   # Accessors
   attr_accessor :end_time
+  attr_accessor :current_network
 
   # Alias
   alias_attribute :start_time, :time
@@ -22,6 +23,7 @@ class Availability < ActiveRecord::Base
            class_name: 'Activity::AvailabilityCreating',
            as: :resource,
            dependent: :destroy
+  has_and_belongs_to_many :networks
 
   # Validations
   validates :member_id, :date, :time,
@@ -30,6 +32,7 @@ class Availability < ActiveRecord::Base
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
+  validates :networks, presence: true
   validate :start_time_must_be_less_than_end_time
   validate :divisible_by_slot_duration
 
@@ -114,9 +117,15 @@ class Availability < ActiveRecord::Base
   end
 
   def create_activity
-    Activity::AvailabilityCreating.find_or_create_by(
-      owner: member,
-      availability: self
-    )
+
+  end
+  def create_activity
+    networks.each do |network|
+      Activity::AvailabilityCreating.find_or_create_by(
+        owner: member,
+        availability: self,
+        network: network
+      )
+    end
   end
 end

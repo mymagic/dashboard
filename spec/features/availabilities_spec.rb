@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Availabilities', type: :feature, js: false do
-  let(:community) { create(:community) }
-  let(:network) { community.default_network }
-  let(:mentor) { create(:member, :confirmed, community: community) }
+  let(:mentor) { create(:member, :confirmed, role: 'mentor') }
+  let(:network) { mentor.default_network }
+  let(:community) { network.community }
   let(:participant) { create(:member, :confirmed, community: community) }
   let!(:availability) do
     create(:availability,
-           network: network,
            member: mentor,
            slot_duration: 30)
   end
@@ -34,7 +33,7 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
 
       expect(page).to have_content 'Availability was successfully created.'
 
-      visit community_path(community)
+      visit community_network_path(community, network)
       within '.activity-group' do
         expect(page).
           to have_content("#{ member.full_name } setup office hours on "\
