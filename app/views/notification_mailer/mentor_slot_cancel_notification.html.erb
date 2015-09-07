@@ -1,5 +1,5 @@
 <p>
-The office hour with <%= link_to(@participant.full_name, [@participant.community, @availability.network, @participant]) %> on
+The office hour with <%= link_to(@participant.full_name, [@network.community, @network, @participant]) %> on
 </p>
 <p>
   <%= @date_and_time %>
@@ -10,8 +10,8 @@ The office hour with <%= link_to(@participant.full_name, [@participant.community
 <p>
   <%= link_to("Click here to manage your availabilities for this date.",
   community_network_member_availability_slots_url(
-    @availability.community,
-    @availability.network,
+    @network.community,
+    @network,
     @availability.member,
     year: @availability.date.year,
     month: @availability.date.month,

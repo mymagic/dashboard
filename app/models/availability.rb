@@ -1,6 +1,7 @@
 class Availability < ActiveRecord::Base
   # Accessors
   attr_accessor :end_time
+  attr_accessor :current_network
 
   # Alias
   alias_attribute :start_time, :time
@@ -116,9 +117,15 @@ class Availability < ActiveRecord::Base
   end
 
   def create_activity
-    Activity::AvailabilityCreating.find_or_create_by(
-      owner: member,
-      availability: self
-    )
+
+  end
+  def create_activity
+    networks.each do |network|
+      Activity::AvailabilityCreating.find_or_create_by(
+        owner: member,
+        availability: self,
+        network: network
+      )
+    end
   end
 end

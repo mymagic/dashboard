@@ -46,11 +46,12 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def mentor_slot_reserve_notification(receiver, slot:, participant:)
+  def mentor_slot_reserve_notification(receiver, slot:, participant:, network:)
     @receiver = receiver
     @availability = slot.availability
     @participant = participant
     @date_and_time = slot_datetime_string(slot)
+    @network = network
 
     mail(
       to: receiver.email,
@@ -59,11 +60,12 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def participant_slot_reserve_notification(receiver, slot:, mentor:)
+  def participant_slot_reserve_notification(receiver, slot:, mentor:, network:)
     @receiver = receiver
     @availability = slot.availability
     @mentor = mentor
     @date_and_time = slot_datetime_string(slot)
+    @network = network
 
     mail(
       to: receiver.email,
@@ -72,11 +74,12 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def participant_slot_cancel_notification(receiver, slot:, mentor:)
+  def participant_slot_cancel_notification(receiver, slot:, mentor:, network:)
     @receiver = receiver
     @availability = slot.availability
     @mentor = mentor
     @date_and_time = slot_datetime_string(slot)
+    @network = network
 
     mail(
       to: receiver.email,
@@ -85,11 +88,12 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def mentor_slot_cancel_notification(receiver, slot:, participant:)
+  def mentor_slot_cancel_notification(receiver, slot:, participant:, network:)
     @receiver = receiver
     @availability = slot.availability
     @participant = participant
     @date_and_time = slot_datetime_string(slot)
+    @network = network
 
     mail(
       to: receiver.email,
