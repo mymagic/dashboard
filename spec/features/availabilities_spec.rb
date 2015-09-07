@@ -44,37 +44,9 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
 
   context 'as a mentor' do
     let(:member) { mentor }
-    let(:next_year) { 1.year.from_now.year }
     before { as_user member }
 
-    it 'creates a availability' do
-      visit community_path(community)
-
-      within '.navbar-standard' do
-        click_on 'Setup Office Hours'
-      end
-
-      select next_year, from: 'availability_date_1i'
-      select 'January', from: 'availability_date_2i'
-      select '1', from: 'availability_date_3i'
-      select '15', from: 'availability_start_time_4i'
-      select '17', from: 'availability_end_time_4i'
-      select '30', from: 'Slot duration'
-      select '(GMT+07:00) Bangkok', from: 'Time zone'
-      select 'Skype', from: 'Location type'
-      fill_in 'Location detail', with: 'MyMaGIC'
-      check network.name
-      click_on 'Create Availability'
-
-      expect(page).to have_content 'Availability was successfully created.'
-
-      visit community_path(community)
-      within '.activity-group' do
-        expect(page).
-          to have_content("#{ member.full_name } setup office hours on "\
-                          "January 01, #{ next_year }")
-      end
-    end
+    it_behaves_like 'creating an availability'
 
     it 'allow to edit an availability' do
       visit(
