@@ -85,6 +85,7 @@ gem 'kaminari'
 
 # Background processing in Rails
 gem 'sidekiq'
+gem 'sinatra'
 
 # Memcached
 gem 'dalli'
