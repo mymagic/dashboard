@@ -102,6 +102,8 @@ gem 'redcarpet'
 # Best in place for in place editing
 gem 'best_in_place'
 
+gem 'ruby-mcrypt'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
