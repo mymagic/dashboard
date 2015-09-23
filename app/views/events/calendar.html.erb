@@ -1,0 +1,8 @@
+<% @events.each do |event| %>
+  <%= link_to community_network_event_path(
+    current_community,
+    current_network,
+    event.id), class: "#{event.external? ? 'external-events-details' : 'community-events-details'}" do %>
+    <div><%= event.title %><span class="event-time"><%= event_start_time(event, '%l:%M%P') %></span></div>
+  <% end %>
+<% end %>

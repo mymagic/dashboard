@@ -12,40 +12,13 @@ $ ->
       networkSlug = $('body').data('network-slug')
       window.location.href = Routes.community_network_event_path(communitySlug, networkSlug, $(@).data('id'))
 
-    .on 'click', '.calendar .fc-event-container.availability', ->
-      self = $(@)
-      memberId = self.closest('.calendar').data('member-id')
+    .on 'mouseleave', '.calendar-popover', ->
+      id = $(this).attr('id')
+      $eventItem = $("[aria-describedby=#{id}]")
 
-      $('.fc-event-container')
-        .not(@)
-        .popover 'hide'
-        .data('popover-is-shown', false)
-
-      if self.data('popover-is-shown')
-        self.popover 'hide'
-        self.data('popover-is-shown', false)
-        return
-
-      index = self.index()
-      communitySlug = $('body').data('community-slug')
-      networkSlug = $('body').data('network-slug')
-      date = moment(self.closest('table')
-                        .find("thead td:nth-child(#{index + 1})")
-                        .data('date'))
-
-      $.ajax
-        url: Routes.community_network_availability_calendar_path(communitySlug, networkSlug , date.year(), date.month() + 1, date.date())
-        data: { member_id: memberId } if memberId
-        success: (data) ->
-          self.popover
-            title: "Office hours on #{date.format("MMM DD, YYYY")}"
-            placement: 'top'
-            html: true
-            container: 'body'
-            content: if !!data.trim() then data else 'There are no office hours for this day.'
-            trigger: 'manual'
-          self.popover 'show'
-          self.data('popover-is-shown', true)
+      unless $(event.toElement).is($eventItem)
+        $eventItem.popover('hide')
+        $eventItem.data('popover-is-shown', false)
 
   setCalendars = ->
     $('.calendar').each ->
@@ -77,3 +50,68 @@ $ ->
                  .addClass(event.type.toLowerCase())
                  .addClass(event.css_style)
                  .attr('data-id', event.id)
+
+        eventMouseover: (event, jsEvent, view) ->
+          $eventItem = $(this)
+          unless $eventItem.data('popover-is-shown')
+            type = event.type.toLowerCase()
+            date = new Date(event._start._i)
+            displayEventPopover($eventItem, type, date)
+
+        eventMouseout: (event, jsEvent, view) ->
+          $eventItem = $(this)
+          $popover = $("##{$eventItem.attr('aria-describedby')}")
+          toElement = jsEvent.toElement
+          if !$(toElement).is($eventItem) and !$(toElement).has($eventItem).length and
+            !isInside($popover, jsEvent)
+              $eventItem.popover('hide')
+              $eventItem.data('popover-is-shown', false)
+
+  displayEventPopover = ($eventItem, type, date) ->
+    memberId = $eventItem.closest('.calendar').data('member-id')
+    route = getRoute(type, date)
+    eventType = { availability: "Office Hours", event: "Events" }
+    $.ajax
+      url: route
+      data: { member_id: memberId } if memberId
+      success: (data) ->
+        $eventItem.popover
+          title: title(eventType[type], date)
+          placement: 'top'
+          html: true
+          container: 'body'
+          content: if !!data.trim() then data else 'There are no #{eventType[type].toLowerCase()} for this day.'
+          trigger: 'manual'
+          placement: (context, src) ->
+            $(context).addClass('calendar-popover')
+            'top'
+        $eventItem.popover('show')
+        $eventItem.data('popover-is-shown', true)
+
+  getRoute = (type, date) ->
+    communitySlug = $('body').data('community-slug')
+    networkSlug = $('body').data('network-slug')
+
+    if type == "availability"
+      Routes.community_network_availability_calendar_path(communitySlug, networkSlug,
+        date.getFullYear(), date.getMonth() + 1, date.getDate())
+    else
+      Routes.community_network_event_calendar_path(communitySlug, networkSlug,
+        date.getFullYear(), date.getMonth() + 1, date.getDate())
+
+  title = (type, date) ->
+    "<h4>#{type} on #{moment(date).format("MMM DD, YYYY")}</h4> \
+    <br/>Time shown in your local time <span>#{$('body').data('time-zone')}</span>"
+
+  isInside = (element, event) ->
+    position = element.position()
+    return false unless position
+    x = event.pageX
+    y = event.pageY
+    width = element.width()
+    height = element.height()
+    left = position.left
+    top = position.top
+    inRangeX = x > left and x < left + width
+    inRangeY = y > top and y < top + height + 12
+    inRangeX and inRangeY

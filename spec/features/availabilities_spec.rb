@@ -114,8 +114,8 @@ RSpec.describe 'Availabilities', type: :feature, js: false do
     it 'allows me to reserve a slot', js: true do
       visit community_network_member_availabilities_path(community, network, availability.member)
 
-      find('.fc-title').click
-      within('.availability-mentor') { click_on 'Reserve' }
+      find('.fc-title').hover
+      find('.availability-mentor').click
       within('table tbody tr:first-child') { click_on 'Reserve' }
 
       expect(page).to have_content 'You have successfully reserved the slot.'

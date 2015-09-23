@@ -2,6 +2,10 @@ class EventsController < ApplicationController
   before_action :authenticate_member!
   load_resource through: :current_community
 
+  def calendar
+    @events = current_network.events.on_date(date).order(:starts_at)
+  end
+
   def show
     @rsvp = @event.rsvps.find_by(member: current_member)
   end
@@ -23,5 +27,15 @@ class EventsController < ApplicationController
 
   def rsvp_params
     params.require(:rsvp).permit(:state).merge(network: current_network)
+  end
+
+  def date
+    if params[:year].nil? || params[:month].nil? || params[:day].nil?
+      redirect_to(
+        [current_community, current_network, @member],
+        alert: 'Invalid date.')
+    else
+      @date = Date.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
+    end
   end
 end

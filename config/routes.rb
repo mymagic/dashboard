@@ -34,6 +34,11 @@ Rails.application.routes.draw do
           as: 'availability_calendar',
           constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
 
+      get 'events/:year/:month/:day',
+          to: 'events#calendar',
+          as: 'event_calendar',
+          constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+
       resources :messages, only: :index do
         get 'search', on: :collection
       end

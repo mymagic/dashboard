@@ -53,6 +53,11 @@ class Event < ActiveRecord::Base
   scope :upcoming, -> { where('ends_at > ?', Time.zone.now) }
   scope :past, -> { where('ends_at < ?', Time.zone.now) }
   scope :ordered, -> { order(starts_at: :asc) }
+  scope :on_date, ->(date) do
+    where(
+      'date(starts_at) <= :date AND date(ends_at) >= :date', date: date
+    )
+  end
 
   before_validation :override_timezone
   after_create :create_activity
