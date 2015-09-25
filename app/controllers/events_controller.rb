@@ -32,7 +32,7 @@ class EventsController < ApplicationController
   def date
     if params[:year].nil? || params[:month].nil? || params[:day].nil?
       redirect_to(
-        [current_community, current_network, @member],
+        [current_community, current_network, @event],
         alert: 'Invalid date.')
     else
       @date = Date.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")

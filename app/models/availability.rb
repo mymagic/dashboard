@@ -117,9 +117,6 @@ class Availability < ActiveRecord::Base
   end
 
   def create_activity
-
-  end
-  def create_activity
     networks.each do |network|
       Activity::AvailabilityCreating.find_or_create_by(
         owner: member,
