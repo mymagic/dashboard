@@ -1,6 +1,5 @@
 class CommunitiesController < ApplicationController
-  before_action :authorize_through_magic_connect!
-  before_action :redirect_if_not_authenticated!
+  before_action :redirect_if_not_authenticated!, unless: :member_signed_in?
   load_and_authorize_resource find_by: :slug
 
   include FilterConcern
@@ -12,7 +11,6 @@ class CommunitiesController < ApplicationController
   protected
 
   def redirect_if_not_authenticated!
-    return if member_signed_in?
     redirect_to(
       new_member_session_path(current_community),
       alert: t('devise.failure.unauthenticated')
