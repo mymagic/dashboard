@@ -16,6 +16,7 @@ RSpec.describe MembersController, type: :controller do
       let!(:member) { create(:member, :confirmed, community: community) }
       before do
         login(member)
+        stub_valid_cookie
         get :index, community_id: community, network_id: network
       end
       it 'assigns the correct active members' do
@@ -64,12 +65,11 @@ RSpec.describe MembersController, type: :controller do
       before do
         create(:position, founder: true, member: member, company: company)
         login(member)
+        stub_valid_cookie
       end
 
       describe 'inviting a Member to the company' do
-        before do
-          invite_new_member
-        end
+        before { invite_new_member }
 
         subject(:invited_member) do
           Member.find_by(email: member_required_attributes[:email])
@@ -89,6 +89,7 @@ RSpec.describe MembersController, type: :controller do
           create(:member, :confirmed, community: community)
         end
         subject do
+          stub_valid_cookie
           invite_new_member(email: existing_member.email)
         end
         context 'with a new member position at that company' do
@@ -126,7 +127,10 @@ RSpec.describe MembersController, type: :controller do
         create(:administrator, :confirmed, community: community)
       end
 
-      before { login(member) }
+      before do
+        login(member)
+        stub_valid_cookie
+      end
 
       describe 'inviting a Member to the company' do
         before { invite_new_member }

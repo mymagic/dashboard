@@ -19,6 +19,7 @@ RSpec.describe Admin::MembersController, type: :controller do
       end
       before do
         login(administrator)
+        stub_valid_cookie
         get :index, community_id: community
       end
       it 'assigns the correct active members' do
@@ -122,7 +123,10 @@ RSpec.describe Admin::MembersController, type: :controller do
       let(:administrator) do
         create(:administrator, :confirmed, community: community)
       end
-      before { login(administrator) }
+      before do
+        login(administrator)
+        stub_valid_cookie
+      end
 
       describe 'inviting an Administrator' do
         before { invite_new_member(role: 'administrator') }

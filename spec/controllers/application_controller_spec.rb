@@ -10,7 +10,7 @@ RSpec.describe ApplicationController, type: :controller do
 
       before do
         cookies['magic_cookie'] = Base64.encode64(cookie_value)
-        allow(controller).to receive(:valid_magic_cookie?).and_return(true)
+        stub_valid_cookie
       end
 
       describe 'magic_connect?' do

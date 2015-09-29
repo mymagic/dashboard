@@ -1,10 +1,25 @@
 shared_examples "accessible by" do |*authorized_members|
   all_members = {
-    administrator: -> (_context) { login_administrator(community: community) },
-    regular_member: -> (_context) { login_member(community: community) },
-    staff: -> (_context) { login_staff(community: community) },
-    mentor: -> (_context) { login_mentor(community: community) },
-    unauthenticated: -> (_context) { unauthenticated }
+    administrator: -> (_context) {
+      login_administrator(community: community)
+      allow(controller).to receive(:magic_connect?).and_return(true)
+    },
+    regular_member: -> (_context) {
+      login_member(community: community)
+      allow(controller).to receive(:magic_connect?).and_return(true)
+    },
+    staff: -> (_context) {
+      login_staff(community: community)
+      allow(controller).to receive(:magic_connect?).and_return(true)
+    },
+    mentor: -> (_context) {
+      login_mentor(community: community)
+      allow(controller).to receive(:magic_connect?).and_return(true)
+    },
+    unauthenticated: -> (_context) {
+      unauthenticated
+      allow(controller).to receive(:magic_connect?).and_return(false)
+    }
   }
 
   all_members.map do |role, login|

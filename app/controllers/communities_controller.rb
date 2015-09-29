@@ -1,11 +1,14 @@
 class CommunitiesController < ApplicationController
-  before_action :redirect_if_not_authenticated!, unless: :member_signed_in?
   load_and_authorize_resource find_by: :slug
 
   include FilterConcern
 
   def show
-    redirect_to [@community, current_member.default_network]
+    if current_member
+      redirect_to [@community, current_member.default_network]
+    else
+      redirect_if_not_authenticated!
+    end
   end
 
   protected
