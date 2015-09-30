@@ -19,5 +19,9 @@ FactoryGirl.define do
       starts_at { 1.week.ago }
       ends_at { 1.week.ago + 3.hours }
     end
+
+    factory :external_event do
+      external true
+    end
   end
 end

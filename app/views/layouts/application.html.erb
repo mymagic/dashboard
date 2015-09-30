@@ -13,7 +13,8 @@
   </head>
   <body data-controller='<%= controller_name %>'
         data-community-slug='<%= current_community.try(:slug) %>'
-        data-network-slug='<%= current_network.try(:slug) %>'>
+        data-network-slug='<%= current_network.try(:slug) %>'
+        data-time-zone='<%= current_member.try(:time_zone) %>'>
     <header class='page-row'>
       <div id="color-bar"></div>
       <%= render partial: 'shared/navigations/administration' if can?(:administrate, :application) %>

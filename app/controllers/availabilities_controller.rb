@@ -83,7 +83,6 @@ class AvailabilitiesController < ApplicationController
   def parse_time(param_name)
     root_params = params[:availability]
     time_zone   = root_params[:time_zone]
-
     time = "#{root_params[param_name + '(4i)']}:#{root_params[param_name + '(5i)']}".to_time
 
     ActiveSupport::TimeZone.new(time_zone)

@@ -1,16 +1,23 @@
-<div class='availability-mentor clearfix'>
-  <%= image_tag member.avatar.url(:icon), class: 'availability-mentor__image' %>
-  <span class='availability-mentor__full-name'><%= truncate member.full_name, length: 15 %></span>
-  <div class='pull-right'>
-    <%=
-    link_to(member == current_member ? 'View' : 'Reserve',
-            community_network_member_availability_slots_path(
+<%= link_to community_network_member_availability_slots_path(
               current_community,
               current_network,
               member,
               year: date.year,
               month: date.month,
-              day: date.day),
-            class: 'availability-mentor__reserve-btn btn btn-success btn-xs') %>
+              day: date.day), class: "office-hours-details" do %>
+
+  <div class='availability-mentor clearfix'>
+    <%= image_tag member.avatar.url(:icon), class: 'availability-mentor__image img-circle' %>
+    <span class='availability-mentor__full-name'><%= truncate member.full_name, length: 15 %></span>
+    <% member.availabilities.where(date: @date).order(:start_time).each do |availability| %>
+      <div>
+        <span class="event-time">
+          <%= availability.start_time.in_time_zone(current_member.time_zone).strftime('%H:%M') %> - <%= availability.end_time.in_time_zone(current_member.time_zone).strftime('%H:%M')%>
+        </span>
+        <% if availability.details.present? %>
+          <%= availability.details %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
-</div>
+<% end %>

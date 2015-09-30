@@ -29,10 +29,7 @@ module EventsHelper
   end
 
   def event_header(event)
-    starts_at_in_member_tz = event.
-                             starts_at.
-                             in_time_zone(current_member.time_zone).
-                             strftime('%A, %B %d, %Y at %l:%M%P')
+    starts_at_in_member_tz = event_start_time(event)
     safe_join([
       event.title,
       tag('br'),
@@ -45,6 +42,10 @@ module EventsHelper
     wording << 'Event' if with_event
     style = event.external? ? 'external-event' : 'community-event'
     content_tag('span', wording.join(' '), class: "label #{ style }")
+  end
+
+  def event_start_time(event, format = '%A, %B %d, %Y at %l:%M%P')
+    event.starts_at.in_time_zone(current_member.time_zone).strftime(format)
   end
 
   def event_times(event, time_zone)
