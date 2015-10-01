@@ -1,0 +1,35 @@
+<div class="modal fade" id="subscribeCalendarDialog" tabindex="-1" role="dialog" aria-labelledby="subscribeCalendarDialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Subscribe to your Calendar</h3>
+      </div>
+      <div class="modal-body">
+        <h4>If you use iCal for Mac OS X or iOS, try clicking these buttons:</h4>
+        <div class="subscribe-options">
+          <%= link_to feeds_community_network_calendar_url(current_community, current_network, current_member.auth_token!, :events,
+            format: :ics, only_path: false, protocol: "webcal"), class: "btn btn-default btn-block subscribe-events" do %>
+            <i class="glyphicon glyphicon-calendar"></i> Events
+          <% end %>
+          <%= link_to feeds_community_network_calendar_url(current_community, current_network, current_member.auth_token!, :availabilities,
+            format: :ics, only_path: false, protocol: "webcal"), class: "btn btn-default btn-block subscribe-events" do %>
+            <i class="glyphicon glyphicon-calendar"></i> Mentoring Sessions
+          <% end %>
+          <%= link_to reservation_feeds_community_network_calendar_url(current_community, current_network, current_member.auth_token!,
+            format: :ics, only_path: false, protocol: "webcal"), class: "btn btn-default btn-block subscribe-events" do %>
+            <i class="glyphicon glyphicon-calendar"></i> My Reservations
+          <% end %>
+        </div>
+
+        <h4>If the buttons don't work:</h4>
+        <ol>
+          <li>Right-click on a button and choose "Copy link address"</li>
+          <li>Open iCal</li>
+          <li>Choose Calendar > Subscribe from the menu</li>
+          <li>Paste the address into the Calendar URL text box and click Subscribe</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>

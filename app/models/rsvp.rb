@@ -16,6 +16,9 @@ class Rsvp < ActiveRecord::Base
   after_save :create_or_update_activity
   after_create :send_notification
 
+  # Scope
+  scope :attend, -> { where.not(state: "not_attending") }
+
   def to_s
     state.humanize(capitalize: false)
   end

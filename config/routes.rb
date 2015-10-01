@@ -28,7 +28,16 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :calendar, only: :show
+      resource :calendar, only: :show do
+        get 'feeds/:auth_token/:type',
+          to: 'calendar_feeds#subscribe',
+          as: 'feeds',
+          constraints: { type: /events|availabilities/ }
+        get 'feeds/:auth_token/reservations',
+          to: 'calendar_feeds#reservations',
+          as: 'reservation_feeds'
+      end
+
       get 'availabilities/:year/:month/:day',
           to: 'availabilities#calendar',
           as: 'availability_calendar',

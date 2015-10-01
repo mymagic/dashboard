@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150903104154) do
+ActiveRecord::Schema.define(version: 20151001053327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -205,6 +205,7 @@ ActiveRecord::Schema.define(version: 20150903104154) do
     t.integer  "discussions_count"
     t.integer  "availabilities_count"
     t.integer  "magic_connect_id"
+    t.string   "auth_token"
   end
 
   add_index "members", ["community_id", "email"], name: "index_members_on_community_id_and_email", unique: true, using: :btree

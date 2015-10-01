@@ -107,6 +107,11 @@ class Member < ActiveRecord::Base
   end
   delegate :can?, :cannot?, to: :ability
 
+  def auth_token!
+    self.update(auth_token: generate_token) unless auth_token.present?
+    auth_token
+  end
+
   concerning :Registrations do
     included do
       # This is a monkey patch to Devise Invitable to accept the encrypted
@@ -324,5 +329,12 @@ class Member < ActiveRecord::Base
   def password_required?
     !skip_password &&
       (!persisted? || !password.nil? || !password_confirmation.nil?)
+  end
+
+  def generate_token
+    loop do
+      token = SecureRandom.hex
+      break token unless self.class.exists?(auth_token: token)
+    end
   end
 end

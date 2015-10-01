@@ -282,6 +282,7 @@ GEM
     hitimes (1.2.2)
     http_parser.rb (0.6.0)
     i18n (0.7.0)
+    icalendar (2.3.0)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     jbuilder (2.2.13)
@@ -546,6 +547,7 @@ DEPENDENCIES
   gon
   guard-livereload
   guard-rspec
+  icalendar
   jbuilder (~> 2.0)
   jquery-fileupload-rails
   jquery-rails
