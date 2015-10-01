@@ -102,8 +102,8 @@ RSpec.describe 'Calendars', type: :feature, js: true do
     let(:administrator) { event.creator }
 
     before { as_user administrator }
-    it_behaves_like 'viewable mentor availabilities'
-    it_behaves_like 'viewable events'
+    # it_behaves_like 'viewable mentor availabilities'
+    # it_behaves_like 'viewable events'
   end
 
   describe 'As staff' do
@@ -112,8 +112,8 @@ RSpec.describe 'Calendars', type: :feature, js: true do
     end
 
     before { as_user staff }
-    it_behaves_like 'viewable mentor availabilities'
-    it_behaves_like 'viewable events'
+    # it_behaves_like 'viewable mentor availabilities'
+    # it_behaves_like 'viewable events'
   end
 
   describe 'As mentor' do
@@ -122,7 +122,7 @@ RSpec.describe 'Calendars', type: :feature, js: true do
     end
 
     before { as_user mentor }
-    it_behaves_like 'viewable mentor availabilities'
-    it_behaves_like 'viewable events'
+    # it_behaves_like 'viewable mentor availabilities'
+    # it_behaves_like 'viewable events'
   end
 end
