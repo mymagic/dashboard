@@ -1,6 +1,14 @@
 module TimeInZone
   extend ActiveSupport::Concern
 
+  included do
+    def datetime(date, time)
+      offset = ActiveSupport::TimeZone.new(time_zone).formatted_offset(true)
+      DateTime.new(date.year, date.month, date.day,
+        time.hour, time.min, time.sec, offset)
+    end
+  end
+
   module ClassMethods
     def time_in_zone_for(*attrs)
       attrs.each do |name|

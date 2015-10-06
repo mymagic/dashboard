@@ -82,6 +82,22 @@ class Event < ActiveRecord::Base
     networks.first.community
   end
 
+  def to_ics(params = {})
+    summary = "#{title}#{' (External)' if external}"
+    tz = ActiveSupport::TimeZone::MAPPING[time_zone]
+
+    event = Icalendar::Event.new
+    event.dtstart = Icalendar::Values::DateTime.new(starts_at, tzid: tz)
+    event.dtend = Icalendar::Values::DateTime.new(ends_at, tzid: tz)
+    event.summary = "#{params[:state].humanize+' ' if params[:reserved]}#{summary}"
+    event.description = "#{location_type}: #{location_detail}"
+    event.organizer = "mailto:#{creator.email}"
+    event.created = created_at
+    event.last_modified = updated_at
+    event.uid = SecureRandom.uuid
+    event
+  end
+
   private
 
   def create_activity

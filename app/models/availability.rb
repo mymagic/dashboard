@@ -94,7 +94,24 @@ class Availability < ActiveRecord::Base
     end
   end
 
+  def to_ics(params = {})
+    event = Icalendar::Event.new
+    event.dtstart = ical_datetime(params[:start_time] || start_time)
+    event.dtend = ical_datetime(params[:end_time] || end_time)
+    event.summary = "#{'Reserved ' if params[:reserved]}Office Hours - #{member.full_name}"
+    event.description = "#{location_type}: #{location_detail} \n#{details}"
+    event.created = created_at
+    event.last_modified = updated_at
+    event.uid = SecureRandom.uuid
+    event
+  end
+
   protected
+
+  def ical_datetime(time)
+    tz = ActiveSupport::TimeZone::MAPPING[time_zone]
+    Icalendar::Values::DateTime.new(datetime(date, time), tzid: tz)
+  end
 
   def set_duration
     self.duration = (end_time - start_time) / 1.minute

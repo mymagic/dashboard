@@ -29,6 +29,9 @@ gem 'momentjs-rails'
 # An asset gem containing Adam Shaw's excellent fullcalendar jquery plugin
 gem 'fullcalendar-rails'
 
+# Use to generate iCal feeds
+gem 'icalendar'
+
 # Use simple_form for forms
 gem 'simple_form'
 
