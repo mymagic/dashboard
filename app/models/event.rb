@@ -53,9 +53,11 @@ class Event < ActiveRecord::Base
   scope :upcoming, -> { where('ends_at > ?', Time.zone.now) }
   scope :past, -> { where('ends_at < ?', Time.zone.now) }
   scope :ordered, -> { order(starts_at: :asc) }
-  scope :on_date, ->(date) do
+  scope :on_date, ->(date, time_zone) do
     where(
-      'date(starts_at) <= :date AND date(ends_at) >= :date', date: date
+      'date(starts_at::TIMESTAMPTZ AT TIME ZONE :time_zone) = :date',
+      time_zone: ActiveSupport::TimeZone::MAPPING[time_zone],
+      date: date
     )
   end
 

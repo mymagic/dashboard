@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'Calendars', type: :feature, js: true do
   let!(:event) do
-    create(:event, title: 'Great Event', starts_at: DateTime.now)
+    create(:event,
+      title: 'Great Event',
+      starts_at: DateTime.now.in_time_zone('Bangkok')
+    )
   end
   let!(:network) { event.default_network }
   let!(:community) { network.community }
@@ -34,7 +37,7 @@ RSpec.describe 'Calendars', type: :feature, js: true do
         count: 1
       find('.fc-event-container.availability').hover
       expect(page).to have_selector '.calendar-popover'
-      available_date = availability.date.strftime("%b %e, %Y")
+      available_date = availability.date.strftime("%b %d, %Y")
       expect(page).to have_content "Office Hours on #{available_date}"
 
       expect(page).to have_selector '.office-hours-details', count: 2
@@ -66,7 +69,10 @@ RSpec.describe 'Calendars', type: :feature, js: true do
   shared_examples_for 'viewable events' do
     let!(:other_event) { create(:event) }
     let!(:external_event) do
-      create(:external_event, creator: event.creator, starts_at: DateTime.now)
+      create(:external_event,
+        creator: event.creator,
+        starts_at: DateTime.now.in_time_zone('Bangkok')
+      )
     end
 
     it 'see all events inside community' do
@@ -80,7 +86,7 @@ RSpec.describe 'Calendars', type: :feature, js: true do
 
       find('.fc-event-container.community-event').hover
       expect(page).to have_selector '.calendar-popover'
-      date = event.starts_at.strftime("%b %e, %Y")
+      date = event.starts_at.strftime("%b %d, %Y")
       expect(page).to have_content "Events on #{date}"
 
       href = community_network_event_path(community, network, event.id)
@@ -102,7 +108,7 @@ RSpec.describe 'Calendars', type: :feature, js: true do
     let(:administrator) { event.creator }
 
     before { as_user administrator }
-    # it_behaves_like 'viewable mentor availabilities'
+    it_behaves_like 'viewable mentor availabilities'
     # it_behaves_like 'viewable events'
   end
 
@@ -112,7 +118,7 @@ RSpec.describe 'Calendars', type: :feature, js: true do
     end
 
     before { as_user staff }
-    # it_behaves_like 'viewable mentor availabilities'
+    it_behaves_like 'viewable mentor availabilities'
     # it_behaves_like 'viewable events'
   end
 
@@ -122,7 +128,7 @@ RSpec.describe 'Calendars', type: :feature, js: true do
     end
 
     before { as_user mentor }
-    # it_behaves_like 'viewable mentor availabilities'
+    it_behaves_like 'viewable mentor availabilities'
     # it_behaves_like 'viewable events'
   end
 end

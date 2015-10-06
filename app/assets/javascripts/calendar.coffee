@@ -54,7 +54,6 @@ $ ->
         eventMouseover: (event, jsEvent, view) ->
           $eventItem = $(this)
           unless $eventItem.data('popover-is-shown')
-            $(".popover").hide()
             type = event.type.toLowerCase()
             date = new Date(event._start._i)
             displayEventPopover($eventItem, type, date)
@@ -86,6 +85,7 @@ $ ->
           placement: (context, src) ->
             $(context).addClass('calendar-popover')
             'top'
+        $(".popover").hide()
         $eventItem.popover('show')
         $eventItem.data('popover-is-shown', true)
 

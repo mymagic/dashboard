@@ -3,7 +3,9 @@ class EventsController < ApplicationController
   load_resource through: :current_community
 
   def calendar
-    @events = current_network.events.on_date(date).order(:starts_at)
+    @events = current_network.events.
+      on_date(date, current_member.time_zone).
+      order(:starts_at)
   end
 
   def show
