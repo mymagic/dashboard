@@ -8,7 +8,10 @@ RSpec.describe ApplicationController, type: :controller do
       let(:secret) { '98debabef5a280c7cf844c8682f787ea'}
       let(:cookie_value) { "#{ magic_connect_id }|||#{ email }|||#{ secret }" }
 
-      before { cookies['magic_cookie'] = Base64.encode64(cookie_value) }
+      before do
+        cookies['magic_cookie'] = Base64.encode64(cookie_value)
+        stub_valid_cookie
+      end
 
       describe 'magic_connect?' do
         it 'is true' do
