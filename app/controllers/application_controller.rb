@@ -1,13 +1,16 @@
+require 'mcrypt'
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :force_ssl_connection, :unless => 'request.ssl?'
+  before_action :force_ssl_connection, unless: 'request.ssl?'
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :current_community
+  before_action :sign_out_and_redirect_member, unless: :magic_connect?
   before_action :authorize_through_magic_connect!
   before_action :authorize_community!
+  before_action :set_cache_buster
 
   rescue_from CanCan::AccessDenied, with: :access_denied
   rescue_from Community::CommunityNotFound, with: :community_not_found
@@ -25,7 +28,14 @@ class ApplicationController < ActionController::Base
   end
 
   def magic_connect?
-    cookies["magic_cookie"].present?
+    cookies["magic_cookie"].present? && valid_magic_cookie?
+  end
+
+  def valid_magic_cookie?
+    salt = ENV["MAGIC_SALT"]
+    enc = Mcrypt.new(:rijndael_256, :ecb, salt, nil, :zeros)
+    encrypted = enc.encrypt(magic_connect_email)
+    Digest::MD5.hexdigest(encrypted) == magic_connect_cipher
   end
 
   def magic_connect_path(redirect_to = nil)
@@ -35,14 +45,19 @@ class ApplicationController < ActionController::Base
     magic_connect_login.to_s
   end
 
+  def magic_connect_id
+    return unless cookies["magic_cookie"].present?
+    Base64.decode64(cookies["magic_cookie"]).split('|||').try(:first).try(:to_i)
+  end
+
   def magic_connect_email
-    return unless magic_connect?
+    return unless cookies["magic_cookie"].present?
     Base64.decode64(cookies["magic_cookie"]).split('|||').try(:second)
   end
 
-  def magic_connect_id
-    return unless magic_connect?
-    Base64.decode64(cookies["magic_cookie"]).split('|||').try(:first).try(:to_i)
+  def magic_connect_cipher
+    return unless cookies["magic_cookie"].present?
+    Base64.decode64(cookies["magic_cookie"]).split('|||').try(:last)
   end
 
   def magic_connect_member
@@ -157,6 +172,16 @@ class ApplicationController < ActionController::Base
   def reset_current_ability
     @current_ability = nil
     @current_user = nil
+  end
+
+  def sign_out_and_redirect_member
+    sign_out_and_redirect current_member if current_member
+  end
+
+  def set_cache_buster
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
 end
