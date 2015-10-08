@@ -1,4 +1,2 @@
 ---
-:concurrency: 14
-staging:
-  :concurrency: 6
+:concurrency: 13
