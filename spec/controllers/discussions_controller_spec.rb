@@ -29,10 +29,7 @@ RSpec.describe DiscussionsController, type: :controller do
       let!(:discussion_tag) do
         discussion_one.add_tag('tagging')
       end
-      before do
-        login(member)
-        stub_valid_cookie
-      end
+      before { login(member) }
       context 'without tags' do
         before { get :index, community_id: community, network_id: network }
         it 'retrieves the correct discussions' do

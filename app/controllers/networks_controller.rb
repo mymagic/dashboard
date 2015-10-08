@@ -1,5 +1,6 @@
 class NetworksController < ApplicationController
   # layout :false
+  before_action :authorize_through_magic_connect!
   before_action :set_current_network
   before_action :set_activities
 

@@ -2,13 +2,8 @@ module FeatureHelper
   # Helper for Warden login without having to go through UI. For faster sign-in
   def as_user(member, &block)
     login_as(member, scope: :member, community_id: member.community)
-    stub_magic_connected
     block.call if block.present?
     self
-  end
-
-  def stub_magic_connected
-    ApplicationController.any_instance.stub(:magic_connect?).and_return(true)
   end
 
   def sign_out
@@ -38,7 +33,6 @@ module FeatureHelper
 
   def log_in(community, email, password = 'password0')
     magic_connect_cookie(email)
-    stub_magic_connected
     visit community_path(community)
   end
 
