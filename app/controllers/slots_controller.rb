@@ -8,7 +8,8 @@ class SlotsController < ApplicationController
     if @slot.
        update(start_time: start_time,
               end_time: end_time,
-              member: current_member)
+              member: current_member,
+              network: current_network)
       redirect_to_availabilty_path('You have successfully reserved the slot.')
     else
       redirect_to :back, alert: 'Error creating slot.'

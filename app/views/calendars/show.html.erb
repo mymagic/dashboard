@@ -5,8 +5,15 @@
   <span class='calendar-label community-events'><%= current_community.name %> Events</span>
   <span class='calendar-label external-events'>External Events</span>
   <span class='calendar-label office-hours'>Office hours</span>
+  <div class="subscribe-btn">
+    <%= button_tag class: "btn btn-warning", 'data-toggle': 'modal', 'data-target': '#subscribeCalendarDialog' do %>
+      <i class="glyphicon glyphicon-calendar"></i> Subscribe
+    <% end %>
+  </div>
 </div>
 
 <div class='calendar'
      data-url='<%= community_network_calendar_path(current_community, current_network) %>'>
 </div>
+
+<%= render partial: 'subscribe_dialog' %>

@@ -2,28 +2,24 @@ require 'rails_helper'
 
 RSpec.describe 'Events', type: :feature, js: false do
   feature "Administration" do
-    given!(:community) { create(:community) }
-    given!(:network) { community.default_network }
-    given!(:administrator) do
-      create(:administrator, :confirmed, community: community)
+    given!(:event) do
+      create(
+        :event,
+        title: 'Great Event',
+        description: 'Come visit!',
+        location_type: 'skype',
+        location_detail: 'great.event'
+      )
     end
+    given!(:network) { event.default_network }
+    given!(:community) { network.community }
+    given!(:administrator) { event.creator }
     given!(:staff) { create(:staff, :confirmed, community: community) }
     given!(:manager) { create(:member, :confirmed, community: community) }
     given!(:member) { create(:member, :confirmed, community: community) }
 
     shared_examples "viewing events" do
       context 'with an event' do
-        given!(:event) do
-          create(
-            :event,
-            creator: administrator,
-            title: 'Great Event',
-            description: 'Come visit!',
-            location_type: 'skype',
-            location_detail: 'great.event',
-            network: network
-          )
-        end
         it 'shows the event data' do
           visit community_network_event_path(community, network, event)
 
@@ -46,17 +42,6 @@ RSpec.describe 'Events', type: :feature, js: false do
 
     shared_examples "rsvp events" do
       context 'with an event' do
-        given!(:event) do
-          create(
-            :event,
-            creator: administrator,
-            title: 'Great Event',
-            description: 'Come visit!',
-            location_type: 'skype',
-            location_detail: 'great.event',
-            network: network
-          )
-        end
         it 'lets me rsvp' do
           visit community_network_event_path(community, network, event)
           within '.page-header' do
@@ -74,6 +59,7 @@ RSpec.describe 'Events', type: :feature, js: false do
 
         fill_in 'Title', with: 'Boston Teaparty'
         fill_in 'Description', with: 'Free tea!'
+        find('.network_checkboxes').set(true)
 
         select 'Address', from: 'event_location_type'
         fill_in 'Detail', with: 'Bangkok'

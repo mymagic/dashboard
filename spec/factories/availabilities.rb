@@ -11,6 +11,10 @@ FactoryGirl.define do
     slot_duration { Availability::SLOT_DULATIONS.sample }
     details { generate(:body) }
 
+    before(:create) do |availability|
+      availability.networks << availability.member.community.default_network
+    end
+
     trait :recurring do
       recurring true
     end

@@ -42,7 +42,7 @@ module Taggable
   def set_tags
     return unless @new_tags.present?
     existing_tags = tags.pluck(:name)
-    (existing_tags - @new_tags).each { |name| (name) }
+    (existing_tags - @new_tags).each { |name| remove_tag(name) }
     @new_tags.each { |name| add_tag(name) }
   end
 end

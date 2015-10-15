@@ -95,8 +95,11 @@ RSpec.describe 'Activities', type: :feature, js: false do
     end
 
     context 'with some activities' do
+      given(:event) { create(:event, title: 'Hackweek') }
+      given(:network) { event.default_network }
+      given(:community) { network.community }
+
       # FollowActivities
-      # given!(:alice_following_dan) { alice.followed_members << dan }
       given!(:alice_following_dan) { Follow.create(member: alice, followable: dan, network: network)}
       given!(:alice_following_a_discussion) do
         alice.followed_discussions << create_discussion('all about singularity')
@@ -121,12 +124,11 @@ RSpec.describe 'Activities', type: :feature, js: false do
       end
 
       # RsvpActivities
-      given!(:event) { create(:event, network: network, title: 'Hackweek') }
       given!(:alice_rsvping_to_an_event) do
-        alice.rsvps.create(event: event, state: 'not_attending')
+        alice.rsvps.create(event: event, state: 'not_attending', network: network)
       end
       given!(:bob_rsvping_to_an_event) do
-        bob.rsvps.create(event: event, state: 'attending')
+        bob.rsvps.create(event: event, state: 'attending', network: network)
       end
 
       given!(:activity_in_other_community) do

@@ -1,4 +1,8 @@
+require 'sidekiq/web'
 Rails.application.routes.draw do
+  authenticate :member, lambda { |u| u.administrator? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   resources :communities, path: '', except: :index do
     get 'admin/dashboard'
 
@@ -24,10 +28,24 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :calendar, only: :show
+      resource :calendar, only: :show do
+        get 'feeds/:auth_token/:type',
+          to: 'calendar_feeds#subscribe',
+          as: 'feeds',
+          constraints: { type: /events|availabilities/ }
+        get 'feeds/:auth_token/reservations',
+          to: 'calendar_feeds#reservations',
+          as: 'reservation_feeds'
+      end
+
       get 'availabilities/:year/:month/:day',
           to: 'availabilities#calendar',
           as: 'availability_calendar',
+          constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+
+      get 'events/:year/:month/:day',
+          to: 'events#calendar',
+          as: 'event_calendar',
           constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
 
       resources :messages, only: :index do
@@ -66,8 +84,8 @@ Rails.application.routes.draw do
           to: 'discussions#index',
           as: 'discussion_tag'
 
-      resources :discussions, except: [:edit, :update] do
-        resources :comments, only: [:create, :destroy]
+      resources :discussions do
+        resources :comments, only: [:create, :update, :destroy]
         member do
           patch :follow
           delete :unfollow

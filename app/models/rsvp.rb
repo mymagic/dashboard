@@ -1,6 +1,8 @@
 class Rsvp < ActiveRecord::Base
   STATES = %w(attending maybe_attending not_attending)
 
+  attr_accessor :network
+
   # Validations
   validates :member, :event, :state, presence: true
   validates :event_id, uniqueness: { scope: :member_id }
@@ -14,6 +16,9 @@ class Rsvp < ActiveRecord::Base
   after_save :create_or_update_activity
   after_create :send_notification
 
+  # Scope
+  scope :attend, -> { where.not(state: "not_attending") }
+
   def to_s
     state.humanize(capitalize: false)
   end
@@ -23,7 +28,7 @@ class Rsvp < ActiveRecord::Base
   def create_or_update_activity
     Activity::Rsvping.
       find_or_create_by(owner: member, event: event).
-      update(data: { state: self.to_s }, network: event.network)
+      update(data: { state: self.to_s }, network: network)
   end
 
   def event_cannot_be_in_the_past
@@ -35,7 +40,8 @@ class Rsvp < ActiveRecord::Base
       :event_rsvp_notification,
       member,
       event: event,
-      rsvp: self
+      rsvp: self,
+      network: network
     )
   end
 end

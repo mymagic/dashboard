@@ -1,6 +1,7 @@
 class Availability < ActiveRecord::Base
   # Accessors
   attr_accessor :end_time
+  attr_accessor :current_network
 
   # Alias
   alias_attribute :start_time, :time
@@ -22,6 +23,7 @@ class Availability < ActiveRecord::Base
            class_name: 'Activity::AvailabilityCreating',
            as: :resource,
            dependent: :destroy
+  has_and_belongs_to_many :networks
 
   # Validations
   validates :member_id, :date, :time,
@@ -30,6 +32,7 @@ class Availability < ActiveRecord::Base
 
   validates :slot_duration, inclusion: { in: SLOT_DULATIONS }
   validates :location_type, inclusion: { in: LOCATION_TYPES }
+  validates :networks, presence: true
   validate :start_time_must_be_less_than_end_time
   validate :divisible_by_slot_duration
 
@@ -91,7 +94,24 @@ class Availability < ActiveRecord::Base
     end
   end
 
+  def to_ics(params = {})
+    event = Icalendar::Event.new
+    event.dtstart = ical_datetime(params[:start_time] || start_time)
+    event.dtend = ical_datetime(params[:end_time] || end_time)
+    event.summary = "#{'Reserved ' if params[:reserved]}Office Hours - #{member.full_name}"
+    event.description = "#{location_type}: #{location_detail} \n#{details}"
+    event.created = created_at
+    event.last_modified = updated_at
+    event.uid = SecureRandom.uuid
+    event
+  end
+
   protected
+
+  def ical_datetime(time)
+    tz = ActiveSupport::TimeZone::MAPPING[time_zone]
+    Icalendar::Values::DateTime.new(datetime(date, time), tzid: tz)
+  end
 
   def set_duration
     self.duration = (end_time - start_time) / 1.minute
@@ -114,9 +134,12 @@ class Availability < ActiveRecord::Base
   end
 
   def create_activity
-    Activity::AvailabilityCreating.find_or_create_by(
-      owner: member,
-      availability: self
-    )
+    networks.each do |network|
+      Activity::AvailabilityCreating.find_or_create_by(
+        owner: member,
+        availability: self,
+        network: network
+      )
+    end
   end
 end

@@ -49,8 +49,8 @@ RSpec.describe Activity, type: :model do
     end
 
     # RsvpActivities
-    let(:alice_rsvping_to_an_event) { create(:rsvp_activity, owner: alice) }
-    let(:bob_rsvping_to_an_event) { create(:rsvp_activity, owner: bob) }
+    let(:alice_rsvping_to_an_event) { create(:rsvp_activity, owner: alice, network: network) }
+    let(:bob_rsvping_to_an_event) { create(:rsvp_activity, owner: bob, network: network) }
 
     let!(:activities_of_interest) do
       [

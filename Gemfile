@@ -29,6 +29,9 @@ gem 'momentjs-rails'
 # An asset gem containing Adam Shaw's excellent fullcalendar jquery plugin
 gem 'fullcalendar-rails'
 
+# Use to generate iCal feeds
+gem 'icalendar'
+
 # Use simple_form for forms
 gem 'simple_form'
 
@@ -85,6 +88,7 @@ gem 'kaminari'
 
 # Background processing in Rails
 gem 'sidekiq'
+gem 'sinatra'
 
 # Memcached
 gem 'dalli'
@@ -97,6 +101,9 @@ gem 'font-awesome-rails'
 
 # Redcarpet for markdown support
 gem 'redcarpet'
+
+# Best in place for in place editing
+gem 'best_in_place'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

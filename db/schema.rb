@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721105609) do
+ActiveRecord::Schema.define(version: 20151001053327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,11 +50,17 @@ ActiveRecord::Schema.define(version: 20150721105609) do
     t.text     "details"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "network_id"
   end
 
   add_index "availabilities", ["member_id"], name: "index_availabilities_on_member_id", using: :btree
-  add_index "availabilities", ["network_id"], name: "index_availabilities_on_network_id", using: :btree
+
+  create_table "availabilities_networks", force: :cascade do |t|
+    t.integer "availability_id"
+    t.integer "network_id"
+  end
+
+  add_index "availabilities_networks", ["availability_id"], name: "index_availabilities_networks_on_availability_id", using: :btree
+  add_index "availabilities_networks", ["network_id"], name: "index_availabilities_networks_on_network_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "author_id"
@@ -126,11 +132,17 @@ ActiveRecord::Schema.define(version: 20150721105609) do
     t.decimal  "location_latitude",  precision: 10, scale: 6, default: 2.909047,   null: false
     t.decimal  "location_longitude", precision: 10, scale: 6, default: 101.654669, null: false
     t.integer  "location_zoom",                               default: 15,         null: false
-    t.integer  "network_id"
   end
 
   add_index "events", ["creator_id"], name: "index_events_on_creator_id", using: :btree
-  add_index "events", ["network_id"], name: "index_events_on_network_id", using: :btree
+
+  create_table "events_networks", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "network_id"
+  end
+
+  add_index "events_networks", ["event_id"], name: "index_events_networks_on_event_id", using: :btree
+  add_index "events_networks", ["network_id"], name: "index_events_networks_on_network_id", using: :btree
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id"
@@ -193,6 +205,7 @@ ActiveRecord::Schema.define(version: 20150721105609) do
     t.integer  "discussions_count"
     t.integer  "availabilities_count"
     t.integer  "magic_connect_id"
+    t.string   "auth_token"
   end
 
   add_index "members", ["community_id", "email"], name: "index_members_on_community_id_and_email", unique: true, using: :btree

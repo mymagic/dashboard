@@ -59,3 +59,79 @@
     }
   }
 }
+
+.calendar-popover {
+  .popover-title {
+    padding: 8px 10px;
+
+    h4 {
+      font-weight: bold;
+      margin: 5px 0 0 0;
+    }
+
+    span { color: #00b9d1; }
+  }
+
+  .popover-content {
+    padding: 0;
+
+    a {
+      border-bottom: 1px solid #e6e6e6;
+      display: block;
+      margin-left: -1px;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #eaf7fc;
+        color: #009eaf;
+        text-decoration: none;
+      }
+
+      & > div {
+        padding: 10px 7px;
+      }
+
+      &.office-hours-details {
+        border-left: 7px solid $office-hour-color;
+      }
+
+      &.external-events-details {
+        border-left: 7px solid $external-event-color;
+      }
+
+      &.community-events-details {
+        border-left: 7px solid $community-event-color;
+      }
+    }
+
+    .event-time { color: black; }
+  }
+}
+
+.subscribe-btn {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+
+#subscribeCalendarDialog {
+  .modal-title { font-weight: bold; }
+  .modal-boday { padding: 20px; }
+  h4 { font-weight: bold; }
+}
+
+.subscribe-options {
+  padding: 15px 0;
+
+  .subscribe-events {
+    font-size: 16px;
+    margin-bottom: 8px;
+    padding: 9px 14px;
+    text-align: left;
+
+    i { padding-right: 5px; }
+  }
+}

@@ -8,12 +8,12 @@ class Event < ActiveRecord::Base
 
   # Behaviors
   include TimeInZone
+  include NetworksConcern
   time_in_zone_for :starts_at, :ends_at
 
   # Associations
   belongs_to :creator, class_name: 'Member'
   belongs_to :network
-  delegate :community, to: :network
 
   has_many :rsvps, dependent: :destroy
   has_many :members, through: :rsvps do
@@ -34,6 +34,8 @@ class Event < ActiveRecord::Base
            as: :resource,
            dependent: :destroy
 
+  has_and_belongs_to_many :networks
+
   # Validations
   validates :location_detail,
             :starts_at,
@@ -43,6 +45,7 @@ class Event < ActiveRecord::Base
             :creator,
             presence: true
   validates :location_type, inclusion: { in: LOCATION_TYPES.keys.map(&:to_s) }
+  validates :networks, presence: true
   validate :ends_at_cannot_precede_starts_at,
            if: -> { ends_at.present? && starts_at.present? }
 
@@ -50,6 +53,13 @@ class Event < ActiveRecord::Base
   scope :upcoming, -> { where('ends_at > ?', Time.zone.now) }
   scope :past, -> { where('ends_at < ?', Time.zone.now) }
   scope :ordered, -> { order(starts_at: :asc) }
+  scope :on_date, ->(date, time_zone) do
+    where(
+      'date(starts_at::TIMESTAMPTZ AT TIME ZONE :time_zone) = :date',
+      time_zone: ActiveSupport::TimeZone::MAPPING[time_zone],
+      date: date
+    )
+  end
 
   before_validation :override_timezone
   after_create :create_activity
@@ -70,10 +80,32 @@ class Event < ActiveRecord::Base
     ends_at < Time.zone.now
   end
 
+  def community
+    networks.first.community
+  end
+
+  def to_ics(params = {})
+    summary = "#{title}#{' (External)' if external}"
+    tz = ActiveSupport::TimeZone::MAPPING[time_zone]
+
+    event = Icalendar::Event.new
+    event.dtstart = Icalendar::Values::DateTime.new(starts_at, tzid: tz)
+    event.dtend = Icalendar::Values::DateTime.new(ends_at, tzid: tz)
+    event.summary = "#{params[:state].humanize+' ' if params[:reserved]}#{summary}"
+    event.description = "#{location_type}: #{location_detail}"
+    event.organizer = "mailto:#{creator.email}"
+    event.created = created_at
+    event.last_modified = updated_at
+    event.uid = SecureRandom.uuid
+    event
+  end
+
   private
 
   def create_activity
-    Activity::EventCreating.create(owner: creator, event: self)
+    networks.each do |network|
+      Activity::EventCreating.create(owner: creator, event: self, network: network)
+    end
   end
 
   def ends_at_cannot_precede_starts_at

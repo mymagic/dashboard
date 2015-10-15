@@ -25,7 +25,7 @@ RSpec.describe 'Discussion', type: :feature, js: false do
     it "removes a comment" do
       visit community_network_discussions_path(community, network)
       click_link 'To be or not to be?'
-      click_link 'Remove this Comment'
+      click_link 'Remove this comment'
       expect(page).to have_content 'Comment was successfully deleted.'
       expect(page).to have_content 'To be or not to be?'
     end

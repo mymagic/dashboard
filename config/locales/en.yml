@@ -35,3 +35,7 @@ en:
           attributes:
             networks:
               must_have_at_least_one_network_membership: must be a member of at least one network
+  authentication:
+    failure:
+      invalid_token: Invalid Token
+      require_token: Require Token

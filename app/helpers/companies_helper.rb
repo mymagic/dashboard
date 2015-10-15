@@ -24,6 +24,6 @@ module CompaniesHelper
   end
 
   def company_name_link(company)
-    link_to(company.name, [current_community, current_network, company])
+    link_to(company.name, [current_community, (current_network || company.default_network), company])
   end
 end

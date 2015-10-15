@@ -65,8 +65,6 @@ class Ability
     create_messages(member)
     read_messages(member)
 
-    cannot :unfollow, Discussion, author_id: member.id
-
     can :rsvp, Event
     cannot :rsvp, Event do |event|
       event.ended?
@@ -79,14 +77,19 @@ class Ability
     manage_social_media_links(member)
 
     can :manage, Availability, member_id: member.id
+    cannot :assign_networks_to, Availability
 
+    cannot :unfollow, Discussion, author_id: member.id
+    can [:update, :destroy], Discussion, author_id: member.id
+    can [:create, :read, :follow, :unfollow, :tags], Discussion do |discussion|
+      member.networks.include?(discussion.network)
+    end
+
+    can [:update, :destroy], Comment, author_id: member.id
     can :create, Comment do |comment|
       comment.discussion.community.id == member.community.id
     end
 
-    can [:create, :read, :follow, :unfollow, :tags], Discussion do |discussion|
-      member.networks.include?(discussion.network)
-    end
 
     case member.role
     when 'administrator'
@@ -101,6 +104,7 @@ class Ability
       can(
         :manage,
         [:calendar, Position, Event, Company, SocialMediaLink, Availability])
+      cannot :assign_networks_to, Availability
       can :manage, Community, id: member.community.id
       can :manage, Discussion do |discussion|
         discussion.community.id == member.community.id
@@ -144,6 +148,7 @@ class Ability
       can :update, Member, role: ['mentor', '', nil]
       can :destroy, Member, role: ['mentor', '', nil]
     when 'mentor'
+      can :assign_networks_to, Availability
     else # a regular Member
       can([:manage_company,
            :invite_company_member,

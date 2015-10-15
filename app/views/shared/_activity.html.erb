@@ -1,6 +1,11 @@
 <tr>
   <td>
-    <%= member_link activity.owner %>
+    <% if activity.owner.networks.include?(current_network)  %>
+      <%= member_link activity.owner %>
+    <% else %>
+      <%= image_tag(activity.owner.avatar.url(:icon), class: 'img-rounded') %>
+      <%= activity.owner.full_name %>
+    <% end %>
     <%= yield %>
     <small class='text-muted'><%= time_tag activity.updated_at %></small>
   </td>

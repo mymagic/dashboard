@@ -28,11 +28,13 @@ class AvailabilitiesController < ApplicationController
   end
 
   def update
-    update_availability
-    @availability.slots.destroy_all
-
-    redirect_to [current_community, current_network, @member, Availability],
-                notice: 'Availability was successfully updated.'
+    if update_availability
+      @availability.slots.destroy_all
+      redirect_to [current_community, current_network, @member, Availability],
+                  notice: 'Availability was successfully updated.'
+    else
+      render 'edit', alert: 'Error updating availability.'
+    end
   end
 
   def create
@@ -54,15 +56,18 @@ class AvailabilitiesController < ApplicationController
   protected
 
   def availability_params
-    params.require(:availability)
-          .permit(
-            :slot_duration,
-            :time_zone,
-            :recurring,
-            :location_type,
-            :location_detail,
-            :details
-          )
+    strong_params = params.require(:availability)
+                    .permit(
+                      :slot_duration, :time_zone, :recurring, :location_type,
+                      :location_detail, :details, network_ids: [] )
+                    .merge(
+                      start_time: parse_time('start_time'),
+                      end_time: parse_time('end_time'),
+                      date: "#{params[:availability]['date(1i)']}-#{params[:availability]['date(2i)']}-#{params[:availability]['date(3i)']}" )
+    if strong_params[:network_ids].nil? && cannot?(:assign_networks_to, Availability)
+      strong_params.merge!(network_ids: current_network.id)
+    end
+    strong_params
   end
 
   def date
@@ -78,7 +83,6 @@ class AvailabilitiesController < ApplicationController
   def parse_time(param_name)
     root_params = params[:availability]
     time_zone   = root_params[:time_zone]
-
     time = "#{root_params[param_name + '(4i)']}:#{root_params[param_name + '(5i)']}".to_time
 
     ActiveSupport::TimeZone.new(time_zone)
@@ -87,14 +91,6 @@ class AvailabilitiesController < ApplicationController
   end
 
   def update_availability
-    # Seems like cancancan does not auto update :date params
-    availability_params = params[:availability]
-
-    @availability.update(
-      start_time: parse_time('start_time'),
-      end_time: parse_time('end_time'),
-      date: "#{availability_params['date(1i)']}-#{availability_params['date(2i)']}-#{availability_params['date(3i)']}",
-      network: current_network
-    )
+    @availability.update(availability_params)
   end
 end

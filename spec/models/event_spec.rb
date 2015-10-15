@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Event, type: :model do
   context 'validations' do
     let(:network) { create(:community).default_network }
-    subject { build(:event, network: network) }
+    subject { build(:event) }
 
     it { is_expected.to validate_presence_of(:creator) }
     it { is_expected.to validate_presence_of(:time_zone) }
@@ -11,6 +11,7 @@ RSpec.describe Event, type: :model do
     it { is_expected.to validate_presence_of(:starts_at) }
     it { is_expected.to validate_presence_of(:ends_at) }
     it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_presence_of(:networks) }
     it do
       is_expected.
         to validate_inclusion_of(:location_type).

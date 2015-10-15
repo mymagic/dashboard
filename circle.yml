@@ -18,7 +18,7 @@ deployment:
     branch: develop
     commands:
       - '[[ ! -s "$(git rev-parse --git-dir)/shallow" ]] || git fetch --unshallow'
-      - git push git@heroku.com:mymagic-staging.git HEAD:master:
+      - git push -f git@heroku.com:mymagic-staging.git HEAD:master:
           timeout: 300
       - heroku run rake db:migrate --app mymagic-staging:
           timeout: 300
