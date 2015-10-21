@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :current_community
   before_action :authorize_through_magic_connect!
   before_action :authorize_community!
+  before_action :set_cache_buster
 
   rescue_from CanCan::AccessDenied, with: :access_denied
   rescue_from Community::CommunityNotFound, with: :community_not_found
@@ -159,4 +160,9 @@ class ApplicationController < ActionController::Base
     @current_user = nil
   end
 
+  def set_cache_buster
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
 end
