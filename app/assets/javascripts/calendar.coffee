@@ -80,6 +80,7 @@ $ ->
           placement: 'top'
           html: true
           container: 'body'
+          viewport: 'body'
           content: if !!data.trim() then data else "There are no #{eventType[type].toLowerCase()} for this day."
           trigger: 'manual'
           placement: (context, src) ->

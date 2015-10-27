@@ -61,6 +61,8 @@
 }
 
 .calendar-popover {
+  z-index: 3000;
+
   .popover-title {
     padding: 8px 10px;
 
@@ -73,6 +75,8 @@
   }
 
   .popover-content {
+    max-height: 255px;
+    overflow: auto;
     padding: 0;
 
     a {
